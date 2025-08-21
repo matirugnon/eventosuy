@@ -25,6 +25,7 @@ public class Principal {
     private CrearUsuario creUsrInternalFrame;
     private ConsultarUsuario conUsrInternalFrame;
     private ListaUsuarios lisUsrInternalFrame;
+    private ModificarUsuario modUsrInternalFrame;
 
     /**
      * Launch the application.
@@ -51,40 +52,57 @@ public class Principal {
         // Inicialización
         Fabrica fabrica = Fabrica.getInstance();
         ICU = fabrica.getIControladorUsuario();
-        
+
         // Se crean los tres InternalFrame y se incluyen al Frame principal ocultos.
         // De esta forma, no es necesario crear y destruir objetos lo que enlentece la ejecución.
         // Cada InternalFrame usa un layout diferente, simplemente para mostrar distintas opciones.
+
+
+        //crearusuario
+
         creUsrInternalFrame = new CrearUsuario(ICU);
+        creUsrInternalFrame.setLocation(51, 84);
         creUsrInternalFrame.setVisible(false);
 
+        //consultarUsuario
+
         conUsrInternalFrame = new ConsultarUsuario(ICU);
-        conUsrInternalFrame.setLocation(40, 40);
+        conUsrInternalFrame.setLocation(198, 245);
         conUsrInternalFrame.setVisible(false);
 
+        //modificarUsuario
+
+        modUsrInternalFrame = new ModificarUsuario(ICU);
+        modUsrInternalFrame.setTitle("ModUsuario");
+        modUsrInternalFrame.setLocation(515, 54);
+        modUsrInternalFrame.setVisible(false);
+
+
         lisUsrInternalFrame = new ListaUsuarios(ICU);
+        lisUsrInternalFrame.setLocation(608, 361);
         lisUsrInternalFrame.setVisible(false);
         frmGestionDeUsuarios.getContentPane().setLayout(null);
 
         frmGestionDeUsuarios.getContentPane().add(conUsrInternalFrame);
         frmGestionDeUsuarios.getContentPane().add(creUsrInternalFrame);
         frmGestionDeUsuarios.getContentPane().add(lisUsrInternalFrame);
+        frmGestionDeUsuarios.getContentPane().add(modUsrInternalFrame);
     }
 
     /**
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        
+
         // Se crea el Frame con las dimensiones indicadas.
         frmGestionDeUsuarios = new JFrame();
         frmGestionDeUsuarios.setTitle("Gestion de Usuarios 1.0");
-        frmGestionDeUsuarios.setBounds(100, 100, 450, 400);
+        frmGestionDeUsuarios.setBounds(100, 100, 977, 595);
         frmGestionDeUsuarios.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Se crea una barra de menú (JMenuBar) con dos menú (JMenu) desplegables.
-        // Cada menú contiene diferentes opciones (JMenuItem), los cuales tienen un 
-        // evento asociado que permite realizar una acción una vez se seleccionan. 
+        // Cada menú contiene diferentes opciones (JMenuItem), los cuales tienen un
+        // evento asociado que permite realizar una acción una vez se seleccionan.
         JMenuBar menuBar = new JMenuBar();
         frmGestionDeUsuarios.setJMenuBar(menuBar);
 
@@ -132,10 +150,10 @@ public class Principal {
             }
         });
         menuUsuarios.add(mntmListaUsuarios);
-        
+
         JMenu menuEventos = new JMenu("Eventos");
         menuBar.add(menuEventos);
-        
+
         JMenu menuRegistros = new JMenu("Registros");
         menuBar.add(menuRegistros);
     }
