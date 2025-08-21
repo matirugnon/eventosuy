@@ -1,0 +1,16 @@
+# Archivos generados por Java
+*.class
+bin/
+out/
+
+# Archivos de Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+
+# IDEs adicionales
+*.swp
+*~
+.DS_Store
+Thumbs.db
