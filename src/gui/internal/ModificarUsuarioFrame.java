@@ -3,6 +3,7 @@ package gui.internal;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class ModificarUsuarioFrame extends JInternalFrame {
     private JComboBox<String> comboUsuarios;
     private JTextField txtNickname, txtCorreo, txtNombre, txtApellido, txtFechaNac, txtDescripcion, txtWeb;
@@ -42,11 +43,11 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         txtNombre = new JTextField();
         form.add(txtNombre);
 
-        form.add(new JLabel("Apellido:"));
+        form.add(new JLabel("Apellido (solo asistentes):"));
         txtApellido = new JTextField();
         form.add(txtApellido);
 
-        form.add(new JLabel("Fecha Nacimiento (YYYY-MM-DD):"));
+        form.add(new JLabel("Fecha Nacimiento (YYYY-MM-DD)(solo asistentes):"));
         txtFechaNac = new JTextField();
         form.add(txtFechaNac);
 
