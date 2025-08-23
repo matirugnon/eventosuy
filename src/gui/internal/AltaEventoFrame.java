@@ -7,7 +7,7 @@ import javax.swing.text.MaskFormatter;
 
 @SuppressWarnings("serial")
 public class AltaEventoFrame extends JInternalFrame {
-    private JTextField txtNombre, txtSigla, txtFecha;
+    private JTextField txtNombre, txtSigla;
     private JTextArea txtDescripcion;
     private JList<String> listaCategorias;
     private JButton btnAceptar, btnCancelar;
