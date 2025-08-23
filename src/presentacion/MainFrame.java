@@ -3,6 +3,7 @@ package presentacion;
 import javax.swing.*;
 import gui.internal.*;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
     private JDesktopPane desktop;
 
@@ -18,17 +19,25 @@ public class MainFrame extends JFrame {
         setJMenuBar(createMenuBar());
     }
 
+
+
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         // Menú Usuarios
         JMenu menuUsuarios = new JMenu("Usuarios");
+
         JMenuItem altaUsuario = new JMenuItem("Alta Usuario");
         AltaUsuarioFrame altaUsuarioFrame = new AltaUsuarioFrame();
         altaUsuarioFrame.setLocation(23, 11);
         altaUsuario.addActionListener(e -> openInternal(altaUsuarioFrame));
+
+
         JMenuItem consultaUsuario = new JMenuItem("Consulta Usuario");
-        consultaUsuario.addActionListener(e -> openInternal(new ConsultaUsuarioFrame()));
+        consultaUsuario.addActionListener(e -> openInternal(new gui.internal.ConsultaUsuarioFrame(this::openInternal)));
+        menuUsuarios.add(consultaUsuario);
+
+
         JMenuItem modificarUsuario = new JMenuItem("Modificar Usuario");
         modificarUsuario.addActionListener(e -> openInternal(new ModificarUsuarioFrame()));
         menuUsuarios.add(altaUsuario);
@@ -78,5 +87,6 @@ public class MainFrame extends JFrame {
     private void openInternal(JInternalFrame frame) {
         desktop.add(frame);
         frame.setVisible(true);
+        try { frame.setSelected(true); } catch (Exception ignored) {}
     }
 }
