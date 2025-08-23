@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
         menuUsuarios.add(consultaUsuario);
         menuUsuarios.add(modificarUsuario);
 
-        
+
         // Menú Eventos
         JMenu menuEventos = new JMenu("Eventos");
 
@@ -45,7 +45,12 @@ public class MainFrame extends JFrame {
         menuEventos.add(altaEvento);
 
 
-        menuEventos.add(new JMenuItem("Consulta Evento"));
+        JMenuItem consultaEvento = new JMenuItem("Consulta Evento");
+        consultaEvento.addActionListener(e -> openInternal(new ConsultaEventoFrame()));
+        menuEventos.add(consultaEvento);
+
+
+
         menuEventos.add(new JMenuItem("Alta Edición"));
         menuEventos.add(new JMenuItem("Consulta Edición"));
         menuEventos.add(new JMenuItem("Alta Tipo Registro"));
