@@ -59,8 +59,12 @@ public class MainFrame extends JFrame {
         menuEventos.add(consultaEvento);
 
 
-
-        menuEventos.add(new JMenuItem("Alta Edición"));
+        JMenuItem altaEdicion = new JMenuItem("Alta Edición");
+        altaEdicion.addActionListener(e -> openInternal(new AltaEdicionFrame()));
+        menuEventos.add(altaEdicion);
+        
+        
+        
         menuEventos.add(new JMenuItem("Consulta Edición"));
         menuEventos.add(new JMenuItem("Alta Tipo Registro"));
         menuEventos.add(new JMenuItem("Consulta Tipo Registro"));
