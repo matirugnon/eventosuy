@@ -13,27 +13,37 @@ public class ControladorUsuario implements IControladorUsuario {
     public ControladorUsuario() {
     }
 
-    public void registrarUsuario(String n, String ap, String ci) throws UsuarioRepetidoException {
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-        Usuario u = mu.obtenerUsuario(ci);
-        if (u != null)
-            throw new UsuarioRepetidoException("El usuario " + ci + " ya esta registrado");
+    public void altaUsuario(String nick, String nombre, String correo) throws UsuarioRepetidoException {
 
-        u = new Usuario(n, ap, ci);
+        ManejadorUsuario mu = ManejadorUsuario.getinstance();
+
+        Usuario u = mu.obtenerUsuario(nick);
+
+        if (u != null)
+            throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
+
+        u = new Usuario(nick, nombre, correo);
         mu.addUsuario(u);
     }
 
-    public DataUsuario verInfoUsuario(String ci) throws UsuarioNoExisteException {
+
+    //metodo del controlador para mostrar la data del user
+
+    public DataUsuario verInfoUsuario(String nick) throws UsuarioNoExisteException {
         ManejadorUsuario mu = ManejadorUsuario.getinstance();
-        Usuario u = mu.obtenerUsuario(ci);
+
+        Usuario u = mu.obtenerUsuario(nick);
+
         if (u != null)
-            return new DataUsuario(u.getNombre(), u.getApellido(), u.getCedulaIdentidad());
+            return new DataUsuario(u.getNombre(), u.getNickname(), u.getCorreo());
         else
-            throw new UsuarioNoExisteException("El usuario " + ci + " no existe");
+            throw new UsuarioNoExisteException("El usuario " + nick + " no existe");
 
     }
 
+
     public DataUsuario[] getUsuarios() throws UsuarioNoExisteException {
+
         ManejadorUsuario mu = ManejadorUsuario.getinstance();
         Usuario[] usrs = mu.getUsuarios();
 
@@ -45,7 +55,7 @@ public class ControladorUsuario implements IControladorUsuario {
             // sino los DataUsuario
             for (int i = 0; i < usrs.length; i++) {
                 usuario = usrs[i];
-                du[i] = new DataUsuario(usuario.getNombre(), usuario.getApellido(), usuario.getCedulaIdentidad());
+                du[i] = new DataUsuario(usuario.getNombre(), usuario.getNickname(), usuario.getCorreo());
             }
 
             return du;

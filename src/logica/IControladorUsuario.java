@@ -8,7 +8,7 @@ import excepciones.UsuarioRepetidoException;
  *
  */
 public interface IControladorUsuario {
-    
+
     /**
      * Registra al usuario en el sistema.
      * @param n Nombre del usuario.
@@ -16,7 +16,7 @@ public interface IControladorUsuario {
      * @param ci Cédula del usuario.
      * @throws UsuarioRepetidoException Si la cédula del usuario se encuentra registrada en el sistema.
      */
-    public abstract void registrarUsuario(String n, String ap, String ci) throws UsuarioRepetidoException;
+    public abstract void altaUsuario(String n, String ap, String ci) throws UsuarioRepetidoException;
 
     /**
      * Retorna la información de un usuario con la cédula indicada.

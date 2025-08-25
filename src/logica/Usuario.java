@@ -7,38 +7,42 @@ package logica;
  */
 public class Usuario {
 
+    private String nickname;
     private String nombre;
-    private String apellido;
-    private String cedulaIdentidad;
+    private String correo;
 
-    public Usuario(String n, String ap, String ci) {
-        this.nombre = n;
-        this.apellido = ap;
-        this.cedulaIdentidad = ci;
+    public Usuario(String nick, String nombre, String correo) {
+        this.nickname = nick;
+        this.nombre = nombre;
+        this.correo = correo;
+    }
+
+    //getters
+    public String getNickname() {
+        return nickname;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getCorreo() {
+        return correo;
     }
 
-    public String getCedulaIdentidad() {
-        return cedulaIdentidad;
+
+    //setters
+
+    public void setNickname(String nick) {
+        nickname = nick;
     }
 
     public void setNombre(String n) {
         nombre = n;
     }
 
-    public void setApellido(String ap) {
-        apellido = ap;
-    }
-
-    public void setCedulaIdentidad(String ci) {
-        cedulaIdentidad = ci;
+    public void setCorreo(String corr) {
+    	correo = corr;
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("serial")
 public class ConsultaUsuarioFrame extends JInternalFrame {
+	
     private final Consumer<JInternalFrame> openInternal; // para abrir detalle
     private JComboBox<String> comboUsuarios;
     private JTextArea areaDatos;

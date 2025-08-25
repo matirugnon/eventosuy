@@ -6,19 +6,24 @@ import java.util.Map;
 
 /**
  * Clase que conserva la colección global de los usuarios del sistema.
- * Los usuarios se identifican por su cédula de identidad.
+ * Los usuarios se identifican por su NICKNAME
  * Se implementa en base al patrón Singleton.
- * @author TProg2017
- *
  */
-public class ManejadorUsuario {
-    private Map<String, Usuario> usuariosCI;
-    private static ManejadorUsuario instancia = null;
 
+//Adaptacion del modelo presentado de demoswing
+
+public class ManejadorUsuario {
+
+	//hasmap que linkea un nickname con un usuario
+    private Map<String, Usuario> usuariosNick;
+
+
+    private static ManejadorUsuario instancia = null;
     private ManejadorUsuario() {
-        usuariosCI = new HashMap<String, Usuario>();
+    	usuariosNick = new HashMap<String, Usuario>();
     }
 
+    //singleton
     public static ManejadorUsuario getinstance() {
         if (instancia == null)
             instancia = new ManejadorUsuario();
@@ -26,19 +31,19 @@ public class ManejadorUsuario {
     }
 
     public void addUsuario(Usuario usu) {
-        String ci = usu.getCedulaIdentidad();
-        usuariosCI.put(ci, usu);
+        String nick = usu.getNickname(); //implementar
+        usuariosNick.put(nick, usu);
     }
 
-    public Usuario obtenerUsuario(String ci) {
-        return ((Usuario) usuariosCI.get(ci));
+    public Usuario obtenerUsuario(String nick) {
+        return ((Usuario) usuariosNick.get(nick));
     }
 
     public Usuario[] getUsuarios() {
-        if (usuariosCI.isEmpty())
+        if (usuariosNick.isEmpty())
             return null;
         else {
-            Collection<Usuario> usrs = usuariosCI.values();
+            Collection<Usuario> usrs = usuariosNick.values();
             Object[] o = usrs.toArray();
             Usuario[] usuarios = new Usuario[o.length];
             for (int i = 0; i < o.length; i++) {
