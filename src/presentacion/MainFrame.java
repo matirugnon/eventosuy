@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // Menú Usuarios
+        // ----------------Casos de uso Usuarios--------------------
         JMenu menuUsuarios = new JMenu("Usuarios");
 
         JMenuItem altaUsuario = new JMenuItem("Alta Usuario");
@@ -45,7 +45,7 @@ public class MainFrame extends JFrame {
         menuUsuarios.add(modificarUsuario);
 
 
-        // Menú Eventos
+        // ----------------Casos de uso Eventos--------------------
         JMenu menuEventos = new JMenu("Eventos");
 
 
@@ -64,8 +64,11 @@ public class MainFrame extends JFrame {
         menuEventos.add(altaEdicion);
         
         
+        JMenuItem consultaEdicion = new JMenuItem("Consulta Edición");
+        consultaEdicion.addActionListener(e -> openInternal(new ConsultaEdicionFrame()));
+        menuEventos.add(consultaEdicion);
         
-        menuEventos.add(new JMenuItem("Consulta Edición"));
+        
         menuEventos.add(new JMenuItem("Alta Tipo Registro"));
         menuEventos.add(new JMenuItem("Consulta Tipo Registro"));
         menuEventos.add(new JMenuItem("Registro a Edición"));
@@ -80,6 +83,8 @@ public class MainFrame extends JFrame {
         menuPatrocinios.add(new JMenuItem("Alta Patrocinio"));
         menuPatrocinios.add(new JMenuItem("Consulta Patrocinio"));
 
+        
+        //add menus 
         menuBar.add(menuUsuarios);
         menuBar.add(menuEventos);
         menuBar.add(menuInstituciones);

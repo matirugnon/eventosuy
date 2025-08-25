@@ -157,7 +157,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             String nombreEd = String.valueOf(tablaDetalle.getValueAt(row, 0));
             String sigla    = String.valueOf(tablaDetalle.getValueAt(row, 1));
             String evento   = String.valueOf(tablaDetalle.getValueAt(row, 2));
-            openInternal.accept(new ConsultaEdicionFrame(nombreEd, sigla, evento));
+            openInternal.accept(new ConsultaEdicionFrame());
         } else {
             JOptionPane.showMessageDialog(this, "No se reconoce el tipo de detalle.", "Error",
                     JOptionPane.ERROR_MESSAGE);
