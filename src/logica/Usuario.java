@@ -5,11 +5,11 @@ package logica;
  * @author TProg2017
  *
  */
-public class Usuario {
+public abstract class Usuario {
 
-    private String nickname;
-    private String nombre;
-    private String correo;
+	 protected String nickname;
+	 protected String nombre;
+	 protected String correo;
 
     public Usuario(String nick, String nombre, String correo) {
         this.nickname = nick;
@@ -18,18 +18,11 @@ public class Usuario {
     }
 
     //getters
-    public String getNickname() {
-        return nickname;
-    }
+    public String getNickname() {	return nickname;	}
+    public String getNombre() { return nombre; }
+    public String getCorreo() { return correo; }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
+    public abstract String getTipo();
 
     //setters
 

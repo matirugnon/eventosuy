@@ -1,8 +1,10 @@
-package logica;
+package logica.manejadores;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import logica.Usuario;
 
 /**
  * Clase que conserva la colección global de los usuarios del sistema.
@@ -17,10 +19,11 @@ public class ManejadorUsuario {
 	//hasmap que linkea un nickname con un usuario
     private Map<String, Usuario> usuariosNick;
 
-
     private static ManejadorUsuario instancia = null;
+
     private ManejadorUsuario() {
     	usuariosNick = new HashMap<String, Usuario>();
+
     }
 
     //singleton

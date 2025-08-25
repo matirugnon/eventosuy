@@ -1,7 +1,9 @@
-package logica;
+package logica.Controladores;
 
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import logica.DataUsuario;
+import logica.Datatypes.DTFecha;
 
 /**
  * @author TProg2017
@@ -16,7 +18,10 @@ public interface IControladorUsuario {
      * @param ci Cédula del usuario.
      * @throws UsuarioRepetidoException Si la cédula del usuario se encuentra registrada en el sistema.
      */
-    public abstract void altaUsuario(String n, String ap, String ci) throws UsuarioRepetidoException;
+
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac) throws UsuarioRepetidoException;
+
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException;
 
     /**
      * Retorna la información de un usuario con la cédula indicada.
