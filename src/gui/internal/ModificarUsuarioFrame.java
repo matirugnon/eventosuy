@@ -73,6 +73,25 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         btnCargar.addActionListener(e -> cargarDatosUsuario());
         btnGuardar.addActionListener(e -> guardarCambios());
         btnCancelar.addActionListener(e -> dispose());
+
+        // Inicializar estado de campos según selección inicial (por defecto)
+        actualizarCamposPorRol();
+        comboUsuarios.addActionListener(e -> actualizarCamposPorRol());
+    }
+
+    // Actualiza la habilitación de campos según el rol seleccionado
+    private void actualizarCamposPorRol() {
+        String seleccionado = (String) comboUsuarios.getSelectedItem();
+        boolean esAsistente = seleccionado != null && seleccionado.contains("Asistente");
+        boolean esOrganizador = seleccionado != null && seleccionado.contains("Organizador");
+
+        // Asistente: habilita apellido y fecha, deshabilita descripción y web
+        txtApellido.setEditable(esAsistente);
+        txtFechaNac.setEditable(esAsistente);
+
+        // Organizador: habilita descripción y web, deshabilita apellido y fecha
+        txtDescripcion.setEditable(esOrganizador);
+        txtWeb.setEditable(esOrganizador);
     }
 
     // ⚠️ Mock de datos de ejemplo
@@ -96,6 +115,9 @@ public class ModificarUsuarioFrame extends JInternalFrame {
             txtDescripcion.setText("Organizadora de conferencias");
             txtWeb.setText("https://mariaorg.com");
         }
+
+        // Aseguramos que los campos se actualicen correctamente tras cargar
+        actualizarCamposPorRol();
     }
 
     private void guardarCambios() {
