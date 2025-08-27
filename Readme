@@ -1,0 +1,16 @@
+Registro de Horas (EVA)	 	 	 
+CU :: Alta de Usuario	 	 	 
+CU :: Consulta de Usuario	 	 	 
+CU :: Modificar Datos de Usuario	NO	obligatorio 	 
+CU :: Alta de Evento	 	 	 
+CU :: Consulta de Evento	 	 	 
+CU :: Alta de Edición de Evento	 	 	 
+CU :: Consulta de Edición de Evento	 	 	 
+CU :: Alta de Tipo de Registro	 	 	 
+CU :: Consulta de Tipo de Registro	 	 	 
+CU :: Registro a Edición de Evento	 	 	 
+CU ;; Consulta de Registro	 	 	 
+CU :: Alta de Institución	NO	obligatorio	 	 
+CU :: Alta de Patrocinio	NO	obligatorio
+CU :: Consulta de Patrocinio	NO	obligatorio
+CU :: Alta de Categorías (sin GUI)	 (Hecho)
