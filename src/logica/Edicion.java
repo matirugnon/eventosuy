@@ -12,15 +12,21 @@ public class Edicion{
 
 	private String ciudad;
 	private String pais;
+	private String nombre;
 
-	public Edicion(DTFecha ini, DTFecha fin, String ciu, String p) {
+	public Edicion(String nom, DTFecha ini, DTFecha fin, String ciu, String p) {
 
+		nombre = nom;
 		fechaInicioDtFecha = ini;
 		fechafinDtFecha = fin;
 		ciudad = ciu;
 		pais = p;
 
 		//no me acuerdo como poner localdate :)
+	}
+
+	public String getNombre() {
+		return nombre;
 	}
 
 

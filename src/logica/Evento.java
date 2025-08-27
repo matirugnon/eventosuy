@@ -18,6 +18,11 @@ public class Evento{
 		fechaEvento = fecha;
 	}
 
+
+	public String getNombre() {
+		return nombre;
+	}
+
 }
 
 
