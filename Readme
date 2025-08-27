@@ -1,4 +1,4 @@
-Registro de Horas (EVA)	 	 	 
+	 	 	 
 CU :: Alta de Usuario	 	 	 
 CU :: Consulta de Usuario	 	 	 
 CU :: Modificar Datos de Usuario	NO	obligatorio 	 
@@ -6,7 +6,7 @@ CU :: Alta de Evento
 CU :: Consulta de Evento	 	 	 
 CU :: Alta de Edición de Evento	 	 	 
 CU :: Consulta de Edición de Evento	 	 	 
-CU :: Alta de Tipo de Registro	 (en proceso)	 	 
+CU :: Alta de Tipo de Registro	 (Hecho)	 	 
 CU :: Consulta de Tipo de Registro	 	 	 
 CU :: Registro a Edición de Evento	 	 	 
 CU ;; Consulta de Registro	 	 	 
