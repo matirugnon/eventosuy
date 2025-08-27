@@ -58,7 +58,13 @@ public class ManejadorEventos {
 
     }
     
-
-
+    //getters
+    public Map<String, Evento> getEventos(){
+    	return eventos;
+    }
+    
+    public Map<String, Edicion> getEdiciones(){
+    	return ediciones;
+    }
 
 }
