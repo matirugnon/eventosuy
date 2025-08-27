@@ -14,7 +14,7 @@ public class ManejadorEventos {
 	//coleccion Eventos, ediciones y categorias mapeados por su nombre
 	private Map<String, Evento> eventos;
 	private Map<String, Edicion> ediciones;
-	private Set<Categoria> categorias;
+	private Map<String, Categoria> categorias;
 
 	private static ManejadorEventos instancia = null;
 
@@ -42,7 +42,7 @@ public class ManejadorEventos {
     }
 
     public void addCategoria(Categoria c) {
-        categorias.add(c);
+        categorias.put(c.getNombre(), c);
     }
 
 
@@ -52,7 +52,12 @@ public class ManejadorEventos {
         return ((Evento) eventos.get(nombreEvento));
     }
 
+    //exists
+    public boolean existeCategoria(String cat){
+    	return categorias.containsKey(cat);
 
+    }
+    
 
 
 
