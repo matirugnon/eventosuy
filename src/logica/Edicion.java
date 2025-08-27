@@ -35,6 +35,14 @@ public class Edicion{
 	public String getNombre() {
 		return nombre;
 	}
+	
+	public DTFecha getFechaInicio() { return fechaInicioDtFecha; }
+    public DTFecha getFechaFin()    { return fechafinDtFecha; }
+    public DTFecha getAltaEdicion() { return altaEdicionDtFecha; }
+    public String getCiudad()       { return ciudad; }
+    public String getPais()         { return pais; }
+	
+
 
 	public boolean existeTipoDeRegistro(String nombreTipo) {
 		return tiposDeRegistro.containsKey(nombreTipo);
