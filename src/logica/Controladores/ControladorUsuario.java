@@ -1,5 +1,6 @@
 package logica.Controladores;
 
+import java.util.List;
 import java.util.Set;
 
 import excepciones.UsuarioNoExisteException;
@@ -9,6 +10,7 @@ import logica.DataUsuario;
 import logica.Organizador;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
@@ -137,13 +139,16 @@ public class ControladorUsuario implements IControladorUsuario {
 
     }
 
-    public Set<String> listarUsuarios(){
+    public List<Usuario> listarUsuarios() {
 
-		return null;
+    	List<Usuario> usuarios = manejador.getUsuarios()
 
+        return usuarios;
     }
 
-    public void modificarUsuario(String nick, DTUsuario datosUsuario) {}
+    public void modificarUsuario(String nick, DTUsuario datosUsuario) {
+
+    }
 
 
 

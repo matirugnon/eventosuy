@@ -18,4 +18,14 @@ public class Organizador extends Usuario {
     public String getTipo() {
         return "Organizador";
     }
+
+	public void setDescripcion(String text) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setLink(String text) {
+		// TODO Auto-generated method stub
+
+	}
 }

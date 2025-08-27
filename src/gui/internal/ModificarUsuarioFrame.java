@@ -1,16 +1,40 @@
 package gui.internal;
 
 import javax.swing.*;
+
+import logica.Asistente;
+import logica.Organizador;
+import logica.Usuario;
+import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTFecha;
+
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class ModificarUsuarioFrame extends JInternalFrame {
-    private JComboBox<String> comboUsuarios;
+
+	private JComboBox<String> comboUsuarios;
     private JTextField txtNickname, txtCorreo, txtNombre, txtApellido, txtFechaNac, txtDescripcion, txtWeb;
     private JButton btnGuardar, btnCancelar;
 
+
+    //logica
+    private ControladorUsuario controlador;
+    private Map<String, Usuario> mapaUsuarios;
+
+
+
+
+
     public ModificarUsuarioFrame() {
         super("Modificar Usuario", true, true, true, true);
+
+        //logica
+        controlador = ControladorUsuario.getinstance();
+        this.mapaUsuarios = new HashMap<>();
+
         setSize(500, 400);
         setLayout(new BorderLayout());
 
@@ -18,9 +42,14 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         JPanel topPanel = new JPanel();
         topPanel.add(new JLabel("Seleccione Usuario:"));
         comboUsuarios = new JComboBox<>();
-        // ⚠️ Datos de prueba
-        comboUsuarios.addItem("juan123 (Asistente)");
-        comboUsuarios.addItem("mariaOrg (Organizador)");
+
+        for (Usuario u : controlador.listarUsuarios()) {
+            String texto = u.getNickname() + " (" +
+                          (u instanceof Asistente ? "Asistente" : "Organizador") + ")";
+            comboUsuarios.addItem(texto);
+            mapaUsuarios.put(u.getNickname(), u); // guardamos referencia
+        }
+
         topPanel.add(comboUsuarios);
         JButton btnCargar = new JButton("Cargar Datos");
         topPanel.add(btnCargar);
@@ -81,9 +110,10 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
     // Actualiza la habilitación de campos según el rol seleccionado
     private void actualizarCamposPorRol() {
-        String seleccionado = (String) comboUsuarios.getSelectedItem();
-        boolean esAsistente = seleccionado != null && seleccionado.contains("Asistente");
-        boolean esOrganizador = seleccionado != null && seleccionado.contains("Organizador");
+
+    	Usuario seleccionado = (Usuario) comboUsuarios.getSelectedItem();
+    	boolean esAsistente = seleccionado instanceof Asistente;
+    	boolean esOrganizador = seleccionado instanceof Organizador;
 
         // Asistente: habilita apellido y fecha, deshabilita descripción y web
         txtApellido.setEditable(esAsistente);
@@ -97,33 +127,58 @@ public class ModificarUsuarioFrame extends JInternalFrame {
     // ⚠️ Mock de datos de ejemplo
     private void cargarDatosUsuario() {
         String seleccionado = (String) comboUsuarios.getSelectedItem();
+        if (seleccionado == null) return;
 
-        if (seleccionado.contains("Asistente")) {
-            txtNickname.setText("juan123");
-            txtCorreo.setText("juan@mail.com");
-            txtNombre.setText("Juan");
-            txtApellido.setText("Pérez");
-            txtFechaNac.setText("1999-05-21");
+        // ⚠️ el texto tiene la forma "nick (rol)", me quedo solo con el nick
+        String nick = seleccionado.split(" ")[0];
+
+        Usuario u = mapaUsuarios.get(nick);
+
+        txtNickname.setText(u.getNickname());
+        txtCorreo.setText(u.getCorreo());
+        txtNombre.setText(u.getNombre());
+
+        if (u instanceof Asistente) {
+            Asistente a = (Asistente) u;
+            txtApellido.setText(a.getApellido());
+            txtFechaNac.setText(a.getFechaNacimiento().toString());
             txtDescripcion.setText("");
             txtWeb.setText("");
-        } else {
-            txtNickname.setText("mariaOrg");
-            txtCorreo.setText("maria@mail.com");
-            txtNombre.setText("María");
+        } else if (u instanceof Organizador) {
+            Organizador o = (Organizador) u;
+            txtDescripcion.setText(o.getDescripcion());
+            txtWeb.setText(o.getLink());
             txtApellido.setText("");
             txtFechaNac.setText("");
-            txtDescripcion.setText("Organizadora de conferencias");
-            txtWeb.setText("https://mariaorg.com");
         }
 
-        // Aseguramos que los campos se actualicen correctamente tras cargar
         actualizarCamposPorRol();
     }
 
+
     private void guardarCambios() {
+        String seleccionado = (String) comboUsuarios.getSelectedItem();
+        if (seleccionado == null) return;
+
+        String nick = seleccionado.split(" ")[0];
+        Usuario u = mapaUsuarios.get(nick);
+
+        u.setNombre(txtNombre.getText());
+
+        if (u instanceof Asistente) {
+            Asistente a = (Asistente) u;
+            a.setApellido(txtApellido.getText());
+            a.setFechaNac(txtFechaNac.getText());
+        } else if (u instanceof Organizador) {
+            Organizador o = (Organizador) u;
+            o.setDescripcion(txtDescripcion.getText());
+            o.setLink(txtWeb.getText());
+        }
+
         JOptionPane.showMessageDialog(this,
-                "Usuario " + txtNickname.getText() + " modificado con éxito.",
+                "Usuario " + u.getNickname() + " modificado con éxito.",
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
+
 }

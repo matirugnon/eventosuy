@@ -21,4 +21,14 @@ public class Asistente extends Usuario {
     public String getTipo() {
         return "Asistente";
     }
+
+	public void setApellido(String text) {
+		apellido = text;
+
+	}
+
+	public void setFechaNac(String text) {
+		// TODO Auto-generated method stub
+
+	}
 }
