@@ -259,7 +259,8 @@ public class AltaUsuarioFrame extends JInternalFrame {
             int dia = (Integer) spinnerDia.getValue();
             int mes = (Integer) spinnerMes.getValue();
             int anio = (Integer) spinnerAnio.getValue();
-            if (dia < 1 || dia > 31 || mes < 1 || mes > 12 || anio < 1900 || anio > 2025) {
+
+            if (dia < 1 || dia > 31 || mes < 1 || mes > 12) {
                 JOptionPane.showMessageDialog(this, "Fecha inválida.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
