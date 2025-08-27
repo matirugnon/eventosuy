@@ -3,6 +3,8 @@ package logica;
 import logica.DatatypesYEnum.DTFecha;
 
 public class Asistente extends Usuario {
+
+	//atributos
     private String apellido;
     private DTFecha fechaNacimiento;
 

@@ -1,4 +1,8 @@
 package logica;
 
-public class CantidadTipoDeRegistro{}
+public class CantidadTipoDeRegistro{
+
+	private int cantRegistros;
+
+}
 

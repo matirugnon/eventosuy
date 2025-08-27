@@ -1,3 +1,12 @@
 package logica.Controladores;
 
-public class ControladorEvento implements IControladorEvento {}
+import logica.manejadores.ManejadorEventos;
+
+public class ControladorEvento implements IControladorEvento {
+
+	private ManejadorEventos manejadorE;
+
+
+
+
+}

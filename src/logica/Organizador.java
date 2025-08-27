@@ -1,6 +1,7 @@
 package logica;
 
 public class Organizador extends Usuario {
+
     private String descripcion;
     private String link;
 
