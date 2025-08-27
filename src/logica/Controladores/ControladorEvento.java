@@ -48,11 +48,5 @@ public class ControladorEvento implements IControladorEvento {
 		manejador.addCategoria(nueva);
 	}
 	
-	//Alta de Tipo de Registro
-	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo) {
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
-		Edicion ed = manejador.obtenerEdicion(nombreEd);
-	return ed.existeTipoDeRegistro(nombreTipo);
-	}
 		
 }

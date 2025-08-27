@@ -4,10 +4,10 @@ public class TipoDeRegistro{
 
 	private String nombre;
 	private String descripcion;
-	private float costo;
+	private double costo;
 	private int cupo;
 
-	public TipoDeRegistro(String nom, String desc, float cost, int c) {
+	public TipoDeRegistro(String nom, String desc, double cost, int c) {
 
 		nombre = nom;
 		descripcion = desc;
@@ -15,6 +15,7 @@ public class TipoDeRegistro{
 		cupo = c;
 
 	}
+	
 
 
 }

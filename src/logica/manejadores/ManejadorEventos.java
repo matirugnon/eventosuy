@@ -51,12 +51,11 @@ public class ManejadorEventos {
     public Evento obtenerEvento(String nombreEvento) {
         return ((Evento) eventos.get(nombreEvento));
     }
-
-    //exists
-    public boolean existeCategoria(String cat){
-    	return categorias.containsKey(cat);
-
+    
+    public Edicion obtenerEdicion(String nombreEdicion) {
+        return  ediciones.get(nombreEdicion);
     }
+   
     
     //getters
     public Map<String, Evento> getEventos(){
@@ -67,4 +66,10 @@ public class ManejadorEventos {
     	return ediciones;
     }
 
+    //exists
+    public boolean existeCategoria(String cat){
+    	return categorias.containsKey(cat);
+
+    }
+    	
 }

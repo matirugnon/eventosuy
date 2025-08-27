@@ -1,6 +1,7 @@
 package logica;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 import logica.DatatypesYEnum.DTFecha;
@@ -37,6 +38,10 @@ public class Edicion{
 
 	public boolean existeTipoDeRegistro(String nombreTipo) {
 		return tiposDeRegistro.containsKey(nombreTipo);
+	}
+	
+	public void agregarTipoDeRegistro(TipoDeRegistro tipo, String nombre) {
+		this.tiposDeRegistro.put(nombre, tipo);
 	}
 
 
