@@ -1,6 +1,8 @@
 package logica;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import logica.DatatypesYEnum.DTFecha;
 
@@ -13,6 +15,9 @@ public class Edicion{
 	private String ciudad;
 	private String pais;
 	private String nombre;
+	
+	private Map<String, TipoDeRegistro> tiposDeRegistro;
+	private Map<Integer,Patrocinio> patrocinios;
 
 	public Edicion(String nom, DTFecha ini, DTFecha fin, String ciu, String p) {
 
@@ -22,6 +27,8 @@ public class Edicion{
 		ciudad = ciu;
 		pais = p;
 
+		this.tiposDeRegistro = new HashMap<>();
+		this.patrocinios = new HashMap<>();		
 		//no me acuerdo como poner localdate :)
 	}
 
@@ -37,7 +44,13 @@ public class Edicion{
 	
 
 
-
+	public boolean existeTipoDeRegistro(String nombreTipo) {
+		return tiposDeRegistro.containsKey(nombreTipo);
+	}
+	
+	public void agregarTipoDeRegistro(TipoDeRegistro tipo, String nombre) {
+		this.tiposDeRegistro.put(nombre, tipo);
+	}
 
 
 }
