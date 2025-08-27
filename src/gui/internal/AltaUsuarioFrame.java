@@ -1,6 +1,11 @@
 package gui.internal;
 
 import javax.swing.*;
+
+import excepciones.UsuarioRepetidoException;
+import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTFecha;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +84,14 @@ public class AltaUsuarioFrame extends JInternalFrame {
         JButton btnAceptar = new JButton("Aceptar");
         JButton btnCancelar = new JButton("Cancelar");
 
-        btnAceptar.addActionListener(e -> guardar());
+        btnAceptar.addActionListener(e -> {
+			try {
+				guardar();
+			} catch (UsuarioRepetidoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnCancelar.addActionListener(e -> dispose());
 
         botones.add(btnAceptar);
@@ -100,7 +112,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         spinnerDia = new JSpinner(new SpinnerNumberModel(1, 1, 31, 1));
         spinnerMes = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
         spinnerAnio = new JSpinner(new SpinnerNumberModel(2000, 1900, 2025, 1));
-        
+
         // Evitar que se escriba texto libre en los spinners
         JSpinner.DefaultEditor editorDia = (JSpinner.DefaultEditor) spinnerDia.getEditor();
         JSpinner.DefaultEditor editorMes = (JSpinner.DefaultEditor) spinnerMes.getEditor();
@@ -195,23 +207,42 @@ public class AltaUsuarioFrame extends JInternalFrame {
         txtLink.setEnabled(false);
     }
 
-    private void guardar() {
+    private void guardar() throws UsuarioRepetidoException {
         String nickname = txtNickname.getText().trim();
         String nombre = txtNombre.getText().trim();
         String correo = txtCorreo.getText().trim();
         String tipo = (String) comboTipoUsuario.getSelectedItem();
+
+        //campos organizador
+        String descr = txtDescripcion.getText().trim();
+        String link = txtLink.getText().trim();
+
+        //campos Asistente
+        String apellido = txtApellido.getText().trim();
+        String ins = (String) comboInstitucion.getSelectedItem();
+
+        int diaV = (int)spinnerDia.getValue();
+        int mesV = (int)spinnerMes.getValue();
+        int anioV = (int)spinnerAnio.getValue();
+        DTFecha fechanac = new DTFecha(diaV,mesV,anioV);
+
+
+        ControladorUsuario cont = ControladorUsuario.getinstance();
+
 
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nickname, Nombre y Correo son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (existeNickname(nickname)) {
+        //se manejan los repetidos en la interfaz
+
+        if (cont.ExisteNickname(nickname)) {
             JOptionPane.showMessageDialog(this, "El nickname '" + nickname + "' ya está en uso.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (existeCorreo(correo)) {
+        if (cont.ExisteCorreo(correo)) {
             JOptionPane.showMessageDialog(this, "El correo '" + correo + "' ya está en uso.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -239,19 +270,20 @@ public class AltaUsuarioFrame extends JInternalFrame {
             }
         }
 
+        //paso todos los filtros, esta listo para crear
+
+        if("Organizador".equals(tipo)) {
+        	cont.altaOrganizador(nickname, nombre, correo, descr, link);
+        }else {
+        	cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins);
+        }
+
+
         JOptionPane.showMessageDialog(this, "Usuario dado de alta correctamente.");
-        limpiarFormulario();  
+        limpiarFormulario();
         dispose();
     }
 
-    private boolean existeNickname(String nickname) {
-        return usuariosExistentes.stream().anyMatch(u -> u.nickname.equalsIgnoreCase(nickname));
-    }
-
-    private boolean existeCorreo(String correo) {
-        return usuariosExistentes.stream().anyMatch(u -> u.correo.equalsIgnoreCase(correo));
-    }
-    
     private void limpiarFormulario() {
         txtNickname.setText("");
         txtNombre.setText("");
@@ -260,17 +292,17 @@ public class AltaUsuarioFrame extends JInternalFrame {
         txtDescripcion.setText("");
         txtLink.setText("");
         comboInstitucion.setSelectedIndex(0);
-        
+
         // Resetear spinners
         spinnerDia.setValue(1);
         spinnerMes.setValue(1);
         spinnerAnio.setValue(2000);
-        
+
         // Volver a cargar el tipo (y actualiza los campos)
         cambiarTipo();
     }
-    
-    
+
+
 
     // Clase interna para simular usuarios
     private static class Usuario {

@@ -9,6 +9,7 @@ import logica.DataUsuario;
 import logica.Organizador;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
+import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
 /**
@@ -19,11 +20,23 @@ import logica.manejadores.ManejadorUsuario;
 public class ControladorUsuario implements IControladorUsuario {
 
 	private ManejadorUsuario manejador;
+	private static ControladorUsuario instancia = null;
+
+
+
+
 
     public ControladorUsuario() {
 
     	//inicializo el manejador
     	this.manejador = ManejadorUsuario.getinstance();
+    }
+
+
+    public static ControladorUsuario getinstance() {
+        if (instancia == null)
+            instancia = new ControladorUsuario();
+        return instancia;
     }
 
 
@@ -33,10 +46,13 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     //alta Asistente
-    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac) throws UsuarioRepetidoException {
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException {
 
-        if (ExisteNickname(nick))
+        if(ExisteNickname(nick))
             throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
+        if(ExisteCorreo(correo))
+        	throw new UsuarioRepetidoException("El correo " + correo + " ya esta registrado");
+
 
         Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac);
         altaUsuario(a);
@@ -45,8 +61,10 @@ public class ControladorUsuario implements IControladorUsuario {
     //alta Organizador
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException {
 
-        if (ExisteNickname(nick))
-            throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
+    	 if (ExisteNickname(nick))
+             throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
+         if(ExisteCorreo(correo))
+         	throw new UsuarioRepetidoException("El correo " + correo + " ya esta registrado");
 
         Usuario o = new Organizador(nick, nombre, correo, descripcion, link);
         altaUsuario(o);
@@ -126,6 +144,8 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     public void modificarUsuario(String nick, DTUsuario datosUsuario) {}
+
+
 
 
 
