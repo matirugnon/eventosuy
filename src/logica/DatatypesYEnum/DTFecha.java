@@ -1,4 +1,4 @@
-package logica.Datatypes;
+package logica.DatatypesYEnum;
 
 public class DTFecha {
     private int dia;

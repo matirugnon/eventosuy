@@ -3,7 +3,7 @@ package logica.Controladores;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.DataUsuario;
-import logica.Datatypes.DTFecha;
+import logica.DatatypesYEnum.DTFecha;
 
 /**
  * @author TProg2017

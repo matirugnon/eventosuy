@@ -1,6 +1,6 @@
 package logica;
 
-import logica.Datatypes.DTFecha;
+import logica.DatatypesYEnum.DTFecha;
 
 public class Asistente extends Usuario {
     private String apellido;

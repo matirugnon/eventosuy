@@ -6,7 +6,7 @@ import logica.Asistente;
 import logica.DataUsuario;
 import logica.Organizador;
 import logica.Usuario;
-import logica.Datatypes.DTFecha;
+import logica.DatatypesYEnum.DTFecha;
 import logica.manejadores.ManejadorUsuario;
 
 /**
