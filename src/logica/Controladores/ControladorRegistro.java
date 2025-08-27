@@ -9,13 +9,13 @@ public class ControladorRegistro implements IControladorRegistro {
 	
 //Alta de Tipo de Registro
 	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo) {
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
 	return ed.existeTipoDeRegistro(nombreTipo);
 	}
 	
 	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) {
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed =manejador.obtenerEdicion(nombreEd);
 		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo);
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);

@@ -1,8 +1,6 @@
 package logica.Controladores;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
 
@@ -18,10 +16,7 @@ import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTSeleccionEvento;
-
-src/logica/Controladores/ControladorEvento.java
 import logica.manejadores.ManejadorEventos;
-import logica.manejadores.ManejadorUsuario;
 
 public class ControladorEvento implements IControladorEvento {
 
@@ -46,10 +41,17 @@ public class ControladorEvento implements IControladorEvento {
 	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
 	}
 	
+	//listar
 	public Set<String> listarEventos() {
 	    return manejadorE.listarEventos();
 	}
 	
+	public Set<String> listarEdiciones(){
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Map<String, Edicion> ediciones = manejador.getEdiciones();
+		Set<String> listaEdiciones = ediciones.keySet();
+		return listaEdiciones;
+		}
 	
 
     public DTSeleccionEvento seleccionarEvento(String nomEvento) {
@@ -90,29 +92,18 @@ public class ControladorEvento implements IControladorEvento {
     	return dte;
     }
 
-	//listar
-	public Set<String> listarEventos(){
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
-		Map<String, Evento> eventos = manejador.getEventos();
-		Set<String> listaEventos = eventos.keySet();
-		return listaEventos;
-	}
 	
-	public Set<String> listarEdiciones(){
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
-		Map<String, Edicion> ediciones = manejador.getEdiciones();
-		Set<String> listaEdiciones = ediciones.keySet();
-		return listaEdiciones;
-	}
+	
+	
 	
 	//altaCategoria
 	public boolean existeCategoria(String cat) {
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		return manejador.existeCategoria(cat);
 	}
 	
 	public void altaCategoria (String cat){
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
 	}

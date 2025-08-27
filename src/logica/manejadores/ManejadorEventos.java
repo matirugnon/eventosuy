@@ -53,24 +53,19 @@ public class ManejadorEventos {
 
     //obtain
     
-    public Edicion obtenerEdicion(String nombreEdicion) {
-    	return ((Edicion) ediciones.get(nombreEdicion));
-    }
     
     public Evento obtenerEvento(String nombreEvento) {
         return ((Evento) eventos.get(nombreEvento));
     }
     
- src/logica/manejadores/ManejadorEventos.java
+
     public Edicion obtenerEdicion(String nombreEdicion) {
         return  ediciones.get(nombreEdicion);
     }
    
     
     //getters
-    public Map<String, Evento> getEventos(){
-    	return eventos;
-    }
+   
     
     public Map<String, Edicion> getEdiciones(){
     	return ediciones;
@@ -104,7 +99,7 @@ public class ManejadorEventos {
     }
     
     
- src/logica/manejadores/ManejadorEventos.java
+
 
     //exists
     public boolean existeCategoria(String cat){
