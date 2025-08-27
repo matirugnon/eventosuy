@@ -1,6 +1,7 @@
 package logica.manejadores;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class ManejadorEventos {
 	//coleccion Eventos, ediciones y categorias mapeados por su nombre
 	private Map<String, Evento> eventos;
 	private Map<String, Edicion> ediciones;
-	private Set<Categoria> categorias;
+	private Map<String, Categoria> categorias;
 
 	private static ManejadorEventos instancia = null;
 
@@ -24,7 +25,7 @@ public class ManejadorEventos {
     }
 
 	//singleton
-    public static ManejadorEventos getinstance() {
+    public static ManejadorEventos getInstance() {
         if (instancia == null)
             instancia = new ManejadorEventos();
         return instancia;
@@ -42,15 +43,50 @@ public class ManejadorEventos {
     }
 
     public void addCategoria(Categoria c) {
-        categorias.add(c);
+    	String nomCategoria = c.getNombre();
+        categorias.put(nomCategoria, c);
     }
 
 
 
     //obtain
+    
+    public Edicion obtenerEdicion(String nombreEdicion) {
+    	return ((Edicion) ediciones.get(nombreEdicion));
+    }
+    
     public Evento obtenerEvento(String nombreEvento) {
         return ((Evento) eventos.get(nombreEvento));
     }
+    
+    public Categoria obtenerCategoria(String nombreCategoria) {
+    	return ((Categoria) categorias.get(nombreCategoria));
+    }
+    
+    public boolean existe(String nomEvento) {
+        return this.obtenerEvento(nomEvento) != null;
+    }
+
+    public Set<Categoria> getCategorias(Set<String> categ) {
+        Set<Categoria> result = new HashSet<>(); 
+
+        for (String nombre : categ) {
+            Categoria cat = this.obtenerCategoria(nombre); 
+            if (cat != null) {   // por si no existe
+                result.add(cat);
+            }
+        }
+
+        return result;
+    }
+    
+    
+    public Set<String> listarEventos() {
+        // Copia defensiva para no exponer la vista interna del map
+        return new HashSet<>(eventos.keySet());
+    }
+    
+    
 
 
 

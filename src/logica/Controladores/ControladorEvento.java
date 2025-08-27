@@ -1,5 +1,16 @@
 package logica.Controladores;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
+import logica.Categoria;
+import logica.Edicion;
+import logica.Evento;
+import logica.DatatypesYEnum.DTEdicion;
+import logica.DatatypesYEnum.DTEvento;
+import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTSeleccionEvento;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
@@ -10,7 +21,64 @@ public class ControladorEvento implements IControladorEvento {
 	public ControladorEvento() {
 
     	//inicializo el manejador
-    	this.manejadorE = ManejadorEventos.getinstance();
+    	this.manejadorE = ManejadorEventos.getInstance();
+    }
+	
+	
+	
+	public boolean existeEvento(String nomEvento) {
+		return manejadorE.existe(nomEvento);
+		
+	}
+	
+	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias) {
+	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);   // convierte los nombres de categorías en objetos Categoria
+	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias); // crea el evento con todos los datos
+	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
+	}
+	
+	public Set<String> listarEventos() {
+	    return manejadorE.listarEventos();
+	}
+	
+	
+
+    public DTSeleccionEvento seleccionarEvento(String nomEvento) {
+        Evento e = manejadorE.obtenerEvento(nomEvento);
+        if (e == null) {
+            return null; 
+        }
+
+
+        DTEvento dto = new DTEvento(e);
+
+        //no entiendo bien estas dos cosas todavia
+        Set<String> nombresCategorias = new HashSet<>();
+        if (e.getCategorias() != null) {
+            for (Categoria c : e.getCategorias()) {
+                if (c != null && c.getNombre() != null) {
+                    nombresCategorias.add(c.getNombre());
+                }
+            }
+        }
+
+       
+        Set<String> nombresEdiciones = new HashSet<>();
+        if (e.getEdiciones() != null) {
+            for (Edicion ed : e.getEdiciones()) {
+                if (ed != null && ed.getNombre() != null) {
+                    nombresEdiciones.add(ed.getNombre());
+                }
+            }
+        }
+
+        return new DTSeleccionEvento(dto, nombresCategorias, nombresEdiciones);
+    }
+    
+    public DTEdicion consultarEdicion(String nomEdicion) {
+    	Edicion e = manejadorE.obtenerEdicion(nomEdicion);
+    	DTEdicion dte = new DTEdicion(e);
+    	return dte;
     }
 
 
