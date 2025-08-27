@@ -1,26 +1,19 @@
 package logica;
 
-public class Categoria{
+public class Categoria {
+    private String nombre;
 
-	private String nombre;
+    public Categoria(String nom) {
+        this.nombre = nom;
+    }
 
-	public Categoria(String nom) {
-		nombre = nom;
-	}
-
-<<<<<<< HEAD
-	public String getNombre() {
-		return this.nombre ;
-	}
-}
-=======
-
-
-	public String getNombre() {
-		return nombre;
-	
-	}
+    public String getNombre() {
+        return nombre; // (this.nombre también vale)
+    }
 }
 
 
->>>>>>> origin/main
+
+
+
+

@@ -1,6 +1,6 @@
 package logica.Controladores;
 
-<<<<<<< HEAD
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,13 +8,12 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
+
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTSeleccionEvento;
-=======
-import logica.Categoria;
->>>>>>> origin/main
+
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
