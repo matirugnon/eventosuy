@@ -8,4 +8,12 @@ public class Categoria{
 		nombre = nom;
 	}
 
+
+
+	public String getNombre() {
+		return nombre;
+	
+	}
 }
+
+
