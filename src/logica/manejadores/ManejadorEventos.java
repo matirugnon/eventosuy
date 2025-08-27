@@ -43,8 +43,10 @@ public class ManejadorEventos {
     }
 
     public void addCategoria(Categoria c) {
+
     	String nomCategoria = c.getNombre();
         categorias.put(nomCategoria, c);
+
     }
 
 
@@ -88,7 +90,12 @@ public class ManejadorEventos {
     
     
 
+    //exists
+    public boolean existeCategoria(String cat){
+    	return categorias.containsKey(cat);
 
+    }
+    
 
 
 

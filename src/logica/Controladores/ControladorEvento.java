@@ -1,5 +1,6 @@
 package logica.Controladores;
 
+<<<<<<< HEAD
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,9 @@ import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTSeleccionEvento;
+=======
+import logica.Categoria;
+>>>>>>> origin/main
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
@@ -81,5 +85,17 @@ public class ControladorEvento implements IControladorEvento {
     	return dte;
     }
 
-
+	
+	//altaCategoria
+	public boolean existeCategoria(String cat) {
+		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		return manejador.existeCategoria(cat);
+	}
+	
+	public void altaCategoria (String cat){
+		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		Categoria nueva = new Categoria(cat);
+		manejador.addCategoria(nueva);
+	}
+		
 }

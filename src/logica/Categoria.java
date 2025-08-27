@@ -8,7 +8,19 @@ public class Categoria{
 		nombre = nom;
 	}
 
+<<<<<<< HEAD
 	public String getNombre() {
 		return this.nombre ;
 	}
 }
+=======
+
+
+	public String getNombre() {
+		return nombre;
+	
+	}
+}
+
+
+>>>>>>> origin/main
