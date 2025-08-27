@@ -23,6 +23,20 @@ public class Evento{
 		return nombre;
 	}
 
+	public String getSigla() {
+		return sigla;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public DTFecha getFechaEvento() {
+		return fechaEvento;
+	}
+
+
+
 }
 
 
