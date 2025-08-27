@@ -2,6 +2,7 @@ package logica.manejadores;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import logica.Categoria;
 import logica.Edicion;
@@ -13,7 +14,7 @@ public class ManejadorEventos {
 	//coleccion Eventos, ediciones y categorias mapeados por su nombre
 	private Map<String, Evento> eventos;
 	private Map<String, Edicion> ediciones;
-	private Map<String, Categoria> categorias;
+	private Set<Categoria> categorias;
 
 	private static ManejadorEventos instancia = null;
 
@@ -34,6 +35,17 @@ public class ManejadorEventos {
         String nombreEvento = e.getNombre(); //implementar
         eventos.put(nombreEvento, e);
     }
+
+    public void addEdicion(Edicion e) {
+        String nombreEdicion = e.getNombre(); //implementar
+        ediciones.put(nombreEdicion, e);
+    }
+
+    public void addCategoria(Categoria c) {
+        categorias.add(c);
+    }
+
+
 
     //obtain
     public Evento obtenerEvento(String nombreEvento) {

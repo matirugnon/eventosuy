@@ -3,6 +3,7 @@ package logica.Controladores;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.DataUsuario;
+import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
 
 /**
@@ -18,6 +19,8 @@ public interface IControladorUsuario {
      * @param ci Cédula del usuario.
      * @throws UsuarioRepetidoException Si la cédula del usuario se encuentra registrada en el sistema.
      */
+
+	public void altaUsuario(Usuario u);
 
     public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac) throws UsuarioRepetidoException;
 
@@ -37,4 +40,10 @@ public interface IControladorUsuario {
      * @throws UsuarioNoExisteException Si no existen usuarios registrados en el sistema.
      */
     public abstract DataUsuario[] getUsuarios() throws UsuarioNoExisteException;
+
+
+    public boolean ExisteNickname(String nick);
+
+    public void AsociarInstitucion(String nick, String nombreInstitucion);
 }
+

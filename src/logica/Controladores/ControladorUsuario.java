@@ -1,5 +1,7 @@
 package logica.Controladores;
 
+import java.util.Set;
+
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Asistente;
@@ -33,28 +35,21 @@ public class ControladorUsuario implements IControladorUsuario {
     //alta Asistente
     public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac) throws UsuarioRepetidoException {
 
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-        Usuario u = mu.obtenerUsuario(nick);
-
-        if (u != null)
+        if (ExisteNickname(nick))
             throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
 
-        u = new Asistente(nick, nombre, correo, apellido, fechanac);
-        altaUsuario(u);
+        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac);
+        altaUsuario(a);
     }
 
     //alta Organizador
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException {
 
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-
-        Usuario u = mu.obtenerUsuario(nick);
-
-        if (u != null)
+        if (ExisteNickname(nick))
             throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
 
-        u = new Organizador(nick, nombre, correo, descripcion, link);
-        altaUsuario(u);
+        Usuario o = new Organizador(nick, nombre, correo, descripcion, link);
+        altaUsuario(o);
     }
 
 
@@ -98,4 +93,56 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new UsuarioNoExisteException("No existen usuarios registrados");
 
     }
+
+    //-------------------------NUEVOS METODOS DEL CONTROLADOR---------------------------------------------------------------
+
+
+    public boolean ExisteNickname(String nick) {
+
+    	 ManejadorUsuario mu = ManejadorUsuario.getinstance();
+         Usuario u = mu.obtenerUsuario(nick);
+
+         if (u != null) {return true;}
+
+		return false;
+    }
+
+    public boolean ExisteCorreo(String correo) {
+
+    	//IMPLEMENTAR--------------------
+		return false;
+
+   }
+
+    public void AsociarInstitucion(String nick, String nombreInstitucion) {
+
+
+    }
+
+    public Set<String> listarUsuarios(){
+
+		return null;
+
+    }
+
+    public void modificarUsuario(String nick, DTUsuario datosUsuario) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
