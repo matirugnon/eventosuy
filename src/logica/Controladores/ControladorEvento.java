@@ -1,10 +1,7 @@
 package logica.Controladores;
 
-<<<<<<< HEAD
-
 import java.util.Map;
-=======
->>>>>>> mati/mejoraInterfaces
+
 import java.util.HashSet;
 
 import java.util.Set;
@@ -51,28 +48,18 @@ public class ControladorEvento implements IControladorEvento {
 	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias); // crea el evento con todos los datos
 	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
 	}
-<<<<<<< HEAD
-	
+
 	//listar
 	public Set<String> listarEventos() {
 	    return manejadorE.listarEventos();
 	}
-	
+
 	public Set<String> listarEdiciones(){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Map<String, Edicion> ediciones = manejador.getEdiciones();
 		Set<String> listaEdiciones = ediciones.keySet();
 		return listaEdiciones;
 		}
-	
-=======
-
-	public Set<String> listarEventos() {
-	    return manejadorE.listarEventos();
-	}
-
-
->>>>>>> mati/mejoraInterfaces
 
     public DTSeleccionEvento seleccionarEvento(String nomEvento) {
         Evento e = manejadorE.obtenerEvento(nomEvento);
@@ -112,14 +99,7 @@ public class ControladorEvento implements IControladorEvento {
     	return dte;
     }
 
-<<<<<<< HEAD
-	
-	
-	
-	
-=======
 
->>>>>>> mati/mejoraInterfaces
 	//altaCategoria
 	public boolean existeCategoria(String cat) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
@@ -131,12 +111,5 @@ public class ControladorEvento implements IControladorEvento {
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
 	}
-<<<<<<< HEAD
-	
-		
-=======
 
-
-
->>>>>>> mati/mejoraInterfaces
 }

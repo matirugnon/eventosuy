@@ -127,7 +127,7 @@ public class AltaEventoFrame extends JInternalFrame {
             return;
         }
 
-        if (!esFechaValida(dia, mes, anio)) {
+        if (esFechaValida(dia, mes, anio)) {
             JOptionPane.showMessageDialog(this,
                     "La fecha ingresada no es válida (ej. 30 de febrero).",
                     "Error de Fecha", JOptionPane.ERROR_MESSAGE);
@@ -160,6 +160,6 @@ public class AltaEventoFrame extends JInternalFrame {
     }
 
     private boolean esFechaValida(int dia, int mes, int anio) {
-        return mes < 1 || mes > 12 || dia >31|| dia<1 ;
+        return mes < 1 || mes > 12 || dia > 31|| dia<1 ;
     }
 }

@@ -21,7 +21,7 @@ public class ManejadorEventos {
 
 	private ManejadorEventos() {
     	eventos = new HashMap<String, Evento>();
-
+    	categorias = new HashMap<>();
     }
 
 	//singleton
@@ -52,21 +52,23 @@ public class ManejadorEventos {
 
 
     //obtain
-    
-    
+
+
     public Evento obtenerEvento(String nombreEvento) {
         return ((Evento) eventos.get(nombreEvento));
     }
-    
+
 
     public Edicion obtenerEdicion(String nombreEdicion) {
         return  ediciones.get(nombreEdicion);
     }
-   
-    
+
+
+
+
     //getters
-   
-    
+
+
     public Map<String, Edicion> getEdiciones(){
     	return ediciones;
     }
@@ -74,16 +76,16 @@ public class ManejadorEventos {
     public Categoria obtenerCategoria(String nombreCategoria) {
     	return ((Categoria) categorias.get(nombreCategoria));
     }
-    
+
     public boolean existe(String nomEvento) {
         return this.obtenerEvento(nomEvento) != null;
     }
 
     public Set<Categoria> getCategorias(Set<String> categ) {
-        Set<Categoria> result = new HashSet<>(); 
+        Set<Categoria> result = new HashSet<>();
 
         for (String nombre : categ) {
-            Categoria cat = this.obtenerCategoria(nombre); 
+            Categoria cat = this.obtenerCategoria(nombre);
             if (cat != null) {   // por si no existe
                 result.add(cat);
             }
@@ -91,14 +93,14 @@ public class ManejadorEventos {
 
         return result;
     }
-    
-    
+
+
     public Set<String> listarEventos() {
         // Copia defensiva para no exponer la vista interna del map
         return new HashSet<>(eventos.keySet());
     }
-    
-    
+
+
 
 
     //exists
@@ -106,5 +108,5 @@ public class ManejadorEventos {
     	return categorias.containsKey(cat);
 
     }
-    	
+
 }
