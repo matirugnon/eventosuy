@@ -1,5 +1,6 @@
 package logica;
 
+import java.awt.Component;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class Edicion{
 	private String pais;
 	private String nombre;
 	private String sigla;
+	private Organizador organizador;
 
 	private Map<String, TipoDeRegistro> tiposDeRegistro;
 	private Map<Integer,Patrocinio> patrocinios;
@@ -53,6 +55,16 @@ public class Edicion{
 
 	public void agregarTipoDeRegistro(TipoDeRegistro tipo, String nombre) {
 		this.tiposDeRegistro.put(nombre, tipo);
+	}
+
+	public Organizador getOrganizador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, TipoDeRegistro> getTiposdeRegistros() {
+		// TODO Auto-generated method stub
+		return tiposDeRegistro;
 	}
 
 
