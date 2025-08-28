@@ -71,7 +71,13 @@ public class MainFrame extends JFrame {
         menuEventos.add(consultaEdicion);
 
 
-        menuEventos.add(new JMenuItem("Alta Tipo Registro"));
+        JMenuItem altaTipoRegistro = new JMenuItem("Alta Tipo Registro");
+        altaTipoRegistro.addActionListener(e -> openInternal(new AltaTipoRegistroFrame()));
+        menuEventos.add(altaTipoRegistro);
+
+
+
+
         menuEventos.add(new JMenuItem("Consulta Tipo Registro"));
         menuEventos.add(new JMenuItem("Registro a Edición"));
         menuEventos.add(new JMenuItem("Consulta Registro"));

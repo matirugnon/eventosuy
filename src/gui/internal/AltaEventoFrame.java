@@ -7,7 +7,9 @@ import logica.DatatypesYEnum.DTFecha;
 
 import java.awt.*;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class AltaEventoFrame extends JInternalFrame {
@@ -109,7 +111,19 @@ public class AltaEventoFrame extends JInternalFrame {
         String nombre = txtNombre.getText().trim();
         String sigla = txtSigla.getText().trim();
         String descripcion = txtDescripcion.getText().trim();
-        java.util.Set<String> categorias = new java.util.HashSet<>(listaCategorias.getSelectedValuesList());
+
+
+        List<String> seleccionadas = listaCategorias.getSelectedValuesList();
+
+	     if (nombre.isEmpty() || seleccionadas.isEmpty()) {
+	         JOptionPane.showMessageDialog(this,
+	             "Debe ingresar un nombre y al menos una categoría.",
+	             "Error", JOptionPane.ERROR_MESSAGE);
+	         return;
+	     }
+
+	     // Convertir a Set
+	     Set<String> categorias = new HashSet<>(seleccionadas);
 
         // Obtener valores de los spinners
         int dia = (Integer) spinnerDia.getValue();
@@ -118,14 +132,6 @@ public class AltaEventoFrame extends JInternalFrame {
 
 
         //---------------------------------FILTROS (AGREGAR MAS SI SE NECESITAN)----------------------------------
-
-        // Validar que el nombre y categorías no estén vacíos
-        if (nombre.isEmpty() || categorias.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Debe ingresar un nombre y al menos una categoría.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
         if (esFechaValida(dia, mes, anio)) {
             JOptionPane.showMessageDialog(this,
@@ -145,6 +151,7 @@ public class AltaEventoFrame extends JInternalFrame {
         //---------------------------------paso los filtros, se puede dar de alta--------------------------------
 
         DTFecha fechaAlta = new DTFecha(dia, mes, anio);
+
 
         cont.darAltaEvento(nombre,descripcion ,fechaAlta ,sigla , categorias);
 

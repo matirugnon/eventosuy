@@ -27,6 +27,7 @@ public class ControladorEvento implements IControladorEvento {
 
     	//inicializo el manejador
     	this.manejadorE = ManejadorEventos.getInstance();
+    	manejadorE.inicializarCategoriasDefault();
     }
 
 
@@ -44,13 +45,15 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias) {
-	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);   // convierte los nombres de categorías en objetos Categoria
+
+	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
+	    // convierte los nombres de categorías en objetos Categoria
 	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias); // crea el evento con todos los datos
 	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
 	}
 
 	//listar
-	public Set<String> listarEventos() {
+	public Set<Evento> listarEventos() {
 	    return manejadorE.listarEventos();
 	}
 
@@ -73,9 +76,9 @@ public class ControladorEvento implements IControladorEvento {
         //no entiendo bien estas dos cosas todavia
         Set<String> nombresCategorias = new HashSet<>();
         if (e.getCategorias() != null) {
-            for (Categoria c : e.getCategorias()) {
-                if (c != null && c.getNombre() != null) {
-                    nombresCategorias.add(c.getNombre());
+            for (String c : e.getCategorias()) {
+                if (c != null && c != null) {
+                    nombresCategorias.add(c);
                 }
             }
         }

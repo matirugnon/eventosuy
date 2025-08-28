@@ -1,12 +1,22 @@
 package gui.internal;
+             // Ajusta según tu modelo
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import logica.Categoria;
+import logica.Edicion;
+import logica.Evento;
+import logica.Controladores.ControladorEvento;
+
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ConsultaEventoFrame extends JInternalFrame {
-    private JComboBox<String> comboEventos;
+    private JComboBox<Evento> comboEventos; // Cambiado a Evento, no String
     private JTextArea areaDatos;
     private JList<String> listaCategorias;
     private JTable tablaEdiciones;
@@ -17,13 +27,21 @@ public class ConsultaEventoFrame extends JInternalFrame {
         setSize(650, 500);
         setLayout(new BorderLayout());
 
+        ControladorEvento contrEvento = ControladorEvento.getInstance();
+
+        // Cargar eventos desde el controlador
+        Set<Evento> eventos = contrEvento.listarEventos();
+
         // TOP: selección de evento
         JPanel topPanel = new JPanel();
         topPanel.add(new JLabel("Seleccione Evento:"));
-        comboEventos = new JComboBox<>(new String[]{"ConfUdelar", "ExpoTech"});
-        topPanel.add(comboEventos);
+        comboEventos = new JComboBox<>();
+        for (Evento evento : eventos) {
+            comboEventos.addItem(evento);
+        }
 
         JButton btnConsultar = new JButton("Consultar");
+        topPanel.add(comboEventos);
         topPanel.add(btnConsultar);
 
         add(topPanel, BorderLayout.NORTH);
@@ -59,51 +77,50 @@ public class ConsultaEventoFrame extends JInternalFrame {
 
         // Eventos
         btnConsultar.addActionListener(e -> mostrarDatosEvento());
+        comboEventos.addActionListener(e -> {
+            // Opcional: actualizar automáticamente al cambiar selección
+            // mostrarDatosEvento();
+        });
         btnVerEdicion.addActionListener(e -> verEdicion());
     }
 
     private void mostrarDatosEvento() {
-        String evento = (String) comboEventos.getSelectedItem();
+        Evento evento = (Evento) comboEventos.getSelectedItem();
+        if (evento == null) return;
 
-        if ("ConfUdelar".equals(evento)) {
-            // Datos
-            areaDatos.setText(
-                "Nombre: ConfUdelar\n" +
-                "Sigla: CONF\n" +
-                "Descripción: Conferencia anual de la UdelaR\n" +
-                "Fecha Alta: 2025-03-01"
-            );
+        // Formato de fecha
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            // Categorías
-            listaCategorias.setListData(new String[]{"Conferencia", "Académico"});
+        // Datos del evento
+        areaDatos.setText(
+            "Nombre: " + evento.getNombre() + "\n" +
+            "Sigla: " + evento.getSigla() + "\n" +
+            "Descripción: " + evento.getDescripcion() + "\n" +
+            "Fecha Alta: " + evento.getFechaEvento().toString()
+        );
 
-            // Ediciones
-            String[] columnas = {"Nombre", "Sigla", "Ciudad", "País"};
-            Object[][] datos = {
-                {"Conf2025", "C25", "Montevideo", "Uruguay"},
-                {"Conf2024", "C24", "Salto", "Uruguay"}
-            };
-            tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
+        // Categorías
+        listaCategorias.setListData(evento.getCategorias().toArray(new String[0]));
 
-        } else if ("ExpoTech".equals(evento)) {
-            // Datos
-            areaDatos.setText(
-                "Nombre: ExpoTech\n" +
-                "Sigla: EXPO\n" +
-                "Descripción: Feria tecnológica internacional\n" +
-                "Fecha Alta: 2025-04-15"
-            );
+        Set<String> cats = evento.getCategorias();
+        System.out.println("Categorías del evento: " + cats); // 👈 Depuración
 
-            // Categorías
-            listaCategorias.setListData(new String[]{"Feria", "Innovación"});
-
-            // Ediciones
-            String[] columnas = {"Nombre", "Sigla", "Ciudad", "País"};
-            Object[][] datos = {
-                {"Expo2025", "E25", "Buenos Aires", "Argentina"}
-            };
-            tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
+        if (cats == null || cats.isEmpty()) {
+            listaCategorias.setListData(new String[]{"(Sin categorías)"});
+        } else {
+            listaCategorias.setListData(cats.toArray(new String[0]));
         }
+
+
+
+        // Ediciones
+        Set<Edicion> ediciones = evento.getEdiciones();
+        String[] columnas = {"Nombre", "Sigla", "Ciudad", "País"};
+        Object[][] datos = ediciones.stream()
+            .map(e -> new Object[]{e.getNombre(), e.getSigla(), e.getCiudad(), e.getPais()})
+            .toArray(Object[][]::new);
+
+        tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
     }
 
     private void verEdicion() {
@@ -119,6 +136,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
             "Abrir detalles de la edición: " + nombreEdicion,
             "Consulta de Edición", JOptionPane.INFORMATION_MESSAGE);
 
-        // Aquí más adelante: openInternal(new ConsultaEdicionFrame(nombreEdicion));
+        // Aquí más adelante:
+        // openInternal(new ConsultaEdicionFrame(nombreEdicion));
     }
 }

@@ -22,6 +22,7 @@ public class ManejadorEventos {
 	private ManejadorEventos() {
     	eventos = new HashMap<String, Evento>();
     	categorias = new HashMap<>();
+    	ediciones = new HashMap<>();
     }
 
 	//singleton
@@ -95,9 +96,18 @@ public class ManejadorEventos {
     }
 
 
-    public Set<String> listarEventos() {
-        // Copia defensiva para no exponer la vista interna del map
-        return new HashSet<>(eventos.keySet());
+    public Set<Evento> listarEventos() {
+        // Devuelve una copia del conjunto de valores (los objetos Evento)
+        return new HashSet<>(eventos.values());
+    }
+
+    public void inicializarCategoriasDefault() {
+        String[] nombres = {"Conferencia", "Taller", "Seminario", "Workshop"};
+        for (String nombre : nombres) {
+            if (!existeCategoria(nombre)) {
+                addCategoria(new Categoria(nombre));
+            }
+        }
     }
 
 
