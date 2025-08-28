@@ -32,7 +32,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         super("Modificar Usuario", true, true, true, true);
 
         //logica
-        controlador = ControladorUsuario.getinstance();
+        controlador = ControladorUsuario.getInstance();
         this.mapaUsuarios = new HashMap<>();
 
         setSize(500, 400);

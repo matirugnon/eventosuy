@@ -12,9 +12,9 @@ import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
 
 import java.awt.*;
-import java.util.List;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 public class ConsultaUsuarioFrame extends JInternalFrame {
 
     private final Consumer<JInternalFrame> openInternal; // para abrir detalle
+
     private JTextArea areaDatos;
     private JTable tablaDetalle;
     private JButton btnVerDetalle;
@@ -30,14 +31,12 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     private JComboBox<Usuario> comboUsuarios;
     private JList<Object> listaResultados;
 
-    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getinstance();
+    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
     private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
 
-
     public ConsultaUsuarioFrame(Consumer<JInternalFrame> openInternal) {
-
-    	super("Consulta de Usuario", true, true, true, true);
-        setSize(500, 400);
+        super("Consulta de Usuario", true, true, true, true);
+        setSize(600, 500);
         setLayout(new BorderLayout());
 
         this.openInternal = openInternal;
@@ -46,33 +45,39 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     }
 
     private void inicializarComponentes() {
-        // 1. Panel del formulario
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
+        form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // --- Combo de usuarios ---
-
         form.add(new JLabel("Seleccionar Usuario:"));
         comboUsuarios = new JComboBox<>();
-        cargarUsuarios(); // Llena el combo
+        cargarUsuarios();
         comboUsuarios.setRenderer(new UsuarioListRenderer());
         form.add(comboUsuarios);
 
-        // --- Lista de resultados (ediciones o registros) ---
-        form.add(new JLabel("Elementos asociados:"));
+        // --- Área de texto para datos del usuario ---
+        form.add(new JLabel("Datos del Usuario:"));
+        areaDatos = new JTextArea(4, 20);
+        areaDatos.setEditable(false);
+        areaDatos.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JScrollPane scrollDatos = new JScrollPane(areaDatos);
+        form.add(scrollDatos);
+
+        // --- Lista de elementos asociados ---
+        form.add(new JLabel("Elementos Asociados:"));
         listaResultados = new JList<>();
+        listaResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollResultados = new JScrollPane(listaResultados);
         form.add(scrollResultados);
 
-        // Añadir formulario al centro
         add(form, BorderLayout.CENTER);
 
-        // --- Listener para actualizar la lista cuando cambia el usuario ---
+        // --- Listener ---
         comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
     }
 
-
     private void cargarUsuarios() {
-        List<Usuario> usuarios = ctrlUsuarios.listarUsuarios();
+        List<Usuario> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
         for (Usuario usr : usuarios) {
             comboUsuarios.addItem(usr);
         }
@@ -81,27 +86,82 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     private void actualizarListaSegunUsuario() {
         Usuario seleccionado = (Usuario) comboUsuarios.getSelectedItem();
         if (seleccionado == null) {
+            areaDatos.setText("");
             listaResultados.setListData(new Object[0]);
             return;
         }
 
+        // Construir datos del usuario
+        StringBuilder datos = new StringBuilder();
+        datos.append("Nombre: ").append(seleccionado.getNombre()).append("\n");
+        datos.append("Nickname: ").append(seleccionado.getNickname()).append("\n");
+        datos.append("Correo: ").append(seleccionado.getCorreo()).append("\n");
+
+        if (seleccionado instanceof Asistente) {
+            Asistente asistente = (Asistente) seleccionado;
+            datos.append("Apellido: ").append(asistente.getApellido()).append("\n");
+            datos.append("Fecha Nac.: ").append(
+                asistente.getFechaNacimiento() != null ?
+                asistente.getFechaNacimiento().toString() :
+                "No especificada"
+            ).append("\n");
+            datos.append("Institución: ").append(
+                asistente.getInstitucion() != null ?
+                asistente.getInstitucion() :
+                "No especificada"
+            ).append("\n");
+            datos.append("Tipo: Asistente");
+
+        } else if (seleccionado instanceof Organizador) {
+            Organizador organizador = (Organizador) seleccionado;
+            datos.append("Descripción: ").append(
+                organizador.getDescripcion() != null ?
+                organizador.getDescripcion() :
+                "No disponible"
+            ).append("\n");
+            datos.append("Link: ").append(
+                organizador.getLink() != null ?
+                organizador.getLink() :
+                "No disponible"
+            ).append("\n");
+            datos.append("Tipo: Organizador");
+        }
+
+        areaDatos.setText(datos.toString());
+
+        // Actualizar lista de elementos asociados (sin cambios)
         if (seleccionado instanceof Organizador) {
-            Set<Edicion> ediciones = ctrlEventos.listarEdiciones();
-            listaResultados.setListData(ediciones.toArray(new Edicion[0]));
+            Organizador org = (Organizador) seleccionado;
+            Set<Edicion> ediciones = org.getEdiciones();
+            if (ediciones.isEmpty()) {
+                listaResultados.setListData(new String[]{"No tiene ediciones a cargo."});
+            } else {
+                listaResultados.setListData(ediciones.toArray(new Edicion[0]));
+            }
         } else if (seleccionado instanceof Asistente) {
             Asistente asistente = (Asistente) seleccionado;
             Set<Registro> registros = asistente.getRegistros();
-            listaResultados.setListData(registros.toArray(new Registro[0]));
-        } else {
-            listaResultados.setListData(new Object[0]);
+            if (registros.isEmpty()) {
+                listaResultados.setListData(new String[]{"No tiene registros."});
+            } else {
+                listaResultados.setListData(registros.toArray(new Registro[0]));
+            }
         }
     }
 
+    // Renderizador para mostrar nombre y apellido si es posible
     class UsuarioListRenderer extends JLabel implements ListCellRenderer<Usuario> {
         @Override
         public Component getListCellRendererComponent(JList<? extends Usuario> list, Usuario value, int index,
                 boolean isSelected, boolean cellHasFocus) {
-            setText(value != null ? value.getNombre() : "<sin nombre>");
+
+            if (value == null) {
+                setText("<sin usuario>");
+            } else {
+                String tipo = (value instanceof Organizador) ? "Organizador" : "Asistente";
+                setText(value.getNickname() + "(" + tipo + ")");
+            }
+
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
                 setForeground(list.getSelectionForeground());
@@ -114,5 +174,4 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             return this;
         }
     }
-
 }

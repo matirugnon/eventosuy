@@ -227,7 +227,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         DTFecha fechanac = new DTFecha(diaV,mesV,anioV);
 
 
-        ControladorUsuario cont = ControladorUsuario.getinstance();
+        ControladorUsuario cont = ControladorUsuario.getInstance();
 
 
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {

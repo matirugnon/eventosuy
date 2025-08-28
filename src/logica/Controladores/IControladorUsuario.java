@@ -22,12 +22,12 @@ public interface IControladorUsuario {
 
     //funcion que ya venia con ejemplo
     public abstract DataUsuario verInfoUsuario(String ci) throws UsuarioNoExisteException;
-    //funcion que ya venia con ejemplo
-    public abstract DataUsuario[] getUsuarios() throws UsuarioNoExisteException;
 
 
     public boolean ExisteNickname(String nick);
 
     public void AsociarInstitucion(String nick, String nombreInstitucion);
+
+
 }
 

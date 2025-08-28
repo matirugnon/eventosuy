@@ -93,12 +93,12 @@ public class ControladorEvento implements IControladorEvento {
 
 	//altaCategoria
 	public boolean existeCategoria(String cat) {
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		return manejador.existeCategoria(cat);
 	}
 
 	public void altaCategoria (String cat){
-		ManejadorEventos manejador = ManejadorEventos.getinstance();
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
 	}
