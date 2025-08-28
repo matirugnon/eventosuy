@@ -75,16 +75,30 @@ public class MainFrame extends JFrame {
         altaTipoRegistro.addActionListener(e -> openInternal(new AltaTipoRegistroFrame()));
         menuEventos.add(altaTipoRegistro);
 
+        JMenuItem consultaTipoRegistro = new JMenuItem("Consulta Tipo Registro");
+        consultaTipoRegistro.addActionListener(e -> openInternal(new ConsultaTipoRegistroFrame()));
+        menuEventos.add(consultaTipoRegistro);
+
+        JMenuItem registroAEdicion = new JMenuItem("Registro a Edición");
+        registroAEdicion.addActionListener(e -> openInternal(new RegistroAEdicionFrame())); //cambiar a Registroaedicionf
+        menuEventos.add(registroAEdicion);
+
+        JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
+        consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
+        menuEventos.add(consultaRegistro);
 
 
 
-        menuEventos.add(new JMenuItem("Consulta Tipo Registro"));
-        menuEventos.add(new JMenuItem("Registro a Edición"));
-        menuEventos.add(new JMenuItem("Consulta Registro"));
 
         // Menú Instituciones
         JMenu menuInstituciones = new JMenu("Instituciones");
-        menuInstituciones.add(new JMenuItem("Alta Institución"));
+
+
+        JMenuItem altaIns = new JMenuItem("Alta Institución");
+        altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
+        menuEventos.add(altaIns);
+
+        menuInstituciones.add(new JMenuItem());
 
         // Menú Patrocinios
         JMenu menuPatrocinios = new JMenu("Patrocinios");
