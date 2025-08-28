@@ -1,7 +1,7 @@
 package logica.Controladores;
 
 import java.util.Map;
-
+import java.time.LocalDate;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -9,9 +9,7 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
-
-
-
+import logica.Organizador;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
@@ -113,6 +111,22 @@ public class ControladorEvento implements IControladorEvento {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
+	}
+
+
+	public void AltaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin,
+			DTFecha alta, String nombre2, String nickname) {
+	}
+
+	public boolean existeEdicion(String nombre) {
+		// IMPLEMENTAR
+		return false;
+	}
+
+
+	public Set<Organizador> listarOrganizadores() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
