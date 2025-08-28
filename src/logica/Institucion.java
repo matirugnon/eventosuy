@@ -12,6 +12,10 @@ public class Institucion{
 		this.sitioweb = web;
 	}
 
+	public String getNombre() {
+		return nombre;}
+
+
 
 
 

@@ -1,5 +1,6 @@
 package logica.Controladores;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
 
-    public static ControladorUsuario getinstance() {
+    public static ControladorUsuario getInstance() {
         if (instancia == null)
             instancia = new ControladorUsuario();
         return instancia;
@@ -56,7 +57,7 @@ public class ControladorUsuario implements IControladorUsuario {
         	throw new UsuarioRepetidoException("El correo " + correo + " ya esta registrado");
 
 
-        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac);
+        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion);
         altaUsuario(a);
     }
 
@@ -89,31 +90,6 @@ public class ControladorUsuario implements IControladorUsuario {
 
     }
 
-
-    //lo mismo, no se si sirve
-
-    public DataUsuario[] getUsuarios() throws UsuarioNoExisteException {
-
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-        Usuario[] usrs = mu.getUsuarios();
-
-        if (usrs != null) {
-            DataUsuario[] du = new DataUsuario[usrs.length];
-            Usuario usuario;
-
-            // Para separar lógica de presentación, no se deben devolver los Usuario,
-            // sino los DataUsuario
-            for (int i = 0; i < usrs.length; i++) {
-                usuario = usrs[i];
-                du[i] = new DataUsuario(usuario.getNombre(), usuario.getNickname(), usuario.getCorreo());
-            }
-
-            return du;
-        } else
-            throw new UsuarioNoExisteException("No existen usuarios registrados");
-
-    }
-
     //-------------------------NUEVOS METODOS DEL CONTROLADOR---------------------------------------------------------------
 
 
@@ -141,9 +117,8 @@ public class ControladorUsuario implements IControladorUsuario {
 
     public List<Usuario> listarUsuarios() {
 
-    	List<Usuario> usuarios = manejador.getUsuarios()
-
-        return usuarios;
+    	Set<Usuario> usuarios  = manejador.getUsuarios();
+        return  new ArrayList<>(usuarios);
     }
 
     public void modificarUsuario(String nick, DTUsuario datosUsuario) {
