@@ -2,166 +2,117 @@ package gui.internal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import logica.Asistente;
+import logica.Edicion;
+import logica.Organizador;
+import logica.Registro;
+import logica.Usuario;
+import logica.Controladores.ControladorEvento;
+import logica.Controladores.ControladorUsuario;
+
 import java.awt.*;
+import java.util.List;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @SuppressWarnings("serial")
 public class ConsultaUsuarioFrame extends JInternalFrame {
-	
+
     private final Consumer<JInternalFrame> openInternal; // para abrir detalle
-    private JComboBox<String> comboUsuarios;
     private JTextArea areaDatos;
     private JTable tablaDetalle;
     private JButton btnVerDetalle;
     private JScrollPane scrollTabla;
 
-    // Constructor recomendado: le pasás un "opener" (MainFrame::openInternal)
+    private JComboBox<Usuario> comboUsuarios;
+    private JList<Object> listaResultados;
+
+    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getinstance();
+    private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+
+
     public ConsultaUsuarioFrame(Consumer<JInternalFrame> openInternal) {
-        super("Consulta de Usuario", true, true, true, true);
-        this.openInternal = openInternal;
-        ui();
-    }
 
-    // Constructor de respaldo (si no pasás opener)
-    public ConsultaUsuarioFrame() {
-        this(frame -> JOptionPane.showMessageDialog(null,
-                "Sin opener: aquí se abriría el detalle como JInternalFrame."));
-    }
-
-    private void ui() {
-        setSize(720, 520);
+    	super("Consulta de Usuario", true, true, true, true);
+        setSize(500, 400);
         setLayout(new BorderLayout());
 
-        // TOP: selección
-        JPanel top = new JPanel();
-        top.add(new JLabel("Usuario:"));
-        comboUsuarios = new JComboBox<>(new String[]{
-                "juan123 (Asistente)", "mariaOrg (Organizador)"
-        });
-        top.add(comboUsuarios);
-        JButton btnConsultar = new JButton("Consultar");
-        top.add(btnConsultar);
-        add(top, BorderLayout.NORTH);
+        this.openInternal = openInternal;
 
-        // CENTER: datos + tabla
-        JPanel center = new JPanel(new BorderLayout(10, 10));
-
-        areaDatos = new JTextArea();
-        areaDatos.setEditable(false);
-        JScrollPane spDatos = new JScrollPane(areaDatos);
-        spDatos.setBorder(BorderFactory.createTitledBorder("Datos del Usuario"));
-        spDatos.setPreferredSize(new Dimension(400, 180));
-        center.add(spDatos, BorderLayout.NORTH);
-
-        tablaDetalle = new JTable();
-        tablaDetalle.setFillsViewportHeight(true);
-        tablaDetalle.getTableHeader().setReorderingAllowed(false);
-
-
-        JScrollPane spTabla = new JScrollPane(tablaDetalle);
-        spTabla.setBorder(BorderFactory.createTitledBorder("Detalle"));
-        center.add(spTabla, BorderLayout.CENTER);
-
-        this.scrollTabla = spTabla;
-
-        add(center, BorderLayout.CENTER);
-
-        // SOUTH: botón abrir detalle (opcional al doble clic)
-        JPanel south = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnVerDetalle = new JButton("Ver Detalle");
-        south.add(btnVerDetalle);
-        add(south, BorderLayout.SOUTH);
-
-        // Listeners
-        btnConsultar.addActionListener(e -> cargarDatosYDetalle());
-        btnVerDetalle.addActionListener(e -> abrirDetalleSeleccion());
-        tablaDetalle.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && tablaDetalle.getSelectedRow() != -1) {
-                    abrirDetalleSeleccion();
-                }
-            }
-        });
+        inicializarComponentes();
     }
 
-    private void cargarDatosYDetalle() {
-        String sel = (String) comboUsuarios.getSelectedItem();
-        if (sel == null) return;
+    private void inicializarComponentes() {
+        // 1. Panel del formulario
+        JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        // MOCK: completamos datos según tipo
-        if (sel.contains("Asistente")) {
-            areaDatos.setText(
-                    "Nickname: juan123\n" +
-                    "Nombre: Juan Pérez\n" +
-                    "Correo: juan@mail.com\n" +
-                    "Tipo: Asistente\n" +
-                    "Fecha Nac: 1999-05-21\n"
-            );
+        // --- Combo de usuarios ---
 
-            // Tabla: REGISTROS del asistente
-            String[] cols = {"Registro ID", "Evento", "Edición", "Tipo", "Costo"};
-            Object[][] data = {
-                    {"R-101", "Jornadas2025", "J2025-Montevideo", "Estudiante", 500},
-                    {"R-205", "Hackathon",    "Hack2025",        "General",   1000}
-            };
-            tablaDetalle.setModel(new DefaultTableModel(data, cols));
+        form.add(new JLabel("Seleccionar Usuario:"));
+        comboUsuarios = new JComboBox<>();
+        cargarUsuarios(); // Llena el combo
+        comboUsuarios.setRenderer(new UsuarioListRenderer());
+        form.add(comboUsuarios);
 
-            scrollTabla.setBorder(BorderFactory.createTitledBorder("Registros del Asistente"));
+        // --- Lista de resultados (ediciones o registros) ---
+        form.add(new JLabel("Elementos asociados:"));
+        listaResultados = new JList<>();
+        JScrollPane scrollResultados = new JScrollPane(listaResultados);
+        form.add(scrollResultados);
 
-            // Guardamos un flag en la tabla para saber qué detalle abrir
-            tablaDetalle.putClientProperty("detalleTipo", "REGISTRO");
+        // Añadir formulario al centro
+        add(form, BorderLayout.CENTER);
 
-        } else { // Organizador
-            areaDatos.setText(
-                    "Nickname: mariaOrg\n" +
-                    "Nombre: María Gómez\n" +
-                    "Correo: maria@mail.com\n" +
-                    "Tipo: Organizador\n" +
-                    "Descripción: Org. de conferencias\n"
-            );
+        // --- Listener para actualizar la lista cuando cambia el usuario ---
+        comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
+    }
 
-            // Tabla: EDICIONES del organizador
-            String[] cols = {"Edición", "Sigla", "Evento", "Ciudad", "País"};
-            Object[][] data = {
-                    {"Conf2025", "C25", "ConfUdelar", "Montevideo",     "Uruguay"},
-                    {"Expo2025", "E25", "ExpoTech",   "Buenos Aires",   "Argentina"}
-            };
-            tablaDetalle.setModel(new DefaultTableModel(data, cols));
 
-            scrollTabla.setBorder(BorderFactory.createTitledBorder("Ediciones del Organizador"));
-
-            tablaDetalle.putClientProperty("detalleTipo", "EDICION");
+    private void cargarUsuarios() {
+        List<Usuario> usuarios = ctrlUsuarios.listarUsuarios();
+        for (Usuario usr : usuarios) {
+            comboUsuarios.addItem(usr);
         }
-
-        tablaDetalle.revalidate();
-        tablaDetalle.repaint();
     }
 
-    private void abrirDetalleSeleccion() {
-        int row = tablaDetalle.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila primero.", "Atención",
-                    JOptionPane.WARNING_MESSAGE);
+    private void actualizarListaSegunUsuario() {
+        Usuario seleccionado = (Usuario) comboUsuarios.getSelectedItem();
+        if (seleccionado == null) {
+            listaResultados.setListData(new Object[0]);
             return;
         }
-        String tipo = (String) tablaDetalle.getClientProperty("detalleTipo");
-        if ("REGISTRO".equals(tipo)) {
-            // Datos mínimos mock para abrir detalle de registro
-            String regId  = String.valueOf(tablaDetalle.getValueAt(row, 0));
-            String evento = String.valueOf(tablaDetalle.getValueAt(row, 1));
-            String edicion= String.valueOf(tablaDetalle.getValueAt(row, 2));
-            openInternal.accept(new ConsultaRegistroFrame(regId, evento, edicion));
-        } else if ("EDICION".equals(tipo)) {
-            // Datos mínimos mock para abrir detalle de edición
-            String nombreEd = String.valueOf(tablaDetalle.getValueAt(row, 0));
-            String sigla    = String.valueOf(tablaDetalle.getValueAt(row, 1));
-            String evento   = String.valueOf(tablaDetalle.getValueAt(row, 2));
-            openInternal.accept(new ConsultaEdicionFrame());
+
+        if (seleccionado instanceof Organizador) {
+            Set<Edicion> ediciones = ctrlEventos.listarEdiciones();
+            listaResultados.setListData(ediciones.toArray(new Edicion[0]));
+        } else if (seleccionado instanceof Asistente) {
+            Asistente asistente = (Asistente) seleccionado;
+            Set<Registro> registros = asistente.getRegistros();
+            listaResultados.setListData(registros.toArray(new Registro[0]));
         } else {
-            JOptionPane.showMessageDialog(this, "No se reconoce el tipo de detalle.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            listaResultados.setListData(new Object[0]);
         }
     }
+
+    class UsuarioListRenderer extends JLabel implements ListCellRenderer<Usuario> {
+        @Override
+        public Component getListCellRendererComponent(JList<? extends Usuario> list, Usuario value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+            setText(value != null ? value.getNombre() : "<sin nombre>");
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+                setForeground(list.getSelectionForeground());
+                setOpaque(true);
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+                setOpaque(false);
+            }
+            return this;
+        }
+    }
+
 }

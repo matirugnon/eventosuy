@@ -1,7 +1,10 @@
 package logica.Controladores;
 
+<<<<<<< HEAD
 
 import java.util.Map;
+=======
+>>>>>>> mati/mejoraInterfaces
 import java.util.HashSet;
 
 import java.util.Set;
@@ -21,25 +24,34 @@ import logica.manejadores.ManejadorEventos;
 public class ControladorEvento implements IControladorEvento {
 
 	private ManejadorEventos manejadorE;
+	private static ControladorEvento instancia = null;
 
 	public ControladorEvento() {
 
     	//inicializo el manejador
     	this.manejadorE = ManejadorEventos.getInstance();
     }
-	
-	
-	
+
+
+	public static ControladorEvento getInstance() {
+		if (instancia == null)
+            instancia = new ControladorEvento();
+        return instancia;
+	}
+
+
+
 	public boolean existeEvento(String nomEvento) {
 		return manejadorE.existe(nomEvento);
-		
+
 	}
-	
+
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias) {
 	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);   // convierte los nombres de categorías en objetos Categoria
 	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias); // crea el evento con todos los datos
 	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
 	}
+<<<<<<< HEAD
 	
 	//listar
 	public Set<String> listarEventos() {
@@ -53,11 +65,19 @@ public class ControladorEvento implements IControladorEvento {
 		return listaEdiciones;
 		}
 	
+=======
+
+	public Set<String> listarEventos() {
+	    return manejadorE.listarEventos();
+	}
+
+
+>>>>>>> mati/mejoraInterfaces
 
     public DTSeleccionEvento seleccionarEvento(String nomEvento) {
         Evento e = manejadorE.obtenerEvento(nomEvento);
         if (e == null) {
-            return null; 
+            return null;
         }
 
 
@@ -73,7 +93,7 @@ public class ControladorEvento implements IControladorEvento {
             }
         }
 
-       
+
         Set<String> nombresEdiciones = new HashSet<>();
         if (e.getEdiciones() != null) {
             for (Edicion ed : e.getEdiciones()) {
@@ -85,28 +105,38 @@ public class ControladorEvento implements IControladorEvento {
 
         return new DTSeleccionEvento(dto, nombresCategorias, nombresEdiciones);
     }
-    
+
     public DTEdicion consultarEdicion(String nomEdicion) {
     	Edicion e = manejadorE.obtenerEdicion(nomEdicion);
     	DTEdicion dte = new DTEdicion(e);
     	return dte;
     }
 
+<<<<<<< HEAD
 	
 	
 	
 	
+=======
+
+>>>>>>> mati/mejoraInterfaces
 	//altaCategoria
 	public boolean existeCategoria(String cat) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		return manejador.existeCategoria(cat);
 	}
-	
+
 	public void altaCategoria (String cat){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
 	}
+<<<<<<< HEAD
 	
 		
+=======
+
+
+
+>>>>>>> mati/mejoraInterfaces
 }
