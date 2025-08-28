@@ -84,7 +84,7 @@ public class MainFrame extends JFrame {
         menuEventos.add(registroAEdicion);
 
         JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
-        consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
+        //consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
         menuEventos.add(consultaRegistro);
 
 
@@ -95,7 +95,7 @@ public class MainFrame extends JFrame {
 
 
         JMenuItem altaIns = new JMenuItem("Alta Institución");
-        altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
+        //altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
         menuEventos.add(altaIns);
 
         menuInstituciones.add(new JMenuItem());
