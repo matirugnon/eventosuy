@@ -75,7 +75,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
 
 
-        // Panel inferior: acciones (puedes extenderlo después)
+        // Panel inferior: acciones 
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");

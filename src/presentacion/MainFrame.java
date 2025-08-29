@@ -71,21 +71,12 @@ public class MainFrame extends JFrame {
         menuEventos.add(consultaEdicion);
 
 
-        JMenuItem altaTipoRegistro = new JMenuItem("Alta Tipo Registro");
-        altaTipoRegistro.addActionListener(e -> openInternal(new AltaTipoRegistroFrame()));
-        menuEventos.add(altaTipoRegistro);
-
-        JMenuItem consultaTipoRegistro = new JMenuItem("Consulta Tipo Registro");
-        consultaTipoRegistro.addActionListener(e -> openInternal(new ConsultaTipoRegistroFrame()));
-        menuEventos.add(consultaTipoRegistro);
 
         JMenuItem registroAEdicion = new JMenuItem("Registro a Edición");
         registroAEdicion.addActionListener(e -> openInternal(new RegistroAEdicionFrame())); //cambiar a Registroaedicionf
         menuEventos.add(registroAEdicion);
 
-        JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
-        //consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
-        menuEventos.add(consultaRegistro);
+        
 
 
 
@@ -104,6 +95,28 @@ public class MainFrame extends JFrame {
         JMenu menuPatrocinios = new JMenu("Patrocinios");
         menuPatrocinios.add(new JMenuItem("Alta Patrocinio"));
         menuPatrocinios.add(new JMenuItem("Consulta Patrocinio"));
+        
+        
+        
+        //Menu Registros
+        JMenu menuRegistros = new JMenu("Registros");
+        
+        
+        JMenuItem altaTipoRegistro = new JMenuItem("Alta Tipo Registro");
+        altaTipoRegistro.addActionListener(e -> openInternal(new AltaTipoRegistroFrame()));
+        menuRegistros.add(altaTipoRegistro);
+
+        JMenuItem consultaTipoRegistro = new JMenuItem("Consulta Tipo Registro");
+        consultaTipoRegistro.addActionListener(e -> openInternal(new ConsultaTipoRegistroFrame()));
+        menuRegistros.add(consultaTipoRegistro);
+
+        JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
+        consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
+        menuRegistros.add(consultaRegistro);
+        
+        
+        
+        
 
 
         //add menus
@@ -111,8 +124,12 @@ public class MainFrame extends JFrame {
         menuBar.add(menuEventos);
         menuBar.add(menuInstituciones);
         menuBar.add(menuPatrocinios);
+        menuBar.add(menuRegistros);
 
         return menuBar;
+        
+        
+        
     }
 
     private void openInternal(JInternalFrame frame) {

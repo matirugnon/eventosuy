@@ -37,5 +37,7 @@ public abstract class Usuario {
     public void setCorreo(String corr) {
     	correo = corr;
     }
+    
+    
 
 }

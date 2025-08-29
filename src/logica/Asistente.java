@@ -51,6 +51,20 @@ public class Asistente extends Usuario {
 	public String getInstitucion() {
 		return institucion;
 	}
+	
+	
+	public Set<String> getNomsTipo() {
+	    Set<String> nombresTipos = new HashSet<>();
+	    for (Registro r : registros) {
+	        if (r != null) {
+	            String nombreTipo = r.getNomTipo(); 
+	            if (nombreTipo != null) {
+	                nombresTipos.add(nombreTipo);
+	            }
+	        }
+	    }
+	    return nombresTipos;
+	}
 
 
 

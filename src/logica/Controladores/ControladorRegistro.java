@@ -1,14 +1,16 @@
 package logica.Controladores;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import logica.Asistente;
 import logica.Edicion;
-
+import logica.Registro;
 import logica.DatatypesYEnum.DTTipoRegistro;
 import logica.manejadores.ManejadorEventos;
+import logica.manejadores.ManejadorUsuario;
 import logica.TipoDeRegistro;
-
-
+import logica.Usuario;
 import logica.TipoDeRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.manejadores.ManejadorEventos;
@@ -56,5 +58,26 @@ public class ControladorRegistro implements IControladorRegistro {
 		TipoDeRegistro reg = ed.getTipoDeRegistro(nombreReg);
 		return reg.getDTTipoDeRegistro();
 	}
+	
+	
+	public Set<String> obtenerNomsTipoRegistro(String nickusuario) {
+	    ManejadorUsuario mu = ManejadorUsuario.getinstance();
+	    Usuario u = mu.obtenerUsuario(nickusuario);
+
+	    // Caso 1: no existe
+	    if (u == null) {
+	        return null; // o Collections.emptySet() si preferís no usar null
+	    }
+
+	    // Caso 2: si es Asistente, casteamos y devolvemos sus tipos
+	    if (u instanceof Asistente) {
+	        Asistente a = (Asistente) u;
+	        return a.getNomsTipo();
+	    }
+
+	    // Caso 3: existe pero no es Asistente
+	    return null; // o Collections.emptySet()
+	}
+
 }
 

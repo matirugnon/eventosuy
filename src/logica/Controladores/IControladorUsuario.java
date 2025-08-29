@@ -34,6 +34,8 @@ public interface IControladorUsuario {
     public void AsociarInstitucion(String nick, String nombreInstitucion);
     
     public Set<String> listarOrganizadores();
+    
+    public Set<String> listarUsuarios();
 }
 
 

@@ -1,6 +1,7 @@
 package logica.Controladores;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -112,14 +113,17 @@ public class ControladorUsuario implements IControladorUsuario {
 
     public void AsociarInstitucion(String nick, String nombreInstitucion) {
 
-
     }
 
-    public List<Usuario> listarUsuarios() {
-
-    	Set<Usuario> usuarios  = manejador.getUsuarios();
-        return  new ArrayList<>(usuarios);
+    public Set<String> listarUsuarios() {
+        Set<Usuario> usuarios = manejador.getUsuarios();
+        Set<String> nicks = new HashSet<>();
+        for (Usuario u : usuarios) {
+            nicks.add(u.getNickname()); // o getNickname(), según lo que qusieras mostrar
+        }
+        return nicks;
     }
+
 
     public void modificarUsuario(String nick, DTUsuario datosUsuario) {
 
