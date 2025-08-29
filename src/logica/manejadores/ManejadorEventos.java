@@ -21,7 +21,8 @@ public class ManejadorEventos {
 
 	private ManejadorEventos() {
     	eventos = new HashMap<String, Evento>();
-
+    	categorias = new HashMap<>();
+    	ediciones = new HashMap<>();
     }
 
 	//singleton
@@ -52,28 +53,40 @@ public class ManejadorEventos {
 
 
     //obtain
-    
-    public Edicion obtenerEdicion(String nombreEdicion) {
-    	return ((Edicion) ediciones.get(nombreEdicion));
-    }
-    
+
+
     public Evento obtenerEvento(String nombreEvento) {
         return ((Evento) eventos.get(nombreEvento));
     }
-    
+
+
+    public Edicion obtenerEdicion(String nombreEdicion) {
+        return  ediciones.get(nombreEdicion);
+    }
+
+
+
+
+    //getters
+
+
+    public Map<String, Edicion> getEdiciones(){
+    	return ediciones;
+    }
+
     public Categoria obtenerCategoria(String nombreCategoria) {
     	return ((Categoria) categorias.get(nombreCategoria));
     }
-    
+
     public boolean existe(String nomEvento) {
         return this.obtenerEvento(nomEvento) != null;
     }
 
     public Set<Categoria> getCategorias(Set<String> categ) {
-        Set<Categoria> result = new HashSet<>(); 
+        Set<Categoria> result = new HashSet<>();
 
         for (String nombre : categ) {
-            Categoria cat = this.obtenerCategoria(nombre); 
+            Categoria cat = this.obtenerCategoria(nombre);
             if (cat != null) {   // por si no existe
                 result.add(cat);
             }
@@ -81,24 +94,36 @@ public class ManejadorEventos {
 
         return result;
     }
-    
-    
-    public Set<String> listarEventos() {
-        // Copia defensiva para no exponer la vista interna del map
-        return new HashSet<>(eventos.keySet());
+
+
+    public Set<Evento> listarEventos() {
+        // Devuelve una copia del conjunto de valores (los objetos Evento)
+        return new HashSet<>(eventos.values());
     }
-    
-    
+
+    public void inicializarCategoriasDefault() {
+        String[] nombres = {"Conferencia", "Taller", "Seminario", "Workshop"};
+        for (String nombre : nombres) {
+            if (!existeCategoria(nombre)) {
+                addCategoria(new Categoria(nombre));
+            }
+        }
+    }
+
+
+
 
     //exists
     public boolean existeCategoria(String cat){
     	return categorias.containsKey(cat);
 
     }
+
     
     public boolean existeEdicion(String nomEdicion) {
         return ediciones.containsKey(nomEdicion);
     }
+
 
 
 

@@ -1,5 +1,8 @@
 package logica;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import logica.DatatypesYEnum.DTFecha;
 
 public class Asistente extends Usuario {
@@ -7,11 +10,15 @@ public class Asistente extends Usuario {
 	//atributos
     private String apellido;
     private DTFecha fechaNacimiento;
+    private Set<Registro> registros;
+    private String institucion;
 
-    public Asistente(String nickname, String nombre, String apellido, String correo, DTFecha fechaNacimiento) {
+    public Asistente(String nickname, String nombre, String apellido, String correo, DTFecha fechaNacimiento, String ins) {
         super(nickname, nombre, correo);
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
+        this.registros = new HashSet<>();
+        this.institucion = ins;
     }
 
     public String getApellido() { return apellido; }
@@ -31,4 +38,21 @@ public class Asistente extends Usuario {
 		// TODO Auto-generated method stub
 
 	}
+
+	public Set<Registro> getRegistros() {
+		// TODO Auto-generated method stub
+		return new HashSet<>(registros);
+	}
+
+	public void agregarRegistro(Registro reg) {
+        this.registros.add(reg);
+    }
+
+	public String getInstitucion() {
+		return institucion;
+	}
+
+
+
+
 }

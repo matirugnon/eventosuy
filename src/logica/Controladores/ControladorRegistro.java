@@ -3,44 +3,58 @@ package logica.Controladores;
 import java.util.Set;
 
 import logica.Edicion;
+
 import logica.DatatypesYEnum.DTTipoRegistro;
 import logica.manejadores.ManejadorEventos;
 import logica.TipoDeRegistro;
 
+
+import logica.TipoDeRegistro;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.manejadores.ManejadorEventos;
+
 public class ControladorRegistro implements IControladorRegistro {
     
-    public DTTipoRegistro consultarTipoRegistroEdicion(String nomEdicion, String nomTipoRegistro) {
-        ManejadorEventos me = ManejadorEventos.getInstance();
-        Edicion ed = me.obtenerEdicion(nomEdicion);
-        if (ed == null) {
-            throw new IllegalArgumentException("No existe la edición: " + nomEdicion);
-        }
 
-        Set<TipoDeRegistro> tipos = ed.getTiposRegistro();
-        if (tipos == null || tipos.isEmpty()) {
-            throw new IllegalArgumentException("La edición '" + nomEdicion + "' no tiene tipos de registro.");
-        }
 
-        for (TipoDeRegistro tr : tipos) {
-            if (tr != null && nomTipoRegistro.equals(tr.getNombre())) {
-                return new DTTipoRegistro(
-                    tr.getNombre(),
-                    tr.getDescripcion(),
-                    tr.getCosto(),
-                    tr.getCupo()                
-                 
-               
-                );
-            }
-        }
+	private static ControladorRegistro instancia = null;
 
-        throw new IllegalArgumentException("No existe el tipo de registro '" + nomTipoRegistro + "' en la edición '" + nomEdicion + "'.");
+	public ControladorRegistro() {
+
     }
 
+	public static ControladorRegistro getInstance() {
+		if (instancia == null)
+            instancia = new ControladorRegistro();
+        return instancia;
+	}
 
-    
-    
-    
+
+//Alta de Tipo de Registro
+	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nombreEd);
+	return ed.existeTipoDeRegistro(nombreTipo);
+	}
+
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed =manejador.obtenerEdicion(nombreEd);
+		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo);
+		ed.agregarTipoDeRegistro(tipo, nombreTipo);
+	}
+
+	public Set<String> listarTipoRegistro(String nombreEd) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nombreEd);
+		return ed.getNombresTiposDeRegistro();
+	}
+
+	public DTTipoDeRegistro consultaTipoDeRegistro(String nombreEd, String nombreReg) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nombreEd);
+		TipoDeRegistro reg = ed.getTipoDeRegistro(nombreReg);
+		return reg.getDTTipoDeRegistro();
+	}
 }
-
 

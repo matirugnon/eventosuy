@@ -1,9 +1,7 @@
 package logica.DatatypesYEnum;
 
-public class DTFecha {
-    private int dia;
-    private int mes;
-    private int anio;
+public class DTFecha implements Comparable<DTFecha> {
+    private int dia, mes, anio;
 
     public DTFecha(int dia, int mes, int anio) {
         this.dia = dia;
@@ -11,9 +9,17 @@ public class DTFecha {
         this.anio = anio;
     }
 
+    // Getters
     public int getDia() { return dia; }
     public int getMes() { return mes; }
     public int getAnio() { return anio; }
+
+    @Override
+    public int compareTo(DTFecha otra) {
+        if (this.anio != otra.anio) return Integer.compare(this.anio, otra.anio);
+        if (this.mes != otra.mes) return Integer.compare(this.mes, otra.mes);
+        return Integer.compare(this.dia, otra.dia);
+    }
 
     @Override
     public String toString() {

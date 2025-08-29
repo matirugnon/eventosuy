@@ -7,10 +7,14 @@ public class Institucion{
 	private String sitioweb;
 
 	public Institucion(String nom, String desc, String web) {
-		nombre = nom;
-		descripcion = desc;
-		sitioweb = web;
+		this.nombre = nom;
+		this.descripcion = desc;
+		this.sitioweb = web;
 	}
+
+	public String getNombre() {
+		return nombre;}
+
 
 
 

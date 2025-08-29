@@ -44,7 +44,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
 
     public AltaUsuarioFrame() {
         super("Alta de Usuario", true, true, true, true);
-        setSize(500, 400);
+        setSize(600, 400);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -227,7 +227,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         DTFecha fechanac = new DTFecha(diaV,mesV,anioV);
 
 
-        ControladorUsuario cont = ControladorUsuario.getinstance();
+        ControladorUsuario cont = ControladorUsuario.getInstance();
 
 
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {

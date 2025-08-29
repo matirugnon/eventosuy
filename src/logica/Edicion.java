@@ -1,7 +1,11 @@
 package logica;
 
+import java.awt.Component;
 import java.time.LocalDate;
-import java.util.HashSet;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.Set;
 
 import logica.DatatypesYEnum.DTFecha;
@@ -16,23 +20,29 @@ public class Edicion{
 	private String ciudad;
 	private String pais;
 	private String nombre;
-	private Organizador orga;
-	private Set<TipoDeRegistro> tiposderegistro;
-	private Set<Patrocinio> patrocinios;
+	private Organizador organizador;
 
-	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha fechaAlta) {
+	private Map<String, TipoDeRegistro> tiposDeRegistro;
+	private Map<Integer,Patrocinio> patrocinios;
+
+	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org) {
+
 
 		nombre = nom;
 		fechaInicioDtFecha = ini;
 		fechafinDtFecha = fin;
 		ciudad = ciu;
 		pais = p;
-		altaEdicionDtFecha = fechaAlta;
+
 		sigla = s;
-		orga = null;
-		tiposderegistro = new HashSet<>();
-		patrocinios = new HashSet<>();
-		
+
+		organizador = org;
+
+		altaEdicionDtFecha = alta;
+
+		this.tiposDeRegistro = new HashMap<>();
+		this.patrocinios = new HashMap<>();
+
 
 		//no me acuerdo como poner localdate :)
 	}
@@ -40,28 +50,43 @@ public class Edicion{
 	public String getNombre() {
 		return nombre;
 	}
-	
+
 	public DTFecha getFechaInicio() { return fechaInicioDtFecha; }
     public DTFecha getFechaFin()    { return fechafinDtFecha; }
     public DTFecha getAltaEdicion() { return altaEdicionDtFecha; }
     public String getCiudad()       { return ciudad; }
     public String getPais()         { return pais; }
+
     public String getSigla()        { return sigla;}
     
     public void setOrganizador(Organizador o) {
-        orga = o;
+        organizador = o;
     }
     
-    public Set<TipoDeRegistro> getTiposRegistro() {
-        return tiposderegistro;
-    }
+	public boolean existeTipoDeRegistro(String nombreTipo) {
+		return tiposDeRegistro.containsKey(nombreTipo);
+	}
+
+	public void agregarTipoDeRegistro(TipoDeRegistro tipo, String nombre) {
+		this.tiposDeRegistro.put(nombre, tipo);
+	}
+
+	public Organizador getOrganizador() {
+		return organizador;
+	}
+
+	public Map<String, TipoDeRegistro> getTiposdeRegistros() {
+		// TODO Auto-generated method stub
+		return tiposDeRegistro;
+	}
 	
-    public Set<Patrocinio> getPatrocinios(){
-        return patrocinios;
-    }
-
-
-
+	public TipoDeRegistro getTipoDeRegistro(String nombreReg) {
+		return this.tiposDeRegistro.get(nombreReg);
+	}
+	
+	public Set<String> getNombresTiposDeRegistro(){
+		return tiposDeRegistro.keySet();
+	}
 
 
 }

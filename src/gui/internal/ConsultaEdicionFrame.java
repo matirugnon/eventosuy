@@ -1,26 +1,23 @@
 package gui.internal;
 
+import logica.Controladores.ControladorEvento;
+import logica.Evento;
+import logica.Edicion;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ConsultaEdicionFrame extends JInternalFrame {
 
-    private JComboBox<String> comboEventos;
-    private JComboBox<String> comboEdiciones;
+    private JComboBox<Evento> comboEventos;
+    private JComboBox<Edicion> comboEdiciones;
     private JTextArea areaDetalles;
 
-    // Mock de datos (simulando una base de datos)
-    private final String[] eventos = {"JUGConf", "DevDay", "TechUy"};
-    private final String[][] edicionesPorEvento = {
-        {"JUGConf 2024", "JUGConf 2025"},
-        {"DevDay 2025", "DevDay 2023"},
-        {"TechUy 2025"}
-    };
-    private final String[] tiposRegistro = {"General", "Estudiante", "Speaker"};
-    private final String[] patrocinios = {"Empresa A", "Empresa B", "Startup X"};
+    // Formato de fecha
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public ConsultaEdicionFrame() {
         super("Consulta de Edición", true, true, true, true);
@@ -41,7 +38,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         // Fila 1: Evento
         gbc.gridx = 0; gbc.gridy = 0;
         panelSeleccion.add(new JLabel("Seleccione Evento:"), gbc);
-        comboEventos = new JComboBox<>(eventos);
+        comboEventos = new JComboBox<>();
         gbc.gridx = 1;
         panelSeleccion.add(comboEventos, gbc);
 
@@ -49,7 +46,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panelSeleccion.add(new JLabel("Seleccione Edición:"), gbc);
         comboEdiciones = new JComboBox<>();
-        comboEdiciones.setEnabled(false); // Deshabilitado hasta que se elija evento
+        comboEdiciones.setEnabled(false);
         gbc.gridx = 1;
         panelSeleccion.add(comboEdiciones, gbc);
 
@@ -67,78 +64,73 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         areaDetalles.setFont(new Font("Monospaced", Font.PLAIN, 12));
         add(new JScrollPane(areaDetalles), BorderLayout.CENTER);
 
-        // Panel inferior: selección de tipo de registro o patrocinio
+        // Panel inferior: acciones (puedes extenderlo después)
         JPanel panelAcciones = new JPanel(new FlowLayout());
-        JComboBox<String> comboTipoRegistro = new JComboBox<>(tiposRegistro);
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
-        JComboBox<String> comboPatrocinio = new JComboBox<>(patrocinios);
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
 
-        panelAcciones.add(new JLabel("Tipo de Registro:"));
-        panelAcciones.add(comboTipoRegistro);
         panelAcciones.add(btnVerTipoRegistro);
-        panelAcciones.add(Box.createHorizontalStrut(15));
-        panelAcciones.add(new JLabel("Patrocinio:"));
-        panelAcciones.add(comboPatrocinio);
         panelAcciones.add(btnVerPatrocinio);
-
         add(panelAcciones, BorderLayout.SOUTH);
 
         // --- LISTENERS ---
 
-        // Cambiar evento → actualizar ediciones
+        // Cambiar evento → actualizar combo de ediciones
         comboEventos.addActionListener(e -> onEventoSeleccionado());
 
         // Botón: ver detalles de la edición
         btnVerDetalles.addActionListener(e -> mostrarDetallesEdicion());
 
-        // Botón: ver tipo de registro
+        // Ejemplos de funcionalidad futura
         btnVerTipoRegistro.addActionListener(e -> {
-            String tipo = (String) comboTipoRegistro.getSelectedItem();
             JOptionPane.showMessageDialog(this,
-                "Caso de uso: Consulta de Tipo de Registro\n\n" +
-                "Tipo seleccionado: " + tipo + "\n" +
-                "Costo: $150\n" +
-                "Beneficios: Acceso a todas las charlas, coffee break",
-                "Tipo de Registro", JOptionPane.INFORMATION_MESSAGE);
+                "Funcionalidad de consulta de tipo de registro\n" +
+                "Se abrirá un nuevo caso de uso más adelante.",
+                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Botón: ver patrocinio
         btnVerPatrocinio.addActionListener(e -> {
-            String patrocinio = (String) comboPatrocinio.getSelectedItem();
             JOptionPane.showMessageDialog(this,
-                "Caso de uso: Consulta de Patrocinio\n\n" +
-                "Empresa: " + patrocinio + "\n" +
-                "Monto: $5000\n" +
-                "Beneficios: Logo en banners, stand, mención en redes",
-                "Patrocinio", JOptionPane.INFORMATION_MESSAGE);
+                "Funcionalidad de consulta de patrocinio\n" +
+                "Se abrirá un nuevo caso de uso más adelante.",
+                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 
     private void cargarEventos() {
-        for (String evento : eventos) {
+        ControladorEvento ctrl = ControladorEvento.getInstance();
+        Set<Evento> eventos = ctrl.listarEventos();
+
+        comboEventos.removeAllItems();
+        for (Evento evento : eventos) {
             comboEventos.addItem(evento);
+        }
+
+        // Si hay eventos, seleccionar el primero y cargar sus ediciones
+        if (comboEventos.getItemCount() > 0) {
+            comboEventos.setSelectedIndex(0);
+            onEventoSeleccionado();
         }
     }
 
     private void onEventoSeleccionado() {
-        String eventoSeleccionado = (String) comboEventos.getSelectedItem();
+        Evento evento = (Evento) comboEventos.getSelectedItem();
         comboEdiciones.removeAllItems();
         comboEdiciones.setEnabled(false);
 
-        for (int i = 0; i < eventos.length; i++) {
-            if (eventos[i].equals(eventoSeleccionado)) {
-                for (String edicion : edicionesPorEvento[i]) {
+        if (evento != null) {
+            Set<Edicion> ediciones = evento.getEdiciones();
+            if (ediciones != null && !ediciones.isEmpty()) {
+                for (Edicion edicion : ediciones) {
                     comboEdiciones.addItem(edicion);
                 }
                 comboEdiciones.setEnabled(true);
-                break;
             }
         }
     }
 
     private void mostrarDetallesEdicion() {
-        String edicion = (String) comboEdiciones.getSelectedItem();
+        Edicion edicion = (Edicion) comboEdiciones.getSelectedItem();
         if (edicion == null) {
             JOptionPane.showMessageDialog(this,
                 "Debe seleccionar una edición.",
@@ -146,27 +138,32 @@ public class ConsultaEdicionFrame extends JInternalFrame {
             return;
         }
 
-        // Mock de datos detallados
-        String organizador = "Ana López";
-        String ciudad = "Montevideo";
-        String pais = "Uruguay";
-        String fechaInicio = "01/09/2025";
-        String fechaFin = "03/09/2025";
-        String registros = "520 registrados (General: 400, Estudiante: 100, Speaker: 20)";
-        String patrociniosInfo = "3 patrocinios activos: Empresa A, Empresa B, Startup X";
+        Evento evento = (Evento) comboEventos.getSelectedItem();
+
+        // Obtener datos de la edición
+        String nombreEdicion = edicion.getNombre();
+        String sigla = edicion.getSigla();
+        String ciudad = edicion.getCiudad();
+        String pais = edicion.getPais();
+        String fechaInicio = edicion.getFechaInicio().toString();
+        String fechaFin = edicion.getFechaFin().toString();
+        String organizador = edicion.getOrganizador().getNickname();
+        int totalRegistros = edicion.getTiposdeRegistros().size();
+        // Si no, podés mostrar un placeholder
+        String registrosInfo = totalRegistros + " registrados (detalle no disponible)";
 
         areaDetalles.setText(
             "=== DETALLES DE LA EDICIÓN ===\n\n" +
-            "Edición: " + edicion + "\n" +
-            "Evento: " + comboEventos.getSelectedItem() + "\n" +
+            "Edición: " + nombreEdicion + "\n" +
+            "Sigla: " + sigla + "\n" +
+            "Evento: " + evento.getNombre() + "\n" +
             "Organizador: " + organizador + "\n" +
             "Ciudad: " + ciudad + "\n" +
             "País: " + pais + "\n" +
             "Fecha Inicio: " + fechaInicio + "\n" +
             "Fecha Fin: " + fechaFin + "\n" +
-            "Registros: " + registros + "\n" +
-            "Patrocinios: " + patrociniosInfo + "\n\n" +
-            "Observaciones: Edición confirmada, todos los servicios contratados."
+            "Registros: " + registrosInfo + "\n\n" +
+            "Observaciones: Edición activa, todos los servicios confirmados."
         );
     }
 }

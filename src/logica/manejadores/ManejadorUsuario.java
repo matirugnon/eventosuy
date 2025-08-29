@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import logica.Organizador;
 import logica.Usuario;
 
 /**
@@ -44,19 +45,8 @@ public class ManejadorUsuario {
         return ((Usuario) usuariosNick.get(nick));
     }
 
-    public Usuario[] getUsuarios() {
-        if (usuariosNick.isEmpty())
-            return null;
-        else {
-            Collection<Usuario> usrs = usuariosNick.values();
-            Object[] o = usrs.toArray();
-            Usuario[] usuarios = new Usuario[o.length];
-            for (int i = 0; i < o.length; i++) {
-                usuarios[i] = (Usuario) o[i];
-            }
-
-            return usuarios;
-        }
+    public Set<Usuario> getUsuarios() {
+        return new HashSet<>(usuariosNick.values());
     }
     
     public Set<String> obtenerNicksOrganizadores() {
