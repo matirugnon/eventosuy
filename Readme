@@ -7,7 +7,7 @@ CU :: Consulta de Evento
 CU :: Alta de Edición de Evento	 	 	 
 CU :: Consulta de Edición de Evento	 	 	 
 CU :: Alta de Tipo de Registro	 (Hecho solo logica)	 	 
-CU :: Consulta de Tipo de Registro	 	 	 
+CU :: Consulta de Tipo de Registro	 (Hecho solo logica)	 	 
 CU :: Registro a Edición de Evento	 	 	 
 CU ;; Consulta de Registro	 	 	 
 CU :: Alta de Institución	NO	obligatorio	 	 
