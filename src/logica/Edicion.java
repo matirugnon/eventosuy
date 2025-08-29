@@ -2,12 +2,13 @@ package logica;
 
 import java.awt.Component;
 import java.time.LocalDate;
-
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import java.util.Set;
 
+import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
 import logica.TipoDeRegistro;
 
@@ -86,6 +87,18 @@ public class Edicion{
 
 	public Set<String> getNombresTiposDeRegistro(){
 		return tiposDeRegistro.keySet();
+	}
+
+	public Set<Patrocinio> getPatrocinios() {
+
+		return (Set<Patrocinio>) patrocinios.values();
+	}
+
+	public DTEdicion getDTEdicion() {
+
+		//-------------IMPLEMENTAR---------------
+
+		return null;
 	}
 
 

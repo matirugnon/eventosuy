@@ -1,6 +1,7 @@
 
 package logica.Controladores;
 
+import java.util.List;
 import java.util.Set;
 
 import excepciones.UsuarioNoExisteException;
@@ -15,7 +16,6 @@ import logica.DatatypesYEnum.DTFecha;
  */
 public interface IControladorUsuario {
 
-
 	public void altaUsuario(Usuario u);
 
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException;
@@ -25,17 +25,24 @@ public interface IControladorUsuario {
 
     //funcion que ya venia con ejemplo
     public abstract DataUsuario verInfoUsuario(String ci) throws UsuarioNoExisteException;
-    //funcion que ya venia con ejemplo
-    public abstract DataUsuario[] getUsuarios() throws UsuarioNoExisteException;
 
 
     public boolean ExisteNickname(String nick);
+
+    public boolean ExisteCorreo(String correo);
+
+  
+
+    //public List<Usuario> listarUsuarios();
+
 
     public void AsociarInstitucion(String nick, String nombreInstitucion);
     
     public Set<String> listarOrganizadores();
     
     public Set<String> listarUsuarios();
+
+
 }
 
 
