@@ -58,11 +58,11 @@ public class Edicion{
     public String getPais()         { return pais; }
 
     public String getSigla()        { return sigla;}
-    
+
     public void setOrganizador(Organizador o) {
         organizador = o;
     }
-    
+
 	public boolean existeTipoDeRegistro(String nombreTipo) {
 		return tiposDeRegistro.containsKey(nombreTipo);
 	}
@@ -79,11 +79,11 @@ public class Edicion{
 		// TODO Auto-generated method stub
 		return tiposDeRegistro;
 	}
-	
+
 	public TipoDeRegistro getTipoDeRegistro(String nombreReg) {
 		return this.tiposDeRegistro.get(nombreReg);
 	}
-	
+
 	public Set<String> getNombresTiposDeRegistro(){
 		return tiposDeRegistro.keySet();
 	}

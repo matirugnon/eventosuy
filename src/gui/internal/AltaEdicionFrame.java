@@ -190,10 +190,10 @@ public class AltaEdicionFrame extends JInternalFrame {
         ControladorEvento ctrlEvento = ControladorEvento.getInstance();
         try {
             ctrlEvento.AltaEdicion(
+            	evento.getNombre(),
+                organizador.getNickname(),
                 nombre, sigla, ciudad, pais,
-                inicio, fin, alta,
-                evento.getNombre(),
-                organizador.getNickname()
+                inicio, fin, alta
             );
 
             JOptionPane.showMessageDialog(this,
