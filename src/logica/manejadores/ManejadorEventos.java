@@ -96,6 +96,9 @@ public class ManejadorEventos {
 
     }
     
+    public boolean existeEdicion(String nomEdicion) {
+        return ediciones.containsKey(nomEdicion);
+    }
 
 
 

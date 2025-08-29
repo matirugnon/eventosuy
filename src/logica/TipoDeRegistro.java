@@ -16,5 +16,8 @@ public class TipoDeRegistro{
 
 	}
 
-
+	public String getNombre() { return nombre; }
+    public String getDescripcion() {return descripcion; }
+    public float getCosto() { return costo; }
+    public int getCupo() { return cupo; }
 }

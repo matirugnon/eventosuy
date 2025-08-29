@@ -149,6 +149,12 @@ public class ControladorUsuario implements IControladorUsuario {
     public void modificarUsuario(String nick, DTUsuario datosUsuario) {
 
     }
+    
+    
+    public Set<String> listarOrganizadores(){
+        ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+        return manejadorU.obtenerNicksOrganizadores();
+    }
 
 
 

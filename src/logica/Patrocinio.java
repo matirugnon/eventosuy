@@ -19,7 +19,10 @@ public class Patrocinio{
 		nivel = niv;
 	}
 
-
+	  public DTFecha getFechaAlta() { return fechaAlta; }
+	    public float getMonto() { return monto; }
+	    public int getCodigo() { return codigo; }
+	    public NivelPatrocinio getNivel() { return nivel; }
 
 
 }

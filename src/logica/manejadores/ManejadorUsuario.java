@@ -2,7 +2,9 @@ package logica.manejadores;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import logica.Usuario;
 
@@ -56,5 +58,20 @@ public class ManejadorUsuario {
             return usuarios;
         }
     }
+    
+    public Set<String> obtenerNicksOrganizadores() {
+        Set<String> res = new HashSet<>();
+        for (Usuario u : usuariosNick.values()) {
+            if (u instanceof logica.Organizador) {   // ajustá el paquete si difiere
+                res.add(u.getNickname());
+            }
+        }
+        return res;  // si no hay, vuelve vacío
+    }
+    
+    
 
 }
+
+
+

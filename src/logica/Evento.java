@@ -26,6 +26,10 @@ public class Evento {
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<Categoria> getCategorias() { return categorias; }
     public Set<Edicion> getEdiciones() { return ediciones; }
+    public void agregarEdicion(Edicion ed) {
+        ediciones.add(ed);
+    }
+    
 }
 
 

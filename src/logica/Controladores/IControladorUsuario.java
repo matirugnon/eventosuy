@@ -1,5 +1,7 @@
 package logica.Controladores;
 
+import java.util.Set;
+
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.DataUsuario;
@@ -29,5 +31,7 @@ public interface IControladorUsuario {
     public boolean ExisteNickname(String nick);
 
     public void AsociarInstitucion(String nick, String nombreInstitucion);
+    
+    public Set<String> listarOrganizadores();
 }
 
