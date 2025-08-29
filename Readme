@@ -1,6 +1,6 @@
 	 	 	 
 CU :: Alta de Usuario	 	(Hecho) 	 
-CU :: Consulta de Usuario	 	 (Hecho solo logica)	 
+CU :: Consulta de Usuario	 	 (Hecho)	 
 CU :: Modificar Datos de Usuario	NO	obligatorio 	 
 CU :: Alta de Evento	 	 	 (Hecho)
 CU :: Consulta de Evento	 	 (Hecho falta aconectar con logica)	 
