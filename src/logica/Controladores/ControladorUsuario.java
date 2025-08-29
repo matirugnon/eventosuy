@@ -25,10 +25,6 @@ public class ControladorUsuario implements IControladorUsuario {
 	private ManejadorUsuario manejador;
 	private static ControladorUsuario instancia = null;
 
-
-
-
-
     public ControladorUsuario() {
 
     	//inicializo el manejador
@@ -124,8 +120,8 @@ public class ControladorUsuario implements IControladorUsuario {
     public void modificarUsuario(String nick, DTUsuario datosUsuario) {
 
     }
-    
-    
+
+
     public Set<String> listarOrganizadores(){
         ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
         return manejadorU.obtenerNicksOrganizadores();

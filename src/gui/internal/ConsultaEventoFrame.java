@@ -8,6 +8,7 @@ import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
 import logica.Controladores.ControladorEvento;
+import logica.manejadores.ManejadorEventos;
 
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -85,7 +86,12 @@ public class ConsultaEventoFrame extends JInternalFrame {
     }
 
     private void mostrarDatosEvento() {
-        Evento evento = (Evento) comboEventos.getSelectedItem();
+        String eventoS = (String) comboEventos.getSelectedItem();
+
+        ManejadorEventos mEventos = ManejadorEventos.getInstance();
+
+        Evento evento = mEventos.obtenerEvento(eventoS);
+
         if (evento == null) return;
 
         // Formato de fecha
@@ -111,16 +117,29 @@ public class ConsultaEventoFrame extends JInternalFrame {
             listaCategorias.setListData(cats.toArray(new String[0]));
         }
 
-
-
         // Ediciones
-        Set<Edicion> ediciones = evento.getEdiciones();
-        String[] columnas = {"Nombre", "Sigla", "Ciudad", "País"};
-        Object[][] datos = ediciones.stream()
-            .map(e -> new Object[]{e.getNombre(), e.getSigla(), e.getCiudad(), e.getPais()})
-            .toArray(Object[][]::new);
+        Set<String> ediciones = evento.getEdiciones(); //esto cambio
 
-        tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
+
+        if (ediciones == null || ediciones.isEmpty()) {
+            tablaEdiciones.setModel(new DefaultTableModel(
+                new Object[][]{{"(Sin ediciones)"}},
+                new String[]{"Nombre"}
+            ));
+        }else {
+
+        	Object[][] datos = ediciones.stream()
+        	        .map(nombre -> new Object[]{nombre})
+        	        .toArray(Object[][]::new);
+
+        	    String[] columnas = {"Nombre"};
+        	    tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
+
+
+
+        }
+
+
     }
 
     private void verEdicion() {

@@ -95,9 +95,10 @@ public class ControladorEvento implements IControladorEvento {
 
         Set<String> nombresEdiciones = new HashSet<>();
         if (e.getEdiciones() != null) {
-            for (Edicion ed : e.getEdiciones()) {
-                if (ed != null && ed.getNombre() != null) {
-                    nombresEdiciones.add(ed.getNombre());
+            for (String ed : e.getEdiciones()) {
+
+                if (ed != "") {
+                    nombresEdiciones.add(ed);
                 }
             }
         }
@@ -107,9 +108,10 @@ public class ControladorEvento implements IControladorEvento {
 
     public DTEdicion consultarEdicion(String nomEdicion) {
     	Edicion e = manejadorE.obtenerEdicion(nomEdicion);
-    	DTEdicion dte = new DTEdicion(e);
+
+    	DTEdicion dte = e.getDTEdicion();
     	return dte;
-    }
+    }//responsabilizar a evento por la creacion del DT
 
 
 	//altaCategoria
@@ -166,11 +168,11 @@ public class ControladorEvento implements IControladorEvento {
 	        throw new IllegalArgumentException("No existe el evento: " + nomEvento);
 	    }
 
-	    Set<Edicion> eds = e.getEdiciones();
+	    Set<String> eds = e.getEdiciones();
 	    Set<String> nombres = new java.util.HashSet<>();
 	    if (eds != null) {
-	        for (Edicion ed : eds) {
-	            if (ed != null) nombres.add(ed.getNombre());
+	        for (String ed : eds) {
+	            if (ed != null) nombres.add(ed);
 	        }
 	    }
 	    return nombres;
@@ -185,6 +187,7 @@ public class ControladorEvento implements IControladorEvento {
 	    }
 
 	    Set<Patrocinio> pats = ed.getPatrocinios();
+
 	    if (pats == null || pats.isEmpty()) {
 	        throw new IllegalArgumentException("La edición '" + nomEdicion + "' no tiene patrocinios.");
 	    }

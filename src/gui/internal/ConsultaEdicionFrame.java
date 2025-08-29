@@ -3,6 +3,7 @@ package gui.internal;
 import logica.Controladores.ControladorEvento;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
+import logica.manejadores.ManejadorEventos;
 import logica.Evento;
 import logica.Edicion;
 
@@ -134,7 +135,12 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void onEventoSeleccionado() {
-        Evento evento = (Evento) comboEventos.getSelectedItem();
+        String eventoS = (String) comboEventos.getSelectedItem();
+
+        ManejadorEventos mEventos = ManejadorEventos.getInstance();
+
+        Evento evento = mEventos.obtenerEvento(eventoS);
+
         comboEdiciones.removeAllItems();
         comboEdiciones.setEnabled(false);
 
@@ -176,10 +182,11 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         String organizador = dte.getOrganizador();
         int totalRegistros = dte.getTiposDeRegistro().size();
 
+        //falta poner que liste tipos de registro registros
 
 
+        //-------------------ACA--------------------------
 
-        String registrosInfo = totalRegistros + " registrados (detalle no disponible)";
 
         areaDetalles.setText(
             "=== DETALLES DE LA EDICIÓN ===\n\n" +
@@ -191,7 +198,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
             "País: " + pais + "\n" +
             "Fecha Inicio: " + fechaInicio + "\n" +
             "Fecha Fin: " + fechaFin + "\n" +
-            "Registros: " + registrosInfo + "\n\n" +
+            "Registros: " + totalRegistros + " registrados" + "\n\n" +
             "Observaciones: Edición activa, todos los servicios confirmados."
         );
     }
