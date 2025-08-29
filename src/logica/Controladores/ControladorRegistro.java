@@ -35,13 +35,13 @@ public class ControladorRegistro implements IControladorRegistro {
 		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo);
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
-	
+
 	public Set<String> listarTipoRegistro(String nombreEd) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
 		return ed.getNombresTiposDeRegistro();
 	}
-	
+
 	public DTTipoDeRegistro consultaTipoDeRegistro(String nombreEd, String nombreReg) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
