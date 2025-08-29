@@ -1,15 +1,15 @@
 	 	 	 
-CU :: Alta de Usuario	 	 	 
-CU :: Consulta de Usuario	 	 	 
+CU :: Alta de Usuario	 	(Hecho) 	 
+CU :: Consulta de Usuario	 	 (Hecho solo logica)	 
 CU :: Modificar Datos de Usuario	NO	obligatorio 	 
-CU :: Alta de Evento	 	 	 
-CU :: Consulta de Evento	 	 	 
-CU :: Alta de Edición de Evento	 	 	 
-CU :: Consulta de Edición de Evento	 	 	 
+CU :: Alta de Evento	 	 	 (Hecho)
+CU :: Consulta de Evento	 	 (Hecho falta aconectar con logica)	 
+CU :: Alta de Edición de Evento	 	 	 (Hecho todo)
+CU :: Consulta de Edición de Evento	 	 (en proceso)	 
 CU :: Alta de Tipo de Registro	 (Hecho solo logica)	 	 
 CU :: Consulta de Tipo de Registro	 (Hecho solo logica)	 	 
-CU :: Registro a Edición de Evento	 	 	 
-CU ;; Consulta de Registro	 	 	 
+CU :: Registro a Edición de Evento (falta)	 	 	 
+CU ;; Consulta de Registro	 (falta)	 	 
 CU :: Alta de Institución	NO	obligatorio	 	 
 CU :: Alta de Patrocinio	NO	obligatorio
 CU :: Consulta de Patrocinio	NO	obligatorio
