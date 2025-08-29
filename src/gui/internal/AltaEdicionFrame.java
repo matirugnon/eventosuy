@@ -155,10 +155,12 @@ public class AltaEdicionFrame extends JInternalFrame {
 
         // Validar nombre duplicado
         if (existeEdicion(nombre)) {
-            int opt = JOptionPane.showConfirmDialog(this,
-                "Ya existe una edición con ese nombre.\n¿Desea continuar igual?",
-                "Nombre duplicado", JOptionPane.YES_NO_OPTION);
-            if (opt == JOptionPane.NO_OPTION) return;
+            JOptionPane.showMessageDialog(this,
+                "Ya existe una edición con el nombre '" + nombre + "'.\n"
+                + "Por favor, elija un nombre diferente.",
+                "Nombre duplicado", JOptionPane.ERROR_MESSAGE);
+            txtNombre.requestFocus();
+            return;
         }
 
         // Parsear fechas a DTFecha

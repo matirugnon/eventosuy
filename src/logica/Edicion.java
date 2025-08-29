@@ -2,8 +2,10 @@ package logica;
 
 import java.awt.Component;
 import java.time.LocalDate;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import java.util.Set;
@@ -87,6 +89,7 @@ public class Edicion{
 	}
 
 	public Set<String> getNombresTiposDeRegistro(){
+
 		return tiposDeRegistro.keySet();
 	}
 
@@ -96,10 +99,29 @@ public class Edicion{
 	}
 
 	public DTEdicion getDTEdicion() {
+
 	    String nicknameOrganizador = organizador != null ? organizador.getNickname() : "Sin organizador";
 
 	    // Obtener los nombres de los tipos de registro
 	    Set<String> nombresTiposDeRegistro = getNombresTiposDeRegistro();
+
+	    Set<Map.Entry<String, String>> registrosData = new HashSet<>();
+
+	    for (TipoDeRegistro tipo : tiposDeRegistro.values()) {
+	        Set<Registro> registros = tipo.getRegistros();
+	        for (Registro reg : registros) {
+	            String nombreAsistente = reg.getAsistente();        // ✅ Ya es String
+	            String nombreTipo = reg.getNomTipo();          // "Estudiante", "Profesional", etc.
+
+	            // Crear par (asistente, tipoRegistro)
+	            Map.Entry<String, String> entry = new AbstractMap.SimpleImmutableEntry<>(nombreAsistente, nombreTipo);
+	            registrosData.add(entry);
+	        }
+	    }
+
+
+
+
 	    Set<DTRegistro> registrosDT = null;
 
 	    // Construir y devolver el DTEdicion
@@ -113,7 +135,7 @@ public class Edicion{
 	        this.pais,
 	        nicknameOrganizador,
 	        nombresTiposDeRegistro,
-	        registrosDT
+	        registrosData
 	    );
 	}
 
