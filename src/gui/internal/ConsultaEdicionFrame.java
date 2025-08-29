@@ -79,9 +79,10 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
-
         comboTipoDeRegistros = new JComboBox<>();
         comboPatrocinios = new JComboBox<>();
+
+
 
 
 
