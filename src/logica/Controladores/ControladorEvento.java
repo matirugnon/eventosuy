@@ -3,18 +3,20 @@ package logica.Controladores;
 import java.util.Map;
 import java.time.LocalDate;
 import java.util.HashSet;
-
+import java.util.List;
 import java.util.Set;
 
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
 import logica.Organizador;
+import logica.Usuario;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTSeleccionEvento;
 import logica.manejadores.ManejadorEventos;
+import logica.manejadores.ManejadorUsuario;
 
 public class ControladorEvento implements IControladorEvento {
 
@@ -114,8 +116,19 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
-	public void AltaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin,
-			DTFecha alta, String nombre2, String nickname) {
+	public void AltaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin, DTFecha alta, String nombreEvento, String nombreOrg) {
+
+
+		Evento ev = manejadorE.obtenerEvento(nombreEvento);
+
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+
+		Organizador org = (Organizador) mu.obtenerUsuario(nombreOrg); //castee a organzizador
+
+		Edicion ed = ev.NuevaEdicion(nombre,sigla,ciudad,pais,inicio,fin,alta,org);
+
+		org.agregarEdicion(ed);
+
 	}
 
 	public boolean existeEdicion(String nombre) {
@@ -125,8 +138,20 @@ public class ControladorEvento implements IControladorEvento {
 
 
 	public Set<Organizador> listarOrganizadores() {
-		// TODO Auto-generated method stub
-		return null;
+	    Set<Organizador> organizadores = new HashSet<>();
+
+	    // Obtener instancia del controlador de usuarios
+	    ControladorUsuario ctrlUsuario = ControladorUsuario.getInstance();
+	    List<Usuario> todosLosUsuarios = ctrlUsuario.listarUsuarios(); // Ya tienes este método
+
+	    // Filtrar los que son Organizador
+	    for (Usuario u : todosLosUsuarios) {
+	        if (u instanceof Organizador) {
+	            organizadores.add((Organizador) u);
+	        }
+	    }
+
+	    return organizadores;
 	}
 
 }

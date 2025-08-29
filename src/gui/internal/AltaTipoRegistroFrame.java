@@ -1,6 +1,9 @@
 package gui.internal;
 
 import javax.swing.*;
+
+import logica.Controladores.ControladorRegistro;
+
 import java.awt.*;
 
 @SuppressWarnings("serial")
@@ -8,6 +11,9 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
     private JComboBox<String> comboEventos;
     private JComboBox<String> comboEdiciones;
     private JTextField txtNombre, txtDescripcion, txtCosto, txtCupo;
+
+
+    private ControladorRegistro contrR;
 
     public AltaTipoRegistroFrame() {
         super("Alta de Tipo de Registro", true, true, true, true);
@@ -75,6 +81,11 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
     }
 
     private void confirmarAlta() {
+
+    	//instancia de controlador registro
+    	contrR = ControladorRegistro.getInstance();
+
+
         String evento = (String) comboEventos.getSelectedItem();
         String edicion = (String) comboEdiciones.getSelectedItem();
         String nombre = txtNombre.getText().trim();
@@ -92,8 +103,9 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
             double costo = Double.parseDouble(costoStr);
             int cupo = Integer.parseInt(cupoStr);
 
-            // Validación mock: nombre duplicado
-            if ("General".equalsIgnoreCase(nombre)) {
+            //validacion nombre duplicado
+
+            if (contrR.existeTipoDeRegistro(edicion, nombre)) {
                 int opt = JOptionPane.showConfirmDialog(this,
                         "El nombre de tipo de registro ya existe en esta edición.\n¿Desea modificarlo?",
                         "Nombre duplicado", JOptionPane.YES_NO_OPTION);
@@ -103,7 +115,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
                 return;
             }
 
-            // Mock: mostrar datos de alta
+            //mostrar datos de alta
             JOptionPane.showMessageDialog(this,
                     "Tipo de registro creado:\n" +
                             "Evento: " + evento + "\n" +
@@ -113,6 +125,8 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
                             "Costo: " + costo + "\n" +
                             "Cupo: " + cupo,
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            contrR.altaTipoDeRegistro(edicion, nombre, descripcion, costo, cupo);
 
             dispose();
 

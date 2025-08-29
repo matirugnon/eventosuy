@@ -111,8 +111,8 @@ public class AltaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarOrganizadores() {
-        ControladorEvento ctrlUsuario = ControladorEvento.getInstance(); // asumiendo que también maneja usuarios
-        var organizadores = ctrlUsuario.listarOrganizadores(); // debe devolver Set<Usuario>
+        ControladorEvento ctrlEvento = ControladorEvento.getInstance();
+        var organizadores = ctrlEvento.listarOrganizadores();
 
         comboOrganizadores.removeAllItems();
         for (Usuario org : organizadores) {

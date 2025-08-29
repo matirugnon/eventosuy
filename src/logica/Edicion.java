@@ -22,7 +22,7 @@ public class Edicion{
 	private Map<String, TipoDeRegistro> tiposDeRegistro;
 	private Map<Integer,Patrocinio> patrocinios;
 
-	public Edicion(String nom, DTFecha ini, DTFecha fin, String ciu, String p, String s) {
+	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org) {
 
 		nombre = nom;
 		fechaInicioDtFecha = ini;
@@ -31,8 +31,15 @@ public class Edicion{
 		pais = p;
 		sigla = s;
 
+		organizador = org;
+
+		fechaInicioDtFecha = ini;
+		fechafinDtFecha = fin;
+		altaEdicionDtFecha = alta;
+
 		this.tiposDeRegistro = new HashMap<>();
 		this.patrocinios = new HashMap<>();
+
 		//no me acuerdo como poner localdate :)
 	}
 
@@ -58,8 +65,7 @@ public class Edicion{
 	}
 
 	public Organizador getOrganizador() {
-		// TODO Auto-generated method stub
-		return null;
+		return organizador;
 	}
 
 	public Map<String, TipoDeRegistro> getTiposdeRegistros() {
