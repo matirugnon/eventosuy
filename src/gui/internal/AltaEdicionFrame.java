@@ -1,6 +1,7 @@
 package gui.internal;
 
 import logica.Controladores.ControladorEvento;
+import logica.Controladores.ControladorUsuario;
 import logica.Evento;
 import logica.Usuario;
 
@@ -9,12 +10,13 @@ import logica.DatatypesYEnum.DTFecha;
 import javax.swing.*;
 import java.awt.*;
 import java.time.DateTimeException;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class AltaEdicionFrame extends JInternalFrame {
 
     private JComboBox<String> comboEventos;
-    private JComboBox<Usuario> comboOrganizadores;
+    private JComboBox<String> comboOrganizadores;
     private JTextField txtNombre, txtSigla, txtCiudad, txtPais;
     private JFormattedTextField txtFechaInicio, txtFechaFin, txtFechaAlta;
 
@@ -111,11 +113,12 @@ public class AltaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarOrganizadores() {
-        ControladorEvento ctrlEvento = ControladorEvento.getInstance();
-        var organizadores = ctrlEvento.listarOrganizadores();
+
+        ControladorUsuario ctrlU = ControladorUsuario.getInstance();
+        Set<String> organizadores = ctrlU.listarOrganizadores();
 
         comboOrganizadores.removeAllItems();
-        for (Usuario org : organizadores) {
+        for (String org : organizadores) {
             comboOrganizadores.addItem(org);
         }
 
@@ -128,7 +131,7 @@ public class AltaEdicionFrame extends JInternalFrame {
 
     private void confirmarAlta() {
         String evento = (String) comboEventos.getSelectedItem();
-        Usuario organizador = (Usuario) comboOrganizadores.getSelectedItem();
+        String organizador = (String) comboOrganizadores.getSelectedItem();
 
         String nombre = txtNombre.getText().trim();
         String sigla = txtSigla.getText().trim();
@@ -191,7 +194,7 @@ public class AltaEdicionFrame extends JInternalFrame {
         try {
             ctrlEvento.AltaEdicion(
             	evento,
-                organizador.getNickname(),
+                organizador,
                 nombre, sigla, ciudad, pais,
                 inicio, fin, alta
             );

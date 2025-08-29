@@ -10,6 +10,7 @@ import logica.Registro;
 import logica.Usuario;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
+import logica.manejadores.ManejadorUsuario;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -77,9 +78,13 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     }
 
     private void cargarUsuarios() {
-        List<Usuario> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
-        for (Usuario usr : usuarios) {
-            comboUsuarios.addItem(usr);
+
+    	ManejadorUsuario mUsuario = ManejadorUsuario.getinstance();
+
+        Set<String> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
+        for (String usr : usuarios) {
+        	Usuario usuario = mUsuario.obtenerUsuario(usr);
+            comboUsuarios.addItem(usuario);
         }
     }
 

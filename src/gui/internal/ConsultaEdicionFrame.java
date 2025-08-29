@@ -76,7 +76,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
 
 
-        // Panel inferior: acciones 
+        // Panel inferior: acciones
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
@@ -180,13 +180,14 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         String fechaInicio = dte.getFechaInicio().toString();
         String fechaFin = dte.getFechaFin().toString();
         String organizador = dte.getOrganizador();
+
+
         int totalRegistros = dte.getTiposDeRegistro().size();
 
         //falta poner que liste tipos de registro registros
 
 
         //-------------------ACA--------------------------
-
 
         areaDetalles.setText(
             "=== DETALLES DE LA EDICIÓN ===\n\n" +
@@ -198,8 +199,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
             "País: " + pais + "\n" +
             "Fecha Inicio: " + fechaInicio + "\n" +
             "Fecha Fin: " + fechaFin + "\n" +
-            "Registros: " + totalRegistros + " registrados" + "\n\n" +
-            "Observaciones: Edición activa, todos los servicios confirmados."
+            "Registros: " + totalRegistros + " registrados" + "\n\n"
         );
     }
 }

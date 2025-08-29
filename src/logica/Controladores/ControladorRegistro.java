@@ -16,7 +16,7 @@ import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.manejadores.ManejadorEventos;
 
 public class ControladorRegistro implements IControladorRegistro {
-    
+
 
 
 	private static ControladorRegistro instancia = null;
@@ -58,8 +58,8 @@ public class ControladorRegistro implements IControladorRegistro {
 		TipoDeRegistro reg = ed.getTipoDeRegistro(nombreReg);
 		return reg.getDTTipoDeRegistro();
 	}
-	
-	
+
+
 	public Set<String> obtenerNomsTipoRegistro(String nickusuario) {
 	    ManejadorUsuario mu = ManejadorUsuario.getinstance();
 	    Usuario u = mu.obtenerUsuario(nickusuario);

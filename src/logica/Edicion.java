@@ -10,6 +10,7 @@ import java.util.Set;
 
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTRegistro;
 import logica.TipoDeRegistro;
 
 public class Edicion{
@@ -95,10 +96,25 @@ public class Edicion{
 	}
 
 	public DTEdicion getDTEdicion() {
+	    String nicknameOrganizador = organizador != null ? organizador.getNickname() : "Sin organizador";
 
-		//-------------IMPLEMENTAR---------------
+	    // Obtener los nombres de los tipos de registro
+	    Set<String> nombresTiposDeRegistro = getNombresTiposDeRegistro();
+	    Set<DTRegistro> registrosDT = null;
 
-		return null;
+	    // Construir y devolver el DTEdicion
+	    return new DTEdicion(
+	        this.nombre,
+	        this.sigla,
+	        this.fechaInicioDtFecha,
+	        this.fechafinDtFecha,
+	        this.altaEdicionDtFecha,
+	        this.ciudad,
+	        this.pais,
+	        nicknameOrganizador,
+	        nombresTiposDeRegistro,
+	        registrosDT
+	    );
 	}
 
 
