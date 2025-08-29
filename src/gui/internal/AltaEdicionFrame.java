@@ -13,7 +13,7 @@ import java.time.DateTimeException;
 @SuppressWarnings("serial")
 public class AltaEdicionFrame extends JInternalFrame {
 
-    private JComboBox<Evento> comboEventos;
+    private JComboBox<String> comboEventos;
     private JComboBox<Usuario> comboOrganizadores;
     private JTextField txtNombre, txtSigla, txtCiudad, txtPais;
     private JFormattedTextField txtFechaInicio, txtFechaFin, txtFechaAlta;
@@ -98,7 +98,7 @@ public class AltaEdicionFrame extends JInternalFrame {
         var eventos = ctrlEvento.listarEventos();
 
         comboEventos.removeAllItems();
-        for (Evento evento : eventos) {
+        for (String evento : eventos) {
             comboEventos.addItem(evento);
         }
 
@@ -127,7 +127,7 @@ public class AltaEdicionFrame extends JInternalFrame {
     }
 
     private void confirmarAlta() {
-        Evento evento = (Evento) comboEventos.getSelectedItem();
+        String evento = (String) comboEventos.getSelectedItem();
         Usuario organizador = (Usuario) comboOrganizadores.getSelectedItem();
 
         String nombre = txtNombre.getText().trim();
@@ -143,7 +143,7 @@ public class AltaEdicionFrame extends JInternalFrame {
             return;
         }
 
-        if (evento == null || organizador == null) {
+        if (evento == "" || organizador == null) {
             JOptionPane.showMessageDialog(this,
                 "Debe seleccionar un evento y un organizador.",
                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -190,7 +190,7 @@ public class AltaEdicionFrame extends JInternalFrame {
         ControladorEvento ctrlEvento = ControladorEvento.getInstance();
         try {
             ctrlEvento.AltaEdicion(
-            	evento.getNombre(),
+            	evento,
                 organizador.getNickname(),
                 nombre, sigla, ciudad, pais,
                 inicio, fin, alta

@@ -1,6 +1,8 @@
 package logica;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import logica.DatatypesYEnum.DTFecha;
 
@@ -11,7 +13,7 @@ public class Evento {
     private String descripcion;
     private DTFecha fechaEvento;
     private Set<String> categorias;
-    private Set<Edicion> ediciones;
+    private Map<String,Edicion> ediciones;
 
 
     public Evento(String nom, String desc, DTFecha fecha, String sig, Set<Categoria> categoriaObjetos) {
@@ -19,7 +21,7 @@ public class Evento {
         this.descripcion = desc;
         this.fechaEvento = fecha;
         this.sigla = sig;
-        this.ediciones = new HashSet<>();
+        this.ediciones = new HashMap<>();
 
 
         this.categorias = new HashSet<>();
@@ -34,12 +36,12 @@ public class Evento {
     public String getDescripcion() { return descripcion; }
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<String> getCategorias() { return new HashSet<>(categorias); }
-    public Set<Edicion> getEdiciones() { return ediciones; }
+    public Set<String> getEdiciones() { return ediciones.keySet(); }
 
     public void agregarEdicion(Edicion ed) {
-        ediciones.add(ed);
+        ediciones.put(ed.getNombre(),ed);
     }
-    
+
 
 
     @Override
@@ -51,7 +53,7 @@ public class Evento {
 
     	Edicion edicion = new Edicion(nombre, sigla, ciudad, pais, inicio, fin, alta,org);
 
-    	ediciones.add(edicion);
+    	ediciones.put(edicion.getNombre(),edicion);
 
 		return edicion;
     }

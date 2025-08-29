@@ -96,9 +96,9 @@ public class ManejadorEventos {
     }
 
 
-    public Set<Evento> listarEventos() {
-        // Devuelve una copia del conjunto de valores (los objetos Evento)
-        return new HashSet<>(eventos.values());
+    public Set<String> listarEventos() {
+
+        return new HashSet<>(eventos.keySet());
     }
 
     public void inicializarCategoriasDefault() {
@@ -119,7 +119,7 @@ public class ManejadorEventos {
 
     }
 
-    
+
     public boolean existeEdicion(String nomEdicion) {
         return ediciones.containsKey(nomEdicion);
     }

@@ -2,9 +2,12 @@ package gui.internal;
 
 import javax.swing.*;
 
+import logica.Evento;
+import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
 
 import java.awt.*;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class AltaTipoRegistroFrame extends JInternalFrame {
@@ -20,11 +23,19 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         setSize(600, 400);
         setLayout(new BorderLayout());
 
+
+        ControladorEvento contrEvento = ControladorEvento.getInstance();
+
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Combo de eventos
-        comboEventos = new JComboBox<>(new String[]{"ConfUdelar", "ExpoTech"});
+        comboEventos = new JComboBox<>();
+        // Cargar eventos desde el controlador
+        Set<String> eventos = contrEvento.listarEventos();
+        for (String evento : eventos) {
+            comboEventos.addItem(evento);
+        }
+
         form.add(new JLabel("Evento:"));
         form.add(comboEventos);
 

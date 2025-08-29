@@ -1,6 +1,8 @@
 package gui.internal;
 
 import logica.Controladores.ControladorEvento;
+import logica.DatatypesYEnum.DTEdicion;
+import logica.DatatypesYEnum.DTEvento;
 import logica.Evento;
 import logica.Edicion;
 
@@ -12,8 +14,13 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public class ConsultaEdicionFrame extends JInternalFrame {
 
-    private JComboBox<Evento> comboEventos;
-    private JComboBox<Edicion> comboEdiciones;
+    private JComboBox<String> comboEventos;
+    private JComboBox<String> comboEdiciones;
+
+    private JComboBox<String> comboTipoDeRegistros;
+    private JComboBox<String> comboPatrocinios;
+
+
     private JTextArea areaDetalles;
 
     // Formato de fecha
@@ -64,12 +71,24 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         areaDetalles.setFont(new Font("Monospaced", Font.PLAIN, 12));
         add(new JScrollPane(areaDetalles), BorderLayout.CENTER);
 
+
+
+
+
         // Panel inferior: acciones (puedes extenderlo después)
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
 
+        comboTipoDeRegistros = new JComboBox<>();
+        comboPatrocinios = new JComboBox<>();
+
+
+
+        panelAcciones.add(comboTipoDeRegistros);
         panelAcciones.add(btnVerTipoRegistro);
+
+        panelAcciones.add(comboPatrocinios);
         panelAcciones.add(btnVerPatrocinio);
         add(panelAcciones, BorderLayout.SOUTH);
 
@@ -99,10 +118,10 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
     private void cargarEventos() {
         ControladorEvento ctrl = ControladorEvento.getInstance();
-        Set<Evento> eventos = ctrl.listarEventos();
+        Set<String> eventos = ctrl.listarEventos();
 
         comboEventos.removeAllItems();
-        for (Evento evento : eventos) {
+        for (String evento : eventos) {
             comboEventos.addItem(evento);
         }
 
@@ -119,9 +138,9 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         comboEdiciones.setEnabled(false);
 
         if (evento != null) {
-            Set<Edicion> ediciones = evento.getEdiciones();
+            Set<String> ediciones = evento.getEdiciones();
             if (ediciones != null && !ediciones.isEmpty()) {
-                for (Edicion edicion : ediciones) {
+                for (String edicion : ediciones) {
                     comboEdiciones.addItem(edicion);
                 }
                 comboEdiciones.setEnabled(true);
@@ -130,33 +149,42 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void mostrarDetallesEdicion() {
-        Edicion edicion = (Edicion) comboEdiciones.getSelectedItem();
-        if (edicion == null) {
+        String edicionS = (String) comboEdiciones.getSelectedItem();
+
+        if (edicionS == "") {
             JOptionPane.showMessageDialog(this,
                 "Debe seleccionar una edición.",
                 "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        Evento evento = (Evento) comboEventos.getSelectedItem();
+        String evento = (String) comboEventos.getSelectedItem();
+
+
+        ControladorEvento cont = ControladorEvento.getInstance();
+
+        DTEdicion dte = cont.consultarEdicion(edicionS);
 
         // Obtener datos de la edición
-        String nombreEdicion = edicion.getNombre();
-        String sigla = edicion.getSigla();
-        String ciudad = edicion.getCiudad();
-        String pais = edicion.getPais();
-        String fechaInicio = edicion.getFechaInicio().toString();
-        String fechaFin = edicion.getFechaFin().toString();
-        String organizador = edicion.getOrganizador().getNickname();
-        int totalRegistros = edicion.getTiposdeRegistros().size();
-        // Si no, podés mostrar un placeholder
+        String nombreEdicion = dte.getNombre();
+        String sigla = dte.getSigla();
+        String ciudad = dte.getCiudad();
+        String pais = dte.getPais();
+        String fechaInicio = dte.getFechaInicio().toString();
+        String fechaFin = dte.getFechaFin().toString();
+        String organizador = dte.getOrganizador();
+        int totalRegistros = dte.getTiposDeRegistro().size();
+
+
+
+
         String registrosInfo = totalRegistros + " registrados (detalle no disponible)";
 
         areaDetalles.setText(
             "=== DETALLES DE LA EDICIÓN ===\n\n" +
             "Edición: " + nombreEdicion + "\n" +
             "Sigla: " + sigla + "\n" +
-            "Evento: " + evento.getNombre() + "\n" +
+            "Evento: " + evento + "\n" +
             "Organizador: " + organizador + "\n" +
             "Ciudad: " + ciudad + "\n" +
             "País: " + pais + "\n" +

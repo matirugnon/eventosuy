@@ -1,37 +1,36 @@
 package logica.DatatypesYEnum;
 
+import java.util.Set;
+
 import logica.Edicion;
 
 public class DTEdicion {
-    private final String nombre;
-    private final DTFecha fechaInicio;
-    private final DTFecha fechaFin;
-    private final DTFecha altaEdicion;
-    private final String ciudad;
-    private final String pais;
+    private  String nombre;
+    private  DTFecha fechaInicio;
+    private  DTFecha fechaFin;
+    private  DTFecha altaEdicion;
+    private  String ciudad;
+    private  String pais;
+    private  String sigla;
+    private  String organizador;
+    private  Set<Integer> patrocinios;
+    private  Set<String> tiposDeRegistro;
+    private Set<DTRegistro> registros;
 
-    public DTEdicion(String nombre,
-                     DTFecha fechaInicio,
-                     DTFecha fechaFin,
-                     DTFecha altaEdicion,
-                     String ciudad,
-                     String pais) {
+    public DTEdicion(String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad,  String pais, String org, Set<String> tdr,  Set<DTRegistro> reg ) {
+
         this.nombre = nombre;
+        this.sigla = sig;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.altaEdicion = altaEdicion;
         this.ciudad = ciudad;
         this.pais = pais;
-    }
+        organizador = org;
+        tiposDeRegistro = tdr;
+        registros = reg;
 
 
-    public DTEdicion(Edicion e) {
-        this(e.getNombre(),
-             e.getFechaInicio(),
-             e.getFechaFin(),
-             e.getAltaEdicion(),
-             e.getCiudad(),
-             e.getPais());
     }
 
     public String getNombre() { return nombre; }
@@ -40,4 +39,11 @@ public class DTEdicion {
     public DTFecha getAltaEdicion() { return altaEdicion; }
     public String getCiudad() { return ciudad; }
     public String getPais() { return pais; }
+	public String getSigla() {return sigla;}
+	public String getOrganizador() {return organizador;}
+	public Set<Integer> getPatrocinios() {return patrocinios;}
+	public Set<String> getTiposDeRegistro(){return tiposDeRegistro;}
+	public Set<DTRegistro> getRegistros(){return registros;}
+
+
 }

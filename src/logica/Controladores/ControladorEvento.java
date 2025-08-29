@@ -57,8 +57,13 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 	//listar
-	public Set<Evento> listarEventos() {
-	    return manejadorE.listarEventos();
+	public Set<String> listarEventos() {
+
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Set<String> eventos = manejador.listarEventos();
+
+		return eventos;
+
 	}
 
 	public Set<String> listarEdiciones(){

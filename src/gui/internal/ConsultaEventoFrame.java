@@ -16,7 +16,7 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ConsultaEventoFrame extends JInternalFrame {
-    private JComboBox<Evento> comboEventos; // Cambiado a Evento, no String
+    private JComboBox<String> comboEventos; // Cambiado a Evento, no String
     private JTextArea areaDatos;
     private JList<String> listaCategorias;
     private JTable tablaEdiciones;
@@ -29,14 +29,14 @@ public class ConsultaEventoFrame extends JInternalFrame {
 
         ControladorEvento contrEvento = ControladorEvento.getInstance();
 
-        // Cargar eventos desde el controlador
-        Set<Evento> eventos = contrEvento.listarEventos();
 
         // TOP: selección de evento
         JPanel topPanel = new JPanel();
         topPanel.add(new JLabel("Seleccione Evento:"));
         comboEventos = new JComboBox<>();
-        for (Evento evento : eventos) {
+
+        Set<String> eventos = contrEvento.listarEventos();
+        for (String evento : eventos) {
             comboEventos.addItem(evento);
         }
 
