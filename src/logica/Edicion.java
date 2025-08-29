@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import logica.DatatypesYEnum.DTFecha;
 
@@ -33,8 +34,6 @@ public class Edicion{
 
 		organizador = org;
 
-		fechaInicioDtFecha = ini;
-		fechafinDtFecha = fin;
 		altaEdicionDtFecha = alta;
 
 		this.tiposDeRegistro = new HashMap<>();
@@ -72,6 +71,13 @@ public class Edicion{
 		// TODO Auto-generated method stub
 		return tiposDeRegistro;
 	}
-
+	
+	public TipoDeRegistro getTipoDeRegistro(String nombreReg) {
+		return this.tiposDeRegistro.get(nombreReg);
+	}
+	
+	public Set<String> getNombresTiposDeRegistro(){
+		return tiposDeRegistro.keySet();
+	}
 
 }

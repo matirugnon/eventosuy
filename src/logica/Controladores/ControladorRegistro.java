@@ -1,7 +1,10 @@
 package logica.Controladores;
 
+import java.util.Set;
+
 import logica.Edicion;
 import logica.TipoDeRegistro;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.manejadores.ManejadorEventos;
 
 public class ControladorRegistro implements IControladorRegistro {
@@ -33,9 +36,16 @@ public class ControladorRegistro implements IControladorRegistro {
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
 	
-	public Set<String>listarTipoRegistro(String nombreEd) {
+	public Set<String> listarTipoRegistro(String nombreEd) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
-		return
+		return ed.getNombresTiposDeRegistro();
+	}
+	
+	public DTTipoDeRegistro consultaTipoDeRegistro(String nombreEd, String nombreReg) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nombreEd);
+		TipoDeRegistro reg = ed.getTipoDeRegistro(nombreReg);
+		return reg.getDTTipoDeRegistro();
 	}
 }
