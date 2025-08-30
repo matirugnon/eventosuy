@@ -41,6 +41,8 @@ public interface IControladorUsuario {
     public Set<String> listarOrganizadores();
     
     public Set<String> listarUsuarios();
+    
+    public Set<String> listarAsistentes();
 
 
 }

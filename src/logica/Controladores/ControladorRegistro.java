@@ -3,6 +3,7 @@ package logica.Controladores;
 import java.util.HashSet;
 import java.util.Set;
 
+import excepciones.UsuarioNoExisteException;
 import logica.Asistente;
 import logica.Edicion;
 import logica.Registro;
@@ -12,6 +13,7 @@ import logica.manejadores.ManejadorUsuario;
 import logica.TipoDeRegistro;
 import logica.Usuario;
 import logica.TipoDeRegistro;
+import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.manejadores.ManejadorEventos;
 
@@ -78,6 +80,39 @@ public class ControladorRegistro implements IControladorRegistro {
 	    // Caso 3: existe pero no es Asistente
 	    return null; // o Collections.emptySet()
 	}
+	
+	public boolean estaRegistrado(String nomEdicion, String nickAsistente) throws UsuarioNoExisteException {
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+		Usuario us = mu.obtenerUsuario(nickAsistente);
+		if (us instanceof Asistente as) {
+			for (Registro reg: as.getRegistros()) {
+				if(reg.getTipoDeRegistro().getNombreEdicion().equals(nomEdicion)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		else {
+			 throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
+		}
+	}
+	
+	public boolean alcanzoCupo(String nomEdicion, String nomTipoRegistro) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nomEdicion);
+		TipoDeRegistro tp = ed.getTipoDeRegistro(nomTipoRegistro);
+		return tp.alcanzoCupo();
+	}
 
+	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion ed = manejador.obtenerEdicion(nomEdicion);
+		TipoDeRegistro tp = ed.getTipoDeRegistro(nomTipoRegistro);
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+		Usuario us = mu.obtenerUsuario(nickAsistente);
+		Asistente as = (Asistente) us;
+		Registro reg = tp.altaRegistro(fechaRegistro, costo, as);
+		as.agregarRegistro(reg);
+	}
 }
 

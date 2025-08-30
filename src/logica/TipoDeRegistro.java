@@ -1,7 +1,9 @@
 package logica;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 
 public class TipoDeRegistro{
@@ -11,15 +13,19 @@ public class TipoDeRegistro{
 	private double costo;
 	private int cupo;
 
+	private Edicion edicion;
 	private CantidadTipoDeRegistro cantidadTipo;
 	private Set<Registro> registros;
 
-	public TipoDeRegistro(String nom, String desc, double cost, int c) {
+	public TipoDeRegistro(String nom, String desc, double cost, int c, Edicion ed) {
 
 		nombre = nom;
 		descripcion = desc;
 		costo = cost;
 		cupo = c;
+		edicion = ed;
+		cantidadTipo = null;
+		registros = new HashSet<>();
 
 	}
 
@@ -51,6 +57,18 @@ public class TipoDeRegistro{
 	public DTTipoDeRegistro getDTTipoDeRegistro() {
 		return new DTTipoDeRegistro(this.nombre, this.descripcion, this.costo,this.cupo);
 	}
+	
+	public String getNombreEdicion() {
+		return edicion.getNombre();
+	}
+	
+	public boolean alcanzoCupo() {
+		return this.cupo == registros.size();
+	}
 
-
+	public Registro altaRegistro(DTFecha fecha, double costo, Asistente asistente) {
+		Registro reg = new Registro( fecha, costo, this, asistente);
+		this.registros.add(reg);
+		return reg;
+	}
 }
