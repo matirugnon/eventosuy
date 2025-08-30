@@ -73,29 +73,29 @@ public class MainFrame extends JFrame {
 
 
         JMenuItem registroAEdicion = new JMenuItem("Registro a Edición");
-        registroAEdicion.addActionListener(e -> openInternal(new RegistroAEdicionFrame())); //cambiar a Registroaedicionf
+        registroAEdicion.addActionListener(e -> openInternal(new RegistroAEdicionFrame()));
         menuEventos.add(registroAEdicion);
 
-        
+
 
         // Menú Instituciones
         JMenu menuInstituciones = new JMenu("Instituciones");
         JMenuItem altaIns = new JMenuItem("Alta Institución");
-        //altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
+        altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
         menuInstituciones.add(altaIns);
-        
+
 
         // Menú Patrocinios
         JMenu menuPatrocinios = new JMenu("Patrocinios");
         menuPatrocinios.add(new JMenuItem("Alta Patrocinio"));
         menuPatrocinios.add(new JMenuItem("Consulta Patrocinio"));
-        
-        
-        
+
+
+
         //Menu Registros
         JMenu menuRegistros = new JMenu("Registros");
-        
-        
+
+
         JMenuItem altaTipoRegistro = new JMenuItem("Alta Tipo Registro");
         altaTipoRegistro.addActionListener(e -> openInternal(new AltaTipoRegistroFrame()));
         menuRegistros.add(altaTipoRegistro);
@@ -107,18 +107,18 @@ public class MainFrame extends JFrame {
         JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
         consultaRegistro.addActionListener(e -> openInternal(new ConsultaRegistroFrame()));
         menuRegistros.add(consultaRegistro);
-        
-        
+
+
         //menu cargar datos
         JMenu cargaDatosMenu = new JMenu("Cargar Datos");
         JMenuItem cargarDatos = new JMenuItem("Click para cargar datos");
-        
+
         //cargarDatos.addActionListener(e -> );
         //poner aca lo del controlador que cargue los datos de prueba
-        
+
         cargaDatosMenu.add(cargarDatos);
-        
-        
+
+
 
 
         //add menus
@@ -129,9 +129,9 @@ public class MainFrame extends JFrame {
         menuBar.add(menuRegistros);
         menuBar.add(cargaDatosMenu);
         return menuBar;
-        
-        
-        
+
+
+
     }
 
     private void openInternal(JInternalFrame frame) {

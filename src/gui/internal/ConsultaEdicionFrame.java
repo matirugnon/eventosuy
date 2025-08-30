@@ -111,22 +111,22 @@ public class ConsultaEdicionFrame extends JInternalFrame {
                 "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
         });
     }
-    
+
     private void cargarTipoRegistro() {
     	ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
     	comboTipoDeRegistros.removeAllItems();
-    	
-    	
+
+
     	String edicion = (String) comboEdiciones.getSelectedItem();
     	Set<String> tiposDeRegistro = ctrlRegistros.listarTipoRegistro(edicion);
     	for (String ed : tiposDeRegistro) {
     		comboTipoDeRegistros.addItem(ed);
     	}
     }
-    
+
     private void cargarPatrocinio() {
     	Controlador
-    	
+
     }
 
     private void cargarEventos() {
