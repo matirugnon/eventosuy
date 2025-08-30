@@ -82,7 +82,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         }
 
         comboUsuarios.setModel(model);
-        comboUsuarios.setSelectedIndex(0); // selecciona el primero
+        //comboUsuarios.setSelectedIndex(0); // selecciona el primero
     }
 
 
@@ -112,7 +112,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         }
         
         comboRegistros.setModel(model);
-        comboRegistros.setSelectedIndex(0);
+        //comboRegistros.setSelectedIndex(0);
     }
 
 
