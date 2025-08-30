@@ -1,11 +1,13 @@
 	package gui.internal;
 
+import logica.Edicion;
 import logica.Evento;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.DatatypesYEnum.DTPatrocinio;
 import logica.manejadores.ManejadorEventos;
 
 import javax.swing.*;
@@ -123,10 +125,27 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         });
 
         btnVerPatrocinio.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                "Funcionalidad de consulta de patrocinio\n" +
-                "Se abrirá un nuevo caso de uso más adelante.",
-                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
+        	String p = (String) comboPatrocinios.getSelectedItem();
+        	if (p == null) {
+        		JOptionPane.showMessageDialog(this,
+                        "Debe seleccionar un Patrocinio \n",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        	else {
+        		String edicion = (String) comboEdiciones.getSelectedItem();
+        		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+        		DTPatrocinio dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
+        		
+        		JOptionPane.showMessageDialog(this,
+                        "Codigo: " + dt.getCodigo() + "\n" +
+                        "Monto: " + dt.getMonto() + "\n" +
+                        "Nivel: " + dt.getNivel() + "\n" +
+                        "Edicion: " + edicion + "\n" +
+                       // "Institucion: " + dt.get + "\n" +
+                        "Fecha Alta: " + dt.getFechaAlta() + "\n", 
+                        "Detalles del Patrocinio:  " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
+        		
+        	}
         });
     }
     
@@ -143,8 +162,13 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
     
     private void cargarPatrocinio() {
-    	Controlador
-    	
+    	String edicion = (String) comboEdiciones.getSelectedItem();
+    	ManejadorEventos mEventos = ManejadorEventos.getInstance();
+    	Edicion ed = mEventos.obtenerEdicion(edicion);
+    	Set<String> patrocinios = ed.getNombresPatrocinios();
+    	for (String p : patrocinios) {
+    		comboPatrocinios.addItem(p);
+    	}	
     }
 
     private void cargarEventos() {
