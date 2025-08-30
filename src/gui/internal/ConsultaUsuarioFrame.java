@@ -10,11 +10,13 @@ import logica.Registro;
 import logica.Usuario;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -29,8 +31,8 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     private JButton btnVerDetalle;
     private JScrollPane scrollTabla;
 
-    private JComboBox<Usuario> comboUsuarios;
-    private JList<Object> listaResultados;
+    private JComboBox<String> comboUsuarios;
+    private JList<String> listaResultados;
 
     private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
     private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
@@ -53,7 +55,16 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         form.add(new JLabel("Seleccionar Usuario:"));
         comboUsuarios = new JComboBox<>();
         cargarUsuarios();
-        comboUsuarios.setRenderer(new UsuarioListRenderer());
+
+        ControladorUsuario controladorUsuario = ControladorUsuario.getInstance();
+        Set<String> usuarios = controladorUsuario.listarUsuarios();
+
+        for (String u : usuarios) {
+
+        	comboUsuarios.addItem(u);
+
+		}
+
         form.add(comboUsuarios);
 
         // --- Área de texto para datos del usuario ---
@@ -82,20 +93,25 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     	ManejadorUsuario mUsuario = ManejadorUsuario.getinstance();
         Set<String> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
         for (String usr : usuarios) {
-        	Usuario usuario = mUsuario.obtenerUsuario(usr);
-            comboUsuarios.addItem(usuario);
+            comboUsuarios.addItem(usr);
         }
     }
 
     private void actualizarListaSegunUsuario() {
-        Usuario seleccionado = (Usuario) comboUsuarios.getSelectedItem();
-        if (seleccionado == null) {
-            areaDatos.setText("");
-            listaResultados.setListData(new Object[0]);
+        String seleccionadoS = (String) comboUsuarios.getSelectedItem();
+
+        if (seleccionadoS == "") {
             return;
         }
 
         // Construir datos del usuario
+
+        ControladorUsuario contrU = ControladorUsuario.getInstance();
+
+        DTUsuario dtU = contrU.getDTUsuario(seleccionadoS);
+
+
+
         StringBuilder datos = new StringBuilder();
         datos.append("Nombre: ").append(seleccionado.getNombre()).append("\n");
         datos.append("Nickname: ").append(seleccionado.getNickname()).append("\n");
@@ -135,6 +151,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
         // Actualizar lista de elementos asociados (sin cambios)
         if (seleccionado instanceof Organizador) {
+
             Organizador org = (Organizador) seleccionado;
             Set<Edicion> ediciones = org.getEdiciones();
             if (ediciones.isEmpty()) {

@@ -132,7 +132,7 @@ public class ControladorUsuario implements IControladorUsuario {
         ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
         return manejadorU.obtenerNicksOrganizadores();
     }
-    
+
     public Set<String> listarAsistentes(){
     	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
     	return manejadorU.getNickAsistentes();
@@ -142,11 +142,11 @@ public class ControladorUsuario implements IControladorUsuario {
     	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
     	return manejadorU.existeInstitucion(nomInstitucion);
     }
-   
+
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web) {
     	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
     	Institucion ins = new Institucion(nombreInstitucion,descripcion,web);
-    	manejadorU.addInstitucion(ins);	
+    	manejadorU.addInstitucion(ins);
     }
 
     public Set<String> listarInstituciones(){
@@ -154,7 +154,16 @@ public class ControladorUsuario implements IControladorUsuario {
     	return manejadorU.getNombreInstituciones();
     }
 
-   
+
+	public DTUsuario getDTUsuario(String nombreU) {
+
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+		Usuario u = mu.obtenerUsuario(nombreU);
+
+		return u.getDTUsuario();
+	}
+
+
 
 
 

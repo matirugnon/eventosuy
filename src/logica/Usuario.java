@@ -1,5 +1,7 @@
 package logica;
 
+import logica.DatatypesYEnum.DTUsuario;
+
 /**
  * Representa a un usuario en el sistema con nombre, apellido y cédula de identidad.
  * @author TProg2017
@@ -37,7 +39,11 @@ public abstract class Usuario {
     public void setCorreo(String corr) {
     	correo = corr;
     }
-    
-    
+
+    public DTUsuario getDTUsuario() {
+    	return new DTUsuario(nickname,nombre,correo);
+    }
+
+
 
 }

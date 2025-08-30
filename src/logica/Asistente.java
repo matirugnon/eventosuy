@@ -3,7 +3,9 @@ package logica;
 import java.util.HashSet;
 import java.util.Set;
 
+import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTUsuario;
 
 public class Asistente extends Usuario {
 
@@ -51,13 +53,13 @@ public class Asistente extends Usuario {
 	public String getInstitucion() {
 		return institucion;
 	}
-	
-	
+
+
 	public Set<String> getNomsTipo() {
 	    Set<String> nombresTipos = new HashSet<>();
 	    for (Registro r : registros) {
 	        if (r != null) {
-	            String nombreTipo = r.getNomTipo(); 
+	            String nombreTipo = r.getNomTipo();
 	            if (nombreTipo != null) {
 	                nombresTipos.add(nombreTipo);
 	            }
@@ -65,6 +67,12 @@ public class Asistente extends Usuario {
 	    }
 	    return nombresTipos;
 	}
+
+	public DTUsuario getDTUsuario() {
+		return new DTAsistente(nickname, nombre,correo, apellido, fechaNacimiento, institucion);
+
+	}
+
 
 
 

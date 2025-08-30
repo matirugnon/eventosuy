@@ -69,16 +69,16 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        if (evento == null) return;
 	        else {
 	    		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
-	    		Set<String> ediciones = ctrlEventos.listarEdiciones();
+	    		Set<String> ediciones = ctrlEventos.listarEdiciones(evento);
 	    		for (String ed: ediciones) {
 	    			comboEdiciones.addItem(ed);
 	    		}
 	    	}
 	    }
-	    
+
 	    private void cargarEventos() {
 	    	comboEventos.removeAllItems();
-	    	
+
 	    	ControladorEvento ctrlEventos = ControladorEvento.getInstance();
     		Set<String> eventos = ctrlEventos.listarEventos();
     		for (String ev: eventos) {
@@ -113,7 +113,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        			"Nombre: " + dtTipoReg.getNombre() + "\n" +
 		                "Descripción: " + dtTipoReg.getDescripcion() + "\n" +
 		                "Costo: " + dtTipoReg.getCosto() + "\n" +
-		                "Cupo: " + dtTipoReg.getCupo() + "\n" 
+		                "Cupo: " + dtTipoReg.getCupo() + "\n"
 	        			);
 	        }
 	    }
