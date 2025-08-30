@@ -15,6 +15,13 @@ public class Institucion{
 	public String getNombre() {
 		return nombre;}
 
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+	
+	public String getSitioWeb() {
+		return this.sitioweb;
+	}
 
 
 
