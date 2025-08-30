@@ -78,18 +78,12 @@ public class MainFrame extends JFrame {
 
         
 
-
-
-
         // Menú Instituciones
         JMenu menuInstituciones = new JMenu("Instituciones");
-
-
         JMenuItem altaIns = new JMenuItem("Alta Institución");
         //altaIns.addActionListener(e -> openInternal(new AltaInstitucionFrame()));
-        menuEventos.add(altaIns);
-
-        menuInstituciones.add(new JMenuItem());
+        menuInstituciones.add(altaIns);
+        
 
         // Menú Patrocinios
         JMenu menuPatrocinios = new JMenu("Patrocinios");
@@ -115,6 +109,14 @@ public class MainFrame extends JFrame {
         menuRegistros.add(consultaRegistro);
         
         
+        //menu cargar datos
+        JMenu cargaDatosMenu = new JMenu("Cargar Datos");
+        JMenuItem cargarDatos = new JMenuItem("Click para cargar datos");
+        
+        //cargarDatos.addActionListener(e -> );
+        //poner aca lo del controlador que cargue los datos de prueba
+        
+        cargaDatosMenu.add(cargarDatos);
         
         
 
@@ -125,7 +127,7 @@ public class MainFrame extends JFrame {
         menuBar.add(menuInstituciones);
         menuBar.add(menuPatrocinios);
         menuBar.add(menuRegistros);
-
+        menuBar.add(cargaDatosMenu);
         return menuBar;
         
         

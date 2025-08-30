@@ -1,4 +1,4 @@
-package gui.internal;
+	package gui.internal;
 
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
