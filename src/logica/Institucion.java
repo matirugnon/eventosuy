@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Institucion{
@@ -14,6 +15,7 @@ public class Institucion{
 		this.nombre = nom;
 		this.descripcion = desc;
 		this.sitioweb = web;
+		this.patrocinios = new HashMap<>();
 	}
 
 	public String getNombre() {

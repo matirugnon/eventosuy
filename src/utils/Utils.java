@@ -8,6 +8,7 @@ import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
 import logica.Controladores.ControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Utils {
 
@@ -22,16 +23,16 @@ public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento
 
 		// Usuarios
 
-		ctrlUsuario.altaAsistente("atorres", "Ana", "atorres@gmail.com", "Torres", new DTFecha(1990,5,12), "Facultad de Ingeniería");
-		ctrlUsuario.altaAsistente("msilva", "Martin", "martin.silva@fing.edu.uy", "Silva", new DTFecha(1987,8,21), "Facultad de Ingeniería");
-		ctrlUsuario.altaAsistente("sofirod", "Sofia", "srodriguez@outlook.com", "Rodriguez", new DTFecha(1995,2,3), "Universidad Católica del Uruguay");
-		ctrlUsuario.altaAsistente("vale23", "Valentina", "valentina.costa@mail.com", "Costa", new DTFecha(1992,12,1), "");
-		ctrlUsuario.altaAsistente("luciag", "Lucía", "lucia.garcia@mail.com", "García", new DTFecha(1993,11,9), "");
-		ctrlUsuario.altaAsistente("andrearod", "Andrea", "andrea.rod@mail.com", "Rodríguez", new DTFecha(2000,6,10), "Agencia Nacional de Investigación e Innovación (ANII)");
-		ctrlUsuario.altaAsistente("AnaG", "Ana", "ana.gomez@hotmail.com", "Gómez", new DTFecha(1998,3,15), "");
-		ctrlUsuario.altaAsistente("JaviL", "Javier", "javier.lopez@outlook.com", "López", new DTFecha(1995,7,22), "");
-		ctrlUsuario.altaAsistente("MariR", "María", "maria.rodriguez@gmail.com", "Rodríguez", new DTFecha(2000,11,10), "");
-		ctrlUsuario.altaAsistente("SofiM", "Sofía", "sofia.martinez@yahoo.com", "Martínez", new DTFecha(1997,2,5), "");
+		ctrlUsuario.altaAsistente("atorres", "Ana", "atorres@gmail.com", "Torres", new DTFecha(12,5,1990), "Facultad de Ingeniería");
+		ctrlUsuario.altaAsistente("msilva", "Martin", "martin.silva@fing.edu.uy", "Silva", new DTFecha(21,8,1987), "Facultad de Ingeniería");
+		ctrlUsuario.altaAsistente("sofirod", "Sofia", "srodriguez@outlook.com", "Rodriguez", new DTFecha(3,2,1995), "Universidad Católica del Uruguay");
+		ctrlUsuario.altaAsistente("vale23", "Valentina", "valentina.costa@mail.com", "Costa", new DTFecha(1,12,1992), "");
+		ctrlUsuario.altaAsistente("luciag", "Lucía", "lucia.garcia@mail.com", "García", new DTFecha(9,11,1993), "");
+		ctrlUsuario.altaAsistente("andrearod", "Andrea", "andrea.rod@mail.com", "Rodríguez", new DTFecha(10,6,2000), "Agencia Nacional de Investigación e Innovación (ANII)");
+		ctrlUsuario.altaAsistente("AnaG", "Ana", "ana.gomez@hotmail.com", "Gómez", new DTFecha(15,3,1998), "");
+		ctrlUsuario.altaAsistente("JaviL", "Javier", "javier.lopez@outlook.com", "López", new DTFecha(22,7,1995), "");
+		ctrlUsuario.altaAsistente("MariR", "María", "maria.rodriguez@gmail.com", "Rodríguez", new DTFecha(10,11,2000), "");
+		ctrlUsuario.altaAsistente("SofiM", "Sofía", "sofia.martinez@yahoo.com", "Martínez", new DTFecha(5,2,1997), "");
 
 
 		ctrlUsuario.altaOrganizador("miseventos", "MisEventos", "contacto@miseventos.com", "Empresa de organización de eventos.", "https://miseventos.com");
@@ -57,47 +58,47 @@ public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento
 		ctrlEvento.altaCategoria("Investigación");
 
 		// Eventos
-		ctrlEvento.darAltaEvento("Conferencia de Tecnología", "Evento sobre innovación tecnológica", new DTFecha(2025,1,10), "CONFTEC", Set.of("Tecnología", "Innovación"));
-		ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(2025,2,1), "FERLIB", Set.of("Literatura", "Cultura"));
-		ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(2023,3,15), "MONROCK", Set.of("Cultura", "Música"));
-		ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(2022,1,1), "MARATON", Set.of("Deporte", "Salud"));
-		ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(2024,4,10), "COMICS", Set.of("Cultura", "Entretenimiento"));
-		ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(2024,12,12), "EXPOAGRO", Set.of("Agro", "Negocios"));
-		ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(2025,7,20), "MFASHION", Set.of("Cultura", "Moda"));
+		ctrlEvento.darAltaEvento("Conferencia de Tecnología", "Evento sobre innovación tecnológica", new DTFecha(1,10,2025), "CONFTEC", Set.of("Tecnología", "Innovación"));
+		ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(1,2,2025), "FERLIB", Set.of("Literatura", "Cultura"));
+		ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(15,3,2023), "MONROCK", Set.of("Cultura", "Música"));
+		ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(1,1,2022), "MARATON", Set.of("Deporte", "Salud"));
+		ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(10,4,2024), "COMICS", Set.of("Cultura", "Entretenimiento"));
+		ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"));
+		ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(20,7,2025), "MFASHION", Set.of("Cultura", "Moda"));
 
 
 
 		// Ediciones
 
 		ctrlEvento.AltaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
-                new DTFecha(2025,11,20), new DTFecha(2025,11,22), new DTFecha(2025,3,12));
+                new DTFecha(2025,11,20), new DTFecha(22,11,2025), new DTFecha(12,3,2025));
 
 		ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-		                new DTFecha(2025,9,14), new DTFecha(2025,9,14), new DTFecha(2025,2,5));
+		                new DTFecha(2025,9,14), new DTFecha(14,9,2025), new DTFecha(5,2,2025));
 
 		ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-		                new DTFecha(2024,9,14), new DTFecha(2024,9,14), new DTFecha(2024,4,21));
+		                new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024));
 
 		ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
-		                new DTFecha(2022,9,14), new DTFecha(2022,9,14), new DTFecha(2022,5,21));
+		                new DTFecha(14,9,2022), new DTFecha(14,9,2022), new DTFecha(21,5,2022));
 
 		ctrlEvento.AltaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2024", "COMICS24", "Montevideo", "Uruguay",
-		                new DTFecha(2024,7,18), new DTFecha(2024,7,21), new DTFecha(2024,6,20));
+		                new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024));
 
 		ctrlEvento.AltaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2025", "COMICS25", "Montevideo", "Uruguay",
-		                new DTFecha(2025,8,4), new DTFecha(2025,8,6), new DTFecha(2025,7,4));
+		                new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025));
 
 		ctrlEvento.AltaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
-		                new DTFecha(2025,9,11), new DTFecha(2025,9,17), new DTFecha(2025,2,1));
+		                new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025));
 
 		ctrlEvento.AltaEdicion("Conferencia de Tecnología", "udelar", "Tecnología Punta del Este 2026", "CONFTECH26", "Punta del Este", "Uruguay",
-		                new DTFecha(2026,4,6), new DTFecha(2026,4,10), new DTFecha(2025,8,1));
+		                new DTFecha(6,4,2026), new DTFecha(10,4,2026), new DTFecha(1,8,2025));
 
 		ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC", "Barcelona", "España",
-		                new DTFecha(2025,12,12), new DTFecha(2025,12,15), new DTFecha(2025,8,21));
+		                new DTFecha(12,12,2025), new DTFecha(15,12,2025), new DTFecha(21,8,2025));
 
 		ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
-						new DTFecha(2026,1,13), new DTFecha(2026,2,1), new DTFecha(2025,6,4));
+						new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025));
 
 
 
@@ -148,10 +149,23 @@ public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "General", "Acceso general", 650, 5);
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "Estudiante", "Acceso para estudiantes", 300, 1);
 
-
+		
+		//Patrocinios
+		ctrlEvento.altaPatrocinio("Tecnología Punta del Este 2026", "Facultad de Ingeniería",NivelPatrocinio.Oro, 20000, "Estudiante", 4, "TECHFING", new DTFecha(21,8,2025));
+		ctrlEvento.altaPatrocinio("Tecnología Punta del Este 2026", "Agencia Nacional de Investigación e Innovación (ANII)",NivelPatrocinio.Plata, 10000, "General", 1, "TECHANII", new DTFecha(20,8,2025));
+		ctrlEvento.altaPatrocinio("Maratón de Montevideo 2025", "Antel",NivelPatrocinio.Platino, 25000, "Corredor 10K", 10, "CORREANTEL", new DTFecha(4,3,2025));
+		ctrlEvento.altaPatrocinio("Expointer Uruguay 2025", "Universidad Católica del Uruguay",NivelPatrocinio.Bronce, 15000, "General", 10, "EXPOCAT", new DTFecha(5,5,2025));
+		
 		// Registros
-
-
+		ctrlRegistro.altaRegistro("Montevideo Rock 2025", "sofirod", "VIP", new DTFecha(14,5,2025), 4000);
+		ctrlRegistro.altaRegistro("Maratón de Montevideo 2024", "sofirod", "Corredor 21K", new DTFecha(30,7,2024), 500);
+		ctrlRegistro.altaRegistro("Web Summit 2026", "andrearod", "Estudiante", new DTFecha(21,8,2025), 300);
+		ctrlRegistro.altaRegistro("Maratón de Montevideo 2025", "sofirod", "Corredor 42K", new DTFecha(3,3,2025), 1200);
+		ctrlRegistro.altaRegistro("Mobile World Congress 2025", "vale23", "Full", new DTFecha(22,8,2025), 750);
+		ctrlRegistro.altaRegistro("Maratón de Montevideo 2025", "AnaG", "Corredor 10K", new DTFecha(9,4,2025), 500);
+		ctrlRegistro.altaRegistro("Maratón de Montevideo 2025", "JaviL", "Corredor 21K", new DTFecha(10,4,2025), 800);
+		ctrlRegistro.altaRegistro("Montevideo Comics 2025", "MariR", "Cosplayer", new DTFecha(3,8,2025), 500);
+		ctrlRegistro.altaRegistro("Montevideo Comics 2024", "SofiM", "General", new DTFecha(16,7,2024), 600);
 
 	}
 
