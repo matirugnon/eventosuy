@@ -95,8 +95,11 @@ public class Edicion{
 	}
 
 	public Set<Patrocinio> getPatrocinios() {
-
 		return (Set<Patrocinio>) patrocinios.values();
+	}
+	
+	public Set<String> getNombresPatrocinios() {
+		return patrocinios.keySet();
 	}
 
 	public DTEdicion getDTEdicion() {

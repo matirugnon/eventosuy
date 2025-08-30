@@ -1,12 +1,14 @@
 	package gui.internal;
 
+import logica.Edicion;
+import logica.Evento;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.DatatypesYEnum.DTPatrocinio;
 import logica.manejadores.ManejadorEventos;
-import logica.Evento;
-import logica.Edicion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +37,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         setLayout(new BorderLayout());
         configurarComponentes();
         cargarEventos();
+        cargarTipoRegistro();
         setVisible(true);
     }
 
@@ -98,17 +101,51 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
         // Ejemplos de funcionalidad futura
         btnVerTipoRegistro.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                "Funcionalidad de consulta de tipo de registro\n" +
-                "Se abrirá un nuevo caso de uso más adelante.",
-                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
+        	String tr = (String) comboTipoDeRegistros.getSelectedItem();
+        	if (tr == null) {
+        		JOptionPane.showMessageDialog(this,
+                        "Debe seleccionar un Tipo de Registro \n",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        	else {
+        		String edicion = (String) comboEdiciones.getSelectedItem();
+        		ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+        		DTTipoDeRegistro dt = ctrlRegistros.consultaTipoDeRegistro(edicion, tr);
+
+        		JOptionPane.showMessageDialog(this,
+                        "Nombre: " + dt.getNombre() + "\n" +
+                        "Descripcion: " + dt.getDescripcion() + "\n" +
+                        "Costo: " + dt.getCosto() + "\n" +
+                        "Cupo: " + dt.getCupo() + "\n",
+                        "Detalles de " + dt.getNombre(), JOptionPane.INFORMATION_MESSAGE);
+
+        	}
+
+
         });
 
         btnVerPatrocinio.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                "Funcionalidad de consulta de patrocinio\n" +
-                "Se abrirá un nuevo caso de uso más adelante.",
-                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
+        	String p = (String) comboPatrocinios.getSelectedItem();
+        	if (p == null) {
+        		JOptionPane.showMessageDialog(this,
+                        "Debe seleccionar un Patrocinio \n",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        	else {
+        		String edicion = (String) comboEdiciones.getSelectedItem();
+        		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+        		DTPatrocinio dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
+
+        		JOptionPane.showMessageDialog(this,
+                        "Codigo: " + dt.getCodigo() + "\n" +
+                        "Monto: " + dt.getMonto() + "\n" +
+                        "Nivel: " + dt.getNivel() + "\n" +
+                        "Edicion: " + edicion + "\n" +
+                       // "Institucion: " + dt.get + "\n" +
+                        "Fecha Alta: " + dt.getFechaAlta() + "\n",
+                        "Detalles del Patrocinio:  " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
+
+        	}
         });
     }
 
@@ -125,7 +162,14 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarPatrocinio() {
-    	Controlador
+
+    	String edicion = (String) comboEdiciones.getSelectedItem();
+    	ManejadorEventos mEventos = ManejadorEventos.getInstance();
+    	Edicion ed = mEventos.obtenerEdicion(edicion);
+    	Set<String> patrocinios = ed.getNombresPatrocinios();
+    	for (String p : patrocinios) {
+    		comboPatrocinios.addItem(p);
+    	}
 
     }
 
