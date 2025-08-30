@@ -7,21 +7,28 @@ public class Registro{
 	DTFecha fechaRegistro;
 	double costoRegistro;
 	TipoDeRegistro tipo;
-	Asistente asistente;
 
-	public Registro(DTFecha fecha, double costo, TipoDeRegistro tipo, Asistente asistente) {
+	private String asistente;
+
+	public Registro(DTFecha fecha, float costo, TipoDeRegistro tipo, String asis) {
 		fechaRegistro = fecha;
 		costoRegistro = costo;
 		this.tipo = tipo;
-		this.asistente = asistente;
+		asistente = asis;
+
 	}
-	
+
 	public String getNomTipo(){
 	    return tipo.getNombre();
 	}
 	
 	public TipoDeRegistro getTipoDeRegistro() {
 		return tipo;
+	}
+
+	public String getAsistente() {
+		// TODO Auto-generated method stub
+		return asistente;
 	}
 
 }

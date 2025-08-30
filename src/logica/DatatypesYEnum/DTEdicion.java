@@ -1,5 +1,6 @@
 package logica.DatatypesYEnum;
 
+import java.util.Map;
 import java.util.Set;
 
 import logica.Edicion;
@@ -15,10 +16,9 @@ public class DTEdicion {
     private  String organizador;
     private  Set<Integer> patrocinios;
     private  Set<String> tiposDeRegistro;
-    private Set<DTRegistro> registros;
+    private Set<Map.Entry<String, String>> registros;
 
-    public DTEdicion(String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad,  String pais, String org, Set<String> tdr,  Set<DTRegistro> reg ) {
-
+    public DTEdicion(String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg) {
         this.nombre = nombre;
         this.sigla = sig;
         this.fechaInicio = fechaInicio;
@@ -26,11 +26,9 @@ public class DTEdicion {
         this.altaEdicion = altaEdicion;
         this.ciudad = ciudad;
         this.pais = pais;
-        organizador = org;
-        tiposDeRegistro = tdr;
-        registros = reg;
-
-
+        this.organizador = org;
+        this.tiposDeRegistro = tdr;
+        this.registros = reg != null ? reg : Set.of(); // evita null
     }
 
     public String getNombre() { return nombre; }
@@ -43,7 +41,8 @@ public class DTEdicion {
 	public String getOrganizador() {return organizador;}
 	public Set<Integer> getPatrocinios() {return patrocinios;}
 	public Set<String> getTiposDeRegistro(){return tiposDeRegistro;}
-	public Set<DTRegistro> getRegistros(){return registros;}
+	public Set<Map.Entry<String, String>> getRegistros(){return registros;}
+
 
 
 }

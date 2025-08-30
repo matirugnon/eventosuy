@@ -7,10 +7,12 @@ import logica.Organizador;
 import logica.Usuario;
 import logica.Controladores.ControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
+import logica.manejadores.ManejadorUsuario;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ModificarUsuarioFrame extends JInternalFrame {
@@ -33,6 +35,8 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
         //logica
         controlador = ControladorUsuario.getInstance();
+        ManejadorUsuario mu = ManejadorUsuario.getinstance();
+
         this.mapaUsuarios = new HashMap<>();
 
         setSize(500, 400);
@@ -43,7 +47,12 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         topPanel.add(new JLabel("Seleccione Usuario:"));
         comboUsuarios = new JComboBox<>();
 
-        for (Usuario u : controlador.listarUsuarios()) {
+        Set<String> usrsSet = controlador.listarUsuarios();
+
+        for (String usr : usrsSet) {
+
+        	Usuario u = mu.obtenerUsuario(usr);
+
             String texto = u.getNickname() + " (" +
                           (u instanceof Asistente ? "Asistente" : "Organizador") + ")";
             comboUsuarios.addItem(texto);

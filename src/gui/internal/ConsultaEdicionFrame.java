@@ -10,6 +10,7 @@ import logica.Edicion;
 import javax.swing.*;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("serial")
@@ -76,7 +77,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
 
 
-        // Panel inferior: acciones 
+        // Panel inferior: acciones
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
@@ -158,7 +159,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     private void mostrarDetallesEdicion() {
         String edicionS = (String) comboEdiciones.getSelectedItem();
 
-        if (edicionS == "") {
+        if (edicionS == null || edicionS.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "Debe seleccionar una edición.",
                 "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -166,11 +167,16 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         }
 
         String evento = (String) comboEventos.getSelectedItem();
-
-
         ControladorEvento cont = ControladorEvento.getInstance();
 
         DTEdicion dte = cont.consultarEdicion(edicionS);
+
+        if (dte == null) {
+            JOptionPane.showMessageDialog(this,
+                "No se encontraron datos para la edición seleccionada.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Obtener datos de la edición
         String nombreEdicion = dte.getNombre();
@@ -180,26 +186,43 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         String fechaInicio = dte.getFechaInicio().toString();
         String fechaFin = dte.getFechaFin().toString();
         String organizador = dte.getOrganizador();
-        int totalRegistros = dte.getTiposDeRegistro().size();
+        Set<String> tiposDeRegistro = dte.getTiposDeRegistro();
+        Set<Map.Entry<String, String>> registros = dte.getRegistros(); // ✅ Aquí están los registros
 
-        //falta poner que liste tipos de registro registros
+        // Contar registros
+        int totalRegistros = registros.size();
 
+        // Construir detalles
+        StringBuilder detalles = new StringBuilder();
+        detalles.append("=== DETALLES DE LA EDICIÓN ===\n\n");
+        detalles.append("Edición: ").append(nombreEdicion).append("\n");
+        detalles.append("Sigla: ").append(sigla).append("\n");
+        detalles.append("Evento: ").append(evento).append("\n");
+        detalles.append("Organizador: ").append(organizador).append("\n");
+        detalles.append("Ciudad: ").append(ciudad).append("\n");
+        detalles.append("País: ").append(pais).append("\n");
+        detalles.append("Fecha Inicio: ").append(fechaInicio).append("\n");
+        detalles.append("Fecha Fin: ").append(fechaFin).append("\n");
+        detalles.append("Tipos de Registro: ").append(String.join(", ", tiposDeRegistro)).append("\n");
+        detalles.append("Registros: ").append(totalRegistros).append(" registrados\n\n");
 
-        //-------------------ACA--------------------------
+        // === Listar registros ===
+        if (totalRegistros == 0) {
+            detalles.append("No hay registros en esta edición.\n");
+        } else {
+            detalles.append("=== REGISTROS ===\n");
+            registros.stream()
+                .sorted(Map.Entry.comparingByKey()) // Ordenar por nombre de asistente
+                .forEach(entry -> {
+                    detalles.append("Asistente: ")
+                            .append(entry.getKey())
+                            .append(" → Tipo: ")
+                            .append(entry.getValue())
+                            .append("\n");
+                });
+        }
 
-
-        areaDetalles.setText(
-            "=== DETALLES DE LA EDICIÓN ===\n\n" +
-            "Edición: " + nombreEdicion + "\n" +
-            "Sigla: " + sigla + "\n" +
-            "Evento: " + evento + "\n" +
-            "Organizador: " + organizador + "\n" +
-            "Ciudad: " + ciudad + "\n" +
-            "País: " + pais + "\n" +
-            "Fecha Inicio: " + fechaInicio + "\n" +
-            "Fecha Fin: " + fechaFin + "\n" +
-            "Registros: " + totalRegistros + " registrados" + "\n\n" +
-            "Observaciones: Edición activa, todos los servicios confirmados."
-        );
+        // Mostrar en el área de texto
+        areaDetalles.setText(detalles.toString());
     }
 }

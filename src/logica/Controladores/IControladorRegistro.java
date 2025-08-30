@@ -7,11 +7,6 @@ import logica.DatatypesYEnum.*;
 
 public interface IControladorRegistro {
 
-    
-    
-    
-    public Set<String> obtenerRegistros(String nickUsuario);
-
 
 	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo);
 
@@ -23,8 +18,13 @@ public interface IControladorRegistro {
 	
 	public boolean estaRegistrado(String nomEdicion, String nickAsistente) throws UsuarioNoExisteException;
 
+
 	public boolean alcanzoCupo(String nomEdicion, String nomTipoRegistro);
 	
 	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo);
+
+	public Set<String> obtenerNomsTipoRegistro(String nickusuario);
+
+
 
 }
