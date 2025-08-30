@@ -1,10 +1,14 @@
 package logica;
 
+import java.util.Map;
+
 public class Institucion{
 
 	private String nombre;
 	private String descripcion;
 	private String sitioweb;
+	
+	private Map<String,Patrocinio> patrocinios;
 
 	public Institucion(String nom, String desc, String web) {
 		this.nombre = nom;
@@ -22,8 +26,10 @@ public class Institucion{
 	public String getSitioWeb() {
 		return this.sitioweb;
 	}
-
-
+	
+	public void agregarPatrocinio(Patrocinio pat) {
+		patrocinios.put(pat.getCodigo(), pat);
+	}
 
 
 

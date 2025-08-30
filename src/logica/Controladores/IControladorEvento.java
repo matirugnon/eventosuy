@@ -7,6 +7,7 @@ import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTSeleccionEvento;
+import logica.DatatypesYEnum.NivelPatrocinio;
 
 public interface IControladorEvento {
 
@@ -27,4 +28,11 @@ public interface IControladorEvento {
 	public Set<String> listarEdiciones(String nomEvento);
 
 	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, int codPatrocinio);
+	
+	public boolean existePatrocinio(String nomEdicion, String nomInstitucion);
+	
+	public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat);
+	
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, 
+			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta);
 }

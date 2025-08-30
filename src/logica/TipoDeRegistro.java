@@ -71,4 +71,8 @@ public class TipoDeRegistro{
 		this.registros.add(reg);
 		return reg;
 	}
+	
+	public void asociarcantidadDeTipoRegistro(CantidadTipoDeRegistro cant) {
+		cantidadTipo = cant;
+	}
 }

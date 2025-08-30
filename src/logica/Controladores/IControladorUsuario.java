@@ -43,6 +43,12 @@ public interface IControladorUsuario {
     public Set<String> listarUsuarios();
     
     public Set<String> listarAsistentes();
+    
+    public boolean existeInstitucion(String nomInstitucion);
+    
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web);
+    
+    public Set<String> listarInstituciones();
 
 
 }

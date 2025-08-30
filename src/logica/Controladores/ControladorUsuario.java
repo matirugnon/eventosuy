@@ -9,6 +9,8 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Asistente;
 import logica.DataUsuario;
+import logica.Edicion;
+import logica.Institucion;
 import logica.Organizador;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
@@ -136,10 +138,23 @@ public class ControladorUsuario implements IControladorUsuario {
     	return manejadorU.getNickAsistentes();
     }
 
+    public boolean existeInstitucion(String nomInstitucion) {
+    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+    	return manejadorU.existeInstitucion(nomInstitucion);
+    }
    
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web) {
+    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+    	Institucion ins = new Institucion(nombreInstitucion,descripcion,web);
+    	manejadorU.addInstitucion(ins);	
+    }
 
+    public Set<String> listarInstituciones(){
+    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+    	return manejadorU.getNombreInstituciones();
+    }
 
-
+   
 
 
 

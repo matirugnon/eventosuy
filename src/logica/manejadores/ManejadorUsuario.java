@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import logica.Asistente;
+import logica.Institucion;
 import logica.Organizador;
 import logica.Usuario;
 
@@ -22,6 +23,8 @@ public class ManejadorUsuario {
 
 	//hasmap que linkea un nickname con un usuario
     private Map<String, Usuario> usuariosNick;
+    
+    private Map<String, Institucion> instituciones;
 
     private static ManejadorUsuario instancia = null;
 
@@ -70,6 +73,22 @@ public class ManejadorUsuario {
     	return nickAsistentes;
     }
     
+    public void addInstitucion(Institucion ins) {
+    	String nombre = ins.getNombre();
+    	instituciones.put(nombre, ins);
+    }
+    
+    public Institucion obtenerInstitucion(String nombreInstitucion) {
+    	return instituciones.get(nombreInstitucion);
+    }
+    
+    public boolean existeInstitucion(String nombreInstitucion) {
+    	return instituciones.containsKey(nombreInstitucion);
+    }
+    
+    public Set<String> getNombreInstituciones(){
+    	return instituciones.keySet();
+    }
 }
 
 

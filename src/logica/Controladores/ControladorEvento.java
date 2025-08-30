@@ -9,16 +9,18 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
+import logica.Institucion;
 import logica.Organizador;
 
 import logica.Patrocinio;
-
+import logica.TipoDeRegistro;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTSeleccionEvento;
+import logica.DatatypesYEnum.NivelPatrocinio;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
@@ -179,7 +181,7 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
-	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, int codPatrocinio) {
+	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio) {
 	    ManejadorEventos me = ManejadorEventos.getInstance();
 	    Edicion ed = me.obtenerEdicion(nomEdicion);
 	    if (ed == null) {
@@ -210,9 +212,34 @@ public class ControladorEvento implements IControladorEvento {
 	    );
 	}
 
+	 public boolean existePatrocinio(String nomEdicion, String nomInstitucion) {
+	    	ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+	    	Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+	    	return ed.esPatrocinador(nomInstitucion);
+	    	
+	    }
 
+	 public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat) {
+		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
+		 double costo = tr.getCosto();
+		 return cantRegGrat * costo > 0.2 * monto;
+	 }
 
-
+	 
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, 
+			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
+		 
+		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
+		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
+		 Patrocinio pat = ed.altaPatrocinio(ins, nivel, aporte, tr, cantRegistrosGratuitos, codigo, fechaAlta);
+		 ins.agregarPatrocinio(pat);
+		 
+	 }
 
 
 	

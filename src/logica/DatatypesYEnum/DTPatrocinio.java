@@ -6,12 +6,12 @@ import logica.DatatypesYEnum.NivelPatrocinio;
 public class DTPatrocinio{
 
     private DTFecha fechaAlta;
-    private float monto;
-    private int codigo;
+    private double monto;
+    private String codigo;
     private NivelPatrocinio nivel;
 
 
-    public DTPatrocinio(DTFecha alta, float m, int cod, NivelPatrocinio niv) {
+    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv) {
 
         fechaAlta = alta;
         monto = m;
@@ -20,8 +20,8 @@ public class DTPatrocinio{
     }
     
     public DTFecha getFechaAlta() { return fechaAlta; }
-    public float getMonto() { return monto; }
-    public int getCodigo() { return codigo; }
+    public double getMonto() { return monto; }
+    public String getCodigo() { return codigo; }
     public NivelPatrocinio getNivel() { return nivel; }
     
 

@@ -13,6 +13,7 @@ import java.util.Set;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTRegistro;
+import logica.DatatypesYEnum.NivelPatrocinio;
 import logica.TipoDeRegistro;
 
 public class Edicion{
@@ -27,7 +28,7 @@ public class Edicion{
 	private Organizador organizador;
 
 	private Map<String, TipoDeRegistro> tiposDeRegistro;
-	private Map<Integer,Patrocinio> patrocinios;
+	private Map<String,Patrocinio> patrocinios;
 
 	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org) {
 
@@ -139,5 +140,21 @@ public class Edicion{
 	    );
 	}
 
+	public boolean esPatrocinador(String nomInstitucion) {
+		for (Patrocinio pat : patrocinios.values()) {
+			if (pat.getNombreTipoDeRegistro().equals(nomInstitucion)) {
+				return true;
+			}
+		} 
+		return false;
+	}
+	
+	
+	public Patrocinio altaPatrocinio(Institucion ins, NivelPatrocinio nivel, double aporte, 
+			 TipoDeRegistro tipo, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
+		Patrocinio pat = new Patrocinio(fechaAlta, aporte, codigo, nivel, this, ins, cantRegistrosGratuitos, tipo);
+		this.patrocinios.put(codigo, pat);
+		return pat;
+	}
 
 }
