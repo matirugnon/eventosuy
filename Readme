@@ -1,16 +1,16 @@
 	 	 	 
-CU :: Alta de Usuario	 	(Hecho) 	 
-CU :: Consulta de Usuario	 	 (Hecho)	 
-CU :: Modificar Datos de Usuario	NO	obligatorio 	 
-CU :: Alta de Evento	 	 	 (Hecho)
-CU :: Consulta de Evento	 	 (Hecho falta aconectar con logica)	 
-CU :: Alta de Edición de Evento	 	 	 (Hecho todo)
-CU :: Consulta de Edición de Evento	 	 (en proceso)	 
-CU :: Alta de Tipo de Registro	 (Hecho solo logica)	 	 
-CU :: Consulta de Tipo de Registro	 (Hecho solo logica)	 	 
-CU :: Registro a Edición de Evento (hecho)	 	 	 
-CU ;; Consulta de Registro	 (falta)	 	 
-CU :: Alta de Institución	NO	obligatorio	 	 
-CU :: Alta de Patrocinio	NO	obligatorio
-CU :: Consulta de Patrocinio	NO	obligatorio
-CU :: Alta de Categorías (sin GUI)	 (Hecho)
+CU :: Alta de Usuario	 						(Hecho) 	 
+CU :: Consulta de Usuario	 	 				(Hecho)	 
+CU :: Modificar Datos de Usuario				NO	obligatorio 	 
+CU :: Alta de Evento	 	 	 				(Hecho)
+CU :: Consulta de Evento	 	 				(Hecho)	 
+CU :: Alta de Edición de Evento	 	 	 		(Hecho)
+CU :: Consulta de Edición de Evento	 	 		(Falta un listar Patrocinios y desplegar tipos de registro en el frame)	 
+CU :: Alta de Tipo de Registro	 				(Hecho)	 	 
+CU :: Consulta de Tipo de Registro	 			(Hecho solo logica)	 	 
+CU :: Registro a Edición de Evento 				(Hecho)	 	 	 
+CU ;; Consulta de Registro						(Falta)	 	 
+CU :: Alta de Institución						NO	obligatorio	 	 
+CU :: Alta de Patrocinio						NO	obligatorio
+CU :: Consulta de Patrocinio					NO	obligatorio
+CU :: Alta de Categorías (sin GUI)	 			(Hecho)

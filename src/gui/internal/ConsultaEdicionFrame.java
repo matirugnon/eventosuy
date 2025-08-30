@@ -1,6 +1,7 @@
 package gui.internal;
 
 import logica.Controladores.ControladorEvento;
+import logica.Controladores.ControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.manejadores.ManejadorEventos;
@@ -73,20 +74,12 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         areaDetalles.setFont(new Font("Monospaced", Font.PLAIN, 12));
         add(new JScrollPane(areaDetalles), BorderLayout.CENTER);
 
-
-
-
-
         // Panel inferior: acciones
         JPanel panelAcciones = new JPanel(new FlowLayout());
         JButton btnVerTipoRegistro = new JButton("Ver Tipo de Registro");
         JButton btnVerPatrocinio = new JButton("Ver Patrocinio");
         comboTipoDeRegistros = new JComboBox<>();
         comboPatrocinios = new JComboBox<>();
-
-
-
-
 
         panelAcciones.add(comboTipoDeRegistros);
         panelAcciones.add(btnVerTipoRegistro);
@@ -118,10 +111,27 @@ public class ConsultaEdicionFrame extends JInternalFrame {
                 "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
         });
     }
+    
+    private void cargarTipoRegistro() {
+    	ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+    	comboTipoDeRegistros.removeAllItems();
+    	
+    	
+    	String edicion = (String) comboEdiciones.getSelectedItem();
+    	Set<String> tiposDeRegistro = ctrlRegistros.listarTipoRegistro(edicion);
+    	for (String ed : tiposDeRegistro) {
+    		comboTipoDeRegistros.addItem(ed);
+    	}
+    }
+    
+    private void cargarPatrocinio() {
+    	Controlador
+    	
+    }
 
     private void cargarEventos() {
-        ControladorEvento ctrl = ControladorEvento.getInstance();
-        Set<String> eventos = ctrl.listarEventos();
+        ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+        Set<String> eventos = ctrlEventos.listarEventos();
 
         comboEventos.removeAllItems();
         for (String evento : eventos) {
