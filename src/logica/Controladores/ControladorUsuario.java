@@ -136,7 +136,7 @@ public class ControladorUsuario implements IControladorUsuario {
     	return manejadorU.getNickAsistentes();
     }
 
-
+   
 
 
 
