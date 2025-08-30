@@ -10,7 +10,7 @@ CU :: Alta de Tipo de Registro	 				(Hecho)
 CU :: Consulta de Tipo de Registro	 			(Hecho)	 	 
 CU :: Registro a Edición de Evento 				(Hecho)	 	 	 
 CU ;; Consulta de Registro						(Falta)	 	 
-CU :: Alta de Institución						NO	obligatorio	 	 
-CU :: Alta de Patrocinio						NO	obligatorio
+CU :: Alta de Institución						NO	obligatorio	 (hecho logica)	 
+CU :: Alta de Patrocinio						NO	obligatorio   (hecho logica)
 CU :: Consulta de Patrocinio					NO	obligatorio
 CU :: Alta de Categorías (sin GUI)	 			(Hecho)
