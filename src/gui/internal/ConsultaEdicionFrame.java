@@ -143,7 +143,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
                         "Edicion: " + edicion + "\n" +
                        // "Institucion: " + dt.get + "\n" +
                         "Fecha Alta: " + dt.getFechaAlta() + "\n",
-                        "Detalles del Patrocinio:  " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
+                        "Detalles del Patrocinio: " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
 
         	}
         });
