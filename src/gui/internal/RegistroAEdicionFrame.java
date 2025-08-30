@@ -3,11 +3,14 @@ package gui.internal;
 import javax.swing.*;
 
 import logica.Evento;
+import logica.TipoDeRegistro;
+import logica.DatatypesYEnum.DTFecha;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
-import logica.manejadores.ManejadorEventos;
+import logica.Controladores.ControladorUsuario;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class RegistroAEdicionFrame extends JInternalFrame {
@@ -18,6 +21,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
     
     private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
     private ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
     
     public RegistroAEdicionFrame() {
         super("Registro a Edición de Evento", true, true, true, true);
@@ -33,7 +37,8 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         cargarEventos();
         comboEdiciones = new JComboBox<>();
         comboTiposRegistro = new JComboBox<>();
-        comboAsistentes = new JComboBox<>(new String[]{"juan123", "ana456", "pedro789"});
+        comboAsistentes = new JComboBox<>();
+        cargarAsistentes();
 
         form.add(new JLabel("Evento:"));
         form.add(comboEventos);
@@ -67,6 +72,23 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         cargarEdiciones();
     }
     
+    private void cargarAsistentes() {
+    	Set<String> asistentes = ctrlUsuarios.listarAsistentes();
+    	for (String asistente : asistentes) {
+    		comboAsistentes.addItem(asistente);
+    	}
+    }
+    
+    public DTFecha obtenerFechaActual() {
+    	LocalDate hoy = LocalDate.now();
+
+        int dia = hoy.getDayOfMonth();
+        int mes = hoy.getMonthValue();
+        int anio = hoy.getYear();
+        
+        DTFecha f = new DTFecha(dia, mes, anio);
+        return f;
+    }
     
     private void cargarEventos() {
     	Set<String> eventos = ctrlEventos.listarEventos();
@@ -87,13 +109,6 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         		comboEdiciones.addItem(edicion);
         	}
         }
-
-//        if ("ConfUdelar".equals(evento)) {
-//            comboEdiciones.addItem("Conf2025");
-//            comboEdiciones.addItem("Conf2026");
-//        } else if ("ExpoTech".equals(evento)) {
-//            comboEdiciones.addItem("Expo2025");
-//        }
     }
 
     private void cargarTiposRegistro() {
@@ -107,16 +122,6 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         		comboTiposRegistro.addItem(tr);
         	}
         }
-
-//        if ("Conf2025".equals(edicion)) {
-//            comboTiposRegistro.addItem("General");
-//            comboTiposRegistro.addItem("Estudiante");
-//        } else if ("Conf2026".equals(edicion)) {
-//            comboTiposRegistro.addItem("EarlyBird");
-//        } else if ("Expo2025".equals(edicion)) {
-//            comboTiposRegistro.addItem("General");
-//            comboTiposRegistro.addItem("Premium");
-//        }
     }
 
     private void registrar() {
@@ -131,13 +136,42 @@ public class RegistroAEdicionFrame extends JInternalFrame {
                     "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        
+        //ya esta registrado
+        try {
+        	if (ctrlRegistros.estaRegistrado(edicion, asistente)) {
+            	JOptionPane.showMessageDialog(this,
+                        "El asistente ya esta registrado al evento.",
+                        "Validación", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (Exception ex) {
+        	JOptionPane.showMessageDialog(this,
+                    "Hubo un error procesando el registro.",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+         
+        //no hay mas cupos
+        if (ctrlRegistros.alcanzoCupo(edicion, tipo)) {
+        	JOptionPane.showMessageDialog(this,
+                    "No hay mas cupos disponibles.",
+                    "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        
+        DTFecha fechaRegistro = obtenerFechaActual();
+        double costo = ctrlRegistros.consultaTipoDeRegistro(edicion, tipo).getCosto();
+        ctrlRegistros.altaRegistro(edicion, asistente, tipo, fechaRegistro, costo);
         JOptionPane.showMessageDialog(this,
                 "Registro creado:\n" +
                         "Evento: " + evento + "\n" +
                         "Edición: " + edicion + "\n" +
                         "Tipo: " + tipo + "\n" +
-                        "Asistente: " + asistente,
+                        "Asistente: " + asistente + "\n" +
+                        "Fecha de Alta: " + fechaRegistro + "\n" +
+                        "Costo: " + costo,
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         dispose();
