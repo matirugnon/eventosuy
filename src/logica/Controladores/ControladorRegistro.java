@@ -44,7 +44,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed =manejador.obtenerEdicion(nombreEd);
-		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo);
+		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo, ed);
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
 
@@ -111,7 +111,7 @@ public class ControladorRegistro implements IControladorRegistro {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
 		Usuario us = mu.obtenerUsuario(nickAsistente);
 		Asistente as = (Asistente) us;
-		Registro reg = tp.altaRegistro(fechaRegistro, costo, as);
+		Registro reg = tp.altaRegistro(fechaRegistro, costo, nickAsistente);
 		as.agregarRegistro(reg);
 	}
 }

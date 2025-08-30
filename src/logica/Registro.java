@@ -10,7 +10,7 @@ public class Registro{
 
 	private String asistente;
 
-	public Registro(DTFecha fecha, float costo, TipoDeRegistro tipo, String asis) {
+	public Registro(DTFecha fecha, double costo, TipoDeRegistro tipo, String asis) {
 		fechaRegistro = fecha;
 		costoRegistro = costo;
 		this.tipo = tipo;

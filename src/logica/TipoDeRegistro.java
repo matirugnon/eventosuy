@@ -66,8 +66,8 @@ public class TipoDeRegistro{
 		return this.cupo == registros.size();
 	}
 
-	public Registro altaRegistro(DTFecha fecha, double costo, Asistente asistente) {
-		Registro reg = new Registro( fecha, costo, this, asistente);
+	public Registro altaRegistro(DTFecha fecha, double costo, String asistente) {
+		Registro reg = new Registro(fecha, costo, this, asistente);
 		this.registros.add(reg);
 		return reg;
 	}
