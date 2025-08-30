@@ -130,6 +130,11 @@ public class ControladorUsuario implements IControladorUsuario {
         ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
         return manejadorU.obtenerNicksOrganizadores();
     }
+    
+    public Set<String> listarAsistentes(){
+    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
+    	return manejadorU.getNickAsistentes();
+    }
 
 
 

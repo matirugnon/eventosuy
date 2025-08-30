@@ -5,8 +5,9 @@ import logica.DatatypesYEnum.DTFecha;
 public class Registro{
 
 	DTFecha fechaRegistro;
-	float costoRegistro;
+	double costoRegistro;
 	TipoDeRegistro tipo;
+
 	private String asistente;
 
 	public Registro(DTFecha fecha, float costo, TipoDeRegistro tipo, String asis) {
@@ -14,10 +15,15 @@ public class Registro{
 		costoRegistro = costo;
 		this.tipo = tipo;
 		asistente = asis;
+
 	}
 
 	public String getNomTipo(){
 	    return tipo.getNombre();
+	}
+	
+	public TipoDeRegistro getTipoDeRegistro() {
+		return tipo;
 	}
 
 	public String getAsistente() {

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import logica.Asistente;
 import logica.Organizador;
 import logica.Usuario;
 
@@ -59,6 +60,15 @@ public class ManejadorUsuario {
         return res;  // si no hay, vuelve vacío
     }
     
+    public Set<String> getNickAsistentes(){
+    	Set<String> nickAsistentes = new HashSet<>();
+    	for (Usuario us : usuariosNick.values()) {
+    		if (us instanceof Asistente as) {
+    			nickAsistentes.add(as.getNickname());
+    		}
+    	}
+    	return nickAsistentes;
+    }
     
 
 }
