@@ -211,4 +211,28 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
+
+
+
+
+
+
+	public Set<Organizador> listarOrganizadores() {
+	    Set<Organizador> organizadores = new HashSet<>();
+
+	    // Obtener instancia del controlador de usuarios
+	    ControladorUsuario ctrlUsuario = ControladorUsuario.getInstance();
+	    List<Usuario> todosLosUsuarios = ctrlUsuario.listarUsuarios(); // Ya tienes este método
+
+	    // Filtrar los que son Organizador
+	    for (Usuario u : todosLosUsuarios) {
+	        if (u instanceof Organizador) {
+	            organizadores.add((Organizador) u);
+	        }
+	    }
+
+	    return organizadores;
+
+	}
+
 }

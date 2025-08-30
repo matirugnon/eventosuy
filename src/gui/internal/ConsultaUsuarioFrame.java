@@ -80,7 +80,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     private void cargarUsuarios() {
 
     	ManejadorUsuario mUsuario = ManejadorUsuario.getinstance();
-
         Set<String> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
         for (String usr : usuarios) {
         	Usuario usuario = mUsuario.obtenerUsuario(usr);

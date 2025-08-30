@@ -16,7 +16,8 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
     private JTextField txtNombre, txtDescripcion, txtCosto, txtCupo;
 
 
-    private ControladorRegistro contrR;
+    private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+    private ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
 
     public AltaTipoRegistroFrame() {
         super("Alta de Tipo de Registro", true, true, true, true);
@@ -24,14 +25,14 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         setLayout(new BorderLayout());
 
 
-        ControladorEvento contrEvento = ControladorEvento.getInstance();
+        ControladorEvento ctrlEvento = ControladorEvento.getInstance();
 
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         comboEventos = new JComboBox<>();
         // Cargar eventos desde el controlador
-        Set<String> eventos = contrEvento.listarEventos();
+        Set<String> eventos = ctrlEvento.listarEventos();
         for (String evento : eventos) {
             comboEventos.addItem(evento);
         }
@@ -81,22 +82,18 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
 
     private void actualizarEdiciones() {
         comboEdiciones.removeAllItems();
-        String evento = (String) comboEventos.getSelectedItem();
 
-        if ("ConfUdelar".equals(evento)) {
-            comboEdiciones.addItem("Conf2025");
-            comboEdiciones.addItem("Conf2026");
-        } else if ("ExpoTech".equals(evento)) {
-            comboEdiciones.addItem("Expo2025");
+        String evento = (String) comboEventos.getSelectedItem();
+        if (evento == null) return;
+        else {
+        	Set<String> ediciones = ctrlEventos.listarEdiciones(evento);
+        	for (String edicion : ediciones) {
+        		comboEdiciones.addItem(edicion);
+        	}
         }
     }
 
     private void confirmarAlta() {
-
-    	//instancia de controlador registro
-    	contrR = ControladorRegistro.getInstance();
-
-
         String evento = (String) comboEventos.getSelectedItem();
         String edicion = (String) comboEdiciones.getSelectedItem();
         String nombre = txtNombre.getText().trim();
@@ -116,7 +113,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
 
             //validacion nombre duplicado
 
-            if (contrR.existeTipoDeRegistro(edicion, nombre)) {
+            if (ctrlRegistros.existeTipoDeRegistro(edicion, nombre)) {
                 int opt = JOptionPane.showConfirmDialog(this,
                         "El nombre de tipo de registro ya existe en esta edición.\n¿Desea modificarlo?",
                         "Nombre duplicado", JOptionPane.YES_NO_OPTION);
@@ -137,7 +134,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
                             "Cupo: " + cupo,
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-            contrR.altaTipoDeRegistro(edicion, nombre, descripcion, costo, cupo);
+            ctrlRegistros.altaTipoDeRegistro(edicion, nombre, descripcion, costo, cupo);
 
             dispose();
 
