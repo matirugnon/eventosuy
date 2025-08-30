@@ -216,7 +216,7 @@ public class ControladorEvento implements IControladorEvento {
 	    	ManejadorEventos manejadorE = ManejadorEventos.getInstance();
 	    	Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 	    	return ed.esPatrocinador(nomInstitucion);
-	    	
+
 	    }
 
 	 public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat) {
@@ -227,10 +227,10 @@ public class ControladorEvento implements IControladorEvento {
 		 return cantRegGrat * costo > 0.2 * monto;
 	 }
 
-	 
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, 
+
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
 			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
-		 
+
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
 		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
@@ -238,10 +238,10 @@ public class ControladorEvento implements IControladorEvento {
 		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
 		 Patrocinio pat = ed.altaPatrocinio(ins, nivel, aporte, tr, cantRegistrosGratuitos, codigo, fechaAlta);
 		 ins.agregarPatrocinio(pat);
-		 
+
 	 }
 
 
-	
+
 
 }

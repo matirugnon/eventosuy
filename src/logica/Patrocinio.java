@@ -22,18 +22,18 @@ public class Patrocinio{
 		edicion = ed;
 		institucion = ins;
 		cantTipo = new CantidadTipoDeRegistro(cantGrat,tipo, this);
-		
+
 	}
 
 	  public DTFecha getFechaAlta() { return fechaAlta; }
 	    public double getMonto() { return monto; }
 	    public String getCodigo() { return codigo; }
 	    public NivelPatrocinio getNivel() { return nivel; }
-	    
+
 	   public CantidadTipoDeRegistro getCantidadTipoDeRegistro() {
 		   return cantTipo;
 	   }
-	   
+
 	   public String getNombreTipoDeRegistro() {
 		   return cantTipo.getNombreTipoDeRegistro();
 	   }

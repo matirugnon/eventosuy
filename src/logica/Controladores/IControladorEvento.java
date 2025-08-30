@@ -13,13 +13,19 @@ public interface IControladorEvento {
 
 	public boolean existeEvento(String nomEvento);
 
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> cetegorias);
+	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias);
 
 	public Set<String> listarEventos();
+
+	public Set<String> listarEdiciones();
 
 	public DTSeleccionEvento seleccionarEvento(String nomEvento);
 
 	public DTEdicion consultarEdicion(String nomEdicion);
+
+	public boolean existeCategoria(String cat);
+
+	public void altaCategoria (String cat);
 
 	public boolean existeEdicion(String nomEdicion);
 
@@ -27,12 +33,12 @@ public interface IControladorEvento {
 
 	public Set<String> listarEdiciones(String nomEvento);
 
-	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, int codPatrocinio);
-	
+	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio);
+
 	public boolean existePatrocinio(String nomEdicion, String nomInstitucion);
-	
+
 	public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat);
-	
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, 
+
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
 			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta);
 }

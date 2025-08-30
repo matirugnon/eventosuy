@@ -51,6 +51,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	public Set<String> listarTipoRegistro(String nombreEd) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
+
 		return ed.getNombresTiposDeRegistro();
 	}
 
@@ -80,7 +81,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	    // Caso 3: existe pero no es Asistente
 	    return null; // o Collections.emptySet()
 	}
-	
+
 	public boolean estaRegistrado(String nomEdicion, String nickAsistente) throws UsuarioNoExisteException {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
 		Usuario us = mu.obtenerUsuario(nickAsistente);
@@ -96,7 +97,7 @@ public class ControladorRegistro implements IControladorRegistro {
 			 throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
 		}
 	}
-	
+
 	public boolean alcanzoCupo(String nomEdicion, String nomTipoRegistro) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nomEdicion);

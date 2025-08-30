@@ -37,7 +37,6 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         setLayout(new BorderLayout());
         configurarComponentes();
         cargarEventos();
-        cargarTipoRegistro();
         setVisible(true);
     }
 
@@ -212,6 +211,8 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
     private void mostrarDetallesEdicion() {
         String edicionS = (String) comboEdiciones.getSelectedItem();
+
+        cargarTipoRegistro();
 
         if (edicionS == null || edicionS.isEmpty()) {
             JOptionPane.showMessageDialog(this,

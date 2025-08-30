@@ -1,7 +1,13 @@
 package presentacion;
 
 import javax.swing.*;
+
+import excepciones.UsuarioRepetidoException;
 import gui.internal.*;
+import logica.Controladores.ControladorEvento;
+import logica.Controladores.ControladorRegistro;
+import logica.Controladores.ControladorUsuario;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
@@ -113,8 +119,18 @@ public class MainFrame extends JFrame {
         JMenu cargaDatosMenu = new JMenu("Cargar Datos");
         JMenuItem cargarDatos = new JMenuItem("Click para cargar datos");
 
-        //cargarDatos.addActionListener(e -> );
-        //poner aca lo del controlador que cargue los datos de prueba
+
+        ControladorUsuario contrU = ControladorUsuario.getInstance();
+        ControladorEvento contE =  ControladorEvento.getInstance();
+        ControladorRegistro contR = ControladorRegistro.getInstance();
+
+        cargarDatos.addActionListener(e -> {
+            try {
+				Utils.cargarDatos(contrU,contE,contR);
+			} catch (UsuarioRepetidoException e1) {
+				e1.printStackTrace();
+			}
+        });
 
         cargaDatosMenu.add(cargarDatos);
 
