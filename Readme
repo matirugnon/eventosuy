@@ -7,7 +7,7 @@ CU :: Consulta de Evento	 	 				(Hecho)
 CU :: Alta de Edición de Evento	 	 	 		(Hecho)
 CU :: Consulta de Edición de Evento	 	 		(Falta un listar Patrocinios y desplegar tipos de registro en el frame)	 
 CU :: Alta de Tipo de Registro	 				(Hecho)	 	 
-CU :: Consulta de Tipo de Registro	 			(Hecho solo logica)	 	 
+CU :: Consulta de Tipo de Registro	 			(Hecho)	 	 
 CU :: Registro a Edición de Evento 				(Hecho)	 	 	 
 CU ;; Consulta de Registro						(Falta)	 	 
 CU :: Alta de Institución						NO	obligatorio	 	 

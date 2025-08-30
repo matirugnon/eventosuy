@@ -2,7 +2,13 @@ package gui.internal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import logica.Controladores.ControladorEvento;
+import logica.Controladores.ControladorRegistro;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
+
 import java.awt.*;
+import java.util.Set;
 
 
 @SuppressWarnings("serial")
@@ -22,7 +28,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        JPanel top = new JPanel(new GridLayout(3, 2, 10, 10));
 	        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-	        comboEventos = new JComboBox<>(new String[]{"ConfUdelar", "ExpoTech"});
+	        comboEventos = new JComboBox<>();
 	        comboEdiciones = new JComboBox<>();
 	        comboTiposRegistro = new JComboBox<>();
 
@@ -50,23 +56,34 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        comboTiposRegistro.addActionListener(e -> mostrarDatosTipoRegistro());
 
 	        // Inicialización
+	        cargarEventos();
 	        cargarEdiciones();
+	        cargarTiposRegistro();
 	    }
 
 	    private void cargarEdiciones() {
 	        comboEdiciones.removeAllItems();
-	        comboTiposRegistro.removeAllItems();
 	        areaDatos.setText("");
 
 	        String evento = (String) comboEventos.getSelectedItem();
 	        if (evento == null) return;
-
-	        if ("ConfUdelar".equals(evento)) {
-	            comboEdiciones.addItem("Conf2025");
-	            comboEdiciones.addItem("Conf2026");
-	        } else if ("ExpoTech".equals(evento)) {
-	            comboEdiciones.addItem("Expo2025");
-	        }
+	        else {
+	    		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+	    		Set<String> ediciones = ctrlEventos.listarEdiciones();
+	    		for (String ed: ediciones) {
+	    			comboEdiciones.addItem(ed);
+	    		}
+	    	}
+	    }
+	    
+	    private void cargarEventos() {
+	    	comboEventos.removeAllItems();
+	    	
+	    	ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+    		Set<String> eventos = ctrlEventos.listarEventos();
+    		for (String ev: eventos) {
+    			comboEventos.addItem(ev);
+    		}
 	    }
 
 	    private void cargarTiposRegistro() {
@@ -75,56 +92,29 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 
 	        String edicion = (String) comboEdiciones.getSelectedItem();
 	        if (edicion == null) return;
-
-	        if ("Conf2025".equals(edicion)) {
-	            comboTiposRegistro.addItem("General");
-	            comboTiposRegistro.addItem("Estudiante");
-	        } else if ("Conf2026".equals(edicion)) {
-	            comboTiposRegistro.addItem("EarlyBird");
-	        } else if ("Expo2025".equals(edicion)) {
-	            comboTiposRegistro.addItem("General");
-	            comboTiposRegistro.addItem("Premium");
-	        }
+	        else {
+	    		ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+	    		Set<String> tiposRegistro = ctrlRegistros.listarTipoRegistro(edicion);
+	    		for (String tr: tiposRegistro) {
+	    			comboTiposRegistro.addItem(tr);
+	    		}
+	    	}
 	    }
 
 	    private void mostrarDatosTipoRegistro() {
 	        areaDatos.setText("");
+	        String edicion = (String) comboEdiciones.getSelectedItem();
 	        String tipo = (String) comboTiposRegistro.getSelectedItem();
 	        if (tipo == null) return;
-
-	        switch (tipo) {
-	            case "General":
-	                areaDatos.setText(
-	                        "Nombre: General\n" +
-	                        "Descripción: Acceso general al evento\n" +
-	                        "Costo: 2000\n" +
-	                        "Cupo: 500"
-	                );
-	                break;
-	            case "Estudiante":
-	                areaDatos.setText(
-	                        "Nombre: Estudiante\n" +
-	                        "Descripción: Acceso con descuento para estudiantes\n" +
-	                        "Costo: 500\n" +
-	                        "Cupo: 200"
-	                );
-	                break;
-	            case "EarlyBird":
-	                areaDatos.setText(
-	                        "Nombre: EarlyBird\n" +
-	                        "Descripción: Registro anticipado con descuento\n" +
-	                        "Costo: 1500\n" +
-	                        "Cupo: 100"
-	                );
-	                break;
-	            case "Premium":
-	                areaDatos.setText(
-	                        "Nombre: Premium\n" +
-	                        "Descripción: Acceso completo + beneficios exclusivos\n" +
-	                        "Costo: 3000\n" +
-	                        "Cupo: 50"
-	                );
-	                break;
+	        else {
+	        	ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+	        	DTTipoDeRegistro dtTipoReg = ctrlRegistros.consultaTipoDeRegistro(edicion, tipo);
+	        	areaDatos.setText(
+	        			"Nombre: " + dtTipoReg.getNombre() + "\n" +
+		                "Descripción: " + dtTipoReg.getDescripcion() + "\n" +
+		                "Costo: " + dtTipoReg.getCosto() + "\n" +
+		                "Cupo: " + dtTipoReg.getCupo() + "\n" 
+	        			);
 	        }
 	    }
 	}
