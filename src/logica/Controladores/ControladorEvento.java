@@ -237,7 +237,7 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 	 public boolean existePatrocinio(String nomEdicion, String nomInstitucion) {
-	    	ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+
 	    	Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 	    	return ed.esPatrocinador(nomInstitucion);
 

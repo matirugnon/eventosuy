@@ -61,6 +61,10 @@ public interface IControladorUsuario {
     public DTUsuario getDTUsuario(String nombreU);
     public Set<String> obtenerRegistros(String nombreAsistente);
 
+
+    public void modificarUsuario(String nick, DTUsuario datosUsuario) throws UsuarioNoExisteException;
+
+
 	public boolean esFechaValida(int dia, int mes, int anio);
 
 
