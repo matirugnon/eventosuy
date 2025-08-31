@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
@@ -52,7 +53,8 @@ public interface IControladorUsuario {
 
     public boolean existeInstitucion(String nomInstitucion);
 
-    public void altaInstitucion(String nombreInstitucion, String descripcion, String web);
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web)
+    		throws ExisteInstitucionException;
 
     public Set<String> listarInstituciones();
 

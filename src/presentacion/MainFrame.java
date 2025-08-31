@@ -3,9 +3,15 @@ package presentacion;
 import javax.swing.*;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.EdicionExistenteException;
 import excepciones.EventoRepetidoException;
+import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
+import excepciones.FechasIncompatiblesException;
+import excepciones.NombreTipoRegistroDuplicadoException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import excepciones.UsuarioYaRegistradoEnEdicionException;
 import gui.internal.*;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
@@ -96,9 +102,16 @@ public class MainFrame extends JFrame {
 
         // Menú Patrocinios
         JMenu menuPatrocinios = new JMenu("Patrocinios");
-        menuPatrocinios.add(new JMenuItem("Alta Patrocinio"));
-        menuPatrocinios.add(new JMenuItem("Consulta Patrocinio"));
 
+
+        JMenuItem altaPatrocinio = new JMenuItem("Alta Patrocinio");
+        altaPatrocinio.addActionListener(e -> openInternal(new AltaPatrocinioFrame()));
+        menuPatrocinios.add(altaPatrocinio);
+
+
+        JMenuItem consultaPatrocinio = new JMenuItem("Consulta Patrocinio");
+        consultaPatrocinio.addActionListener(e -> openInternal(new ConsultaPatrocinioFrame()));
+        menuPatrocinios.add(consultaPatrocinio);
 
 
         //Menu Registros
@@ -132,9 +145,17 @@ public class MainFrame extends JFrame {
             try {
 				Utils.cargarDatos(contrU,contE,contR);
 				JOptionPane.showMessageDialog(this, "Datos cargados exitosamente");
-			} catch (UsuarioRepetidoException | CorreoInvalidoException | EventoRepetidoException | FechaInvalidaException e1) {
+			} catch (UsuarioRepetidoException |
+					CorreoInvalidoException |
+					EventoRepetidoException |
+					FechaInvalidaException |
+					ExisteInstitucionException |
+					EdicionExistenteException |
+					FechasIncompatiblesException |
+					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException |
+					UsuarioYaRegistradoEnEdicionException e1) {
 				e1.printStackTrace();
-			}
+			}//excepciones a nivel de logica
         });
 
         cargaDatosMenu.add(cargarDatos);

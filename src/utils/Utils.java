@@ -4,9 +4,15 @@ import java.util.List;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.EdicionExistenteException;
 import excepciones.EventoRepetidoException;
+import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
+import excepciones.FechasIncompatiblesException;
+import excepciones.NombreTipoRegistroDuplicadoException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
 import logica.Controladores.ControladorUsuario;
@@ -16,7 +22,12 @@ import logica.DatatypesYEnum.NivelPatrocinio;
 public class Utils {
 
 public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  )
-		throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException{
+		throws UsuarioRepetidoException,
+				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
+				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
+				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException
+
+{
 
 		// Instituciones
 		ctrlUsuario.altaInstitucion("Facultad de Ingeniería", "Facultad de Ingeniería de la Universidad de la República", "https://www.fing.edu.uy");

@@ -2,7 +2,8 @@ package gui.internal;
 
 import javax.swing.*;
 
-
+import excepciones.UsuarioNoExisteException;
+import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.DatatypesYEnum.DTFecha;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
@@ -17,11 +18,11 @@ public class RegistroAEdicionFrame extends JInternalFrame {
     private JComboBox<String> comboEdiciones;
     private JComboBox<String> comboTiposRegistro;
     private JComboBox<String> comboAsistentes;
-    
+
     private IControladorEvento ctrlEventos = IControladorEvento.getInstance();
     private IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
     private IControladorUsuario ctrlUsuarios = IControladorUsuario.getInstance();
-    
+
     public RegistroAEdicionFrame() {
         super("Registro a Edición de Evento", true, true, true, true);
         setSize(600, 400);
@@ -64,31 +65,38 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         // Listeners
         comboEventos.addActionListener(e -> cargarEdiciones());
         comboEdiciones.addActionListener(e -> cargarTiposRegistro());
-        btnConfirmar.addActionListener(e -> registrar());
+        btnConfirmar.addActionListener(e -> {
+			try {
+				registrar();
+			} catch (UsuarioYaRegistradoEnEdicionException | UsuarioNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnCancelar.addActionListener(e -> dispose());
 
         // Inicialización
         cargarEdiciones();
     }
-    
+
     private void cargarAsistentes() {
     	Set<String> asistentes = ctrlUsuarios.listarAsistentes();
     	for (String asistente : asistentes) {
     		comboAsistentes.addItem(asistente);
     	}
     }
-    
+
     public DTFecha obtenerFechaActual() {
     	LocalDate hoy = LocalDate.now();
 
         int dia = hoy.getDayOfMonth();
         int mes = hoy.getMonthValue();
         int anio = hoy.getYear();
-        
+
         DTFecha f = new DTFecha(dia, mes, anio);
         return f;
     }
-    
+
     private void cargarEventos() {
     	Set<String> eventos = ctrlEventos.listarEventos();
     	for (String evento : eventos) {
@@ -112,7 +120,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
 
     private void cargarTiposRegistro() {
         comboTiposRegistro.removeAllItems();
-        
+
         String edicion = (String) comboEdiciones.getSelectedItem();
         if (edicion == null) return;
         else {
@@ -123,7 +131,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         }
     }
 
-    private void registrar() {
+    private void registrar() throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException {
         String evento = (String) comboEventos.getSelectedItem();
         String edicion = (String) comboEdiciones.getSelectedItem();
         String tipo = (String) comboTiposRegistro.getSelectedItem();
@@ -135,7 +143,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
                     "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         //ya esta registrado
         try {
         	if (ctrlRegistros.estaRegistrado(edicion, asistente)) {
@@ -150,7 +158,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
                     "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-         
+
         //no hay mas cupos
         if (ctrlRegistros.alcanzoCupo(edicion, tipo)) {
         	JOptionPane.showMessageDialog(this,
@@ -158,8 +166,8 @@ public class RegistroAEdicionFrame extends JInternalFrame {
                     "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        
+
+
         DTFecha fechaRegistro = obtenerFechaActual();
         double costo = ctrlRegistros.consultaTipoDeRegistro(edicion, tipo).getCosto();
         ctrlRegistros.altaRegistro(edicion, asistente, tipo, fechaRegistro, costo);

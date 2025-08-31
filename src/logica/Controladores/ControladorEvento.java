@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import excepciones.EdicionExistenteException;
 import excepciones.EventoRepetidoException;
+import excepciones.FechaInvalidaException;
+import excepciones.FechasIncompatiblesException;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
@@ -146,12 +149,21 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
-	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta) {
+	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
+			throws EdicionExistenteException, FechasIncompatiblesException{
 
 	        ManejadorEventos me = ManejadorEventos.getInstance();
 	        Evento ev = me.obtenerEvento(nomEvento);
 	        if (ev == null) {
 	            throw new IllegalArgumentException("No existe el evento: " + nomEvento);
+	        }
+
+	        if (existeEdicion(nomEdicion)) {
+
+			}
+
+	        if (fechaFin.compareTo(fechaIni) < 0) { //error de fecha
+	            throw new FechasIncompatiblesException();
 	        }
 
 
