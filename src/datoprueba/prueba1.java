@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import excepciones.CorreoInvalidoException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
@@ -19,8 +20,11 @@ import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTPatrocinio;
+import logica.DatatypesYEnum.DTRegistro;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.DatatypesYEnum.NivelPatrocinio;
+
 import utils.Utils;
 class prueba1 {
 
@@ -28,13 +32,12 @@ class prueba1 {
     private IControladorEvento contE =  IControladorEvento.getInstance();
     private IControladorRegistro contR = IControladorRegistro.getInstance();
 	@Test
-	public void altaUsuarios() {
+	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException {
 		
-		try {
-			Utils.cargarDatos(contrU,contE,contR);
-		} catch (UsuarioRepetidoException | CorreoInvalidoException | EventoRepetidoException | FechaInvalidaException e1) {
-			e1.printStackTrace();
-		}
+		 
+		Utils.cargarDatos(contrU,contE,contR);
+			
+	
 		Set<String> o = contrU.listarUsuarios();
 		Set <String> esperado = new HashSet<>();
 		esperado.add("atorres");esperado.add("msilva");esperado.add("sofirod");esperado.add("vale23");
@@ -74,6 +77,12 @@ class prueba1 {
 		esperado.add("TECHFING");esperado.add("TECHANII");
 		assertEquals(o,esperado);
 		
+		o = contR.listarTipoRegistro("Montevideo Rock 2025");
+		esperado.clear();
+		esperado.add("General");esperado.add("VIP");
+		assertEquals(o,esperado);
+		
+		
 		boolean existe = contrU.existeInstitucion("hola");
 		boolean espera = false;
 		assertEquals(existe,espera);
@@ -95,6 +104,13 @@ class prueba1 {
 		assertEquals(DTPat.getMonto(),DTPates.getMonto());
 		assertEquals(DTPat.getNivel(),DTPates.getNivel());
 		
+		DTTipoDeRegistro DTTipo = contR.consultaTipoDeRegistro("Maratón de Montevideo 2024", "Corredor 42K");
+		DTTipoDeRegistro DTTipoes = new DTTipoDeRegistro("Corredor 42K", "Inscripción a la maratón completa",1000,300);
+		assertEquals(DTTipo.getCosto(),DTTipoes.getCosto());
+		assertEquals(DTTipo.getCupo(),DTTipoes.getCupo());
+		assertEquals(DTTipo.getDescripcion(),DTTipoes.getDescripcion());
+		assertEquals(DTTipo.getNombre(),DTTipoes.getNombre());
+		
 		espera = true;
 		boolean obtenido = contE.costoSuperaAporte("Tecnología Punta del Este 2026", "Facultad de Ingeniería", "Estudiante", 10000, 10);
 		assertEquals(espera,obtenido);
@@ -102,9 +118,19 @@ class prueba1 {
 		espera = false;
 		obtenido = contE.costoSuperaAporte("Tecnología Punta del Este 2026", "Facultad de Ingeniería", "Estudiante", 10000, 1);
 		assertEquals(espera,obtenido);
-		}
-	
-	
-	
+		
+		DTRegistro DTRegObt = contR.getRegistro("SofiM","General");
+		DTRegistro  DTReges = new DTRegistro("SofiM", "General", new DTFecha(16,7,2024), 600.0, "Montevideo Comics 2024");
+		assertEquals(DTRegObt.getCosto(),DTReges.getCosto());
+		assertEquals(DTRegObt.getnomEdicion(),DTReges.getnomEdicion());
+		assertEquals(DTRegObt.getTipoDeRegistro(),DTReges.getTipoDeRegistro());
+		assertEquals(DTRegObt.getAsistente(),DTReges.getAsistente());
+		
+		
+		obtenido = contR.alcanzoCupo("Montevideo Rock 2025","VIP");
+		espera = false;
+		assertEquals(espera,obtenido);
+		
+	}
 	
 }

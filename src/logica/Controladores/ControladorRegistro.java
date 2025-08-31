@@ -150,7 +150,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	    for (String tr : as.getNomsTipo()) {
 
 	        if (tr != null && tr.equals(nombreTipoRegistro)) {
-	            String asistente = as.getNombre();
+	            String asistente = as.getNickname();
 	            DTRegistro dreg = as.getRegistro(nombreTipoRegistro);
 
 	            String edicion = dreg.getnomEdicion();

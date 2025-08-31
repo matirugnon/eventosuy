@@ -9,7 +9,6 @@ import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
-import logica.DataUsuario;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTUsuario;
