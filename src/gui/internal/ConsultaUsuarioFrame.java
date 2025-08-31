@@ -15,6 +15,7 @@ import logica.manejadores.ManejadorUsuario;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +43,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         setSize(600, 500);
         setLayout(new BorderLayout());
         this.openInternal = openInternal;
-
         inicializarComponentes();
     }
 
@@ -54,15 +54,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         form.add(new JLabel("Seleccionar Usuario:"));
         comboUsuarios = new JComboBox<>();
         cargarUsuarios();
-
-        IControladorUsuario controladorUsuario = IControladorUsuario.getInstance();
-        Set<String> usuarios = controladorUsuario.listarUsuarios();
-
-        for (String u : usuarios) {
-
-        	comboUsuarios.addItem(u);
-
-		}
 
         form.add(comboUsuarios);
 
@@ -98,6 +89,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     }
 
     private void actualizarListaSegunUsuario() {
+
         String seleccionadoS = (String) comboUsuarios.getSelectedItem();
 
         if (seleccionadoS == "") {
@@ -139,10 +131,10 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
             Set<String> registros = contrU.obtenerRegistros(seleccionadoS);
 
-
             if (registros.isEmpty()) {
                 listaResultados.setListData(new String[]{"No tiene registros."});
             } else {
+
                 listaResultados.setListData(registros.toArray(new String[0]));
             }
 
@@ -166,7 +158,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             ).append("\n");
             datos.append("Tipo: Organizador");
 
-            Set<String> ediciones = ctrlEventos.listarEdiciones(seleccionadoS);
+            Set<String> ediciones = ctrlUsuarios.listarEdicionesOrganizador(seleccionadoS);
 
             if (ediciones.isEmpty()) {
                 listaResultados.setListData(new String[]{"No tiene ediciones a cargo."});

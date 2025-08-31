@@ -202,7 +202,7 @@ public class ControladorUsuario implements IControladorUsuario {
 	}
 
 
-	public Set<String> listarEdiciones(String nombreOrganizador) {
+	public Set<String> listarEdicionesOrganizador(String nombreOrganizador) {
 
 		Usuario u = manejador.obtenerUsuario(nombreOrganizador);
 

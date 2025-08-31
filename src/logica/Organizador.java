@@ -61,7 +61,6 @@ public class Organizador extends Usuario {
 	}
 
 	public Set<String> getNombresEdiciones() {
-
 	    return ediciones.keySet(); // devuelve copia del conjunto
 	}
 

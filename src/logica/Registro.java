@@ -34,11 +34,11 @@ public class Registro{
 	public DTFecha getFechaRegistro() {
 	    return fechaRegistro;
 	}
-	
+
 	public double getCosto() {
 	    return costoRegistro;
 	}
-	
+
 	public String getNomEdicion() {
 	    return tipo.getNombreEdicion();
 	}
