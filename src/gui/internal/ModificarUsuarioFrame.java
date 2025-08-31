@@ -1,191 +1,272 @@
 package gui.internal;
 
-import javax.swing.*;
-
-
-
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
-
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.Set;
 
-@SuppressWarnings("serial")
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import logica.Asistente;
+import logica.Controladores.IControladorUsuario;
+import logica.DatatypesYEnum.DTAsistente;
+import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTOrganizador;
+import logica.DatatypesYEnum.DTUsuario;
+import logica.Usuario;
+import logica.manejadores.ManejadorUsuario;
+
 public class ModificarUsuarioFrame extends JInternalFrame {
 
-	private JComboBox<String> comboUsuarios;
-    private JTextField txtNickname, txtCorreo, txtNombre, txtApellido, txtFechaNac, txtDescripcion, txtWeb;
-    private JButton btnGuardar, btnCancelar;
+    private static final long serialVersionUID = 1L;
+    private JComboBox<String> comboUsuarios;
+    private JTextField txtNombre;
+    private JTextField txtApellido;
+    private JTextField txtDescripcion;
+    private JTextField txtLink;
+    private JTextField txtDia, txtMes, txtAnio;
+
+    private JLabel lblApellido, lblDescripcion, lblLink, lblFecha;
 
 
-    //logica
-    private IControladorUsuario controlador;
-    private Map<String, Usuario> mapaUsuarios;
+    private DTUsuario dtUsuarioActual; // Referencia al DTUsuario seleccionado
 
-
-
-
+    private JButton btnGuardar;
+    private IControladorUsuario ctrlUsuario;
 
     public ModificarUsuarioFrame() {
-        super("Modificar Usuario", true, true, true, true);
+        ctrlUsuario = IControladorUsuario.getInstance();
+        inicializarGUI();
+    }
 
-        //logica
-        controlador = IControladorUsuario.getInstance();
-
-        this.mapaUsuarios = new HashMap<>();
-
+    private void inicializarGUI() {
+        setTitle("Modificar Usuario");
+        setClosable(true);
+        setMaximizable(false);
+        setIconifiable(false);
+        setFrameIcon(null);
         setSize(500, 400);
         setLayout(new BorderLayout());
 
-        // TOP: selección de usuario
-        JPanel topPanel = new JPanel();
-        topPanel.add(new JLabel("Seleccione Usuario:"));
+        // Panel superior: selección de usuario
+        JPanel panelSeleccion = new JPanel();
+        panelSeleccion.add(new JLabel("Seleccionar usuario: "));
         comboUsuarios = new JComboBox<>();
+        cargarUsuarios();
+        comboUsuarios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarDatosUsuario();
+            }
+        });
+        panelSeleccion.add(comboUsuarios);
+        add(panelSeleccion, BorderLayout.NORTH);
 
-        Set<String> usrsSet = controlador.listarUsuarios();
+        // Panel central: campos editables
+        JPanel panelCampos = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        for (String usr : usrsSet) {
+        int fila = 0;
 
-        	Usuario u = mu.obtenerUsuario(usr);
+        // Nombre
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(new JLabel("Nombre:"), gbc);
+        gbc.gridx = 1; txtNombre = new JTextField(20); panelCampos.add(txtNombre, gbc); fila++;
 
-            String texto = u.getNickname() + " (" +
-                          (u instanceof Asistente ? "Asistente" : "Organizador") + ")";
-            comboUsuarios.addItem(texto);
-            mapaUsuarios.put(u.getNickname(), u); // guardamos referencia
+        // Apellido
+        lblApellido = new JLabel("Apellido:");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblApellido, gbc);
+        gbc.gridx = 1; txtApellido = new JTextField(20); panelCampos.add(txtApellido, gbc); fila++;
+
+        // Descripción
+        lblDescripcion = new JLabel("Descripción:");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblDescripcion, gbc);
+        gbc.gridx = 1; txtDescripcion = new JTextField(20); panelCampos.add(txtDescripcion, gbc); fila++;
+
+        // Link
+        lblLink = new JLabel("Link:");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblLink, gbc);
+        gbc.gridx = 1; txtLink = new JTextField(20); panelCampos.add(txtLink, gbc); fila++;
+
+        // Fecha de nacimiento
+        lblFecha = new JLabel("Fecha Nac (dd/mm/aaaa):");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblFecha, gbc);
+        JPanel panelFecha = new JPanel();
+        txtDia = new JTextField("dd", 2);
+        txtMes = new JTextField("mm", 2);
+        txtAnio = new JTextField("aaaa", 4);
+        panelFecha.add(txtDia);
+        panelFecha.add(new JLabel("/"));
+        panelFecha.add(txtMes);
+        panelFecha.add(new JLabel("/"));
+        panelFecha.add(txtAnio);
+        gbc.gridx = 1; panelCampos.add(panelFecha, gbc); fila++;
+
+        // Ocultar campos según tipo
+        ocultarCamposPorDefecto();
+
+        add(panelCampos, BorderLayout.CENTER);
+
+        // Botón guardar
+        btnGuardar = new JButton("Guardar Cambios");
+        btnGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarCambios();
+            }
+        });
+        add(btnGuardar, BorderLayout.SOUTH);
+    }
+
+    private void cargarUsuarios() {
+        Set<String> usuarios = ctrlUsuario.listarUsuarios();
+        for (String nick : usuarios) {
+            comboUsuarios.addItem(nick);
+        }
+    }
+
+    private void mostrarDatosUsuario() {
+        String nick = (String) comboUsuarios.getSelectedItem();
+        if (nick == null) return;
+
+        dtUsuarioActual = ctrlUsuario.getDTUsuario(nick);
+        if (dtUsuarioActual == null) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la información del usuario.");
+            return;
         }
 
-        topPanel.add(comboUsuarios);
-        JButton btnCargar = new JButton("Cargar Datos");
-        topPanel.add(btnCargar);
-        add(topPanel, BorderLayout.NORTH);
+        // Cargar nombre común a todos
+        txtNombre.setText(dtUsuarioActual.getNombre());
 
-        // CENTER: formulario editable
-        JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
+        // Limpiar y ocultar todos los campos específicos
+        ocultarCamposPorDefecto();
 
-        form.add(new JLabel("Nickname:"));
-        txtNickname = new JTextField();
-        txtNickname.setEditable(false); // no se puede modificar
-        form.add(txtNickname);
-
-        form.add(new JLabel("Correo:"));
-        txtCorreo = new JTextField();
-        txtCorreo.setEditable(false); // no se puede modificar
-        form.add(txtCorreo);
-
-        form.add(new JLabel("Nombre:"));
-        txtNombre = new JTextField();
-        form.add(txtNombre);
-
-        form.add(new JLabel("Apellido (solo asistentes):"));
-        txtApellido = new JTextField();
-        form.add(txtApellido);
-
-        form.add(new JLabel("Fecha Nacimiento (YYYY-MM-DD)(solo asistentes):"));
-        txtFechaNac = new JTextField();
-        form.add(txtFechaNac);
-
-        form.add(new JLabel("Descripción (solo organizador):"));
-        txtDescripcion = new JTextField();
-        form.add(txtDescripcion);
-
-        form.add(new JLabel("Sitio Web (solo organizador):"));
-        txtWeb = new JTextField();
-        form.add(txtWeb);
-
-        add(form, BorderLayout.CENTER);
-
-        // BOTTOM: botones
-        JPanel botones = new JPanel();
-        btnGuardar = new JButton("Guardar");
-        btnCancelar = new JButton("Cancelar");
-        botones.add(btnGuardar);
-        botones.add(btnCancelar);
-        add(botones, BorderLayout.SOUTH);
-
-        // Eventos
-        btnCargar.addActionListener(e -> cargarDatosUsuario());
-        btnGuardar.addActionListener(e -> guardarCambios());
-        btnCancelar.addActionListener(e -> dispose());
-
-        // Inicializar estado de campos según selección inicial (por defecto)
-        actualizarCamposPorRol();
-        comboUsuarios.addActionListener(e -> actualizarCamposPorRol());
-    }
-
-    // Actualiza la habilitación de campos según el rol seleccionado
-    private void actualizarCamposPorRol() {
-
-    	Usuario seleccionado = (Usuario) comboUsuarios.getSelectedItem();
-    	boolean esAsistente = seleccionado instanceof Asistente;
-    	boolean esOrganizador = seleccionado instanceof Organizador;
-
-        // Asistente: habilita apellido y fecha, deshabilita descripción y web
-        txtApellido.setEditable(esAsistente);
-        txtFechaNac.setEditable(esAsistente);
-
-        // Organizador: habilita descripción y web, deshabilita apellido y fecha
-        txtDescripcion.setEditable(esOrganizador);
-        txtWeb.setEditable(esOrganizador);
-    }
-
-    // ⚠️ Mock de datos de ejemplo
-    private void cargarDatosUsuario() {
-        String seleccionado = (String) comboUsuarios.getSelectedItem();
-        if (seleccionado == null) return;
-
-        // ⚠️ el texto tiene la forma "nick (rol)", me quedo solo con el nick
-        String nick = seleccionado.split(" ")[0];
-
-        Usuario u = mapaUsuarios.get(nick);
-
-        txtNickname.setText(u.getNickname());
-        txtCorreo.setText(u.getCorreo());
-        txtNombre.setText(u.getNombre());
-
-        if (u instanceof Asistente) {
-            Asistente a = (Asistente) u;
-            txtApellido.setText(a.getApellido());
-            txtFechaNac.setText(a.getFechaNacimiento().toString());
-            txtDescripcion.setText("");
-            txtWeb.setText("");
-        } else if (u instanceof Organizador) {
-            Organizador o = (Organizador) u;
-            txtDescripcion.setText(o.getDescripcion());
-            txtWeb.setText(o.getLink());
-            txtApellido.setText("");
-            txtFechaNac.setText("");
+        if (dtUsuarioActual instanceof DTAsistente) {
+            DTAsistente dtA = (DTAsistente) dtUsuarioActual;
+            txtApellido.setText(dtA.getApellido());
+            DTFecha fecha = dtA.getFechaNacimiento();
+            if (fecha != null) {
+                txtDia.setText(String.valueOf(fecha.getDia()));
+                txtMes.setText(String.valueOf(fecha.getMes()));
+                txtAnio.setText(String.valueOf(fecha.getAnio()));
+            }
+            mostrarCamposAsistente(true);
         }
-
-        actualizarCamposPorRol();
+        else if (dtUsuarioActual instanceof DTOrganizador) {
+            DTOrganizador dtO = (DTOrganizador) dtUsuarioActual;
+            txtDescripcion.setText(dtO.getDescripcion());
+            txtLink.setText(dtO.getLink());
+            mostrarCamposOrganizador(true);
+        }
     }
 
+    private void mostrarCamposAsistente(boolean mostrar) {
+        lblApellido.setVisible(mostrar);
+        txtApellido.setVisible(mostrar);
+        lblFecha.setVisible(mostrar);
+        txtDia.setVisible(mostrar);
+        txtMes.setVisible(mostrar);
+        txtAnio.setVisible(mostrar);
+    }
+
+    private void mostrarCamposOrganizador(boolean mostrar) {
+        lblDescripcion.setVisible(mostrar);
+        txtDescripcion.setVisible(mostrar);
+        lblLink.setVisible(mostrar);
+        txtLink.setVisible(mostrar);
+    }
+
+    private void ocultarCamposPorDefecto() {
+        mostrarCamposAsistente(false);
+        mostrarCamposOrganizador(false);
+    }
 
     private void guardarCambios() {
-        String seleccionado = (String) comboUsuarios.getSelectedItem();
-        if (seleccionado == null) return;
-
-        String nick = seleccionado.split(" ")[0];
-        Usuario u = mapaUsuarios.get(nick);
-
-        u.setNombre(txtNombre.getText());
-
-        if (u instanceof Asistente) {
-            Asistente a = (Asistente) u;
-            a.setApellido(txtApellido.getText());
-            a.setFechaNac(txtFechaNac.getText());
-        } else if (u instanceof Organizador) {
-            Organizador o = (Organizador) u;
-            o.setDescripcion(txtDescripcion.getText());
-            o.setLink(txtWeb.getText());
+        String nick = (String) comboUsuarios.getSelectedItem();
+        if (nick == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
+            return;
         }
 
-        JOptionPane.showMessageDialog(this,
-                "Usuario " + u.getNickname() + " modificado con éxito.",
-                "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
-    }
+        String nombre = txtNombre.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+            return;
+        }
 
+        try {
+            DTUsuario dtModificado;
+
+            if (dtUsuarioActual instanceof DTAsistente) {
+                String apellido = txtApellido.getText().trim();
+                if (apellido.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El apellido no puede estar vacío.");
+                    return;
+                }
+
+                int dia, mes, anio;
+                try {
+                    dia = Integer.parseInt(txtDia.getText());
+                    mes = Integer.parseInt(txtMes.getText());
+                    anio = Integer.parseInt(txtAnio.getText());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Formato de fecha inválido.");
+                    return;
+                }
+
+                if (!ctrlUsuario.esFechaValida(dia, mes, anio)) {
+                    JOptionPane.showMessageDialog(this, "Fecha de nacimiento no válida.");
+                    return;
+                }
+
+                DTFecha fechaNac = new DTFecha(dia, mes, anio);
+                DTAsistente dtA = (DTAsistente) dtUsuarioActual;
+                // Conservamos el correo original y la institución (no se modifican)
+                dtModificado = new DTAsistente(
+                    nick,
+                    nombre,
+                    dtA.getCorreo(),        // no se modifica
+                    apellido,
+                    fechaNac,
+                    dtA.getInstitucion()    // no se modifica
+                );
+            }
+            else if (dtUsuarioActual instanceof DTOrganizador) {
+                String descripcion = txtDescripcion.getText().trim();
+                String link = txtLink.getText().trim();
+
+                DTOrganizador dtO = (DTOrganizador) dtUsuarioActual;
+                dtModificado = new DTOrganizador(
+                    nick,
+                    nombre,
+                    dtO.getCorreo(),        // no se modifica
+                    descripcion,
+                    link
+                );
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Tipo de usuario desconocido.");
+                return;
+            }
+
+
+            ctrlUsuario.modificarUsuario(nick, dtModificado);
+            JOptionPane.showMessageDialog(this, "Usuario modificado con éxito.");
+            dispose();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al modificar usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

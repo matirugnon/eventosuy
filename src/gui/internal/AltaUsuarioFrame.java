@@ -152,9 +152,14 @@ public class AltaUsuarioFrame extends JInternalFrame {
 
             Set<String> instituciones = contrU.listarInstituciones();
 
+            comboInstitucion.removeAllItems(); // Evita duplicados
+            comboInstitucion.addItem("Sin institución");
+
              for(String i: instituciones) {
             	 comboInstitucion.addItem(i);
              }
+
+             comboInstitucion.setSelectedIndex(0);
 
 
             form.add(new JLabel("Institución:")); form.add(comboInstitucion);
@@ -220,6 +225,11 @@ public class AltaUsuarioFrame extends JInternalFrame {
         // Campos específicos
         String apellido = txtApellido.getText().trim();
         String ins = (String) comboInstitucion.getSelectedItem();
+
+        if ("Sin institución".equals(ins)) {
+            ins = "";
+        }
+
         DTFecha fechanac = new DTFecha(
             (int) spinnerDia.getValue(),
             (int) spinnerMes.getValue(),
@@ -232,10 +242,8 @@ public class AltaUsuarioFrame extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Debe ingresar el apellido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (ins == null || ins.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Debe seleccionar una institución.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+
+
         } else if ("Organizador".equals(tipo)) {
             String descr = txtDescripcion.getText().trim();
             String link = txtLink.getText().trim();

@@ -7,13 +7,16 @@ import java.util.Set;
 import excepciones.CorreoInvalidoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import gui.internal.ModificarUsuarioFrame;
 import logica.Asistente;
 import logica.Institucion;
 import logica.Organizador;
 import logica.Usuario;
+import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
@@ -23,8 +26,6 @@ public class ControladorUsuario implements IControladorUsuario {
 	private static ControladorUsuario instancia = null;
 
     private ControladorUsuario() {
-
-    	//inicializo el manejador
     	this.manejador = ManejadorUsuario.getinstance();
     }
 
@@ -113,12 +114,11 @@ public class ControladorUsuario implements IControladorUsuario {
 
     public boolean ExisteCorreo(String correo) {
 
-    	ManejadorUsuario mu = ManejadorUsuario.getinstance();
     	Set<String> usuarios = listarUsuarios();
 
     	for(String nick : usuarios) {
 
-    		Usuario u = mu.obtenerUsuario(nick);
+    		Usuario u = manejador.obtenerUsuario(nick);
     		if (u.getCorreo().equals(correo)) {
 				return true;
 			}
@@ -143,28 +143,19 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
 
-    public void modificarUsuario(String nick, DTUsuario datosUsuario) {
-
-    }
-
-
     public Set<String> listarOrganizadores(){
-        ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
-        return manejadorU.obtenerNicksOrganizadores();
+        return manejador.obtenerNicksOrganizadores();
     }
 
     public Set<String> listarAsistentes(){
-    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
-    	return manejadorU.getNickAsistentes();
+    	return manejador.getNickAsistentes();
     }
 
     public boolean existeInstitucion(String nomInstitucion) {
-    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
-    	return manejadorU.existeInstitucion(nomInstitucion);
+    	return manejador.existeInstitucion(nomInstitucion);
     }
 
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web) throws ExisteInstitucionException {
-    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
     	Institucion ins = new Institucion(nombreInstitucion,descripcion,web);
 
     	if (existeInstitucion(nombreInstitucion)) {
@@ -172,19 +163,17 @@ public class ControladorUsuario implements IControladorUsuario {
         }
 
 
-    	manejadorU.addInstitucion(ins);
+    	manejador.addInstitucion(ins);
     }
 
     public Set<String> listarInstituciones(){
-    	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
-    	return manejadorU.getNombreInstituciones();
+    	return manejador.getNombreInstituciones();
     }
 
 
 	public DTUsuario getDTUsuario(String nombreU) {
 
-		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Usuario u = mu.obtenerUsuario(nombreU);
+		Usuario u = manejador.obtenerUsuario(nombreU);
 
 		if (u instanceof Organizador) {
 			Organizador o = (Organizador) u;
@@ -200,8 +189,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	public Set<String> obtenerRegistros(String nombreAsistente) {
 
-		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Asistente a = (Asistente) mu.obtenerUsuario(nombreAsistente);
+		Asistente a = (Asistente) manejador.obtenerUsuario(nombreAsistente);
 
 
 		Set<String> registros = a.getNomsTipo();
@@ -221,12 +209,32 @@ public class ControladorUsuario implements IControladorUsuario {
 		return ediciones;
 	}
 
-	public void ModificarUsuario() {
+	//-----------------------------------------------MODIFICAR USUARIO__________________________________________________
 
-	}
 
-	public void ModificarOrganizador() {
+	public void modificarUsuario(String nick, DTUsuario datosUsuario) throws UsuarioNoExisteException {
 
+	    Usuario usuario = manejador.obtenerUsuario(nick);
+
+	    if (usuario == null) {
+	        throw new UsuarioNoExisteException("No existe un usuario con nickname: " + nick);
+	    }
+
+	    // Actualizamos los campos editables
+	    usuario.setNombre(datosUsuario.getNombre());
+
+	    if (usuario instanceof Asistente && datosUsuario instanceof DTAsistente) {
+	        Asistente a = (Asistente) usuario;
+	        DTAsistente dtA = (DTAsistente) datosUsuario;
+	        a.setApellido(dtA.getApellido());
+	        a.setFechaNacimiento(dtA.getFechaNacimiento());
+	    }
+	    else if (usuario instanceof Organizador && datosUsuario instanceof DTOrganizador) {
+	        Organizador o = (Organizador) usuario;
+	        DTOrganizador dtO = (DTOrganizador) datosUsuario;
+	        o.setDescripcion(dtO.getDescripcion());
+	        o.setLink(dtO.getLink());
+	    }
 	}
 
 

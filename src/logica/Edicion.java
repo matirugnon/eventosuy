@@ -97,7 +97,7 @@ public class Edicion{
 	public Set<Patrocinio> getPatrocinios() {
 		return (Set<Patrocinio>) new HashSet<>(patrocinios.values());
 	}
-	
+
 	public Set<String> getCodigosPatrocinios() {
 		return patrocinios.keySet();
 	}
@@ -147,7 +147,7 @@ public class Edicion{
 
 	public boolean esPatrocinador(String nomInstitucion) {
 		for (Patrocinio pat : patrocinios.values()) {
-			if (pat.getNombreTipoDeRegistro().equals(nomInstitucion)) {
+			if (pat.getNombreInstitucion().equals(nomInstitucion)) {
 				return true;
 			}
 		}
