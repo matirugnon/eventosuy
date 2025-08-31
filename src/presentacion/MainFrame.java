@@ -127,6 +127,7 @@ public class MainFrame extends JFrame {
         cargarDatos.addActionListener(e -> {
             try {
 				Utils.cargarDatos(contrU,contE,contR);
+				JOptionPane.showMessageDialog(this, "Datos cargados exitosamente");
 			} catch (UsuarioRepetidoException e1) {
 				e1.printStackTrace();
 			}

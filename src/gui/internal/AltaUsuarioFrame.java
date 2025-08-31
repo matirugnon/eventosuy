@@ -3,7 +3,7 @@ package gui.internal;
 import javax.swing.*;
 
 import excepciones.UsuarioRepetidoException;
-
+import logica.Controladores.ControladorUsuario;
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 
@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class AltaUsuarioFrame extends JInternalFrame {
     private static final long serialVersionUID = 1L;
@@ -34,14 +36,6 @@ public class AltaUsuarioFrame extends JInternalFrame {
     // Panel del formulario
     private JPanel form;
 
-    // Datos existentes (simulación)
-    private List<Usuario> usuariosExistentes = new ArrayList<>();
-
-    // Instituciones de prueba
-    private String[] instituciones = {
-        "Universidad Nacional", "Colegio San José", "Instituto Tecnológico",
-        "Escuela de Arte", "Centro Cultural"
-    };
 
     public AltaUsuarioFrame() {
         super("Alta de Usuario", true, true, true, true);
@@ -49,9 +43,6 @@ public class AltaUsuarioFrame extends JInternalFrame {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        // Inicializar usuarios de prueba
-        usuariosExistentes.add(new Usuario("admin", "admin@mail.com", "Organizador"));
-        usuariosExistentes.add(new Usuario("user1", "user1@mail.com", "Asistente"));
 
         // Crear panel del formulario
         form = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -106,7 +97,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
     private void agregarCamposPorDefecto() {
         // Campos para Asistente
         txtApellido = new JTextField();
-        comboInstitucion = new JComboBox<>(instituciones);
+        comboInstitucion = new JComboBox<>();
         comboInstitucion.setEnabled(false); // Inicialmente deshabilitado
 
         // Spinner para fecha de nacimiento
@@ -160,6 +151,16 @@ public class AltaUsuarioFrame extends JInternalFrame {
             form.add(panelFecha);
 
             // Institución
+
+            ControladorUsuario contrU = ControladorUsuario.getInstance();
+
+            Set<String> instituciones = contrU.listarInstituciones();
+
+             for(String i: instituciones) {
+            	 comboInstitucion.addItem(i);
+             }
+
+
             form.add(new JLabel("Institución:")); form.add(comboInstitucion);
 
             // Habilitar campos de asistente
@@ -236,6 +237,17 @@ public class AltaUsuarioFrame extends JInternalFrame {
             return;
         }
 
+        if (!correo.contains("@")) {
+            JOptionPane.showMessageDialog(this, "El correo debe contener el símbolo '@'.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!link.contains(".")) {
+            JOptionPane.showMessageDialog(this, "Error de formato de pagina web, revise los datos", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
         //se manejan los repetidos en la interfaz
 
         if (cont.ExisteNickname(nickname)) {
@@ -304,15 +316,4 @@ public class AltaUsuarioFrame extends JInternalFrame {
         cambiarTipo();
     }
 
-
-
-    // Clase interna para simular usuarios
-    private static class Usuario {
-        String nickname, correo, rol;
-        Usuario(String nickname, String correo, String rol) {
-            this.nickname = nickname;
-            this.correo = correo;
-            this.rol = rol;
-        }
-    }
 }
