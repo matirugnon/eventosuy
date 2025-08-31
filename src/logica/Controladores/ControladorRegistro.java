@@ -118,35 +118,37 @@ public class ControladorRegistro implements IControladorRegistro {
 	}
 
 	public DTRegistro getRegistro(String nombreUsuario, String nombreTipoRegistro) {
-	   
+
 	    Usuario u = ManejadorUsuario.getinstance().obtenerUsuario(nombreUsuario);
 	    if (u == null) {
 	        throw new IllegalArgumentException("No existe el usuario: " + nombreUsuario);
 	    }
 
-	   
+
 	    if (!(u instanceof Asistente)) {
 	        throw new IllegalArgumentException("El usuario " + nombreUsuario + " no es un asistente.");
 	    }
 
 	    Asistente as = (Asistente) u;
 
-	   
+
 	    for (String tr : as.getNomsTipo()) {
-	        
+
 	        if (tr != null && tr.equals(nombreTipoRegistro)) {
-	            String asistente = as.getNombre();     
+	            String asistente = as.getNombre();
 	            DTRegistro dreg = as.getRegistro(nombreTipoRegistro);
+
 	            String edicion = dreg.getnomEdicion();
-	       
-	            DTFecha fecha = dreg.getFechaRegistro(); 
+
+	            DTFecha fecha = dreg.getFechaRegistro();
+
 	            Double costo = dreg.getCosto();
 
 	            return new DTRegistro(asistente, tr, fecha, costo, edicion);
 	        }
 	    }
 
-	   
+
 	    return null;
 	}
 }

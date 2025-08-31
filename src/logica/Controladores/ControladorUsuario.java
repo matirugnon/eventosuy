@@ -196,7 +196,7 @@ public class ControladorUsuario implements IControladorUsuario {
 		Asistente a = (Asistente) mu.obtenerUsuario(nombreAsistente);
 
 
-		Set<String> registros = a.getRegistros();
+		Set<String> registros = a.getNomsTipo();
 
 		return registros;
 	}
