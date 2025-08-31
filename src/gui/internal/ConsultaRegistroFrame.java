@@ -1,10 +1,10 @@
-package presentacion;
+package gui.internal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Controladores.ControladorRegistro;
-import logica.Controladores.ControladorUsuario;
+import logica.Controladores.IControladorRegistro;
+import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTRegistro;
 
@@ -75,7 +75,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
 
 
     private void cargarUsuarios() {
-        ControladorUsuario cu = ControladorUsuario.getInstance();
+        IControladorUsuario cu = IControladorUsuario.getInstance();
         Set<String> usrs = cu.listarAsistentes();
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -105,7 +105,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
     }
 
     private void cargarRegistrosDeUsuario(String asistente) {
-        ControladorRegistro cr = ControladorRegistro.getInstance();
+        IControladorRegistro cr = IControladorRegistro.getInstance();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         Set<String> nomstiporeg = cr.obtenerNomsTipoRegistro(asistente);
 
@@ -134,7 +134,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         String usuario = selUsuario.toString();
         String registro = selReg.toString();
 
-        ControladorRegistro contrR = ControladorRegistro.getInstance();
+        IControladorRegistro contrR = IControladorRegistro.getInstance();
         DTRegistro dtr = contrR.getRegistro(usuario, registro);
 
         if (dtr == null) {

@@ -3,7 +3,9 @@ package logica.Controladores;
 import java.util.HashSet;
 import java.util.Set;
 
+import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
+import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.Asistente;
 import logica.Edicion;
 import logica.Registro;
@@ -42,7 +44,12 @@ public class ControladorRegistro implements IControladorRegistro {
 	return ed.existeTipoDeRegistro(nombreTipo);
 	}
 
-	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) {
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
+
+		if (existeTipoDeRegistro(nombreEd, nombreTipo)) {
+			 throw new NombreTipoRegistroDuplicadoException(nombreEd);
+		}
+
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed =manejador.obtenerEdicion(nombreEd);
 		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo, ed);
@@ -106,7 +113,14 @@ public class ControladorRegistro implements IControladorRegistro {
 		return tp.alcanzoCupo();
 	}
 
-	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo) {
+	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
+
+
+		if(estaRegistrado(nomEdicion, nickAsistente)) {
+			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
+		}
+
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nomEdicion);
 		TipoDeRegistro tp = ed.getTipoDeRegistro(nomTipoRegistro);
@@ -115,6 +129,7 @@ public class ControladorRegistro implements IControladorRegistro {
 		Asistente as = (Asistente) us;
 		Registro reg = tp.altaRegistro(fechaRegistro, costo, nickAsistente);
 		as.agregarRegistro(reg);
+
 	}
 
 	public DTRegistro getRegistro(String nombreUsuario, String nombreTipoRegistro) {

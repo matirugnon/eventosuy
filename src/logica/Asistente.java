@@ -37,9 +37,8 @@ public class Asistente extends Usuario {
 
 	}
 
-	public void setFechaNac(String text) {
-		// TODO Auto-generated method stub
-
+	public void setFechaNacimiento(DTFecha fecha) {
+	    this.fechaNacimiento = fecha;
 	}
 
 

@@ -6,9 +6,12 @@ import javax.swing.table.DefaultTableModel;
 
 
 import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTAsistente;
+import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTOrganizador;
+import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
@@ -72,11 +75,32 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         listaResultados = new JList<>();
         listaResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollResultados = new JScrollPane(listaResultados);
+        scrollResultados.setPreferredSize(new Dimension(200, 100));
         form.add(scrollResultados);
 
         add(form, BorderLayout.CENTER);
 
         comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
+
+
+        listaResultados.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Doble clic
+                    String usuarioSeleccionado = (String) comboUsuarios.getSelectedItem();
+                    String elementoSeleccionado = listaResultados.getSelectedValue();
+                    if (elementoSeleccionado == null || "No tiene registros.".equals(elementoSeleccionado) ||
+                        "No tiene ediciones a cargo.".equals(elementoSeleccionado)) {
+                        return;
+                    }
+                    mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
+                }
+            }
+        });
+
+
+
+
     }
 
     private void cargarUsuarios() {
@@ -129,15 +153,26 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             datos.append("Tipo: Asistente");
 
 
-            Set<String> registros = contrU.obtenerRegistros(seleccionadoS);
+            Set<String> nombresTipos = contrU.obtenerRegistros(seleccionadoS); // Son los tipos de registro
 
-            if (registros.isEmpty()) {
+            if (nombresTipos.isEmpty()) {
                 listaResultados.setListData(new String[]{"No tiene registros."});
             } else {
+                IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
+                DefaultListModel<String> modeloLista = new DefaultListModel<>();
 
-                listaResultados.setListData(registros.toArray(new String[0]));
+                for (String tipo : nombresTipos) {
+                    DTRegistro dtReg = ctrlReg.getRegistro(seleccionadoS, tipo);
+                    if (dtReg != null) {
+                        String texto = dtReg.getnomEdicion() + " - " + dtReg.getTipoDeRegistro();
+                        modeloLista.addElement(texto);
+                    } else {
+                        modeloLista.addElement("Desconocido - " + tipo);
+                    }
+                }
+
+                listaResultados.setModel(modeloLista);
             }
-
 
 
         } else if (dtU instanceof DTOrganizador) {
@@ -171,6 +206,81 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         areaDatos.setText(datos.toString());
 
     }
+
+
+    //FUNCIONES EXTRA
+
+    private void mostrarDetalle(String nicknameUsuario, String elementoSeleccionado) {
+    	
+        DTUsuario dtUsuario = ctrlUsuarios.getDTUsuario(nicknameUsuario);
+        if (dtUsuario == null) return;
+
+        String titulo;
+        JTextArea area = new JTextArea();
+        area.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        area.setEditable(false);
+
+        if (dtUsuario instanceof DTAsistente) {
+
+            int idx = elementoSeleccionado.lastIndexOf(" - ");
+            if (idx == -1) {
+                JOptionPane.showMessageDialog(this, "Formato inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            String tipoRegistro = elementoSeleccionado.substring(idx + 3);
+
+            IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
+            DTRegistro dtRegistro = ctrlReg.getRegistro(nicknameUsuario, tipoRegistro);
+
+            if (dtRegistro == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el registro.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            area.setText(
+                "Asistente: " + dtRegistro.getAsistente() + "\n" +
+                "Tipo de Registro: " + dtRegistro.getTipoDeRegistro() + "\n" +
+                "Fecha de Registro: " + dtRegistro.getFechaRegistro() + "\n" +
+                "Costo: $" + String.format("%.2f", dtRegistro.getCosto()) + "\n" +
+                "Edición: " + dtRegistro.getnomEdicion()
+            );
+            titulo = "Detalle de Registro";
+
+        } else if (dtUsuario instanceof DTOrganizador) {
+            DTEdicion dtEdicion = ctrlEventos.consultarEdicion(elementoSeleccionado);
+            if (dtEdicion == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró la edición.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            area.setText(
+                "Nombre: " + dtEdicion.getNombre() + "\n" +
+                "Sigla: " + dtEdicion.getSigla() + "\n" +
+                "Fecha Inicio: " + dtEdicion.getFechaInicio() + "\n" +
+                "Fecha Fin: " + dtEdicion.getFechaFin() + "\n" +
+                "Alta Edición: " + dtEdicion.getAltaEdicion() + "\n" +
+                "Ciudad: " + dtEdicion.getCiudad() + "\n" +
+                "País: " + dtEdicion.getPais() + "\n" +
+                "Organizador: " + dtEdicion.getOrganizador() + "\n" +
+                "Patrocinios: " + String.join(", ", dtEdicion.getPatrocinios()) + "\n" +
+                "Tipos de Registro: " + String.join(", ", dtEdicion.getTiposDeRegistro())
+            );
+            titulo = "Detalle de Edición";
+        } else {
+            return;
+        }
+
+        // ✅ Mostrar con JOptionPane (automáticamente tiene scroll si es grande)
+        JOptionPane.showMessageDialog(
+            this,                    // componente padre
+            new JScrollPane(area),   // contenido con scroll
+            titulo,                  // título
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+
+
 
 
 
