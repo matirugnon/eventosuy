@@ -1,5 +1,6 @@
 package gui.internal;
 
+import logica.Controladores.IControladorEvento;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
 import logica.Evento;
@@ -96,7 +97,7 @@ public class AltaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarEventos() {
-        ControladorEvento ctrlEvento = ControladorEvento.getInstance();
+        IControladorEvento ctrlEvento = ControladorEvento.getInstance();
         var eventos = ctrlEvento.listarEventos();
 
         comboEventos.removeAllItems();

@@ -3,7 +3,8 @@ package gui.internal;
 import javax.swing.*;
 
 import excepciones.UsuarioRepetidoException;
-import logica.Controladores.ControladorUsuario;
+
+import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 
 import java.awt.*;
@@ -227,7 +228,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         DTFecha fechanac = new DTFecha(diaV,mesV,anioV);
 
 
-        ControladorUsuario cont = ControladorUsuario.getInstance();
+        IControladorUsuario cont = IControladorUsuario.getInstance();
 
 
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {

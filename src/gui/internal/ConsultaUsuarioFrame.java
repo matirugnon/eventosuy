@@ -8,10 +8,10 @@ import logica.Edicion;
 import logica.Organizador;
 import logica.Registro;
 import logica.Usuario;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTOrganizador;
+
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorUsuario;
+
 import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
@@ -37,8 +37,8 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     private JList<String> listaResultados;
     private  JLabel labelCambiante;
 
-    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
-    private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+    private IControladorUsuario ctrlUsuarios = IControladorUsuario.getInstance();
+    private IControladorEvento ctrlEventos = IControladorEvento.getInstance();
 
     public ConsultaUsuarioFrame(Consumer<JInternalFrame> openInternal) {
         super("Consulta de Usuario", true, true, true, true);
@@ -58,7 +58,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         comboUsuarios = new JComboBox<>();
         cargarUsuarios();
 
-        ControladorUsuario controladorUsuario = ControladorUsuario.getInstance();
+        IControladorUsuario controladorUsuario = IControladorUsuario.getInstance();
         Set<String> usuarios = controladorUsuario.listarUsuarios();
 
         for (String u : usuarios) {
@@ -109,8 +109,9 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
         // Construir datos del usuario
 
-        ControladorUsuario contrU = ControladorUsuario.getInstance();
-        ControladorEvento contrEvento = ControladorEvento.getInstance();
+
+        IControladorUsuario contrU = IControladorUsuario.getInstance();
+
 
         DTUsuario dtU = contrU.getDTUsuario(seleccionadoS);
 

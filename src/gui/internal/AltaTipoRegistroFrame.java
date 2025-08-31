@@ -3,8 +3,8 @@ package gui.internal;
 import javax.swing.*;
 
 import logica.Evento;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
 
 import java.awt.*;
 import java.util.Set;
@@ -16,8 +16,8 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
     private JTextField txtNombre, txtDescripcion, txtCosto, txtCupo;
 
 
-    private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
-    private ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+    private IControladorEvento ctrlEventos = IControladorEvento.getInstance();
+    private IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
 
     public AltaTipoRegistroFrame() {
         super("Alta de Tipo de Registro", true, true, true, true);
@@ -25,7 +25,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         setLayout(new BorderLayout());
 
 
-        ControladorEvento ctrlEvento = ControladorEvento.getInstance();
+        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));

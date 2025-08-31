@@ -30,7 +30,7 @@ public class ControladorUsuario implements IControladorUsuario {
 	private ManejadorUsuario manejador;
 	private static ControladorUsuario instancia = null;
 
-    public ControladorUsuario() {
+    private ControladorUsuario() {
 
     	//inicializo el manejador
     	this.manejador = ManejadorUsuario.getinstance();

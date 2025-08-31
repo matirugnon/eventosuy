@@ -3,8 +3,8 @@ package gui.internal;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 
 import java.awt.*;
@@ -68,7 +68,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        String evento = (String) comboEventos.getSelectedItem();
 	        if (evento == null) return;
 	        else {
-	    		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+	    		IControladorEvento ctrlEventos = IControladorEvento.getInstance();
 	    		Set<String> ediciones = ctrlEventos.listarEdiciones(evento);
 	    		for (String ed: ediciones) {
 	    			comboEdiciones.addItem(ed);
@@ -79,7 +79,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	    private void cargarEventos() {
 	    	comboEventos.removeAllItems();
 
-	    	ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+	    	IControladorEvento ctrlEventos = IControladorEvento.getInstance();
     		Set<String> eventos = ctrlEventos.listarEventos();
     		for (String ev: eventos) {
     			comboEventos.addItem(ev);
@@ -93,7 +93,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        String edicion = (String) comboEdiciones.getSelectedItem();
 	        if (edicion == null) return;
 	        else {
-	    		ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+	    		IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
 	    		Set<String> tiposRegistro = ctrlRegistros.listarTipoRegistro(edicion);
 	    		for (String tr: tiposRegistro) {
 	    			comboTiposRegistro.addItem(tr);
@@ -107,7 +107,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        String tipo = (String) comboTiposRegistro.getSelectedItem();
 	        if (tipo == null) return;
 	        else {
-	        	ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+	        	IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
 	        	DTTipoDeRegistro dtTipoReg = ctrlRegistros.consultaTipoDeRegistro(edicion, tipo);
 	        	areaDatos.setText(
 	        			"Nombre: " + dtTipoReg.getNombre() + "\n" +

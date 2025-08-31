@@ -2,8 +2,8 @@
 
 import logica.Edicion;
 import logica.Evento;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
@@ -108,7 +108,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         	}
         	else {
         		String edicion = (String) comboEdiciones.getSelectedItem();
-        		ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+        		IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
         		DTTipoDeRegistro dt = ctrlRegistros.consultaTipoDeRegistro(edicion, tr);
 
         		JOptionPane.showMessageDialog(this,
@@ -132,7 +132,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         	}
         	else {
         		String edicion = (String) comboEdiciones.getSelectedItem();
-        		ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+        		IControladorEvento ctrlEventos = IControladorEvento.getInstance();
         		DTPatrocinio dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
 
         		JOptionPane.showMessageDialog(this,
@@ -149,7 +149,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarTipoRegistro() {
-    	ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
+    	IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
     	comboTipoDeRegistros.removeAllItems();
 
 
@@ -173,7 +173,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarEventos() {
-        ControladorEvento ctrlEventos = ControladorEvento.getInstance();
+        IControladorEvento ctrlEventos = IControladorEvento.getInstance();
         Set<String> eventos = ctrlEventos.listarEventos();
 
         comboEventos.removeAllItems();
@@ -222,7 +222,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         }
 
         String evento = (String) comboEventos.getSelectedItem();
-        ControladorEvento cont = ControladorEvento.getInstance();
+        IControladorEvento cont = IControladorEvento.getInstance();
 
         DTEdicion dte = cont.consultarEdicion(edicionS);
 

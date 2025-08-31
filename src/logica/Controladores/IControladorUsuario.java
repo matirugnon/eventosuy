@@ -15,7 +15,11 @@ import logica.DatatypesYEnum.DTFecha;
  *
  */
 public interface IControladorUsuario {
-
+	
+	static IControladorUsuario getInstance() {
+        return ControladorUsuario.getInstance();
+    }
+	
 	public void altaUsuario(Usuario u);
 
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException;

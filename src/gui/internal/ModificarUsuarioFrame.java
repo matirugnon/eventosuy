@@ -5,9 +5,9 @@ import javax.swing.*;
 import logica.Asistente;
 import logica.Organizador;
 import logica.Usuario;
-import logica.Controladores.ControladorUsuario;
+import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
-import logica.manejadores.ManejadorUsuario;
+
 
 import java.awt.*;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
 
     //logica
-    private ControladorUsuario controlador;
+    private IControladorUsuario controlador;
     private Map<String, Usuario> mapaUsuarios;
 
 
@@ -34,7 +34,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         super("Modificar Usuario", true, true, true, true);
 
         //logica
-        controlador = ControladorUsuario.getInstance();
+        controlador = IControladorUsuario.getInstance();
         ManejadorUsuario mu = ManejadorUsuario.getinstance();
 
         this.mapaUsuarios = new HashMap<>();

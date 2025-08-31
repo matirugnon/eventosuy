@@ -7,8 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
-import logica.Controladores.ControladorEvento;
-import logica.manejadores.ManejadorEventos;
+import logica.Controladores.IControladorEvento;
+
 
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +28,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
         setSize(650, 500);
         setLayout(new BorderLayout());
 
-        ControladorEvento contrEvento = ControladorEvento.getInstance();
+        IControladorEvento contrEvento = IControladorEvento.getInstance();
 
 
         // TOP: selección de evento

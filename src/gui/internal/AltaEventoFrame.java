@@ -2,7 +2,8 @@ package gui.internal;
 
 import javax.swing.*;
 
-import logica.Controladores.ControladorEvento;
+import logica.Controladores.IControladorEvento;
+
 import logica.DatatypesYEnum.DTFecha;
 
 import java.awt.*;
@@ -104,7 +105,7 @@ public class AltaEventoFrame extends JInternalFrame {
     private void altaEvento() {
 
     	//instancia de controlador eventos
-    	ControladorEvento cont = ControladorEvento.getInstance();
+    	IControladorEvento cont = IControladorEvento.getInstance();
 
 
     	//valores para dar de alta el evento
