@@ -14,6 +14,19 @@ public class DTSeleccionEvento {
     }
 
     public DTEvento getEvento() { return evento; }
-    public Set<String> getNombresCategorias() { return nombresCategorias; }
-    public Set<String> getNombresEdiciones() { return nombresEdiciones; }
+    public Set<String> getCategorias() { return nombresCategorias; }
+    public Set<String> getEdiciones() { return nombresEdiciones; }
+    public String getNombre() {
+    	return evento.getNombre();
+    }
+    public String getSigla() {
+    	return evento.getSigla();
+    }
+    public String getDescripcion() {
+    	return evento.getDescripcion();
+    }
+    
+    public DTFecha getFechaEvento() {
+    	return evento.getFechaEvento();
+    }
 }

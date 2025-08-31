@@ -2,9 +2,8 @@ package gui.internal;
 
 import javax.swing.*;
 
-import logica.Asistente;
-import logica.Organizador;
-import logica.Usuario;
+
+
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 
@@ -35,7 +34,6 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
         //logica
         controlador = IControladorUsuario.getInstance();
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
 
         this.mapaUsuarios = new HashMap<>();
 

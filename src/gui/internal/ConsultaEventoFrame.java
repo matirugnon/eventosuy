@@ -4,11 +4,9 @@ package gui.internal;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Categoria;
-import logica.Edicion;
-import logica.Evento;
-import logica.Controladores.IControladorEvento;
 
+import logica.Controladores.IControladorEvento;
+import logica.DatatypesYEnum.DTSeleccionEvento;
 
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -22,13 +20,13 @@ public class ConsultaEventoFrame extends JInternalFrame {
     private JList<String> listaCategorias;
     private JTable tablaEdiciones;
     private JButton btnVerEdicion;
-
+    IControladorEvento contrEvento = IControladorEvento.getInstance();
     public ConsultaEventoFrame() {
         super("Consulta de Evento", true, true, true, true);
         setSize(650, 500);
         setLayout(new BorderLayout());
 
-        IControladorEvento contrEvento = IControladorEvento.getInstance();
+
 
 
         // TOP: selección de evento
@@ -87,12 +85,8 @@ public class ConsultaEventoFrame extends JInternalFrame {
 
     private void mostrarDatosEvento() {
         String eventoS = (String) comboEventos.getSelectedItem();
+        DTSeleccionEvento evento = contrEvento.seleccionarEvento(eventoS);
 
-        ManejadorEventos mEventos = ManejadorEventos.getInstance();
-
-        Evento evento = mEventos.obtenerEvento(eventoS);
-
-        if (evento == null) return;
 
         // Formato de fecha
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
