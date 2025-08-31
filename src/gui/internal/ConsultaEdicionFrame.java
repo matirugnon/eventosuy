@@ -139,7 +139,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
                         "Monto: " + dt.getMonto() + "\n" +
                         "Nivel: " + dt.getNivel() + "\n" +
                         "Edicion: " + edicion + "\n" +
-                       // "Institucion: " + dt.get + "\n" +
+                       "Institucion:" + dt.getInstitucion() + "\n" +
                         "Fecha Alta: " + dt.getFechaAlta() + "\n",
                         "Detalles del Patrocinio: " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
 
@@ -160,11 +160,10 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarPatrocinio() {
-
+    	IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+    	comboPatrocinios.removeAllItems();
     	String edicion = (String) comboEdiciones.getSelectedItem();
-    	ManejadorEventos mEventos = ManejadorEventos.getInstance();
-    	Edicion ed = mEventos.obtenerEdicion(edicion);
-    	Set<String> patrocinios = ed.getNombresPatrocinios();
+    	Set<String> patrocinios = ctrlEvento.listarPatrocinios(edicion);
     	for (String p : patrocinios) {
     		comboPatrocinios.addItem(p);
     	}
@@ -188,17 +187,12 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     }
 
     private void onEventoSeleccionado() {
+    	IControladorEvento ctrlEvento = IControladorEvento.getInstance();
         String eventoS = (String) comboEventos.getSelectedItem();
-
-        ManejadorEventos mEventos = ManejadorEventos.getInstance();
-
-        Evento evento = mEventos.obtenerEvento(eventoS);
+        Set<String> ediciones = ctrlEvento.listarEdiciones(eventoS);
 
         comboEdiciones.removeAllItems();
         comboEdiciones.setEnabled(false);
-
-        if (evento != null) {
-            Set<String> ediciones = evento.getEdiciones();
             if (ediciones != null && !ediciones.isEmpty()) {
                 for (String edicion : ediciones) {
                     comboEdiciones.addItem(edicion);
@@ -206,12 +200,12 @@ public class ConsultaEdicionFrame extends JInternalFrame {
                 comboEdiciones.setEnabled(true);
             }
         }
-    }
 
     private void mostrarDetallesEdicion() {
         String edicionS = (String) comboEdiciones.getSelectedItem();
 
         cargarTipoRegistro();
+        cargarPatrocinio();
 
         if (edicionS == null || edicionS.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -242,7 +236,12 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         String organizador = dte.getOrganizador();
         Set<String> tiposDeRegistro = dte.getTiposDeRegistro();
         Set<Map.Entry<String, String>> registros = dte.getRegistros(); // ✅ Aquí están los registros
+        Set<String> patrocinios = dte.getPatrocinios();
 
+        //contar patrocinios
+        int totalPatrocinios = patrocinios.size();
+        //contar tipos de registro
+        int totalTipoRegistro = tiposDeRegistro.size();
         // Contar registros
         int totalRegistros = registros.size();
 
@@ -257,9 +256,21 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         detalles.append("País: ").append(pais).append("\n");
         detalles.append("Fecha Inicio: ").append(fechaInicio).append("\n");
         detalles.append("Fecha Fin: ").append(fechaFin).append("\n");
-        detalles.append("Tipos de Registro: ").append(String.join(", ", tiposDeRegistro)).append("\n");
+       
+        //listar patrocinios
+        if (totalPatrocinios == 0) {
+        	detalles.append("No hay patrocinios en esta edición.\n");
+        } else detalles.append("Patrocinios: ").append(String.join(", ", patrocinios)).append("\n");
+       
+       
+        
+       //listar tipos de registro
+        if (totalTipoRegistro == 0) {
+        	detalles.append("No hay tipos de registro en esta edición.\n");
+        } else detalles.append("Tipos de Registro: ").append(String.join(", ", tiposDeRegistro)).append("\n");
+        
         detalles.append("Registros: ").append(totalRegistros).append(" registrados\n\n");
-
+        
         // === Listar registros ===
         if (totalRegistros == 0) {
             detalles.append("No hay registros en esta edición.\n");

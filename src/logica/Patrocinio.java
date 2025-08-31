@@ -37,5 +37,9 @@ public class Patrocinio{
 	   public String getNombreTipoDeRegistro() {
 		   return cantTipo.getNombreTipoDeRegistro();
 	   }
+	   
+	   public String getNombreInstitucion() {
+		   return institucion.getNombre();
+	   }
 
 }

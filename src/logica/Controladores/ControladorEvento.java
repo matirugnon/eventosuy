@@ -200,7 +200,9 @@ public class ControladorEvento implements IControladorEvento {
 	                p.getFechaAlta(),
 	                p.getMonto(),
 	                p.getCodigo(),
-	                p.getNivel()
+	                p.getNivel(),
+	                nomEdicion,
+	                p.getNombreInstitucion()
 	            );
 	        }
 	    }
@@ -240,7 +242,12 @@ public class ControladorEvento implements IControladorEvento {
 		 ins.agregarPatrocinio(pat);
 
 	 }
-
+	 
+	 public Set<String> listarPatrocinios(String nomEdicion){
+		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion); 
+		 return ed.getCodigosPatrocinios();
+	 }
 
 
 }

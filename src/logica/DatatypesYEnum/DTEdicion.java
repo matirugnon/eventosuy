@@ -14,11 +14,11 @@ public class DTEdicion {
     private  String pais;
     private  String sigla;
     private  String organizador;
-    private  Set<Integer> patrocinios;
+    private  Set<String> patrocinios;
     private  Set<String> tiposDeRegistro;
     private Set<Map.Entry<String, String>> registros;
 
-    public DTEdicion(String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg) {
+    public DTEdicion(String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro) {
         this.nombre = nombre;
         this.sigla = sig;
         this.fechaInicio = fechaInicio;
@@ -29,6 +29,7 @@ public class DTEdicion {
         this.organizador = org;
         this.tiposDeRegistro = tdr;
         this.registros = reg != null ? reg : Set.of(); // evita null
+        this.patrocinios = patro;
     }
 
     public String getNombre() { return nombre; }
@@ -39,7 +40,7 @@ public class DTEdicion {
     public String getPais() { return pais; }
 	public String getSigla() {return sigla;}
 	public String getOrganizador() {return organizador;}
-	public Set<Integer> getPatrocinios() {return patrocinios;}
+	public Set<String> getPatrocinios() {return patrocinios;}
 	public Set<String> getTiposDeRegistro(){return tiposDeRegistro;}
 	public Set<Map.Entry<String, String>> getRegistros(){return registros;}
 

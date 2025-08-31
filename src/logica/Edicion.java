@@ -95,10 +95,10 @@ public class Edicion{
 	}
 
 	public Set<Patrocinio> getPatrocinios() {
-		return (Set<Patrocinio>) patrocinios.values();
+		return (Set<Patrocinio>) new HashSet<>(patrocinios.values());
 	}
 	
-	public Set<String> getNombresPatrocinios() {
+	public Set<String> getCodigosPatrocinios() {
 		return patrocinios.keySet();
 	}
 
@@ -107,7 +107,8 @@ public class Edicion{
 	    String nicknameOrganizador = organizador != null ? organizador.getNickname() : "Sin organizador";
 
 	    // Obtener los nombres de los tipos de registro
-	    Set<String> nombresTiposDeRegistro = getNombresTiposDeRegistro();
+	    Set<String> patrocinios = this.getCodigosPatrocinios();
+	    Set<String> nombresTiposDeRegistro = this.getNombresTiposDeRegistro();
 
 	    Set<Map.Entry<String, String>> registrosData = new HashSet<>();
 
@@ -139,7 +140,8 @@ public class Edicion{
 	        this.pais,
 	        nicknameOrganizador,
 	        nombresTiposDeRegistro,
-	        registrosData
+	        registrosData,
+	        patrocinios
 	    );
 	}
 

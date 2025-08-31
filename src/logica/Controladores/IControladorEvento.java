@@ -46,4 +46,5 @@ public interface IControladorEvento {
 	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
 			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta);
 	
+	 public Set<String> listarPatrocinios(String nomEdicion);
 }
