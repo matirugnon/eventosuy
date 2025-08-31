@@ -2,7 +2,10 @@ package logica.Controladores;
 
 import java.util.Set;
 
+import excepciones.EdicionExistenteException;
 import excepciones.EventoRepetidoException;
+import excepciones.FechaInvalidaException;
+import excepciones.FechasIncompatiblesException;
 import logica.Evento;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
@@ -35,7 +38,8 @@ public interface IControladorEvento {
 
 	public boolean existeEdicion(String nomEdicion);
 
-	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta);
+	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
+			throws EdicionExistenteException, FechasIncompatiblesException;
 
 	public Set<String> listarEdiciones(String nomEvento);
 

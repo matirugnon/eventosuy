@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.UsuarioRepetidoException;
+import gui.internal.ModificarUsuarioFrame;
 import logica.Asistente;
 import logica.Institucion;
 import logica.Organizador;
@@ -161,9 +163,15 @@ public class ControladorUsuario implements IControladorUsuario {
     	return manejadorU.existeInstitucion(nomInstitucion);
     }
 
-    public void altaInstitucion(String nombreInstitucion, String descripcion, String web) {
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web) throws ExisteInstitucionException {
     	ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
     	Institucion ins = new Institucion(nombreInstitucion,descripcion,web);
+
+    	if (existeInstitucion(nombreInstitucion)) {
+            throw new ExisteInstitucionException();
+        }
+
+
     	manejadorU.addInstitucion(ins);
     }
 
@@ -211,6 +219,14 @@ public class ControladorUsuario implements IControladorUsuario {
 		Set<String> ediciones = o.getNombresEdiciones();
 
 		return ediciones;
+	}
+
+	public void ModificarUsuario() {
+
+	}
+
+	public void ModificarOrganizador() {
+
 	}
 
 

@@ -2,7 +2,7 @@ package gui.internal;
 
 import javax.swing.*;
 
-
+import excepciones.NombreTipoRegistroDuplicadoException;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 
@@ -76,7 +76,14 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
 
         // Listeners
         comboEventos.addActionListener(e -> actualizarEdiciones());
-        btnConfirmar.addActionListener(e -> confirmarAlta());
+        btnConfirmar.addActionListener(e -> {
+			try {
+				confirmarAlta();
+			} catch (NombreTipoRegistroDuplicadoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnCancelar.addActionListener(e -> dispose());
     }
 
@@ -93,7 +100,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         }
     }
 
-    private void confirmarAlta() {
+    private void confirmarAlta() throws NombreTipoRegistroDuplicadoException {
         String evento = (String) comboEventos.getSelectedItem();
         String edicion = (String) comboEdiciones.getSelectedItem();
         String nombre = txtNombre.getText().trim();
