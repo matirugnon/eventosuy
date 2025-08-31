@@ -137,11 +137,12 @@ public class ControladorRegistro implements IControladorRegistro {
 	        if (tr != null && tr.equals(nombreTipoRegistro)) {
 	            String asistente = as.getNombre();     
 	            DTRegistro dreg = as.getRegistro(nombreTipoRegistro);
+	            String edicion = dreg.getnomEdicion();
 	       
 	            DTFecha fecha = dreg.getFechaRegistro(); 
 	            Double costo = dreg.getCosto();
 
-	            return new DTRegistro(asistente, tr, fecha, costo);
+	            return new DTRegistro(asistente, tr, fecha, costo, edicion);
 	        }
 	    }
 
