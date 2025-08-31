@@ -9,14 +9,18 @@ public class DTPatrocinio{
     private double monto;
     private String codigo;
     private NivelPatrocinio nivel;
+    private String edicion;
+    private String institucion;
 
 
-    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv) {
+    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv,String ed, String ins) {
 
         fechaAlta = alta;
         monto = m;
         codigo = cod;
         nivel = niv;
+        edicion = ed;
+        institucion = ins;
     }
     
     public DTFecha getFechaAlta() { return fechaAlta; }
@@ -24,6 +28,12 @@ public class DTPatrocinio{
     public String getCodigo() { return codigo; }
     public NivelPatrocinio getNivel() { return nivel; }
     
+    public String getEdicion() {
+    	return edicion;
+    }
+    public String getInstitucion() {
+    	return institucion;
+    }
 
 
 

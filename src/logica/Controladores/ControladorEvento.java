@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import excepciones.EventoRepetidoException;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
@@ -50,12 +51,21 @@ public class ControladorEvento implements IControladorEvento {
 
 	}
 
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias) {
 
+	//altaEvento con excepcion
+
+	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
+	        throws EventoRepetidoException {
+
+	    // Verificamos si ya existe un evento con ese nombre
+	    if (existeEvento(nomEvento)) {
+	        throw new EventoRepetidoException(nomEvento);
+	    }
+
+	    // Si no existe, creamos el evento
 	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
-	    // convierte los nombres de categorías en objetos Categoria
-	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias); // crea el evento con todos los datos
-	    manejadorE.addEvento(e);                                             // lo guarda en el manejador
+	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias);
+	    manejadorE.addEvento(e);
 	}
 
 	//listar
@@ -200,7 +210,9 @@ public class ControladorEvento implements IControladorEvento {
 	                p.getFechaAlta(),
 	                p.getMonto(),
 	                p.getCodigo(),
-	                p.getNivel()
+	                p.getNivel(),
+	                nomEdicion,
+	                p.getNombreInstitucion()
 	            );
 	        }
 	    }
@@ -240,7 +252,12 @@ public class ControladorEvento implements IControladorEvento {
 		 ins.agregarPatrocinio(pat);
 
 	 }
-
+	 
+	 public Set<String> listarPatrocinios(String nomEdicion){
+		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion); 
+		 return ed.getCodigosPatrocinios();
+	 }
 
 
 }

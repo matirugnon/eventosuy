@@ -2,6 +2,7 @@ package gui.internal;
 
 import javax.swing.*;
 
+import excepciones.CorreoInvalidoException;
 import excepciones.UsuarioRepetidoException;
 import logica.Controladores.ControladorUsuario;
 import logica.Controladores.IControladorUsuario;
@@ -77,12 +78,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         JButton btnCancelar = new JButton("Cancelar");
 
         btnAceptar.addActionListener(e -> {
-			try {
-				guardar();
-			} catch (UsuarioRepetidoException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			guardar();
 		});
         btnCancelar.addActionListener(e -> dispose());
 
@@ -209,93 +205,74 @@ public class AltaUsuarioFrame extends JInternalFrame {
         txtLink.setEnabled(false);
     }
 
-    private void guardar() throws UsuarioRepetidoException {
+    private void guardar() {
         String nickname = txtNickname.getText().trim();
         String nombre = txtNombre.getText().trim();
         String correo = txtCorreo.getText().trim();
         String tipo = (String) comboTipoUsuario.getSelectedItem();
 
-        //campos organizador
-        String descr = txtDescripcion.getText().trim();
-        String link = txtLink.getText().trim();
-
-        //campos Asistente
-        String apellido = txtApellido.getText().trim();
-        String ins = (String) comboInstitucion.getSelectedItem();
-
-        int diaV = (int)spinnerDia.getValue();
-        int mesV = (int)spinnerMes.getValue();
-        int anioV = (int)spinnerAnio.getValue();
-        DTFecha fechanac = new DTFecha(diaV,mesV,anioV);
-
-
-        IControladorUsuario cont = IControladorUsuario.getInstance();
-
-
+        // Validaciones básicas (sin duplicados ni @)
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nickname, Nombre y Correo son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (!correo.contains("@")) {
-            JOptionPane.showMessageDialog(this, "El correo debe contener el símbolo '@'.", "Error de formato", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // Campos específicos
+        String apellido = txtApellido.getText().trim();
+        String ins = (String) comboInstitucion.getSelectedItem();
+        DTFecha fechanac = new DTFecha(
+            (int) spinnerDia.getValue(),
+            (int) spinnerMes.getValue(),
+            (int) spinnerAnio.getValue()
+        );
 
-        if (!link.contains(".")) {
-            JOptionPane.showMessageDialog(this, "Error de formato de pagina web, revise los datos", "Error de formato", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-
-        //se manejan los repetidos en la interfaz
-
-        if (cont.ExisteNickname(nickname)) {
-            JOptionPane.showMessageDialog(this, "El nickname '" + nickname + "' ya está en uso.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (cont.ExisteCorreo(correo)) {
-            JOptionPane.showMessageDialog(this, "El correo '" + correo + "' ya está en uso.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
+        // Validaciones por tipo
         if ("Asistente".equals(tipo)) {
-            if (txtApellido.getText().trim().isEmpty()) {
+            if (apellido.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe ingresar el apellido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (comboInstitucion.getSelectedItem() == null) {
+            if (ins == null || ins.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar una institución.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            int dia = (Integer) spinnerDia.getValue();
-            int mes = (Integer) spinnerMes.getValue();
-            int anio = (Integer) spinnerAnio.getValue();
-
-            if (dia < 1 || dia > 31 || mes < 1 || mes > 12) {
-                JOptionPane.showMessageDialog(this, "Fecha inválida.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
         } else if ("Organizador".equals(tipo)) {
-            if (txtDescripcion.getText().trim().isEmpty()) {
+            String descr = txtDescripcion.getText().trim();
+            String link = txtLink.getText().trim();
+            if (descr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (link.isEmpty() || !link.contains(".")) {
+                JOptionPane.showMessageDialog(this, "El sitio web debe ser válido (debe contener un punto).", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
 
-        //paso todos los filtros, esta listo para crear
+        // Intentar dar de alta
+        try {
+            IControladorUsuario cont = IControladorUsuario.getInstance();
 
-        if("Organizador".equals(tipo)) {
-        	cont.altaOrganizador(nickname, nombre, correo, descr, link);
-        }else {
-        	cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins);
+            if ("Organizador".equals(tipo)) {
+                String descr = txtDescripcion.getText().trim();
+                String link = txtLink.getText().trim();
+                cont.altaOrganizador(nickname, nombre, correo, descr, link);
+            } else {
+                cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins);
+            }
+
+            JOptionPane.showMessageDialog(this, "Usuario dado de alta correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormulario();
+            dispose();
+
+        } catch (UsuarioRepetidoException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (CorreoInvalidoException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-
-        JOptionPane.showMessageDialog(this, "Usuario dado de alta correctamente.");
-        limpiarFormulario();
-        dispose();
     }
 
     private void limpiarFormulario() {
