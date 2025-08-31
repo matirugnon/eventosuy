@@ -2,6 +2,7 @@ package logica.Controladores;
 
 import java.util.Set;
 
+import excepciones.EventoRepetidoException;
 import logica.Evento;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
@@ -17,7 +18,8 @@ public interface IControladorEvento {
 
 	public boolean existeEvento(String nomEvento);
 
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias);
+	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
+			throws EventoRepetidoException;
 
 	public Set<String> listarEventos();
 
@@ -45,6 +47,7 @@ public interface IControladorEvento {
 
 	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
 			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta);
-	
+
 	 public Set<String> listarPatrocinios(String nomEdicion);
+
 }

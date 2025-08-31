@@ -103,68 +103,67 @@ public class AltaEventoFrame extends JInternalFrame {
 
     //------------------LOGICA-----------------
     private void altaEvento() {
+        IControladorEvento cont = IControladorEvento.getInstance();
 
-    	//instancia de controlador eventos
-    	IControladorEvento cont = IControladorEvento.getInstance();
-
-
-    	//valores para dar de alta el evento
+        // Obtener datos del formulario
         String nombre = txtNombre.getText().trim();
         String sigla = txtSigla.getText().trim();
         String descripcion = txtDescripcion.getText().trim();
-
-
         List<String> seleccionadas = listaCategorias.getSelectedValuesList();
 
-	     if (nombre.isEmpty() || seleccionadas.isEmpty()) {
-	         JOptionPane.showMessageDialog(this,
-	             "Debe ingresar un nombre y al menos una categoría.",
-	             "Error", JOptionPane.ERROR_MESSAGE);
-	         return;
-	     }
+        // Validaciones en presentacion
 
-	     // Convertir a Set
-	     Set<String> categorias = new HashSet<>(seleccionadas);
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de evento.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (seleccionadas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos una categoría.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Obtener valores de los spinners
+        if (sigla.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una sigla.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validar fecha
         int dia = (Integer) spinnerDia.getValue();
         int mes = (Integer) spinnerMes.getValue();
         int anio = (Integer) spinnerAnio.getValue();
 
-
-        //---------------------------------FILTROS (AGREGAR MAS SI SE NECESITAN)----------------------------------
-
-        if (esFechaValida(dia, mes, anio)) {
-            JOptionPane.showMessageDialog(this,
-                    "La fecha ingresada no es válida (ej. 30 de febrero).",
-                    "Error de Fecha", JOptionPane.ERROR_MESSAGE);
+        if (!esFechaValida(dia, mes, anio)) {
+            JOptionPane.showMessageDialog(this, "La fecha ingresada no es válida.", "Error de Fecha", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if(cont.existeEvento(nombre)) {
-        	JOptionPane.showMessageDialog(this,
-                    "Nombre de evento ya existente, elija otro",
-                    "Error de Evento", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-
-        //---------------------------------paso los filtros, se puede dar de alta--------------------------------
-
+        // Convertir categorías
+        Set<String> categorias = new HashSet<>(seleccionadas);
         DTFecha fechaAlta = new DTFecha(dia, mes, anio);
 
+        // ----------------- ALTA DEL EVENTO (con manejo de excepciones) -----------------
 
-        cont.darAltaEvento(nombre,descripcion ,fechaAlta ,sigla , categorias);
+        try {
+            cont.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categorias);
 
+            // Éxito: mostrar mensaje
+            String fechaStr = String.format("%04d-%02d-%02d", anio, mes, dia);
+            JOptionPane.showMessageDialog(this,
+                    "Evento '" + nombre + "' dado de alta correctamente.\n" +
+                    "Sigla: " + sigla + "\nFecha: " + fechaStr + "\nCategorías: " + categorias,
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
 
-
-        String fecha = String.format("%04d-%02d-%02d", anio, mes, dia);
-        // Mostrar confirmación
-        JOptionPane.showMessageDialog(this,
-                "Evento '" + nombre + "' dado de alta correctamente.\n" +
-                "Sigla: " + sigla + "\nFecha: " + fecha + "\nCategorías: " + categorias + "\nDescripción: " + descripcion,
-                "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
+        } catch (excepciones.EventoRepetidoException e) {
+            // Capturamos la excepción específica
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Evento duplicado", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            // Captura cualquier otro error inesperado
+            JOptionPane.showMessageDialog(this,
+                    "Error inesperado al dar de alta el evento:\n" + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // útil para debugging
+        }
     }
 
     private boolean esFechaValida(int dia, int mes, int anio) {
