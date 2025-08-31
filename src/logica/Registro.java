@@ -38,4 +38,8 @@ public class Registro{
 	public double getCosto() {
 	    return costoRegistro;
 	}
+	
+	public String getNomEdicion() {
+	    return tipo.getNombreEdicion();
+	}
 }

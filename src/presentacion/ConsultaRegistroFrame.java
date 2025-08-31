@@ -153,6 +153,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         StringBuilder sb = new StringBuilder();
         sb.append("=== Detalles del Registro ===\n");
         sb.append("Asistente: ").append(dtr.getAsistente()).append("\n");
+        sb.append("Edicion de Evento: ").append(dtr.getnomEdicion()).append("\n");
         sb.append("Tipo de registro: ").append(dtr.getTipoDeRegistro()).append("\n");
         sb.append("Fecha de registro: ").append(fechaStr).append("\n");
         sb.append("Costo: $ ").append(
