@@ -15,11 +15,11 @@ import logica.DatatypesYEnum.DTFecha;
  *
  */
 public interface IControladorUsuario {
-	
+
 	static IControladorUsuario getInstance() {
         return ControladorUsuario.getInstance();
     }
-	
+
 	public void altaUsuario(Usuario u);
 
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException;
@@ -35,23 +35,23 @@ public interface IControladorUsuario {
 
     public boolean ExisteCorreo(String correo);
 
-  
+
 
     //public List<Usuario> listarUsuarios();
 
 
     public void AsociarInstitucion(String nick, String nombreInstitucion);
-    
+
     public Set<String> listarOrganizadores();
-    
+
     public Set<String> listarUsuarios();
-    
+
     public Set<String> listarAsistentes();
-    
+
     public boolean existeInstitucion(String nomInstitucion);
-    
+
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web);
-    
+
     public Set<String> listarInstituciones();
 
 

@@ -11,7 +11,8 @@ import logica.Usuario;
 
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorUsuario;
-
+import logica.DatatypesYEnum.DTAsistente;
+import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 

@@ -10,7 +10,7 @@ import logica.DatatypesYEnum.DTSeleccionEvento;
 import logica.DatatypesYEnum.NivelPatrocinio;
 
 public interface IControladorEvento {
-	
+
 	static IControladorEvento getInstance() {
 	    return ControladorEvento.getInstance();
 	}
