@@ -2,7 +2,7 @@ package gui.internal;
 
 import javax.swing.*;
 
-import logica.Evento;
+
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 

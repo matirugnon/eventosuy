@@ -1,7 +1,6 @@
 	package gui.internal;
 
-import logica.Edicion;
-import logica.Evento;
+
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;

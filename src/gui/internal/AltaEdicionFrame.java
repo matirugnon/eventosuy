@@ -3,8 +3,7 @@ package gui.internal;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
-import logica.Evento;
-import logica.Usuario;
+
 
 import logica.DatatypesYEnum.DTFecha;
 

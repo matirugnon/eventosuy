@@ -3,11 +3,7 @@ package gui.internal;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Asistente;
-import logica.Edicion;
-import logica.Organizador;
-import logica.Registro;
-import logica.Usuario;
+
 
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorUsuario;
@@ -170,7 +166,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             ).append("\n");
             datos.append("Tipo: Organizador");
 
-            Set<String> ediciones = ctrlUsuarios.listarEdiciones(seleccionadoS);
+            Set<String> ediciones = ctrlEventos.listarEdiciones(seleccionadoS);
 
             if (ediciones.isEmpty()) {
                 listaResultados.setListData(new String[]{"No tiene ediciones a cargo."});
