@@ -26,7 +26,7 @@ import logica.DatatypesYEnum.NivelPatrocinio;
 public class Utils {
 
 
-public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  )
+public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro  )
 		throws UsuarioRepetidoException,
 				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
