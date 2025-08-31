@@ -13,4 +13,16 @@ public class DTUsuario {
 		this.nombre = nombre;
 	}
 
+	public String getNickname() {
+        return nickname;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
 }

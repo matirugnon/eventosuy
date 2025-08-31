@@ -41,9 +41,15 @@ public class Asistente extends Usuario {
 
 	}
 
-	public Set<Registro> getRegistros() {
-		// TODO Auto-generated method stub
-		return new HashSet<>(registros);
+	public Set<String> getRegistros() {
+
+		Set<String> nombresRegistros = new HashSet<>();
+
+		for (Registro r : registros) {
+		    nombresRegistros.add(r.getNomTipo()); // o el método adecuado
+		}
+
+		return nombresRegistros;
 	}
 
 	public void agregarRegistro(Registro reg) {
@@ -68,9 +74,8 @@ public class Asistente extends Usuario {
 	    return nombresTipos;
 	}
 
-	public DTUsuario getDTUsuario() {
+	public DTUsuario getDTAsistente() {
 		return new DTAsistente(nickname, nombre,correo, apellido, fechaNacimiento, institucion);
-
 	}
 
 

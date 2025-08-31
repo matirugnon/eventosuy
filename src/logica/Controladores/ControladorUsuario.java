@@ -1,5 +1,6 @@
 package logica.Controladores;
 
+import java.nio.channels.MulticastChannel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import logica.DataUsuario;
 import logica.Edicion;
 import logica.Institucion;
 import logica.Organizador;
+import logica.Registro;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTUsuario;
@@ -160,7 +162,39 @@ public class ControladorUsuario implements IControladorUsuario {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
 		Usuario u = mu.obtenerUsuario(nombreU);
 
-		return u.getDTUsuario();
+		if (u instanceof Organizador) {
+			Organizador o = (Organizador) u;
+			return o.getDTOrganizador();
+		}else {
+
+			Asistente a = (Asistente) u;
+			return a.getDTAsistente();
+		}
+
+
+	}
+
+	public Set<String> obtenerRegistros(String nombreAsistente) {
+
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+		Asistente a = (Asistente) mu.obtenerUsuario(nombreAsistente);
+
+
+		Set<String> registros = a.getRegistros();
+
+		return registros;
+	}
+
+
+	public Set<String> listarEdiciones(String nombreOrganizador) {
+
+		Usuario u = manejador.obtenerUsuario(nombreOrganizador);
+
+		Organizador o = (Organizador) u;
+
+		Set<String> ediciones = o.getNombresEdiciones();
+
+		return ediciones;
 	}
 
 

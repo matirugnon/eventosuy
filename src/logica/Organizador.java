@@ -7,6 +7,9 @@ import java.util.Map;
 
 import java.util.Set;
 
+import logica.DatatypesYEnum.DTOrganizador;
+import logica.DatatypesYEnum.DTUsuario;
+
 public class Organizador extends Usuario {
 
     private String descripcion;
@@ -53,8 +56,15 @@ public class Organizador extends Usuario {
 
 	// Obtener todas las ediciones como Set<Edicion> (para mostrar en listas, etc.)
 	public Set<Edicion> getEdiciones() {
+
 	    return new HashSet<>(ediciones.values()); // devuelve copia del conjunto
 	}
+
+	public Set<String> getNombresEdiciones() {
+
+	    return ediciones.keySet(); // devuelve copia del conjunto
+	}
+
 
 	// Eliminar una edición
 	public void removerEdicion(String nombre) {
@@ -64,6 +74,10 @@ public class Organizador extends Usuario {
 	// Verificar si tiene una edición
 	public boolean tieneEdicion(String nombre) {
 	    return this.ediciones.containsKey(nombre);
+	}
+
+	public DTUsuario getDTOrganizador() {
+		return new DTOrganizador(nickname,nombre,correo,descripcion,link);
 	}
 
 

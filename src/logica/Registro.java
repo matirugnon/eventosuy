@@ -21,7 +21,7 @@ public class Registro{
 	public String getNomTipo(){
 	    return tipo.getNombre();
 	}
-	
+
 	public TipoDeRegistro getTipoDeRegistro() {
 		return tipo;
 	}

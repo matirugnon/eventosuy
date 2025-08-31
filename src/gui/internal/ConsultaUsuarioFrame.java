@@ -10,6 +10,8 @@ import logica.Registro;
 import logica.Usuario;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTAsistente;
+import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
@@ -33,6 +35,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
     private JComboBox<String> comboUsuarios;
     private JList<String> listaResultados;
+    private  JLabel labelCambiante;
 
     private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
     private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
@@ -41,7 +44,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         super("Consulta de Usuario", true, true, true, true);
         setSize(600, 500);
         setLayout(new BorderLayout());
-
         this.openInternal = openInternal;
 
         inicializarComponentes();
@@ -75,8 +77,10 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         JScrollPane scrollDatos = new JScrollPane(areaDatos);
         form.add(scrollDatos);
 
-        // --- Lista de elementos asociados ---
-        form.add(new JLabel("Elementos Asociados:"));
+
+        labelCambiante = new JLabel("Elementos Asociados:");
+
+        form.add(labelCambiante);
         listaResultados = new JList<>();
         listaResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollResultados = new JScrollPane(listaResultados);
@@ -84,14 +88,13 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
         add(form, BorderLayout.CENTER);
 
-        // --- Listener ---
         comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
     }
 
     private void cargarUsuarios() {
 
-    	ManejadorUsuario mUsuario = ManejadorUsuario.getinstance();
-        Set<String> usuarios = ctrlUsuarios.listarUsuarios(); // ✅ Ahora es List
+        Set<String> usuarios = ctrlUsuarios.listarUsuarios();
+
         for (String usr : usuarios) {
             comboUsuarios.addItem(usr);
         }
@@ -107,92 +110,78 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         // Construir datos del usuario
 
         ControladorUsuario contrU = ControladorUsuario.getInstance();
+        ControladorEvento contrEvento = ControladorEvento.getInstance();
 
         DTUsuario dtU = contrU.getDTUsuario(seleccionadoS);
 
-
-
         StringBuilder datos = new StringBuilder();
-        datos.append("Nombre: ").append(seleccionado.getNombre()).append("\n");
-        datos.append("Nickname: ").append(seleccionado.getNickname()).append("\n");
-        datos.append("Correo: ").append(seleccionado.getCorreo()).append("\n");
+        datos.append("Nombre: ").append(dtU.getNombre()).append("\n");
+        datos.append("Nickname: ").append(dtU.getNickname()).append("\n");
+        datos.append("Correo: ").append(dtU.getCorreo()).append("\n");
 
-        if (seleccionado instanceof Asistente) {
-            Asistente asistente = (Asistente) seleccionado;
-            datos.append("Apellido: ").append(asistente.getApellido()).append("\n");
+        if (dtU instanceof DTAsistente) {
+
+        	labelCambiante.setText("Registros Asociados");
+
+        	DTAsistente dta = (DTAsistente) dtU;
+
+            datos.append("Apellido: ").append(dta.getApellido()).append("\n");
             datos.append("Fecha Nac.: ").append(
-                asistente.getFechaNacimiento() != null ?
-                asistente.getFechaNacimiento().toString() :
+            		dta.getFechaNacimiento() != null ?
+            		dta.getFechaNacimiento().toString() :
                 "No especificada"
             ).append("\n");
             datos.append("Institución: ").append(
-                asistente.getInstitucion() != null ?
-                asistente.getInstitucion() :
+            		dta.getInstitucion() != null ?
+            		dta.getInstitucion() :
                 "No especificada"
             ).append("\n");
             datos.append("Tipo: Asistente");
 
-        } else if (seleccionado instanceof Organizador) {
-            Organizador organizador = (Organizador) seleccionado;
+
+            Set<String> registros = contrU.obtenerRegistros(seleccionadoS);
+
+
+            if (registros.isEmpty()) {
+                listaResultados.setListData(new String[]{"No tiene registros."});
+            } else {
+                listaResultados.setListData(registros.toArray(new String[0]));
+            }
+
+
+
+        } else if (dtU instanceof DTOrganizador) {
+
+        	labelCambiante.setText("Ediciones Asociadas");
+
+        	DTOrganizador dto = (DTOrganizador) dtU;
+
             datos.append("Descripción: ").append(
-                organizador.getDescripcion() != null ?
-                organizador.getDescripcion() :
+            		dto.getDescripcion() != null ?
+            		dto.getDescripcion() :
                 "No disponible"
             ).append("\n");
             datos.append("Link: ").append(
-                organizador.getLink() != null ?
-                organizador.getLink() :
+            		dto.getLink() != null ?
+            		dto.getLink() :
                 "No disponible"
             ).append("\n");
             datos.append("Tipo: Organizador");
+
+            Set<String> ediciones = ctrlUsuarios.listarEdiciones(seleccionadoS);
+
+            if (ediciones.isEmpty()) {
+                listaResultados.setListData(new String[]{"No tiene ediciones a cargo."});
+            } else {
+                listaResultados.setListData(ediciones.toArray(new String[0]));
+            }
+
         }
 
         areaDatos.setText(datos.toString());
 
-        // Actualizar lista de elementos asociados (sin cambios)
-        if (seleccionado instanceof Organizador) {
-
-            Organizador org = (Organizador) seleccionado;
-            Set<Edicion> ediciones = org.getEdiciones();
-            if (ediciones.isEmpty()) {
-                listaResultados.setListData(new String[]{"No tiene ediciones a cargo."});
-            } else {
-                listaResultados.setListData(ediciones.toArray(new Edicion[0]));
-            }
-        } else if (seleccionado instanceof Asistente) {
-            Asistente asistente = (Asistente) seleccionado;
-            Set<Registro> registros = asistente.getRegistros();
-            if (registros.isEmpty()) {
-                listaResultados.setListData(new String[]{"No tiene registros."});
-            } else {
-                listaResultados.setListData(registros.toArray(new Registro[0]));
-            }
-        }
     }
 
-    // Renderizador para mostrar nombre y apellido si es posible
-    class UsuarioListRenderer extends JLabel implements ListCellRenderer<Usuario> {
-        @Override
-        public Component getListCellRendererComponent(JList<? extends Usuario> list, Usuario value, int index,
-                boolean isSelected, boolean cellHasFocus) {
 
-            if (value == null) {
-                setText("<sin usuario>");
-            } else {
-                String tipo = (value instanceof Organizador) ? "Organizador" : "Asistente";
-                setText(value.getNickname() + "(" + tipo + ")");
-            }
 
-            if (isSelected) {
-                setBackground(list.getSelectionBackground());
-                setForeground(list.getSelectionForeground());
-                setOpaque(true);
-            } else {
-                setBackground(list.getBackground());
-                setForeground(list.getForeground());
-                setOpaque(false);
-            }
-            return this;
-        }
-    }
 }
