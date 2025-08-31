@@ -5,19 +5,20 @@ import javax.swing.table.DefaultTableModel;
 
 import logica.Controladores.ControladorRegistro;
 import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTRegistro;
 
 import java.awt.*;
 import java.util.Set;
 
 public class ConsultaRegistroFrame extends JInternalFrame {
-    
+
     private JComboBox<String> comboUsuarios;
     private JComboBox<String> comboRegistros;
-    
-    
+
+
     private JTextArea areaDetalles;
-    
-    
+
+
     public ConsultaRegistroFrame() {
         super("Consulta de Registro", true, true, true, true);
         setSize(750, 450);
@@ -26,8 +27,8 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         cargarUsuarios();
         setVisible(true);
     }
-    
-    
+
+
     private void configurarComponentes() {
         // ----- NORTE -----
         JPanel panelNorte = new JPanel(new GridBagLayout());
@@ -60,7 +61,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         panelNorte.add(btnVerDetalles, gbc);
 
         add(panelNorte, BorderLayout.NORTH);
-        
+
         areaDetalles = new JTextArea();
         areaDetalles.setEditable(false);
         areaDetalles.setFont(new Font("Monospaced", Font.PLAIN, 12));
@@ -71,11 +72,11 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         btnVerDetalles.addActionListener(e -> mostrarDetallesRegistro());
     }
 
-    
+
     private void cargarUsuarios() {
         ControladorUsuario cu = ControladorUsuario.getInstance();
-        Set<String> usrs = cu.listarUsuarios();
-        
+        Set<String> usrs = cu.listarAsistentes();
+
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for (String usr : usrs) {
             model.addElement(usr);
@@ -106,11 +107,11 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         ControladorRegistro cr = ControladorRegistro.getInstance();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         Set<String> nomstiporeg = cr.obtenerNomsTipoRegistro(asistente);
-        
+
         for (String nomtiporeg : nomstiporeg) {
             model.addElement(nomtiporeg);
         }
-        
+
         comboRegistros.setModel(model);
         //comboRegistros.setSelectedIndex(0);
     }
@@ -132,7 +133,11 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         String usuario = selUsuario.toString();
         String registro = selReg.toString();
 
-        // TODO: obtener DTO real y formatear campos (ej.: estado, fecha, costo, tipo, etc.)
+
+        ControladorRegistro contrR = ControladorRegistro.getInstance();
+
+        DTRegistro dtr = contrR.getRegistro(usuario,registro);
+
         StringBuilder sb = new StringBuilder();
         sb.append("=== Detalles del Registro ===\n");
         sb.append("Usuario: ").append(usuario).append("\n");
@@ -148,23 +153,23 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         areaDetalles.setText(sb.toString());
         areaDetalles.setCaretPosition(0);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

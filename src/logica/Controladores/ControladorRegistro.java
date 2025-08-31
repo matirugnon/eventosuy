@@ -14,6 +14,7 @@ import logica.TipoDeRegistro;
 import logica.Usuario;
 import logica.TipoDeRegistro;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.manejadores.ManejadorEventos;
 
@@ -114,6 +115,12 @@ public class ControladorRegistro implements IControladorRegistro {
 		Asistente as = (Asistente) us;
 		Registro reg = tp.altaRegistro(fechaRegistro, costo, nickAsistente);
 		as.agregarRegistro(reg);
+	}
+
+	public DTRegistro getRegistro(String usuario, String registro) {
+		//implementar
+
+		return null;
 	}
 }
 
