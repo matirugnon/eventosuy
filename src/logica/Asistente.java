@@ -16,7 +16,7 @@ public class Asistente extends Usuario {
     private Set<Registro> registros;
     private String institucion;
 
-    public Asistente(String nickname, String nombre, String apellido, String correo, DTFecha fechaNacimiento, String ins) {
+    public Asistente(String nickname, String nombre, String correo, String apellido, DTFecha fechaNacimiento, String ins) {
         super(nickname, nombre, correo);
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;

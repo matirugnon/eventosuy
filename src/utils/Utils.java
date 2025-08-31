@@ -7,15 +7,15 @@ import excepciones.CorreoInvalidoException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
 import excepciones.UsuarioRepetidoException;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
-import logica.Controladores.ControladorUsuario;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
+import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Utils {
 
-public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  )
+public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro  )
 		throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException{
 
 		// Instituciones
