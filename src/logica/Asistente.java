@@ -42,7 +42,7 @@ public class Asistente extends Usuario {
 
 	}
 
-	
+
 	public void agregarRegistro(Registro reg) {
         this.registros.add(reg);
     }
@@ -68,7 +68,7 @@ public class Asistente extends Usuario {
 	public DTUsuario getDTAsistente() {
 		return new DTAsistente(nickname, nombre,correo, apellido, fechaNacimiento, institucion);
 	}
-	
+
 	public DTRegistro getRegistro(String nomTipoReg) {
 	    if (registros == null) {
 	        return null;
@@ -77,17 +77,30 @@ public class Asistente extends Usuario {
 	    for (Registro r : this.registros) {
 	        String nombreTR = r.getTipoDeRegistro().getNombre();
 	        if (nombreTR != null && nombreTR.equals(nomTipoReg)) {
-	           
-	            String asistente = this.getNombre();      
-	            DTFecha fecha = r.getFechaRegistro();      
+
+	            String asistente = this.getNombre();
+	            DTFecha fecha = r.getFechaRegistro();
 	            Double costo = r.getCosto();
 
 	            return new DTRegistro(asistente, nombreTR, fecha, costo);
 	        }
 	    }
 
-	    
+
 	    return null;
+	}
+
+	public Set<String> getRegistros() {
+
+		Set<String> resultado = new HashSet<>();
+
+		for(Registro r: registros) {
+
+			resultado.add(r.getNomTipo());
+
+		}
+
+		return resultado;
 	}
 
 

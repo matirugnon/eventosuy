@@ -252,10 +252,10 @@ public class ControladorEvento implements IControladorEvento {
 		 ins.agregarPatrocinio(pat);
 
 	 }
-	 
+
 	 public Set<String> listarPatrocinios(String nomEdicion){
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
-		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion); 
+		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 		 return ed.getCodigosPatrocinios();
 	 }
 

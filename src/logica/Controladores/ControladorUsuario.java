@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.FechaInvalidaException;
 import excepciones.UsuarioRepetidoException;
 import logica.Asistente;
 import logica.Institucion;
@@ -40,7 +41,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
     //alta Asistente
     public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion)
-            throws UsuarioRepetidoException, CorreoInvalidoException {
+            throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
         if (!correo.contains("@")) {
             throw new CorreoInvalidoException(correo);
@@ -53,6 +54,21 @@ public class ControladorUsuario implements IControladorUsuario {
         if (ExisteCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
+
+        if (!esFechaValida(fechanac.getDia(), fechanac.getMes(), fechanac.getAnio())) {
+            throw new FechaInvalidaException(fechanac.getDia(), fechanac.getMes(), fechanac.getAnio());
+        }
+
+
+        DTFecha hoy = new DTFecha(java.time.LocalDate.now().getDayOfMonth(),
+                java.time.LocalDate.now().getMonthValue(),
+                java.time.LocalDate.now().getYear());
+
+        if (fechanac.compareTo(hoy) > 0) {
+        	throw new FechaInvalidaException("La fecha de nacimiento no puede ser futura.");
+        }
+
+
 
         Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion);
         altaUsuario(a);
@@ -200,7 +216,25 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
+	//metodos auxiliares para validar fechas
+	public boolean esFechaValida(int dia, int mes, int anio) {
+	    if (mes < 1 || mes > 12) return false;
+	    if (dia < 1 || anio < 1) return false;
 
+	    // Días por mes
+	    int[] diasPorMes = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+	    // Ajustar febrero para año bisiesto
+	    if (esBisiesto(anio)) {
+	        diasPorMes[1] = 29;
+	    }
+
+	    return dia <= diasPorMes[mes - 1];
+	}
+
+	private boolean esBisiesto(int anio) {
+	    return (anio % 4 == 0 && anio % 100 != 0) || (anio % 400 == 0);
+	}
 
 
 

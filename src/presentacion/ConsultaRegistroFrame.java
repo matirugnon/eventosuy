@@ -138,7 +138,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         DTRegistro dtr = contrR.getRegistro(usuario, registro);
 
         if (dtr == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró el registro seleccionado.", 
+            JOptionPane.showMessageDialog(this, "No se encontró el registro seleccionado.",
                                           "Aviso", JOptionPane.WARNING_MESSAGE);
             areaDetalles.setText("");
             return;
@@ -146,7 +146,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
 
         // Formatear fecha
         DTFecha fecha = dtr.getFechaRegistro();
-        String fechaStr = (fecha != null) 
+        String fechaStr = (fecha != null)
                 ? String.format("%02d/%02d/%04d", fecha.getDia(), fecha.getMes(), fecha.getAnio())
                 : "—";
 
@@ -158,8 +158,8 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         sb.append("Costo: $ ").append(
             String.format(java.util.Locale.US, "%.2f", dtr.getCosto())
         ).append("\n");
-        
-  
+
+
 
         areaDetalles.setText(sb.toString());
         areaDetalles.setCaretPosition(0);

@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import excepciones.CorreoInvalidoException;
 import excepciones.EventoRepetidoException;
+import excepciones.FechaInvalidaException;
 import excepciones.UsuarioRepetidoException;
 import gui.internal.*;
 import logica.Controladores.ControladorEvento;
@@ -127,10 +128,11 @@ public class MainFrame extends JFrame {
         ControladorRegistro contR = ControladorRegistro.getInstance();
 
         cargarDatos.addActionListener(e -> {
+
             try {
 				Utils.cargarDatos(contrU,contE,contR);
 				JOptionPane.showMessageDialog(this, "Datos cargados exitosamente");
-			} catch (UsuarioRepetidoException | CorreoInvalidoException | EventoRepetidoException e1) {
+			} catch (UsuarioRepetidoException | CorreoInvalidoException | EventoRepetidoException | FechaInvalidaException e1) {
 				e1.printStackTrace();
 			}
         });

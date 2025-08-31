@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
+import excepciones.FechaInvalidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.DataUsuario;
@@ -24,7 +25,8 @@ public interface IControladorUsuario {
 
 	public void altaUsuario(Usuario u);
 
-	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException, CorreoInvalidoException;
+	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion)
+			throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;
 
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException, CorreoInvalidoException;
 
@@ -54,6 +56,8 @@ public interface IControladorUsuario {
 
     public DTUsuario getDTUsuario(String nombreU);
     public Set<String> obtenerRegistros(String nombreAsistente);
+
+	public boolean esFechaValida(int dia, int mes, int anio);
 
 
 }

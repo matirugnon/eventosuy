@@ -247,6 +247,14 @@ public class AltaUsuarioFrame extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El sitio web debe ser válido (debe contener un punto).", "Error de formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            IControladorUsuario contrU = IControladorUsuario.getInstance();
+
+            if (!contrU.esFechaValida(fechanac.getDia(),fechanac.getMes(),fechanac.getAnio())) {
+            	JOptionPane.showMessageDialog(this, "Fecha Invalida, ingrese una nueva fecha", "Fecha Invalida", JOptionPane.ERROR_MESSAGE);
+                return;
+			}
+
         }
 
         // Intentar dar de alta
