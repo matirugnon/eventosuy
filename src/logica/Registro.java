@@ -31,4 +31,11 @@ public class Registro{
 		return asistente;
 	}
 
+	public DTFecha getFechaRegistro() {
+	    return fechaRegistro;
+	}
+	
+	public double getCosto() {
+	    return costoRegistro;
+	}
 }

@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 import logica.Controladores.ControladorRegistro;
 import logica.Controladores.ControladorUsuario;
+import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTRegistro;
 
 import java.awt.*;
@@ -133,26 +134,37 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         String usuario = selUsuario.toString();
         String registro = selReg.toString();
 
-
         ControladorRegistro contrR = ControladorRegistro.getInstance();
+        DTRegistro dtr = contrR.getRegistro(usuario, registro);
 
-        DTRegistro dtr = contrR.getRegistro(usuario,registro);
+        if (dtr == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró el registro seleccionado.", 
+                                          "Aviso", JOptionPane.WARNING_MESSAGE);
+            areaDetalles.setText("");
+            return;
+        }
+
+        // Formatear fecha
+        DTFecha fecha = dtr.getFechaRegistro();
+        String fechaStr = (fecha != null) 
+                ? String.format("%02d/%02d/%04d", fecha.getDia(), fecha.getMes(), fecha.getAnio())
+                : "—";
 
         StringBuilder sb = new StringBuilder();
         sb.append("=== Detalles del Registro ===\n");
-        sb.append("Usuario: ").append(usuario).append("\n");
-        sb.append("Registro: ").append(registro).append("\n");
-        sb.append("Estado: CONFIRMADO\n");
-        sb.append("Fecha de registro: ").append("25/08/2025").append("\n");
-        sb.append("Tipo de registro: ").append("General").append("\n");
-        sb.append("Costo: ").append("$ 1200.00").append("\n");
-        sb.append("Forma de pago: ").append("Tarjeta\n");
-        sb.append("------------------------------\n");
-        sb.append("Observaciones: Sin observaciones.\n");
+        sb.append("Asistente: ").append(dtr.getAsistente()).append("\n");
+        sb.append("Tipo de registro: ").append(dtr.getTipoDeRegistro()).append("\n");
+        sb.append("Fecha de registro: ").append(fechaStr).append("\n");
+        sb.append("Costo: $ ").append(
+            String.format(java.util.Locale.US, "%.2f", dtr.getCosto())
+        ).append("\n");
+        
+  
 
         areaDetalles.setText(sb.toString());
         areaDetalles.setCaretPosition(0);
     }
+
 
 
 

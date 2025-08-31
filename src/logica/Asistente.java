@@ -5,6 +5,7 @@ import java.util.Set;
 
 import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTUsuario;
 
 public class Asistente extends Usuario {
@@ -41,17 +42,7 @@ public class Asistente extends Usuario {
 
 	}
 
-	public Set<String> getRegistros() {
-
-		Set<String> nombresRegistros = new HashSet<>();
-
-		for (Registro r : registros) {
-		    nombresRegistros.add(r.getNomTipo()); // o el método adecuado
-		}
-
-		return nombresRegistros;
-	}
-
+	
 	public void agregarRegistro(Registro reg) {
         this.registros.add(reg);
     }
@@ -76,6 +67,27 @@ public class Asistente extends Usuario {
 
 	public DTUsuario getDTAsistente() {
 		return new DTAsistente(nickname, nombre,correo, apellido, fechaNacimiento, institucion);
+	}
+	
+	public DTRegistro getRegistro(String nomTipoReg) {
+	    if (registros == null) {
+	        return null;
+	    }
+
+	    for (Registro r : this.registros) {
+	        String nombreTR = r.getTipoDeRegistro().getNombre();
+	        if (nombreTR != null && nombreTR.equals(nomTipoReg)) {
+	           
+	            String asistente = this.getNombre();      
+	            DTFecha fecha = r.getFechaRegistro();      
+	            Double costo = r.getCosto();
+
+	            return new DTRegistro(asistente, nombreTR, fecha, costo);
+	        }
+	    }
+
+	    
+	    return null;
 	}
 
 
