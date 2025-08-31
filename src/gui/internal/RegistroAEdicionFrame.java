@@ -5,9 +5,9 @@ import javax.swing.*;
 import logica.Evento;
 import logica.TipoDeRegistro;
 import logica.DatatypesYEnum.DTFecha;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
-import logica.Controladores.ControladorUsuario;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
+import logica.Controladores.IControladorUsuario;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -19,9 +19,9 @@ public class RegistroAEdicionFrame extends JInternalFrame {
     private JComboBox<String> comboTiposRegistro;
     private JComboBox<String> comboAsistentes;
     
-    private ControladorEvento ctrlEventos = ControladorEvento.getInstance();
-    private ControladorRegistro ctrlRegistros = ControladorRegistro.getInstance();
-    private ControladorUsuario ctrlUsuarios = ControladorUsuario.getInstance();
+    private IControladorEvento ctrlEventos = IControladorEvento.getInstance();
+    private IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
+    private IControladorUsuario ctrlUsuarios = IControladorUsuario.getInstance();
     
     public RegistroAEdicionFrame() {
         super("Registro a Edición de Evento", true, true, true, true);

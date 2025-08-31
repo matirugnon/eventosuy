@@ -7,6 +7,10 @@ import logica.DatatypesYEnum.*;
 
 public interface IControladorRegistro {
 
+	static IControladorRegistro getInstance() {
+	    return ControladorRegistro.getInstance();
+	}
+
 
 	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo);
 

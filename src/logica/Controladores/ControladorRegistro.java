@@ -23,7 +23,7 @@ public class ControladorRegistro implements IControladorRegistro {
 
 	private static ControladorRegistro instancia = null;
 
-	public ControladorRegistro() {
+	private ControladorRegistro() {
 
     }
 
