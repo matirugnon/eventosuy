@@ -90,13 +90,13 @@ public class Asistente extends Usuario {
 	    return null;
 	}
 
-	public Set<String> getRegistros() {
+	public Set<Registro> getRegistros() {
 
-		Set<String> resultado = new HashSet<>();
+		Set<Registro> resultado = new HashSet<>();
 
 		for(Registro r: registros) {
 
-			resultado.add(r.getNomTipo());
+			resultado.add(r);
 
 		}
 
