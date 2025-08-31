@@ -1,30 +1,19 @@
 package logica.Controladores;
 
-import java.nio.channels.MulticastChannel;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Set;
 
-import excepciones.UsuarioNoExisteException;
+import excepciones.CorreoInvalidoException;
 import excepciones.UsuarioRepetidoException;
 import logica.Asistente;
-import logica.DataUsuario;
-import logica.Edicion;
 import logica.Institucion;
 import logica.Organizador;
-import logica.Registro;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTUsuario;
-import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 
-/**
- * Controlador de usuarios.
- * @author TProg2017
- *
- */
 public class ControladorUsuario implements IControladorUsuario {
 
 	private ManejadorUsuario manejador;
@@ -50,46 +39,46 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     //alta Asistente
-    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException {
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion)
+            throws UsuarioRepetidoException, CorreoInvalidoException {
 
-        if(ExisteNickname(nick))
-            throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
-        if(ExisteCorreo(correo))
-        	throw new UsuarioRepetidoException("El correo " + correo + " ya esta registrado");
+        if (!correo.contains("@")) {
+            throw new CorreoInvalidoException(correo);
+        }
 
+        if (ExisteNickname(nick)) {
+            throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
+        }
+
+        if (ExisteCorreo(correo)) {
+            throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
+        }
 
         Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion);
         altaUsuario(a);
     }
 
     //alta Organizador
-    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException {
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link)
+            throws UsuarioRepetidoException, CorreoInvalidoException {
 
-    	 if (ExisteNickname(nick))
-             throw new UsuarioRepetidoException("El usuario " + nick + " ya esta registrado");
-         if(ExisteCorreo(correo))
-         	throw new UsuarioRepetidoException("El correo " + correo + " ya esta registrado");
+        if (!correo.contains("@")) {
+            throw new CorreoInvalidoException(correo);
+        }
+
+        if (ExisteNickname(nick)) {
+            throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
+        }
+
+        if (ExisteCorreo(correo)) {
+            throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
+        }
 
         Usuario o = new Organizador(nick, nombre, correo, descripcion, link);
         altaUsuario(o);
     }
 
 
-
-
-    //metodo del controlador para mostrar la data del user, no se si sirve pero lo dejo porque estaba en la demoswing
-
-    public DataUsuario verInfoUsuario(String nick) throws UsuarioNoExisteException {
-        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-
-        Usuario u = mu.obtenerUsuario(nick);
-
-        if (u != null)
-            return new DataUsuario(u.getNombre(), u.getNickname(), u.getCorreo());
-        else
-            throw new UsuarioNoExisteException("El usuario " + nick + " no existe");
-
-    }
 
     //-------------------------NUEVOS METODOS DEL CONTROLADOR---------------------------------------------------------------
 
@@ -106,7 +95,18 @@ public class ControladorUsuario implements IControladorUsuario {
 
     public boolean ExisteCorreo(String correo) {
 
-    	//IMPLEMENTAR--------------------
+    	ManejadorUsuario mu = ManejadorUsuario.getinstance();
+    	Set<String> usuarios = listarUsuarios();
+
+    	for(String nick : usuarios) {
+
+    		Usuario u = mu.obtenerUsuario(nick);
+    		if (u.getCorreo().equals(correo)) {
+				return true;
+			}
+
+    	}
+
 		return false;
 
    }

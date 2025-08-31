@@ -2,6 +2,8 @@ package presentacion;
 
 import javax.swing.*;
 
+import excepciones.CorreoInvalidoException;
+import excepciones.EventoRepetidoException;
 import excepciones.UsuarioRepetidoException;
 import gui.internal.*;
 import logica.Controladores.ControladorEvento;
@@ -128,7 +130,7 @@ public class MainFrame extends JFrame {
             try {
 				Utils.cargarDatos(contrU,contE,contR);
 				JOptionPane.showMessageDialog(this, "Datos cargados exitosamente");
-			} catch (UsuarioRepetidoException e1) {
+			} catch (UsuarioRepetidoException | CorreoInvalidoException | EventoRepetidoException e1) {
 				e1.printStackTrace();
 			}
         });

@@ -4,6 +4,7 @@ package logica.Controladores;
 import java.util.List;
 import java.util.Set;
 
+import excepciones.CorreoInvalidoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.DataUsuario;
@@ -23,13 +24,9 @@ public interface IControladorUsuario {
 
 	public void altaUsuario(Usuario u);
 
-	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException;
+	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion) throws UsuarioRepetidoException, CorreoInvalidoException;
 
-    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException;
-
-
-    //funcion que ya venia con ejemplo
-    public abstract DataUsuario verInfoUsuario(String ci) throws UsuarioNoExisteException;
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link) throws UsuarioRepetidoException, CorreoInvalidoException;
 
 
     public boolean ExisteNickname(String nick);
@@ -54,7 +51,7 @@ public interface IControladorUsuario {
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web);
 
     public Set<String> listarInstituciones();
-    
+
     public DTUsuario getDTUsuario(String nombreU);
     public Set<String> obtenerRegistros(String nombreAsistente);
 

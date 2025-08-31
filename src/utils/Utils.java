@@ -3,6 +3,8 @@ package utils;
 import java.util.List;
 import java.util.Set;
 
+import excepciones.CorreoInvalidoException;
+import excepciones.EventoRepetidoException;
 import excepciones.UsuarioRepetidoException;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorRegistro;
@@ -12,7 +14,8 @@ import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Utils {
 
-public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  ) throws UsuarioRepetidoException{
+public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  )
+		throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException{
 
 		// Instituciones
 		ctrlUsuario.altaInstitucion("Facultad de Ingeniería", "Facultad de Ingeniería de la Universidad de la República", "https://www.fing.edu.uy");
@@ -149,13 +152,13 @@ public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "General", "Acceso general", 650, 5);
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "Estudiante", "Acceso para estudiantes", 300, 1);
 
-		
+
 		//Patrocinios
 		ctrlEvento.altaPatrocinio("Tecnología Punta del Este 2026", "Facultad de Ingeniería",NivelPatrocinio.Oro, 20000, "Estudiante", 4, "TECHFING", new DTFecha(21,8,2025));
 		ctrlEvento.altaPatrocinio("Tecnología Punta del Este 2026", "Agencia Nacional de Investigación e Innovación (ANII)",NivelPatrocinio.Plata, 10000, "General", 1, "TECHANII", new DTFecha(20,8,2025));
 		ctrlEvento.altaPatrocinio("Maratón de Montevideo 2025", "Antel",NivelPatrocinio.Platino, 25000, "Corredor 10K", 10, "CORREANTEL", new DTFecha(4,3,2025));
 		ctrlEvento.altaPatrocinio("Expointer Uruguay 2025", "Universidad Católica del Uruguay",NivelPatrocinio.Bronce, 15000, "General", 10, "EXPOCAT", new DTFecha(5,5,2025));
-		
+
 		// Registros
 		ctrlRegistro.altaRegistro("Montevideo Rock 2025", "sofirod", "VIP", new DTFecha(14,5,2025), 4000);
 		ctrlRegistro.altaRegistro("Maratón de Montevideo 2024", "sofirod", "Corredor 21K", new DTFecha(30,7,2024), 500);
