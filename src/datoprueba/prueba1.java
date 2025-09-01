@@ -210,6 +210,12 @@ class prueba1 {
 		assertEquals(obt.getDescripcion(),"hola, buenas tarde");
 		assertEquals(obt.getLink(),"hola.edu.uy");
 		
+		DTAsistente asMod = new DTAsistente("atorres", "chau",  "chau@gmail.com", "chaucha", new DTFecha(28,9,1891), "Facultad de Ingeniería");
+		contrU.modificarUsuario("atorres", asMod);
+		DTAsistente asObt = (DTAsistente) contrU.getDTUsuario("atorres");
+		assertEquals(asObt.getNombre(),"chau");
+		assertEquals(asObt.getApellido(),"chaucha");
+		
 		
 		
 	}
