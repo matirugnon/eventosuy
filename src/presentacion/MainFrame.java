@@ -13,9 +13,9 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import gui.internal.*;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
-import logica.Controladores.ControladorUsuario;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
+import logica.Controladores.IControladorUsuario;
 import utils.Utils;
 
 @SuppressWarnings("serial")
@@ -136,9 +136,9 @@ public class MainFrame extends JFrame {
         JMenuItem cargarDatos = new JMenuItem("Click para cargar datos");
 
 
-        ControladorUsuario contrU = ControladorUsuario.getInstance();
-        ControladorEvento contE =  ControladorEvento.getInstance();
-        ControladorRegistro contR = ControladorRegistro.getInstance();
+        IControladorUsuario contrU = IControladorUsuario.getInstance();
+        IControladorEvento contE =  IControladorEvento.getInstance();
+        IControladorRegistro contR = IControladorRegistro.getInstance();
 
         cargarDatos.addActionListener(e -> {
 

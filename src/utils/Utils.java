@@ -12,22 +12,28 @@ import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
+import logica.Controladores.IControladorUsuario;
+
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorRegistro;
-import logica.Controladores.ControladorUsuario;
+
+
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Utils {
 
-public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento ctrlEvento, ControladorRegistro ctrlRegistro  )
+
+public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro  )
 		throws UsuarioRepetidoException,
 				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException
 
 {
+
 
 		// Instituciones
 		ctrlUsuario.altaInstitucion("Facultad de Ingeniería", "Facultad de Ingeniería de la Universidad de la República", "https://www.fing.edu.uy");
@@ -183,6 +189,7 @@ public static void cargarDatos(ControladorUsuario ctrlUsuario, ControladorEvento
 		ctrlRegistro.altaRegistro("Montevideo Comics 2024", "SofiM", "General", new DTFecha(16,7,2024), 600);
 
 	}
+
 
 
 }
