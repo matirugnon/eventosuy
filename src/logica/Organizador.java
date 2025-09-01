@@ -34,14 +34,12 @@ public class Organizador extends Usuario {
         return "Organizador";
     }
 
-	public void setDescripcion(String text) {
-		// TODO Auto-generated method stub
-
+	public void setDescripcion(String desc) {
+		this.descripcion = desc;
 	}
 
-	public void setLink(String text) {
-		// TODO Auto-generated method stub
-
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 

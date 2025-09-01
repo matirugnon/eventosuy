@@ -19,6 +19,7 @@ import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
@@ -72,6 +73,19 @@ class prueba1 {
 		esperado.add("Maratón de Montevideo 2025");esperado.add("Maratón de Montevideo 2024");esperado.add("Maratón de Montevideo 2022");
 		assertEquals(o,esperado);
 		
+		o = contE.listarEdiciones();
+		esperado.clear();
+		esperado.add( "Montevideo Rock 2025");esperado.add("Maratón de Montevideo 2025");esperado.add("Maratón de Montevideo 2024");esperado.add("Maratón de Montevideo 2022");
+		esperado.add("Montevideo Comics 2024");esperado.add("Montevideo Comics 2025");esperado.add("Expointer Uruguay 2025");esperado.add("Tecnología Punta del Este 2026");
+		esperado.add("Mobile World Congress 2025");esperado.add("Web Summit 2026");
+		assertEquals(o,esperado);
+		
+		o = contE.listarEventos();
+		esperado.clear();
+		esperado.add("Conferencia de Tecnología");esperado.add("Feria del Libro");esperado.add("Montevideo Rock");
+		esperado.add("Maratón de Montevideo");esperado.add("Montevideo Comics");esperado.add("Expointer Uruguay");esperado.add("Montevideo Fashion Week");
+		assertEquals(o,esperado);
+		
 		o = contE.listarPatrocinios("Tecnología Punta del Este 2026");
 		esperado.clear();
 		esperado.add("TECHFING");esperado.add("TECHANII");
@@ -97,7 +111,7 @@ class prueba1 {
 		
 		
 		DTPatrocinio DTPat = contE.consultarTipoPatrocinioEdicion("Tecnología Punta del Este 2026", "TECHFING");
-		DTPatrocinio DTPates = new DTPatrocinio(new DTFecha(21,8,2025),20000,"TECHFING",NivelPatrocinio.Oro,"Tecnología Punta del Este 2026","Facultad de Ingeniería");
+		DTPatrocinio DTPates = new DTPatrocinio(new DTFecha(21,8,2025),20000,"TECHFING",NivelPatrocinio.Oro,"Tecnología Punta del Este 2026","Facultad de Ingeniería",4,"Estudiante");
 		assertEquals(DTPat.getCodigo(),DTPates.getCodigo());
 		assertEquals(DTPat.getEdicion(),DTPates.getEdicion());
 		assertEquals(DTPat.getInstitucion(),DTPates.getInstitucion());
@@ -130,6 +144,17 @@ class prueba1 {
 		obtenido = contR.alcanzoCupo("Montevideo Rock 2025","VIP");
 		espera = false;
 		assertEquals(espera,obtenido);
+		
+		
+		
+		
+		
+		DTOrganizador orgMod = new DTOrganizador("udelar","hola","hola@gmail.com","hola, buenas tarde","hola.edu.uy");
+		contrU.modificarUsuario("udelar", orgMod);
+		DTOrganizador obt = (DTOrganizador) contrU.getDTUsuario("udelar");
+		assertEquals(obt.getNombre(),"hola");
+		assertEquals(obt.getDescripcion(),"hola, buenas tarde");
+		assertEquals(obt.getLink(),"hola.edu.uy");
 		
 	}
 	
