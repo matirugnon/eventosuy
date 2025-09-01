@@ -28,21 +28,17 @@ public abstract class Usuario {
 
     //setters
 
-    public void setNickname(String nick) {
-        nickname = nick;
-    }
+
 
     public void setNombre(String n) {
         nombre = n;
     }
 
-    public void setCorreo(String corr) {
-    	correo = corr;
-    }
 
-    public DTUsuario getDTUsuario() {
-    	return new DTUsuario(nickname,nombre,correo);
-    }
+
+    //public DTUsuario getDTUsuario() {
+    //	return new DTUsuario(nickname,nombre,correo);
+    //}
 
 
 
