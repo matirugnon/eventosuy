@@ -1,9 +1,6 @@
 package logica;
 
-import java.awt.Component;
-import java.time.LocalDate;
 import java.util.AbstractMap;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,9 +9,7 @@ import java.util.Set;
 
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.NivelPatrocinio;
-import logica.TipoDeRegistro;
 
 public class Edicion{
 
@@ -127,7 +122,7 @@ public class Edicion{
 
 
 
-	    Set<DTRegistro> registrosDT = null;
+	    
 
 	    // Construir y devolver el DTEdicion
 	    return new DTEdicion(

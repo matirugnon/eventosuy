@@ -12,7 +12,6 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.PatrocinioNoEncontradoException;
-import logica.Evento;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTPatrocinio;

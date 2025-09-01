@@ -1,7 +1,5 @@
 package logica.DatatypesYEnum;
 
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class DTPatrocinio{
 

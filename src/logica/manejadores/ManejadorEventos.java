@@ -8,7 +8,6 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
-import logica.Usuario;
 
 public class ManejadorEventos {
 

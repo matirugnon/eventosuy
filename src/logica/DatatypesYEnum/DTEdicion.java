@@ -3,7 +3,6 @@ package logica.DatatypesYEnum;
 import java.util.Map;
 import java.util.Set;
 
-import logica.Edicion;
 
 public class DTEdicion {
     private  String nombre;

@@ -1,7 +1,6 @@
 package logica.DatatypesYEnum;
 
 import logica.Evento;
-import logica.DatatypesYEnum.DTFecha;
 
 public class DTEvento {
     private final String nombre;
