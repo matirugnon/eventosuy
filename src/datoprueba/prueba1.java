@@ -11,9 +11,15 @@ import javax.swing.JOptionPane;
 
 import org.junit.jupiter.api.Test;
 
+import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
+import excepciones.EdicionNoExisteException;
+import excepciones.EdicionSinPatrociniosException;
+import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
+import excepciones.PatrocinioDuplicadoException;
+import excepciones.PatrocinioNoEncontradoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Controladores.IControladorEvento;
@@ -38,7 +44,7 @@ class prueba1 {
     private IControladorEvento contE =  IControladorEvento.getInstance();
     private IControladorRegistro contR = IControladorRegistro.getInstance();
 	@Test
-	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException {
+	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
 
 
 		Utils.cargarDatos(contrU,contE,contR);
