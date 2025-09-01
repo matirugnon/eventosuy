@@ -1,10 +1,9 @@
 package gui.internal;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 
-
+import excepciones.UsuarioNoExisteException;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
@@ -13,26 +12,20 @@ import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTUsuario;
-import logica.manejadores.ManejadorUsuario;
+
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+
 import java.util.Set;
 import java.util.function.Consumer;
 
 @SuppressWarnings("serial")
 public class ConsultaUsuarioFrame extends JInternalFrame {
 
-    private final Consumer<JInternalFrame> openInternal; // para abrir detalle
+
 
     private JTextArea areaDatos;
-    private JTable tablaDetalle;
     private JButton btnVerDetalle;
-    private JScrollPane scrollTabla;
 
     private JComboBox<String> comboUsuarios;
     private JList<String> listaResultados;
@@ -45,7 +38,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         super("Consulta de Usuario", true, true, true, true);
         setSize(700, 500);
         setLayout(new BorderLayout());
-        this.openInternal = openInternal;
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setBackground(Color.WHITE);
         getContentPane().setBackground(Color.WHITE);
@@ -115,13 +107,25 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
                 return;
             }
 
-            mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
+            try {
+				mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
+			} catch (UsuarioNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         });
 
 
         add(form, BorderLayout.CENTER);
 
-        comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
+        comboUsuarios.addActionListener(e -> {
+			try {
+				actualizarListaSegunUsuario();
+			} catch (UsuarioNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
     }
 
     private void cargarUsuarios() {
@@ -133,7 +137,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         }
     }
 
-    private void actualizarListaSegunUsuario() {
+    private void actualizarListaSegunUsuario() throws UsuarioNoExisteException {
 
         String seleccionadoS = (String) comboUsuarios.getSelectedItem();
 
@@ -237,7 +241,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
     //FUNCIONES EXTRA
 
-    private void mostrarDetalle(String nicknameUsuario, String elementoSeleccionado) {
+    private void mostrarDetalle(String nicknameUsuario, String elementoSeleccionado) throws UsuarioNoExisteException {
 
         DTUsuario dtUsuario = ctrlUsuarios.getDTUsuario(nicknameUsuario);
         if (dtUsuario == null) return;

@@ -1,24 +1,21 @@
 package logica.Controladores;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.Asistente;
 import logica.Edicion;
 import logica.Registro;
-import logica.DatatypesYEnum.DTTipoRegistro;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 import logica.TipoDeRegistro;
 import logica.Usuario;
-import logica.TipoDeRegistro;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
-import logica.manejadores.ManejadorEventos;
 
 public class ControladorRegistro implements IControladorRegistro {
 
@@ -56,9 +53,14 @@ public class ControladorRegistro implements IControladorRegistro {
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
 
-	public Set<String> listarTipoRegistro(String nombreEd) {
+	public Set<String> listarTipoRegistro(String nombreEd)
+			throws EdicionNoExisteException{
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
+
+		if (ed == null) {
+			throw new EdicionNoExisteException(nombreEd);
+		}
 
 		return ed.getNombresTiposDeRegistro();
 	}

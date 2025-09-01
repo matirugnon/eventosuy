@@ -1,8 +1,8 @@
 package utils;
 
-import java.util.List;
 import java.util.Set;
 
+import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
 import excepciones.EventoRepetidoException;
@@ -10,6 +10,7 @@ import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
+import excepciones.PatrocinioDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 
@@ -30,7 +31,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		throws UsuarioRepetidoException,
 				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
-				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException
+				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException
 
 {
 

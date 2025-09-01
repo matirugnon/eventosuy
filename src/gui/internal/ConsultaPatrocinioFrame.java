@@ -1,6 +1,12 @@
 package gui.internal;
 
 import javax.swing.*;
+
+import excepciones.EdicionNoExisteException;
+import excepciones.EdicionSinPatrociniosException;
+import excepciones.EventoNoExisteException;
+import excepciones.PatrocinioNoEncontradoException;
+
 import java.awt.*;
 
 import logica.Controladores.IControladorEvento;
@@ -8,7 +14,13 @@ import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTFecha;
 
 public class ConsultaPatrocinioFrame extends JInternalFrame {
-    private JComboBox<String> comboEventos;
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	private JComboBox<String> comboEventos;
     private JComboBox<String> comboEdiciones;
     private JComboBox<String> comboPatrocinios;
     private JTextArea areaDatos;
@@ -49,7 +61,15 @@ public class ConsultaPatrocinioFrame extends JInternalFrame {
         // Listeners
         comboEventos.addActionListener(e -> cargarEdiciones());
         comboEdiciones.addActionListener(e -> cargarPatrocinios());
-        comboPatrocinios.addActionListener(e -> mostrarDatos());
+        comboPatrocinios.addActionListener(e -> {
+
+			try {
+				mostrarDatos();
+			} catch (EdicionNoExisteException | EdicionSinPatrociniosException | PatrocinioNoEncontradoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 
         // inicializar
         cargarEdiciones();
@@ -62,9 +82,14 @@ public class ConsultaPatrocinioFrame extends JInternalFrame {
 
         String evento = (String) comboEventos.getSelectedItem();
         if (evento != null) {
-            for (String ed : ctrlEvento.listarEdiciones(evento)) {
-                comboEdiciones.addItem(ed);
-            }
+            try {
+				for (String ed : ctrlEvento.listarEdiciones(evento)) {
+				    comboEdiciones.addItem(ed);
+				}
+			} catch (EventoNoExisteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
         cargarPatrocinios();
     }
@@ -81,7 +106,7 @@ public class ConsultaPatrocinioFrame extends JInternalFrame {
         }
     }
 
-    private void mostrarDatos() {
+    private void mostrarDatos() throws EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
         areaDatos.setText("");
 
         String edicion = (String) comboEdiciones.getSelectedItem();

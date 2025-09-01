@@ -2,6 +2,7 @@ package gui.internal;
 
 import javax.swing.*;
 
+import excepciones.EventoNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
@@ -42,7 +43,12 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
 
         // Combo de ediciones (se llena según el evento elegido)
         comboEdiciones = new JComboBox<>();
-        actualizarEdiciones();
+        try {
+			actualizarEdiciones();
+		} catch (EventoNoExisteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         form.add(new JLabel("Edición:"));
         form.add(comboEdiciones);
 
@@ -75,7 +81,14 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         add(buttons, BorderLayout.SOUTH);
 
         // Listeners
-        comboEventos.addActionListener(e -> actualizarEdiciones());
+        comboEventos.addActionListener(e -> {
+			try {
+				actualizarEdiciones();
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnConfirmar.addActionListener(e -> {
 			try {
 				confirmarAlta();
@@ -87,7 +100,7 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
         btnCancelar.addActionListener(e -> dispose());
     }
 
-    private void actualizarEdiciones() {
+    private void actualizarEdiciones() throws EventoNoExisteException {
         comboEdiciones.removeAllItems();
 
         String evento = (String) comboEventos.getSelectedItem();

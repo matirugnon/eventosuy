@@ -4,13 +4,11 @@ package gui.internal;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
+import excepciones.EventoNoExisteException;
 import logica.Controladores.IControladorEvento;
 import logica.DatatypesYEnum.DTSeleccionEvento;
 
 import java.awt.*;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("serial")
@@ -75,23 +73,31 @@ public class ConsultaEventoFrame extends JInternalFrame {
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Eventos
-        btnConsultar.addActionListener(e -> mostrarDatosEvento());
-        comboEventos.addActionListener(e -> {
-            // Opcional: actualizar automáticamente al cambiar selección
-            // mostrarDatosEvento();
-        });
+        btnConsultar.addActionListener(e -> {
+
+			try {
+				mostrarDatosEvento();
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnVerEdicion.addActionListener(e -> verEdicion());
     }
 
-    private void mostrarDatosEvento() {
+    private void mostrarDatosEvento() throws EventoNoExisteException {
+
         String eventoS = (String) comboEventos.getSelectedItem();
+
+        if (eventoS == null || eventoS.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Debe seleccionar un evento para consultar.",
+                "Evento no seleccionado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         DTSeleccionEvento evento = contrEvento.seleccionarEvento(eventoS);
 
-
-        // Formato de fecha
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Datos del evento
         areaDatos.setText(
             "Nombre: " + evento.getNombre() + "\n" +
             "Sigla: " + evento.getSigla() + "\n" +
@@ -103,7 +109,6 @@ public class ConsultaEventoFrame extends JInternalFrame {
         listaCategorias.setListData(evento.getCategorias().toArray(new String[0]));
 
         Set<String> cats = evento.getCategorias();
-        System.out.println("Categorías del evento: " + cats); // 👈 Depuración
 
         if (cats == null || cats.isEmpty()) {
             listaCategorias.setListData(new String[]{"(Sin categorías)"});
@@ -113,7 +118,6 @@ public class ConsultaEventoFrame extends JInternalFrame {
 
         // Ediciones
         Set<String> ediciones = evento.getEdiciones(); //esto cambio
-
 
         if (ediciones == null || ediciones.isEmpty()) {
             tablaEdiciones.setModel(new DefaultTableModel(
@@ -132,12 +136,10 @@ public class ConsultaEventoFrame extends JInternalFrame {
         	    DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
         	        @Override
         	        public boolean isCellEditable(int row, int column) {
-        	            return false; // ❌ No se puede editar ninguna celda
+        	            return false;
         	        }
         	    };
         	    tablaEdiciones.setModel(modelo);
-
-
 
         }
 
@@ -145,6 +147,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
     }
 
     private void verEdicion() {
+
         int fila = tablaEdiciones.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this,

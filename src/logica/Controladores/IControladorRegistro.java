@@ -2,6 +2,7 @@ package logica.Controladores;
 
 import java.util.Set;
 
+import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
@@ -19,7 +20,8 @@ public interface IControladorRegistro {
 	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo)
 			throws NombreTipoRegistroDuplicadoException;
 
-	public Set<String> listarTipoRegistro(String nombreEd);
+	public Set<String> listarTipoRegistro(String nombreEd)
+			throws EdicionNoExisteException;
 
 	public DTTipoDeRegistro consultaTipoDeRegistro(String nombreEd, String nombreReg);
 

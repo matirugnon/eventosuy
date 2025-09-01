@@ -1,10 +1,13 @@
 package gui.internal;
 
 import javax.swing.*;
+
+import excepciones.EdicionNoExisteException;
+import excepciones.EventoNoExisteException;
+
 import java.awt.*;
 import java.time.LocalDate;
 
-import logica.Controladores.ControladorEvento;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorUsuario;
 import logica.Controladores.IControladorRegistro;
@@ -98,9 +101,14 @@ public class AltaPatrocinioFrame extends JInternalFrame {
         comboEdiciones.removeAllItems();
         String evento = (String) comboEventos.getSelectedItem();
         if (evento != null) {
-            for (String ed : ctrlEvento.listarEdiciones(evento)) {
-                comboEdiciones.addItem(ed);
-            }
+            try {
+				for (String ed : ctrlEvento.listarEdiciones(evento)) {
+				    comboEdiciones.addItem(ed);
+				}
+			} catch (EventoNoExisteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
         cargarTiposRegistro();
     }
@@ -109,9 +117,14 @@ public class AltaPatrocinioFrame extends JInternalFrame {
         comboTipoRegistro.removeAllItems();
         String edicion = (String) comboEdiciones.getSelectedItem();
         if (edicion != null) {
-            for (String tipo : ctrlRegistro.listarTipoRegistro(edicion)) {
-                comboTipoRegistro.addItem(tipo);
-            }
+            try {
+				for (String tipo : ctrlRegistro.listarTipoRegistro(edicion)) {
+				    comboTipoRegistro.addItem(tipo);
+				}
+			} catch (EdicionNoExisteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 

@@ -6,10 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.EdicionExistenteException;
+import excepciones.EdicionNoExisteException;
+import excepciones.EdicionSinPatrociniosException;
+import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
+import excepciones.PatrocinioDuplicadoException;
+import excepciones.PatrocinioNoEncontradoException;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
@@ -58,12 +64,21 @@ public class ControladorEvento implements IControladorEvento {
 	//altaEvento con excepcion
 
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
-	        throws EventoRepetidoException {
+	        throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException {
 
 	    // Verificamos si ya existe un evento con ese nombre
 	    if (existeEvento(nomEvento)) {
 	        throw new EventoRepetidoException(nomEvento);
 	    }
+
+	    if (nomcategorias == null || nomcategorias.isEmpty()) {
+	        throw new CategoriaNoSeleccionadaException();
+	    }
+
+	    if (!esFechaValida(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio())) {
+            throw new FechaInvalidaException(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
+        }
+
 
 	    // Si no existe, creamos el evento
 	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
@@ -88,12 +103,14 @@ public class ControladorEvento implements IControladorEvento {
 		return listaEdiciones;
 		}
 
-    public DTSeleccionEvento seleccionarEvento(String nomEvento) {
-        Evento e = manejadorE.obtenerEvento(nomEvento);
-        if (e == null) {
-            return null;
-        }
+    public DTSeleccionEvento seleccionarEvento(String nomEvento)
+    		throws EventoNoExisteException {
 
+        Evento e = manejadorE.obtenerEvento(nomEvento);
+
+        if (e == null) {
+            throw new EventoNoExisteException(nomEvento);
+        }
 
         DTEvento dto = new DTEvento(e);
 
@@ -185,11 +202,14 @@ public class ControladorEvento implements IControladorEvento {
 	        me.addEdicion(ed);
 	}
 
-	public Set<String> listarEdiciones(String nomEvento){
+	public Set<String> listarEdiciones(String nomEvento)
+			throws EventoNoExisteException{
+
 	    ManejadorEventos me = ManejadorEventos.getInstance();
 	    Evento e = me.obtenerEvento(nomEvento);
+
 	    if (e == null) {
-	        throw new IllegalArgumentException("No existe el evento: " + nomEvento);
+	        throw new EventoNoExisteException(nomEvento);
 	    }
 
 	    Set<String> eds = e.getEdiciones();
@@ -203,17 +223,19 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
-	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio) {
-	    ManejadorEventos me = ManejadorEventos.getInstance();
-	    Edicion ed = me.obtenerEdicion(nomEdicion);
+	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio)
+			throws EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
+
+	    Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+
 	    if (ed == null) {
-	        throw new IllegalArgumentException("No existe la edición: " + nomEdicion);
+	        throw new EdicionNoExisteException(nomEdicion);
 	    }
 
 	    Set<Patrocinio> pats = ed.getPatrocinios();
 
 	    if (pats == null || pats.isEmpty()) {
-	        throw new IllegalArgumentException("La edición '" + nomEdicion + "' no tiene patrocinios.");
+	        throw new EdicionSinPatrociniosException(nomEdicion);
 	    }
 
 	    for (Patrocinio p : pats) {
@@ -231,11 +253,8 @@ public class ControladorEvento implements IControladorEvento {
 	        }
 	    }
 
-	    // Si llegó acá, no lo encontró
-	    throw new IllegalArgumentException(
-	        "No existe el patrocinio con código " + codPatrocinio +
-	        " en la edición '" + nomEdicion + "'."
-	    );
+
+	    throw new PatrocinioNoEncontradoException(codPatrocinio, nomEdicion);
 	}
 
 	 public boolean existePatrocinio(String nomEdicion, String nomInstitucion) {
@@ -254,12 +273,29 @@ public class ControladorEvento implements IControladorEvento {
 	 }
 
 
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
-			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta)
+			 throws PatrocinioDuplicadoException {
 
-		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
+
 		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+		 ;
+
+		 if (ed == null) {
+		        throw new IllegalArgumentException("No existe la edición: " + nomEdicion);
+		 }
+
+		 if (existePatrocinio(nomEdicion, nomInstitucion)) {
+		        throw new PatrocinioDuplicadoException(nomInstitucion, nomEdicion);
+		    }
+
+
 		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
+
+		 if (tr == null) {
+		        throw new IllegalArgumentException("No existe el tipo de registro: " + nomTipoRegistro);
+		    }
+
+
 		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
 		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
 		 Patrocinio pat = ed.altaPatrocinio(ins, nivel, aporte, tr, cantRegistrosGratuitos, codigo, fechaAlta);
@@ -285,6 +321,38 @@ public class ControladorEvento implements IControladorEvento {
 
 		return false;
 	 }
+
+
+
+	//metodos auxiliares para validar fechas
+		public boolean esFechaValida(int dia, int mes, int anio) {
+		    if (mes < 1 || mes > 12) return false;
+		    if (dia < 1 || anio < 1) return false;
+
+		    // Días por mes
+		    int[] diasPorMes = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+		    // Ajustar febrero para año bisiesto
+		    if (esBisiesto(anio)) {
+		        diasPorMes[1] = 29;
+		    }
+
+		    return dia <= diasPorMes[mes - 1];
+		}
+
+		private boolean esBisiesto(int anio) {
+		    return (anio % 4 == 0 && anio % 100 != 0) || (anio % 400 == 0);
+		}
+
+
+
+
+
+
+
+
+
+
 
 
 

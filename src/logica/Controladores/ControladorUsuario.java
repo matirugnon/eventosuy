@@ -1,7 +1,6 @@
 package logica.Controladores;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
@@ -9,7 +8,6 @@ import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
-import gui.internal.ModificarUsuarioFrame;
 import logica.Asistente;
 import logica.Institucion;
 import logica.Organizador;
@@ -171,9 +169,14 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
 
-	public DTUsuario getDTUsuario(String nombreU) {
+	public DTUsuario getDTUsuario(String nombreU)
+			throws UsuarioNoExisteException{
 
 		Usuario u = manejador.obtenerUsuario(nombreU);
+
+		if (u == null) {
+			throw new UsuarioNoExisteException(nombreU);
+		}
 
 		if (u instanceof Organizador) {
 			Organizador o = (Organizador) u;
@@ -212,7 +215,8 @@ public class ControladorUsuario implements IControladorUsuario {
 	//-----------------------------------------------MODIFICAR USUARIO__________________________________________________
 
 
-	public void modificarUsuario(String nick, DTUsuario datosUsuario) throws UsuarioNoExisteException {
+	public void modificarUsuario(String nick, DTUsuario datosUsuario)
+			throws UsuarioNoExisteException, FechaInvalidaException {
 
 	    Usuario usuario = manejador.obtenerUsuario(nick);
 
@@ -226,7 +230,13 @@ public class ControladorUsuario implements IControladorUsuario {
 	    if (usuario instanceof Asistente && datosUsuario instanceof DTAsistente) {
 	        Asistente a = (Asistente) usuario;
 	        DTAsistente dtA = (DTAsistente) datosUsuario;
+
 	        a.setApellido(dtA.getApellido());
+
+	        if(!esFechaValida(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio())) {
+	        	throw new FechaInvalidaException(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio());
+	        }
+
 	        a.setFechaNacimiento(dtA.getFechaNacimiento());
 	    }
 	    else if (usuario instanceof Organizador && datosUsuario instanceof DTOrganizador) {

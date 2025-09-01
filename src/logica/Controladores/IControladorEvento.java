@@ -2,10 +2,16 @@ package logica.Controladores;
 
 import java.util.Set;
 
+import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.EdicionExistenteException;
+import excepciones.EdicionNoExisteException;
+import excepciones.EdicionSinPatrociniosException;
+import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
+import excepciones.PatrocinioDuplicadoException;
+import excepciones.PatrocinioNoEncontradoException;
 import logica.Evento;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
@@ -22,13 +28,14 @@ public interface IControladorEvento {
 	public boolean existeEvento(String nomEvento);
 
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
-			throws EventoRepetidoException;
+			throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException;
 
 	public Set<String> listarEventos();
 
 	public Set<String> listarEdiciones();
 
-	public DTSeleccionEvento seleccionarEvento(String nomEvento);
+	public DTSeleccionEvento seleccionarEvento(String nomEvento)
+			throws EventoNoExisteException;
 
 	public DTEdicion consultarEdicion(String nomEdicion);
 
@@ -41,16 +48,18 @@ public interface IControladorEvento {
 	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
 			throws EdicionExistenteException, FechasIncompatiblesException;
 
-	public Set<String> listarEdiciones(String nomEvento);
+	public Set<String> listarEdiciones(String nomEvento)
+			throws EventoNoExisteException;
 
-	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio);
+	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio)
+			throws EdicionNoExisteException,EdicionSinPatrociniosException, PatrocinioNoEncontradoException;
 
 	public boolean existePatrocinio(String nomEdicion, String nomInstitucion);
 
 	public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat);
 
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,
-			 String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta);
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,  String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta)
+			throws PatrocinioDuplicadoException;
 
 	 public Set<String> listarPatrocinios(String nomEdicion);
 

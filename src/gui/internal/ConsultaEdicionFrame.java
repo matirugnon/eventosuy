@@ -1,17 +1,20 @@
-	package gui.internal;
+package gui.internal;
 
 
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTEvento;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
 import logica.DatatypesYEnum.DTPatrocinio;
-import logica.manejadores.ManejadorEventos;
 
 import javax.swing.*;
+
+import excepciones.EdicionNoExisteException;
+import excepciones.EdicionSinPatrociniosException;
+import excepciones.EventoNoExisteException;
+import excepciones.PatrocinioNoEncontradoException;
+
 import java.awt.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,9 +29,6 @@ public class ConsultaEdicionFrame extends JInternalFrame {
 
 
     private JTextArea areaDetalles;
-
-    // Formato de fecha
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public ConsultaEdicionFrame() {
         super("Consulta de Edición", true, true, true, true);
@@ -92,7 +92,14 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         // --- LISTENERS ---
 
         // Cambiar evento → actualizar combo de ediciones
-        comboEventos.addActionListener(e -> onEventoSeleccionado());
+        comboEventos.addActionListener(e -> {
+			try {
+				onEventoSeleccionado();
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 
         // Botón: ver detalles de la edición
         btnVerDetalles.addActionListener(e -> mostrarDetallesEdicion());
@@ -132,7 +139,20 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         	else {
         		String edicion = (String) comboEdiciones.getSelectedItem();
         		IControladorEvento ctrlEventos = IControladorEvento.getInstance();
-        		DTPatrocinio dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
+        		DTPatrocinio dt = null;
+
+				try {
+					dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
+				} catch (EdicionNoExisteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (EdicionSinPatrociniosException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (PatrocinioNoEncontradoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
         		JOptionPane.showMessageDialog(
         			    this,
@@ -153,7 +173,7 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         });
     }
 
-    private void cargarTipoRegistro() {
+    private void cargarTipoRegistro() throws EdicionNoExisteException {
     	IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
     	comboTipoDeRegistros.removeAllItems();
 
@@ -188,11 +208,16 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         // Si hay eventos, seleccionar el primero y cargar sus ediciones
         if (comboEventos.getItemCount() > 0) {
             comboEventos.setSelectedIndex(0);
-            onEventoSeleccionado();
+            try {
+				onEventoSeleccionado();
+			} catch (EventoNoExisteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
-    private void onEventoSeleccionado() {
+    private void onEventoSeleccionado() throws EventoNoExisteException {
     	IControladorEvento ctrlEvento = IControladorEvento.getInstance();
         String eventoS = (String) comboEventos.getSelectedItem();
         Set<String> ediciones = ctrlEvento.listarEdiciones(eventoS);
@@ -210,7 +235,21 @@ public class ConsultaEdicionFrame extends JInternalFrame {
     private void mostrarDetallesEdicion() {
         String edicionS = (String) comboEdiciones.getSelectedItem();
 
-        cargarTipoRegistro();
+
+        if (edicionS == null || edicionS.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Debe seleccionar un evento y una edición para ver los detalles.",
+                "Edición no seleccionada", JOptionPane.INFORMATION_MESSAGE);
+            return;  // ← Sale del método antes de hacer cualquier carga
+        }
+
+
+        try {
+			cargarTipoRegistro();
+		} catch (EdicionNoExisteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         cargarPatrocinio();
 
         if (edicionS == null || edicionS.isEmpty()) {

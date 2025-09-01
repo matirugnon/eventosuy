@@ -2,13 +2,16 @@ package presentacion;
 
 import javax.swing.*;
 
+import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
+import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
+import excepciones.PatrocinioDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
@@ -88,7 +91,14 @@ public class MainFrame extends JFrame {
 
 
         JMenuItem registroAEdicion = new JMenuItem("Registro a Edición");
-        registroAEdicion.addActionListener(e -> openInternal(new RegistroAEdicionFrame()));
+        registroAEdicion.addActionListener(e -> {
+			try {
+				openInternal(new RegistroAEdicionFrame());
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         menuEventos.add(registroAEdicion);
 
 
@@ -123,7 +133,14 @@ public class MainFrame extends JFrame {
         menuRegistros.add(altaTipoRegistro);
 
         JMenuItem consultaTipoRegistro = new JMenuItem("Consulta Tipo Registro");
-        consultaTipoRegistro.addActionListener(e -> openInternal(new ConsultaTipoRegistroFrame()));
+        consultaTipoRegistro.addActionListener(e -> {
+			try {
+				openInternal(new ConsultaTipoRegistroFrame());
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         menuRegistros.add(consultaTipoRegistro);
 
         JMenuItem consultaRegistro = new JMenuItem("Consulta Registro");
@@ -153,7 +170,8 @@ public class MainFrame extends JFrame {
 					EdicionExistenteException |
 					FechasIncompatiblesException |
 					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException |
-					UsuarioYaRegistradoEnEdicionException e1) {
+					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException |
+					PatrocinioDuplicadoException e1) {
 				e1.printStackTrace();
 			}//excepciones a nivel de logica
         });

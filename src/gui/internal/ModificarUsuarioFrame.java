@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -17,14 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import logica.Asistente;
+import excepciones.UsuarioNoExisteException;
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTUsuario;
-import logica.Usuario;
-import logica.manejadores.ManejadorUsuario;
 
 public class ModificarUsuarioFrame extends JInternalFrame {
 
@@ -66,7 +63,12 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         comboUsuarios.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarDatosUsuario();
+                try {
+					mostrarDatosUsuario();
+				} catch (UsuarioNoExisteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         panelSeleccion.add(comboUsuarios);
@@ -136,7 +138,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         }
     }
 
-    private void mostrarDatosUsuario() {
+    private void mostrarDatosUsuario() throws UsuarioNoExisteException {
         String nick = (String) comboUsuarios.getSelectedItem();
         if (nick == null) return;
 

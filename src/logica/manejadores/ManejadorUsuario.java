@@ -1,6 +1,6 @@
 package logica.manejadores;
 
-import java.util.Collection;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,7 +8,6 @@ import java.util.Set;
 
 import logica.Asistente;
 import logica.Institucion;
-import logica.Organizador;
 import logica.Usuario;
 
 /**

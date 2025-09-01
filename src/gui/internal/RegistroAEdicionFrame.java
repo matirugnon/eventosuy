@@ -2,6 +2,8 @@ package gui.internal;
 
 import javax.swing.*;
 
+import excepciones.EdicionNoExisteException;
+import excepciones.EventoNoExisteException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.DatatypesYEnum.DTFecha;
@@ -14,7 +16,13 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public class RegistroAEdicionFrame extends JInternalFrame {
-    private JComboBox<String> comboEventos;
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	private JComboBox<String> comboEventos;
     private JComboBox<String> comboEdiciones;
     private JComboBox<String> comboTiposRegistro;
     private JComboBox<String> comboAsistentes;
@@ -23,7 +31,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
     private IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
     private IControladorUsuario ctrlUsuarios = IControladorUsuario.getInstance();
 
-    public RegistroAEdicionFrame() {
+    public RegistroAEdicionFrame() throws EventoNoExisteException {
         super("Registro a Edición de Evento", true, true, true, true);
         setSize(600, 400);
         setLayout(new BorderLayout(10, 10));
@@ -63,8 +71,22 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         add(buttons, BorderLayout.SOUTH);
 
         // Listeners
-        comboEventos.addActionListener(e -> cargarEdiciones());
-        comboEdiciones.addActionListener(e -> cargarTiposRegistro());
+        comboEventos.addActionListener(e -> {
+			try {
+				cargarEdiciones();
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+        comboEdiciones.addActionListener(e -> {
+			try {
+				cargarTiposRegistro();
+			} catch (EdicionNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
         btnConfirmar.addActionListener(e -> {
 			try {
 				registrar();
@@ -104,7 +126,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
     	}
     }
 
-    private void cargarEdiciones() {
+    private void cargarEdiciones() throws EventoNoExisteException {
         comboEdiciones.removeAllItems();
         comboTiposRegistro.removeAllItems();
 
@@ -118,7 +140,7 @@ public class RegistroAEdicionFrame extends JInternalFrame {
         }
     }
 
-    private void cargarTiposRegistro() {
+    private void cargarTiposRegistro() throws EdicionNoExisteException {
         comboTiposRegistro.removeAllItems();
 
         String edicion = (String) comboEdiciones.getSelectedItem();

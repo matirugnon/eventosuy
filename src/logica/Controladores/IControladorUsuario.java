@@ -1,7 +1,6 @@
 
 package logica.Controladores;
 
-import java.util.List;
 import java.util.Set;
 
 import excepciones.CorreoInvalidoException;
@@ -57,11 +56,15 @@ public interface IControladorUsuario {
 
     public Set<String> listarInstituciones();
 
-    public DTUsuario getDTUsuario(String nombreU);
+    public DTUsuario getDTUsuario(String nombreU)
+    		throws UsuarioNoExisteException;
+
+
     public Set<String> obtenerRegistros(String nombreAsistente);
 
 
-    public void modificarUsuario(String nick, DTUsuario datosUsuario) throws UsuarioNoExisteException;
+    public void modificarUsuario(String nick, DTUsuario datosUsuario)
+    		throws UsuarioNoExisteException,FechaInvalidaException;
 
 
 	public boolean esFechaValida(int dia, int mes, int anio);

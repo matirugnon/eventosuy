@@ -1,8 +1,9 @@
 package gui.internal;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
+import excepciones.EdicionNoExisteException;
+import excepciones.EventoNoExisteException;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
@@ -19,7 +20,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	    private JComboBox<String> comboTiposRegistro;
 	    private JTextArea areaDatos;
 
-	    public ConsultaTipoRegistroFrame() {
+	    public ConsultaTipoRegistroFrame() throws EventoNoExisteException {
 	        super("Consulta de Tipo de Registro", true, true, true, true);
 	        setSize(600, 400);
 	        setLayout(new BorderLayout(10, 10));
@@ -51,17 +52,36 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
 	        add(scroll, BorderLayout.CENTER);
 
 	        // --- Listeners ---
-	        comboEventos.addActionListener(e -> cargarEdiciones());
-	        comboEdiciones.addActionListener(e -> cargarTiposRegistro());
+	        comboEventos.addActionListener(e -> {
+				try {
+					cargarEdiciones();
+				} catch (EventoNoExisteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			});
+	        comboEdiciones.addActionListener(e -> {
+				try {
+					cargarTiposRegistro();
+				} catch (EdicionNoExisteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			});
 	        comboTiposRegistro.addActionListener(e -> mostrarDatosTipoRegistro());
 
 	        // Inicialización
 	        cargarEventos();
 	        cargarEdiciones();
-	        cargarTiposRegistro();
+	        try {
+				cargarTiposRegistro();
+			} catch (EdicionNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	    }
 
-	    private void cargarEdiciones() {
+	    private void cargarEdiciones() throws EventoNoExisteException {
 	        comboEdiciones.removeAllItems();
 	        areaDatos.setText("");
 
@@ -86,7 +106,7 @@ public class ConsultaTipoRegistroFrame extends JInternalFrame {
     		}
 	    }
 
-	    private void cargarTiposRegistro() {
+	    private void cargarTiposRegistro() throws EdicionNoExisteException {
 	        comboTiposRegistro.removeAllItems();
 	        areaDatos.setText("");
 
