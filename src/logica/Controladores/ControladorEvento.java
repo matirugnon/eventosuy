@@ -224,7 +224,9 @@ public class ControladorEvento implements IControladorEvento {
 	                p.getCodigo(),
 	                p.getNivel(),
 	                nomEdicion,
-	                p.getNombreInstitucion()
+	                p.getNombreInstitucion(),
+	                p.getCantidadTipoDeRegistro().getCantRegistros(),
+	                p.getNombreTipoDeRegistro()
 	            );
 	        }
 	    }
@@ -270,6 +272,20 @@ public class ControladorEvento implements IControladorEvento {
 		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 		 return ed.getCodigosPatrocinios();
 	 }
+
+	 public boolean existeCodigoPatrocinioEnEdicion(String edicion, String codigo) {
+
+		 Edicion e = manejadorE.obtenerEdicion(edicion);
+
+		 for(String c : e.getCodigosPatrocinios()) {
+			 if (c.contentEquals(codigo)) {
+				return true;
+			}
+		 }
+
+		return false;
+	 }
+
 
 
 }

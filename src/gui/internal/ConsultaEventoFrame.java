@@ -127,7 +127,15 @@ public class ConsultaEventoFrame extends JInternalFrame {
         	        .toArray(Object[][]::new);
 
         	    String[] columnas = {"Nombre"};
-        	    tablaEdiciones.setModel(new DefaultTableModel(datos, columnas));
+
+
+        	    DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
+        	        @Override
+        	        public boolean isCellEditable(int row, int column) {
+        	            return false; // ❌ No se puede editar ninguna celda
+        	        }
+        	    };
+        	    tablaEdiciones.setModel(modelo);
 
 
 
@@ -144,12 +152,37 @@ public class ConsultaEventoFrame extends JInternalFrame {
                 "Atención", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String nombreEdicion = (String) tablaEdiciones.getValueAt(fila, 0);
-        JOptionPane.showMessageDialog(this,
-            "Abrir detalles de la edición: " + nombreEdicion,
-            "Consulta de Edición", JOptionPane.INFORMATION_MESSAGE);
 
-        // Aquí más adelante:
-        // openInternal(new ConsultaEdicionFrame(nombreEdicion));
+        String nombreEdicion = (String) tablaEdiciones.getValueAt(fila, 0);
+
+        // Obtener el DTEdicion
+        logica.DatatypesYEnum.DTEdicion dtEdicion = contrEvento.consultarEdicion(nombreEdicion);
+        if (dtEdicion == null) {
+            JOptionPane.showMessageDialog(this,
+                "No se pudo cargar la información de la edición: " + nombreEdicion,
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Formato de los detalles
+        String detalles =
+            "Nombre: " + dtEdicion.getNombre() + "\n" +
+            "Sigla: " + dtEdicion.getSigla() + "\n" +
+            "Fecha Inicio: " + dtEdicion.getFechaInicio() + "\n" +
+            "Fecha Fin: " + dtEdicion.getFechaFin() + "\n" +
+            "Alta Edición: " + dtEdicion.getAltaEdicion() + "\n" +
+            "Ciudad: " + dtEdicion.getCiudad() + "\n" +
+            "País: " + dtEdicion.getPais() + "\n" +
+            "Organizador: " + dtEdicion.getOrganizador() + "\n" +
+            "Patrocinios: " + String.join(", ", dtEdicion.getPatrocinios()) + "\n" +
+            "Tipos de Registro: " + String.join(", ", dtEdicion.getTiposDeRegistro());
+
+        // Mostrar en ventana emergente
+        JOptionPane.showMessageDialog(
+            this,
+            detalles,
+            "Detalle de Edición: " + dtEdicion.getNombre(),
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }

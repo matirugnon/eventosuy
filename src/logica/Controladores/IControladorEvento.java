@@ -54,4 +54,6 @@ public interface IControladorEvento {
 
 	 public Set<String> listarPatrocinios(String nomEdicion);
 
+	 public boolean existeCodigoPatrocinioEnEdicion(String edicion, String codigo);
+
 }

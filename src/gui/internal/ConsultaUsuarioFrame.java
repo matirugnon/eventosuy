@@ -43,64 +43,85 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
     public ConsultaUsuarioFrame(Consumer<JInternalFrame> openInternal) {
         super("Consulta de Usuario", true, true, true, true);
-        setSize(600, 500);
+        setSize(700, 500);
         setLayout(new BorderLayout());
         this.openInternal = openInternal;
+        setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+        setBackground(Color.WHITE);
+        getContentPane().setBackground(Color.WHITE);
         inicializarComponentes();
     }
 
     private void inicializarComponentes() {
-        JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
-        form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel form = new JPanel(new GridBagLayout());
+        labelCambiante = new JLabel("");
+
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // --- Combo de usuarios ---
-        form.add(new JLabel("Seleccionar Usuario:"));
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 1;
+        form.add(new JLabel("Seleccionar Usuario:"), gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0; gbc.gridwidth = 2;
         comboUsuarios = new JComboBox<>();
         cargarUsuarios();
+        form.add(comboUsuarios, gbc);
 
-        form.add(comboUsuarios);
+        // --- Área de datos del usuario ---
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
+        form.add(new JLabel("Datos del Usuario:"), gbc);
 
-        // --- Área de texto para datos del usuario ---
-        form.add(new JLabel("Datos del Usuario:"));
-        areaDatos = new JTextArea(4, 20);
+        gbc.gridx = 1; gbc.gridy = 1; gbc.gridwidth = 2;
+        areaDatos = new JTextArea(4, 30);
         areaDatos.setEditable(false);
-        areaDatos.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        areaDatos.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        areaDatos.setLineWrap(true);
+        areaDatos.setWrapStyleWord(true);
         JScrollPane scrollDatos = new JScrollPane(areaDatos);
-        form.add(scrollDatos);
+        form.add(scrollDatos, gbc);
 
+        // --- Lista de ediciones o registros ---
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
+        form.add(new JLabel("Elementos Asociados:"), gbc);
 
-        labelCambiante = new JLabel("Elementos Asociados:");
-
-        form.add(labelCambiante);
+        gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 2;
         listaResultados = new JList<>();
         listaResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listaResultados.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         JScrollPane scrollResultados = new JScrollPane(listaResultados);
-        scrollResultados.setPreferredSize(new Dimension(200, 100));
-        form.add(scrollResultados);
+        scrollResultados.setPreferredSize(new Dimension(200, 120));
+        form.add(scrollResultados, gbc);
+
+        // --- Botón Ver Edición/Registro ---
+        gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 1;
+        btnVerDetalle = new JButton("Ver Detalles");
+        btnVerDetalle.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        btnVerDetalle.setPreferredSize(new Dimension(100, 22));
+        btnVerDetalle.setEnabled(false);
+
+        form.add(btnVerDetalle, gbc);
+
+        btnVerDetalle.addActionListener(e -> {
+            String usuarioSeleccionado = (String) comboUsuarios.getSelectedItem();
+            String elementoSeleccionado = listaResultados.getSelectedValue();
+
+            if (elementoSeleccionado == null ||
+                "No tiene registros.".equals(elementoSeleccionado) ||
+                "No tiene ediciones a cargo.".equals(elementoSeleccionado)) {
+                JOptionPane.showMessageDialog(this, "Seleccione un elemento.", "Atención", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
+        });
+
 
         add(form, BorderLayout.CENTER);
 
         comboUsuarios.addActionListener(e -> actualizarListaSegunUsuario());
-
-
-        listaResultados.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) { // Doble clic
-                    String usuarioSeleccionado = (String) comboUsuarios.getSelectedItem();
-                    String elementoSeleccionado = listaResultados.getSelectedValue();
-                    if (elementoSeleccionado == null || "No tiene registros.".equals(elementoSeleccionado) ||
-                        "No tiene ediciones a cargo.".equals(elementoSeleccionado)) {
-                        return;
-                    }
-                    mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
-                }
-            }
-        });
-
-
-
-
     }
 
     private void cargarUsuarios() {
@@ -120,9 +141,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             return;
         }
 
-        // Construir datos del usuario
-
-
         IControladorUsuario contrU = IControladorUsuario.getInstance();
 
 
@@ -136,6 +154,8 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         if (dtU instanceof DTAsistente) {
 
         	labelCambiante.setText("Registros Asociados");
+        	btnVerDetalle.setText("Ver Registro");
+        	btnVerDetalle.setEnabled(true);
 
         	DTAsistente dta = (DTAsistente) dtU;
 
@@ -178,6 +198,8 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         } else if (dtU instanceof DTOrganizador) {
 
         	labelCambiante.setText("Ediciones Asociadas");
+        	btnVerDetalle.setText("Ver Edición");
+        	btnVerDetalle.setEnabled(true);
 
         	DTOrganizador dto = (DTOrganizador) dtU;
 
@@ -203,15 +225,20 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
         }
 
-        areaDatos.setText(datos.toString());
 
+
+        areaDatos.setText(datos.toString());
+        areaDatos.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        areaDatos.setLineWrap(true);
+        areaDatos.setWrapStyleWord(true);
     }
+
 
 
     //FUNCIONES EXTRA
 
     private void mostrarDetalle(String nicknameUsuario, String elementoSeleccionado) {
-    	
+
         DTUsuario dtUsuario = ctrlUsuarios.getDTUsuario(nicknameUsuario);
         if (dtUsuario == null) return;
 

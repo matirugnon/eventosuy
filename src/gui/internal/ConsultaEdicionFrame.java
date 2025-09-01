@@ -134,14 +134,20 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         		IControladorEvento ctrlEventos = IControladorEvento.getInstance();
         		DTPatrocinio dt = ctrlEventos.consultarTipoPatrocinioEdicion(edicion, p);
 
-        		JOptionPane.showMessageDialog(this,
-                        "Codigo: " + dt.getCodigo() + "\n" +
-                        "Monto: " + dt.getMonto() + "\n" +
-                        "Nivel: " + dt.getNivel() + "\n" +
-                        "Edicion: " + edicion + "\n" +
-                       "Institucion:" + dt.getInstitucion() + "\n" +
-                        "Fecha Alta: " + dt.getFechaAlta() + "\n",
-                        "Detalles del Patrocinio: " + dt.getCodigo(), JOptionPane.INFORMATION_MESSAGE);
+        		JOptionPane.showMessageDialog(
+        			    this,
+        			    "Código: " + dt.getCodigo() + "\n" +
+        			    "Monto: " + dt.getMonto() + "\n" +
+        			    "Nivel: " + dt.getNivel() + "\n" +
+        			    "Edición: " + edicion + "\n" +
+        			    "Institución: " + dt.getInstitucion() + "\n" +
+        			    "Fecha Alta: " + dt.getFechaAlta() + "\n" +
+        			    "Detalles del Patrocinio: " + dt.getCodigo() + "\n" +
+        			    "Tipo de Registro asociado: " + dt.getTipoDeRegistro() + "\n" +
+        			    "Cantidad de accesos gratuitos: " + dt.getCantidadGratis(),
+        			    "Detalle de Patrocinio",
+        			    JOptionPane.INFORMATION_MESSAGE
+        			);
 
         	}
         });
@@ -256,21 +262,21 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         detalles.append("País: ").append(pais).append("\n");
         detalles.append("Fecha Inicio: ").append(fechaInicio).append("\n");
         detalles.append("Fecha Fin: ").append(fechaFin).append("\n");
-       
+
         //listar patrocinios
         if (totalPatrocinios == 0) {
         	detalles.append("No hay patrocinios en esta edición.\n");
         } else detalles.append("Patrocinios: ").append(String.join(", ", patrocinios)).append("\n");
-       
-       
-        
+
+
+
        //listar tipos de registro
         if (totalTipoRegistro == 0) {
         	detalles.append("No hay tipos de registro en esta edición.\n");
         } else detalles.append("Tipos de Registro: ").append(String.join(", ", tiposDeRegistro)).append("\n");
-        
+
         detalles.append("Registros: ").append(totalRegistros).append(" registrados\n\n");
-        
+
         // === Listar registros ===
         if (totalRegistros == 0) {
             detalles.append("No hay registros en esta edición.\n");

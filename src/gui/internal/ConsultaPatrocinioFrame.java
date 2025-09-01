@@ -105,7 +105,9 @@ public class ConsultaPatrocinioFrame extends JInternalFrame {
 	                    "Edición: " + dto.getEdicion() + "\n" +
 	                    "Nivel: " + dto.getNivel() + "\n" +
 	                    "Monto: " + dto.getMonto() + "\n" +
-	                    "Fecha Alta: " + f.getDia() + "/" + f.getMes() + "/" + f.getAnio()
+	                    "Fecha Alta: " + f.getDia() + "/" + f.getMes() + "/" + f.getAnio() + "\n" +
+	                    "Tipo de Registro: " + dto.getTipoDeRegistro() + "\n" +
+	                    "Cantidad de accesos gratuitos: " + dto.getCantidadGratis()
 	            );
 	        }
         }

@@ -156,7 +156,7 @@ public class Edicion{
 
 
 	public Patrocinio altaPatrocinio(Institucion ins, NivelPatrocinio nivel, double aporte,
-			 TipoDeRegistro tipo, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
+		TipoDeRegistro tipo, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
 		Patrocinio pat = new Patrocinio(fechaAlta, aporte, codigo, nivel, this, ins, cantRegistrosGratuitos, tipo);
 		this.patrocinios.put(codigo, pat);
 		return pat;

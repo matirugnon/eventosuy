@@ -145,6 +145,15 @@ public class AltaPatrocinioFrame extends JInternalFrame {
                 return;
             }
 
+            if (ctrlEvento.existeCodigoPatrocinioEnEdicion(nomEdicion, codigo)) {
+                JOptionPane.showMessageDialog(this,
+                        "El Codigo Ingresado ya existe, ingrese otro",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+
             // Alta
             ctrlEvento.altaPatrocinio(nomEdicion, nomInstitucion, nivel, aporte,
                     nomTipoRegistro, cantRegGrat, codigo, fechaAlta);
