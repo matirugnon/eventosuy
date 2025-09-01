@@ -131,6 +131,18 @@ public class AltaTipoRegistroFrame extends JInternalFrame {
             double costo = Double.parseDouble(costoStr);
             int cupo = Integer.parseInt(cupoStr);
 
+              if (costo < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "El costo no puede ser negativo.",
+                        "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (cupo < 0) { 
+                JOptionPane.showMessageDialog(this,
+                        "El cupo no puede ser negativo.",
+                        "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             //validacion nombre duplicado
 
             if (ctrlRegistros.existeTipoDeRegistro(edicion, nombre)) {
