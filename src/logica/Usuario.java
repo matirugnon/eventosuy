@@ -36,9 +36,9 @@ public abstract class Usuario {
 
 
 
-    //public DTUsuario getDTUsuario() {
-    //	return new DTUsuario(nickname,nombre,correo);
-    //}
+    public DTUsuario getDTUsuario() {
+    	return new DTUsuario(nickname,nombre,correo);
+    }
 
 
 
