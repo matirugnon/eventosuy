@@ -64,4 +64,5 @@ public interface IControladorEvento {
 
 	 public boolean existeCodigoPatrocinioEnEdicion(String edicion, String codigo);
 
+	public boolean esFechaValida(int dia, int mes, int anio);
 }

@@ -132,7 +132,7 @@ public class AltaEventoFrame extends JInternalFrame {
         int mes = (Integer) spinnerMes.getValue();
         int anio = (Integer) spinnerAnio.getValue();
 
-        if (!esFechaValida(dia, mes, anio)) {
+        if (!cont.esFechaValida(dia, mes, anio)) {
             JOptionPane.showMessageDialog(this, "La fecha ingresada no es válida.", "Error de Fecha", JOptionPane.ERROR_MESSAGE);
             return;
         }
