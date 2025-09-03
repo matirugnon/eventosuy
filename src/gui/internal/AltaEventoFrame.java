@@ -80,7 +80,11 @@ public class AltaEventoFrame extends JInternalFrame {
 
         // Categorías
         form.add(new JLabel("Categorías:"));
-        listaCategorias = new JList<>(new String[]{"Conferencia", "Taller", "Seminario", "Workshop"});
+        
+        Set<String> listacat = contr.listarCategorias();
+        //falta hacer metodo en el controlador
+        
+        listaCategorias = new JList<>(listacat.toArray(new String[0]));
         listaCategorias.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane scrollCat = new JScrollPane(listaCategorias);
         form.add(scrollCat);
