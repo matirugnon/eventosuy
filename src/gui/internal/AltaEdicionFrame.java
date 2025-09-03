@@ -3,17 +3,17 @@ package gui.internal;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.ControladorEvento;
 import logica.Controladores.ControladorUsuario;
-
-
 import logica.DatatypesYEnum.DTFecha;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.DateTimeException;
 import java.util.Set;
 
 @SuppressWarnings("serial")
 public class AltaEdicionFrame extends JInternalFrame {
+
+    // Campos nuevos: Cupo y Costo (validados por separado)
+    private JTextField txtCupo, txtCosto;
 
     private JComboBox<String> comboEventos;
     private JComboBox<String> comboOrganizadores;
@@ -36,6 +36,14 @@ public class AltaEdicionFrame extends JInternalFrame {
         cargarOrganizadores();
 
         // --- Campos ---
+        txtCupo = new JTextField();
+        txtCosto = new JTextField();
+        txtCupo.setToolTipText("Ingrese un entero \u2265 0 (sin comas ni puntos).");
+        txtCosto.setToolTipText("Ingrese un número \u2265 0 (coma o punto como separador decimal).");
+
+        // (Opcional) podrías agregar DocumentFilters para restringir input,
+        // pero lo dejamos solo con validación para no agregar complejidad.
+
         txtNombre = new JTextField();
         txtSigla = new JTextField();
         txtCiudad = new JTextField();
@@ -80,6 +88,12 @@ public class AltaEdicionFrame extends JInternalFrame {
         form.add(new JLabel("Fecha Alta:"));
         form.add(txtFechaAlta);
 
+        form.add(new JLabel("Cupo:"));
+        form.add(txtCupo);
+
+        form.add(new JLabel("Costo:"));
+        form.add(txtCosto);
+
         add(form, BorderLayout.CENTER);
 
         // --- Botones ---
@@ -113,7 +127,6 @@ public class AltaEdicionFrame extends JInternalFrame {
     }
 
     private void cargarOrganizadores() {
-
         ControladorUsuario ctrlU = ControladorUsuario.getInstance();
         Set<String> organizadores = ctrlU.listarOrganizadores();
 
@@ -146,7 +159,7 @@ public class AltaEdicionFrame extends JInternalFrame {
             return;
         }
 
-        if (evento == "" || organizador == null) {
+        if (evento == null || evento.isEmpty() || organizador == null || organizador.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "Debe seleccionar un evento y un organizador.",
                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -164,11 +177,11 @@ public class AltaEdicionFrame extends JInternalFrame {
         }
 
         // Parsear fechas a DTFecha
-        DTFecha inicio = null, fin = null, alta = null;
+        DTFecha inicio, fin, alta;
         try {
             inicio = parseDTFecha(txtFechaInicio.getText());
-            fin = parseDTFecha(txtFechaFin.getText());
-            alta = parseDTFecha(txtFechaAlta.getText());
+            fin    = parseDTFecha(txtFechaFin.getText());
+            alta   = parseDTFecha(txtFechaAlta.getText());
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this,
                 "Fecha inválida: " + e.getMessage() + "\nFormato: dd/MM/yyyy",
@@ -190,12 +203,34 @@ public class AltaEdicionFrame extends JInternalFrame {
             return;
         }
 
+        // --- Validación separada de Cupo y Costo ---
+        final String cupoStr  = txtCupo.getText().trim();
+        final String costoStr = txtCosto.getText().trim();
 
+        try {
+            parseCupo(cupoStr);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Cupo inválido", JOptionPane.ERROR_MESSAGE);
+            txtCupo.requestFocus();
+            return;
+        }
+
+        try {
+            parseCosto(costoStr);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Costo inválido", JOptionPane.ERROR_MESSAGE);
+            txtCosto.requestFocus();
+            return;
+        }
+
+        // NOTA: En esta versión (A) validamos cupo/costo pero NO los enviamos
+        // al controlador porque la firma de AltaEdicion(...) no los incluye.
+        // Si decidís incluirlos, avisame y te paso la variante (B).
 
         ControladorEvento ctrlEvento = ControladorEvento.getInstance();
         try {
             ctrlEvento.AltaEdicion(
-            	evento,
+                evento,
                 organizador,
                 nombre, sigla, ciudad, pais,
                 inicio, fin, alta
@@ -244,5 +279,37 @@ public class AltaEdicionFrame extends JInternalFrame {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Valores no numéricos en la fecha");
         }
+    }
+
+    // ---- Helpers de validación ----
+    private int parseCupo(String s) {
+        if (s == null || s.isEmpty()) {
+            throw new IllegalArgumentException("El cupo es obligatorio.");
+        }
+        // Solo enteros no negativos (sin puntos ni comas)
+        if (!s.matches("\\d+")) {
+            throw new IllegalArgumentException("El cupo debe ser un número entero (sin comas ni puntos).");
+        }
+        try {
+            int v = Integer.parseInt(s);
+            if (v < 0) throw new IllegalArgumentException("El cupo debe ser mayor o igual a 0.");
+            return v;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El cupo ingresado es demasiado grande.");
+        }
+    }
+
+    private double parseCosto(String s) {
+        if (s == null || s.isEmpty()) {
+            throw new IllegalArgumentException("El costo es obligatorio.");
+        }
+        // Acepta coma o punto como separador decimal
+        String norm = s.replace(" ", "").replace(",", ".");
+        if (!norm.matches("\\d+(\\.\\d+)?")) {
+            throw new IllegalArgumentException("El costo debe ser numérico. Ej.: 1200, 1200.50 o 1200,50.");
+        }
+        double v = Double.parseDouble(norm);
+        if (v < 0) throw new IllegalArgumentException("El costo debe ser mayor o igual a 0.");
+        return v;
     }
 }
