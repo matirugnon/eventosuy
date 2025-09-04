@@ -122,18 +122,29 @@ public class ConsultaRegistroFrame extends JInternalFrame {
     private void cargarRegistrosDeUsuario(String asistente) {
         IControladorRegistro cr = IControladorRegistro.getInstance();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        Set<String> nomstiporeg = cr.obtenerNomsTipoRegistro(asistente);
 
-        if (nomstiporeg.isEmpty()) {
-            model.addElement("(Sin registros)");
-        } else {
-            for (String nomtiporeg : nomstiporeg) {
-                model.addElement(nomtiporeg);
-            }
-        }
+
+        Set<String> tipos = cr.obtenerNomsTipoRegistro(asistente);
+
+		if (tipos.isEmpty()) {
+		    model.addElement("(Sin registros)");
+		}else {
+
+			for (String tipo : tipos) {
+	            DTRegistro dtr = cr.getRegistro(asistente, tipo);
+	            if (dtr != null) {
+	                String texto = dtr.getnomEdicion() + " / " + dtr.getTipoDeRegistro();
+	                model.addElement(texto);
+
+	            }
+			}
+		 }
+
+
 
         comboRegistros.setModel(model);
     }
+
 
     private void mostrarDetallesRegistro() {
         String usuario = (String) comboUsuarios.getSelectedItem();
