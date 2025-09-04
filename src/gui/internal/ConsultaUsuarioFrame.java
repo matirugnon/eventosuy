@@ -48,7 +48,6 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         JPanel form = new JPanel(new GridBagLayout());
         labelCambiante = new JLabel("");
 
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -67,7 +66,11 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         form.add(new JLabel("Datos del Usuario:"), gbc);
 
         gbc.gridx = 1; gbc.gridy = 1; gbc.gridwidth = 2;
-        areaDatos = new JTextArea(4, 30);
+        gbc.fill = GridBagConstraints.BOTH; // Ahora puede expandirse verticalmente
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.3; // Permite algo de expansión
+
+        areaDatos = new JTextArea(8, 30); // ✅ Aumentado de 4 a 8 filas
         areaDatos.setEditable(false);
         areaDatos.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         areaDatos.setLineWrap(true);
@@ -75,17 +78,29 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
         JScrollPane scrollDatos = new JScrollPane(areaDatos);
         form.add(scrollDatos, gbc);
 
+        // Resetear weighty para componentes siguientes si es necesario
+        gbc.weighty = 0.0;
+
         // --- Lista de ediciones o registros ---
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
         form.add(new JLabel("Elementos Asociados:"), gbc);
 
         gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.5; // Permite que la lista ocupe más espacio y se expanda
+
         listaResultados = new JList<>();
         listaResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listaResultados.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         JScrollPane scrollResultados = new JScrollPane(listaResultados);
-        scrollResultados.setPreferredSize(new Dimension(200, 120));
+        scrollResultados.setPreferredSize(new Dimension(200, 150)); // ✅ Aumentado de 120 a 150
         form.add(scrollResultados, gbc);
+
+        // Resetear pesos
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // --- Botón Ver Edición/Registro ---
         gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 1;
@@ -96,6 +111,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
 
         form.add(btnVerDetalle, gbc);
 
+        // Acción del botón (ya estaba)
         btnVerDetalle.addActionListener(e -> {
             String usuarioSeleccionado = (String) comboUsuarios.getSelectedItem();
             String elementoSeleccionado = listaResultados.getSelectedValue();
@@ -108,24 +124,22 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
             }
 
             try {
-				mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
-			} catch (UsuarioNoExisteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+                mostrarDetalle(usuarioSeleccionado, elementoSeleccionado);
+            } catch (UsuarioNoExisteException e1) {
+                e1.printStackTrace();
+            }
         });
 
+        // Combo acción
+        comboUsuarios.addActionListener(e -> {
+            try {
+                actualizarListaSegunUsuario();
+            } catch (UsuarioNoExisteException e1) {
+                e1.printStackTrace();
+            }
+        });
 
         add(form, BorderLayout.CENTER);
-
-        comboUsuarios.addActionListener(e -> {
-			try {
-				actualizarListaSegunUsuario();
-			} catch (UsuarioNoExisteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
     }
 
     private void cargarUsuarios() {

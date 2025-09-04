@@ -1,7 +1,6 @@
 package gui.internal;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
@@ -13,12 +12,11 @@ import java.util.Set;
 
 public class ConsultaRegistroFrame extends JInternalFrame {
 
-    private JComboBox<String> comboUsuarios;
+
+	private static final long serialVersionUID = 1L;
+	private JComboBox<String> comboUsuarios;
     private JComboBox<String> comboRegistros;
-
-
     private JTextArea areaDetalles;
-
 
     public ConsultaRegistroFrame() {
         super("Consulta de Registro", true, true, true, true);
@@ -29,50 +27,57 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         setVisible(true);
     }
 
-
     private void configurarComponentes() {
-        // ----- NORTE -----
+        // ----- NORTE: selección de usuario y registro -----
         JPanel panelNorte = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Col 0: etiqueta Usuarios
+        // Usuario
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        panelNorte.add(new JLabel("Usuarios:"), gbc);
+        panelNorte.add(new JLabel("Usuario:"), gbc);
 
-        // Col 1: comboUsuarios
         comboUsuarios = new JComboBox<>();
         gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1;
         panelNorte.add(comboUsuarios, gbc);
 
-        // Col 2: etiqueta Registros
+        // Registro
         gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = 0;
-        panelNorte.add(new JLabel("Registros:"), gbc);
+        panelNorte.add(new JLabel("Registro:"), gbc);
 
-        // Col 3: comboRegistros (arranca deshabilitado)
         comboRegistros = new JComboBox<>();
         comboRegistros.setEnabled(false);
         gbc.gridx = 3; gbc.gridy = 0; gbc.weightx = 1;
         panelNorte.add(comboRegistros, gbc);
 
-        // Col 4: botón Ver Detalles
-        JButton btnVerDetalles = new JButton("Ver Detalles");
-        gbc.gridx = 4; gbc.gridy = 0; gbc.weightx = 0;
-        panelNorte.add(btnVerDetalles, gbc);
-
+        // No hay botón "Ver Detalles"
         add(panelNorte, BorderLayout.NORTH);
 
+        // ----- CENTRO: área de detalles -----
         areaDetalles = new JTextArea();
         areaDetalles.setEditable(false);
         areaDetalles.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        areaDetalles.setLineWrap(true);
+        areaDetalles.setWrapStyleWord(true);
         add(new JScrollPane(areaDetalles), BorderLayout.CENTER);
 
         // ----- LISTENERS -----
-        comboUsuarios.addActionListener(e -> onUsuarioSeleccionado());
-        btnVerDetalles.addActionListener(e -> mostrarDetallesRegistro());
-    }
+        comboUsuarios.addActionListener(e -> {
+            onUsuarioSeleccionado();
+        });
 
+        comboRegistros.addActionListener(e -> {
+            String usuario = (String) comboUsuarios.getSelectedItem();
+            String registro = (String) comboRegistros.getSelectedItem();
+
+            if (usuario != null && registro != null) {
+                mostrarDetallesRegistro();
+            } else {
+                areaDetalles.setText("");
+            }
+        });
+    }
 
     private void cargarUsuarios() {
         IControladorUsuario cu = IControladorUsuario.getInstance();
@@ -84,15 +89,18 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         }
 
         comboUsuarios.setModel(model);
-        //comboUsuarios.setSelectedIndex(0); // selecciona el primero
-    }
 
+        // Inicializar con el primer usuario si existe
+        if (model.getSize() > 0) {
+            comboUsuarios.setSelectedIndex(0);
+        } else {
+            areaDetalles.setText("No hay asistentes registrados.");
+        }
+    }
 
     private void onUsuarioSeleccionado() {
         Object sel = comboUsuarios.getSelectedItem();
-        boolean valido = sel != null && !"— Seleccione —".equals(sel.toString());
-
-        if (!valido) {
+        if (sel == null) {
             comboRegistros.setModel(new DefaultComboBoxModel<>());
             comboRegistros.setEnabled(false);
             areaDetalles.setText("");
@@ -101,7 +109,14 @@ public class ConsultaRegistroFrame extends JInternalFrame {
 
         String usuario = sel.toString();
         cargarRegistrosDeUsuario(usuario);
-        comboRegistros.setEnabled(true);
+
+        if (comboRegistros.getItemCount() > 0) {
+            comboRegistros.setEnabled(true);
+            comboRegistros.setSelectedIndex(0); // Esto activará el evento y mostrará los detalles
+        } else {
+            comboRegistros.setEnabled(false);
+            areaDetalles.setText("Este usuario no tiene registros.");
+        }
     }
 
     private void cargarRegistrosDeUsuario(String asistente) {
@@ -109,38 +124,32 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         Set<String> nomstiporeg = cr.obtenerNomsTipoRegistro(asistente);
 
-        for (String nomtiporeg : nomstiporeg) {
-            model.addElement(nomtiporeg);
+        if (nomstiporeg.isEmpty()) {
+            model.addElement("(Sin registros)");
+        } else {
+            for (String nomtiporeg : nomstiporeg) {
+                model.addElement(nomtiporeg);
+            }
         }
 
         comboRegistros.setModel(model);
-        //comboRegistros.setSelectedIndex(0);
     }
 
-
     private void mostrarDetallesRegistro() {
-        Object selUsuario = comboUsuarios.getSelectedItem();
-        Object selReg = comboRegistros.getSelectedItem();
+        String usuario = (String) comboUsuarios.getSelectedItem();
+        String registro = (String) comboRegistros.getSelectedItem();
 
-        if (selUsuario == null || "— Seleccione —".equals(selUsuario.toString())) {
-            JOptionPane.showMessageDialog(this, "Primero seleccione un usuario.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        // Evitar procesar si está en estado inválido
+        if (usuario == null || registro == null || registro.equals("(Sin registros)")) {
+            areaDetalles.setText("");
             return;
         }
-        if (selReg == null || "— Seleccione —".equals(selReg.toString())) {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String usuario = selUsuario.toString();
-        String registro = selReg.toString();
 
         IControladorRegistro contrR = IControladorRegistro.getInstance();
         DTRegistro dtr = contrR.getRegistro(usuario, registro);
 
         if (dtr == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró el registro seleccionado.",
-                                          "Aviso", JOptionPane.WARNING_MESSAGE);
-            areaDetalles.setText("");
+            areaDetalles.setText("No se encontró el registro seleccionado.");
             return;
         }
 
@@ -151,38 +160,16 @@ public class ConsultaRegistroFrame extends JInternalFrame {
                 : "—";
 
         StringBuilder sb = new StringBuilder();
-        sb.append("=== Detalles del Registro ===\n");
+        sb.append("=== Detalles del Registro ===\n\n");
         sb.append("Asistente: ").append(dtr.getAsistente()).append("\n");
-        sb.append("Edicion de Evento: ").append(dtr.getnomEdicion()).append("\n");
-        sb.append("Tipo de registro: ").append(dtr.getTipoDeRegistro()).append("\n");
-        sb.append("Fecha de registro: ").append(fechaStr).append("\n");
+        sb.append("Edición del Evento: ").append(dtr.getnomEdicion()).append("\n");
+        sb.append("Tipo de Registro: ").append(dtr.getTipoDeRegistro()).append("\n");
+        sb.append("Fecha de Registro: ").append(fechaStr).append("\n");
         sb.append("Costo: $ ").append(
             String.format(java.util.Locale.US, "%.2f", dtr.getCosto())
         ).append("\n");
 
-
-
         areaDetalles.setText(sb.toString());
-        areaDetalles.setCaretPosition(0);
+        areaDetalles.setCaretPosition(0); // Scroll al inicio
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

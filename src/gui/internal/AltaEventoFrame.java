@@ -2,12 +2,12 @@ package gui.internal;
 
 import javax.swing.*;
 
+import logica.Controladores.ControladorEvento;
 import logica.Controladores.IControladorEvento;
 
 import logica.DatatypesYEnum.DTFecha;
 
 import java.awt.*;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -80,10 +80,12 @@ public class AltaEventoFrame extends JInternalFrame {
 
         // Categorías
         form.add(new JLabel("Categorías:"));
-        
+
+        ControladorEvento contr = ControladorEvento.getInstance();
+
         Set<String> listacat = contr.listarCategorias();
         //falta hacer metodo en el controlador
-        
+
         listaCategorias = new JList<>(listacat.toArray(new String[0]));
         listaCategorias.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane scrollCat = new JScrollPane(listaCategorias);
@@ -170,7 +172,5 @@ public class AltaEventoFrame extends JInternalFrame {
         }
     }
 
-    private boolean esFechaValida(int dia, int mes, int anio) {
-        return mes < 1 || mes > 12 || dia > 31|| dia<1 ;
-    }
+
 }

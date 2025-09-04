@@ -41,7 +41,6 @@ public class ControladorEvento implements IControladorEvento {
 
     	//inicializo el manejador
     	this.manejadorE = ManejadorEventos.getInstance();
-    	manejadorE.inicializarCategoriasDefault();
     }
 
 
@@ -276,7 +275,7 @@ public class ControladorEvento implements IControladorEvento {
 
 
 		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
-		 ;
+
 
 		 if (ed == null) {
 		        throw new IllegalArgumentException("No existe la edición: " + nomEdicion);
@@ -340,6 +339,14 @@ public class ControladorEvento implements IControladorEvento {
 
 		private boolean esBisiesto(int anio) {
 		    return (anio % 4 == 0 && anio % 100 != 0) || (anio % 400 == 0);
+		}
+
+
+		public Set<String> listarCategorias() {
+
+			Set<String> categorias = manejadorE.getNombresCategorias();
+
+			return categorias;
 		}
 
 

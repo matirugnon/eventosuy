@@ -9,12 +9,6 @@ import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTFecha;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class AltaUsuarioFrame extends JInternalFrame {
@@ -97,18 +91,15 @@ public class AltaUsuarioFrame extends JInternalFrame {
         comboInstitucion.setEnabled(false); // Inicialmente deshabilitado
 
         // Spinner para fecha de nacimiento
+     // Spinner para fecha de nacimiento - todos editables y sin comas
         spinnerDia = new JSpinner(new SpinnerNumberModel(1, 1, 31, 1));
         spinnerMes = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
-        spinnerAnio = new JSpinner(new SpinnerNumberModel(2000, 1900, 2025, 1));
+        spinnerAnio = new JSpinner(new SpinnerNumberModel(2000, 1900, 2100, 1)); // Rango ampliado
 
-        // Evitar que se escriba texto libre en los spinners
-        JSpinner.DefaultEditor editorDia = (JSpinner.DefaultEditor) spinnerDia.getEditor();
-        JSpinner.DefaultEditor editorMes = (JSpinner.DefaultEditor) spinnerMes.getEditor();
-        JSpinner.DefaultEditor editorAnio = (JSpinner.DefaultEditor) spinnerAnio.getEditor();
-
-        editorDia.getTextField().setEditable(false);
-        editorMes.getTextField().setEditable(false);
-        editorAnio.getTextField().setEditable(false);
+        // Configurar editores personalizados para los tres
+        configurarSpinnerEditable(spinnerDia);
+        configurarSpinnerEditable(spinnerMes);
+        configurarSpinnerEditable(spinnerAnio);
 
         // Campos para Organizador
         txtDescripcion = new JTextField();
@@ -182,6 +173,14 @@ public class AltaUsuarioFrame extends JInternalFrame {
 
         form.revalidate();
         form.repaint();
+    }
+
+    private void configurarSpinnerEditable(JSpinner spinner) {
+        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#"); // Sin comas
+        spinner.setEditor(editor);
+        JFormattedTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
+        textField.setEditable(true);
+        textField.setHorizontalAlignment(JTextField.CENTER);
     }
 
     private void habilitarCamposAsistente() {

@@ -100,14 +100,10 @@ public class ManejadorEventos {
         return new HashSet<>(eventos.keySet());
     }
 
-    public void inicializarCategoriasDefault() {
-        String[] nombres = {"Conferencia", "Taller", "Seminario", "Workshop"};
-        for (String nombre : nombres) {
-            if (!existeCategoria(nombre)) {
-                addCategoria(new Categoria(nombre));
-            }
-        }
-    }
+    public Set<String> getNombresCategorias() {
+
+		return categorias.keySet();
+	}
 
 
 
@@ -122,6 +118,8 @@ public class ManejadorEventos {
     public boolean existeEdicion(String nomEdicion) {
         return ediciones.containsKey(nomEdicion);
     }
+
+
 
 
 

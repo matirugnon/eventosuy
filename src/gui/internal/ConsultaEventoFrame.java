@@ -1,5 +1,4 @@
 package gui.internal;
-             // Ajusta según tu modelo
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,88 +12,104 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ConsultaEventoFrame extends JInternalFrame {
-    private JComboBox<String> comboEventos; // Cambiado a Evento, no String
+    private JComboBox<String> comboEventos;
     private JTextArea areaDatos;
     private JList<String> listaCategorias;
     private JTable tablaEdiciones;
     private JButton btnVerEdicion;
-    IControladorEvento contrEvento = IControladorEvento.getInstance();
+
+    private IControladorEvento contrEvento = IControladorEvento.getInstance();
+
+    private static final String ITEM_SELECCIONAR = "--- Seleccionar evento ---";
+
     public ConsultaEventoFrame() {
         super("Consulta de Evento", true, true, true, true);
-        setSize(650, 500);
+        setSize(700, 500);
         setLayout(new BorderLayout());
 
-
-
-
-        // TOP: selección de evento
+        // TOP: selección de evento con placeholder
         JPanel topPanel = new JPanel();
-        topPanel.add(new JLabel("Seleccione Evento:"));
+        topPanel.add(new JLabel("Evento:"));
+
         comboEventos = new JComboBox<>();
+        comboEventos.addItem(ITEM_SELECCIONAR);
 
         Set<String> eventos = contrEvento.listarEventos();
         for (String evento : eventos) {
             comboEventos.addItem(evento);
         }
 
-        JButton btnConsultar = new JButton("Consultar");
-        topPanel.add(comboEventos);
-        topPanel.add(btnConsultar);
+        if (eventos.isEmpty()) {
+            comboEventos.setEnabled(false);
+        }
 
+        // Acción: solo cargar si no es el placeholder
+        comboEventos.addActionListener(e -> {
+            String seleccionado = (String) comboEventos.getSelectedItem();
+            if (seleccionado != null && !seleccionado.equals(ITEM_SELECCIONAR)) {
+                try {
+                    mostrarDatosEvento();
+                } catch (EventoNoExisteException ex) {
+                    JOptionPane.showMessageDialog(this,
+                        "Error al cargar el evento: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                limpiarCampos();
+            }
+        });
+
+        topPanel.add(comboEventos);
         add(topPanel, BorderLayout.NORTH);
 
-        // CENTER: datos + categorías + ediciones
+        // CENTER: datos + panel inferior con categorías y ediciones
         JPanel centerPanel = new JPanel(new BorderLayout());
 
-        // Datos del evento
+        // Datos del evento (arriba)
         areaDatos = new JTextArea();
         areaDatos.setEditable(false);
+        areaDatos.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         areaDatos.setBorder(BorderFactory.createTitledBorder("Datos del Evento"));
         centerPanel.add(new JScrollPane(areaDatos), BorderLayout.NORTH);
 
-        // Categorías
+        // Panel inferior: categorías y ediciones con proporción ajustada
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+        // Categorías (izquierda - más ancho)
         listaCategorias = new JList<>();
         JScrollPane scrollCategorias = new JScrollPane(listaCategorias);
         scrollCategorias.setBorder(BorderFactory.createTitledBorder("Categorías"));
-        centerPanel.add(scrollCategorias, BorderLayout.WEST);
+        splitPane.setLeftComponent(scrollCategorias);
 
-        // Tabla de ediciones
+        // Ediciones (derecha - un poco más angosta)
         tablaEdiciones = new JTable();
+        tablaEdiciones.setFillsViewportHeight(true);
         JScrollPane scrollEdiciones = new JScrollPane(tablaEdiciones);
         scrollEdiciones.setBorder(BorderFactory.createTitledBorder("Ediciones"));
-        centerPanel.add(scrollEdiciones, BorderLayout.CENTER);
+        splitPane.setRightComponent(scrollEdiciones);
 
+        // Ajustar proporción: 42% para categorías, 58% para ediciones
+        splitPane.setDividerLocation(0.32);
+        splitPane.setResizeWeight(0.42); // permite redimensionar proporcionalmente
+
+        centerPanel.add(splitPane, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
-        // BOTTOM: botón para abrir ediciones
+        // BOTTOM: botón para ver edición
         JPanel bottomPanel = new JPanel();
         btnVerEdicion = new JButton("Consultar Edición");
         bottomPanel.add(btnVerEdicion);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Eventos
-        btnConsultar.addActionListener(e -> {
-
-			try {
-				mostrarDatosEvento();
-			} catch (EventoNoExisteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
         btnVerEdicion.addActionListener(e -> verEdicion());
+
+        // Estado inicial
+        limpiarCampos();
     }
 
     private void mostrarDatosEvento() throws EventoNoExisteException {
-
         String eventoS = (String) comboEventos.getSelectedItem();
-
-        if (eventoS == null || eventoS.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                "Debe seleccionar un evento para consultar.",
-                "Evento no seleccionado", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        if (eventoS == null || eventoS.equals(ITEM_SELECCIONAR)) return;
 
         DTSeleccionEvento evento = contrEvento.seleccionarEvento(eventoS);
 
@@ -102,14 +117,11 @@ public class ConsultaEventoFrame extends JInternalFrame {
             "Nombre: " + evento.getNombre() + "\n" +
             "Sigla: " + evento.getSigla() + "\n" +
             "Descripción: " + evento.getDescripcion() + "\n" +
-            "Fecha Alta: " + evento.getFechaEvento().toString()
+            "Fecha Alta: " + evento.getFechaEvento()
         );
 
         // Categorías
-        listaCategorias.setListData(evento.getCategorias().toArray(new String[0]));
-
         Set<String> cats = evento.getCategorias();
-
         if (cats == null || cats.isEmpty()) {
             listaCategorias.setListData(new String[]{"(Sin categorías)"});
         } else {
@@ -117,37 +129,29 @@ public class ConsultaEventoFrame extends JInternalFrame {
         }
 
         // Ediciones
-        Set<String> ediciones = evento.getEdiciones(); //esto cambio
-
+        Set<String> ediciones = evento.getEdiciones();
         if (ediciones == null || ediciones.isEmpty()) {
             tablaEdiciones.setModel(new DefaultTableModel(
                 new Object[][]{{"(Sin ediciones)"}},
                 new String[]{"Nombre"}
             ));
-        }else {
+        } else {
+            Object[][] datos = ediciones.stream()
+                .map(nombre -> new Object[]{nombre})
+                .toArray(Object[][]::new);
 
-        	Object[][] datos = ediciones.stream()
-        	        .map(nombre -> new Object[]{nombre})
-        	        .toArray(Object[][]::new);
-
-        	    String[] columnas = {"Nombre"};
-
-
-        	    DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
-        	        @Override
-        	        public boolean isCellEditable(int row, int column) {
-        	            return false;
-        	        }
-        	    };
-        	    tablaEdiciones.setModel(modelo);
-
+            String[] columnas = {"Nombre"};
+            DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            tablaEdiciones.setModel(modelo);
         }
-
-
     }
 
     private void verEdicion() {
-
         int fila = tablaEdiciones.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this,
@@ -157,9 +161,8 @@ public class ConsultaEventoFrame extends JInternalFrame {
         }
 
         String nombreEdicion = (String) tablaEdiciones.getValueAt(fila, 0);
-
-        // Obtener el DTEdicion
         logica.DatatypesYEnum.DTEdicion dtEdicion = contrEvento.consultarEdicion(nombreEdicion);
+
         if (dtEdicion == null) {
             JOptionPane.showMessageDialog(this,
                 "No se pudo cargar la información de la edición: " + nombreEdicion,
@@ -167,25 +170,56 @@ public class ConsultaEventoFrame extends JInternalFrame {
             return;
         }
 
-        // Formato de los detalles
-        String detalles =
-            "Nombre: " + dtEdicion.getNombre() + "\n" +
-            "Sigla: " + dtEdicion.getSigla() + "\n" +
-            "Fecha Inicio: " + dtEdicion.getFechaInicio() + "\n" +
-            "Fecha Fin: " + dtEdicion.getFechaFin() + "\n" +
-            "Alta Edición: " + dtEdicion.getAltaEdicion() + "\n" +
-            "Ciudad: " + dtEdicion.getCiudad() + "\n" +
-            "País: " + dtEdicion.getPais() + "\n" +
-            "Organizador: " + dtEdicion.getOrganizador() + "\n" +
-            "Patrocinios: " + String.join(", ", dtEdicion.getPatrocinios()) + "\n" +
-            "Tipos de Registro: " + String.join(", ", dtEdicion.getTiposDeRegistro());
+        // Construir contenido en HTML para que el JLabel lo renderice bien
+        StringBuilder html = new StringBuilder("<html><body style='width: 400px; font-family: Arial, sans-serif; font-size: 12px;'>");
 
-        // Mostrar en ventana emergente
+        html.append("<b>Nombre:</b> ").append(dtEdicion.getNombre()).append("<br>");
+        html.append("<b>Sigla:</b> ").append(dtEdicion.getSigla()).append("<br>");
+        html.append("<b>Fecha Inicio:</b> ").append(dtEdicion.getFechaInicio()).append("<br>");
+        html.append("<b>Fecha Fin:</b> ").append(dtEdicion.getFechaFin()).append("<br>");
+        html.append("<b>Alta Edición:</b> ").append(dtEdicion.getAltaEdicion()).append("<br>");
+        html.append("<b>Ciudad:</b> ").append(dtEdicion.getCiudad()).append("<br>");
+        html.append("<b>País:</b> ").append(dtEdicion.getPais()).append("<br>");
+        html.append("<b>Organizador:</b> ").append(dtEdicion.getOrganizador()).append("<br>");
+
+        // Patrocinios
+        html.append("<b>Patrocinios:</b> ");
+        if (dtEdicion.getPatrocinios().isEmpty()) {
+            html.append("Ninguno").append("<br>");
+        } else {
+            html.append(String.join(", ", dtEdicion.getPatrocinios())).append("<br>");
+        }
+
+        // Tipos de Registro
+        html.append("<b>Tipos de Registro:</b> ");
+        if (dtEdicion.getTiposDeRegistro().isEmpty()) {
+            html.append("Ninguno").append("<br>");
+        } else {
+            html.append(String.join(", ", dtEdicion.getTiposDeRegistro())).append("<br>");
+        }
+
+        html.append("</body></html>");
+
+        // Usar JLabel con HTML: el JOptionPane se ajustará automáticamente
+        JLabel label = new JLabel(html.toString());
+        label.setFont(new Font("Arial", Font.PLAIN, 12));
+        label.setVerticalAlignment(SwingConstants.TOP);
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+
         JOptionPane.showMessageDialog(
             this,
-            detalles,
+            label,
             "Detalle de Edición: " + dtEdicion.getNombre(),
             JOptionPane.INFORMATION_MESSAGE
         );
+    }
+
+    private void limpiarCampos() {
+        areaDatos.setText("");
+        listaCategorias.setListData(new String[]{"(Seleccione un evento)"});
+        tablaEdiciones.setModel(new DefaultTableModel(
+            new Object[][]{{"(Seleccione un evento)"}},
+            new String[]{"Nombre"}
+        ));
     }
 }
