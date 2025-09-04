@@ -123,41 +123,52 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         IControladorRegistro cr = IControladorRegistro.getInstance();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
-
         Set<String> tipos = cr.obtenerNomsTipoRegistro(asistente);
 
-		if (tipos.isEmpty()) {
-		    model.addElement("(Sin registros)");
-		}else {
+        if (tipos.isEmpty()) {
+            model.addElement("(Sin registros)");
+        } else {
+            for (String tipo : tipos) {
+                DTRegistro dtr = cr.getRegistro(asistente, tipo);
 
-			for (String tipo : tipos) {
-	            DTRegistro dtr = cr.getRegistro(asistente, tipo);
-	            if (dtr != null) {
-	                String texto = dtr.getnomEdicion() + " / " + dtr.getTipoDeRegistro();
-	                model.addElement(texto);
+                if (dtr != null) {
+                    String textoMostrado = dtr.getnomEdicion() + " / " + dtr.getTipoDeRegistro();
+                    model.addElement(textoMostrado);
 
-	            }
-			}
-		 }
-
-
+                }
+            }
+        }
 
         comboRegistros.setModel(model);
+        comboRegistros.setEnabled(model.getSize() > 0);
     }
+
+
+
+
 
 
     private void mostrarDetallesRegistro() {
         String usuario = (String) comboUsuarios.getSelectedItem();
-        String registro = (String) comboRegistros.getSelectedItem();
+        String seleccionado = (String) comboRegistros.getSelectedItem();
 
-        // Evitar procesar si está en estado inválido
-        if (usuario == null || registro == null || registro.equals("(Sin registros)")) {
+        // Validación
+        if (usuario == null || seleccionado == null || seleccionado.equals("(Sin registros)")) {
             areaDetalles.setText("");
             return;
         }
 
+        // Extraer el "Tipo de Registro" del texto mostrado: "Edicion / Tipo"
+        int idx = seleccionado.lastIndexOf(" / ");
+        if (idx == -1) {
+            areaDetalles.setText("Formato inválido del registro.");
+            return;
+        }
+
+        String tipoDeRegistro = seleccionado.substring(idx + 3); // " / " tiene 3 caracteres
+
         IControladorRegistro contrR = IControladorRegistro.getInstance();
-        DTRegistro dtr = contrR.getRegistro(usuario, registro);
+        DTRegistro dtr = contrR.getRegistro(usuario, tipoDeRegistro); // ✅ Ahora sí: tipo original
 
         if (dtr == null) {
             areaDetalles.setText("No se encontró el registro seleccionado.");
@@ -181,6 +192,6 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         ).append("\n");
 
         areaDetalles.setText(sb.toString());
-        areaDetalles.setCaretPosition(0); // Scroll al inicio
+        areaDetalles.setCaretPosition(0);
     }
 }

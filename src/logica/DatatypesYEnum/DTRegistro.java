@@ -6,7 +6,7 @@ public class DTRegistro {
 	private String tipoDeRegistro;
 	private DTFecha fechaRegistro;
 	private Double costo;
-	private String nomEdicion; 
+	private String nomEdicion;
 
 	public DTRegistro(String as, String tdr, DTFecha fecha, Double cos, String edicion){
 		asistente = as;
@@ -34,11 +34,16 @@ public class DTRegistro {
 		return costo;
 
 	}
-	
+
 	public String getnomEdicion() {
 	    return nomEdicion;
 	}
 
+
+	@Override
+	public String toString() {
+	    return getnomEdicion() + " / " + getTipoDeRegistro();
+	}
 
 
 }
