@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi perfil · eventos.uy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+  
+</head>
+<body>
+  <div>
+    <header class="header">
+      <h1>eventos.uy</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="#">Eventos</a></li>
+          <li><a href="#">Categorias</a></li>
+        </ul>
+      </nav>
+      <div>
+        <a href="login.html" class="btn-primary">Cerrar sesión</a>
+      </div>
+    </header>
+
+    <main class="dashboard-shell">
+      <aside>
+        <h2>Mi Perfil</h2>
+        <ul>
+          <li><a href="#">Alta Evento</a></li>
+          <li><a href="#">Alta Edición</a></li>
+          <li><a href="#">Alta Institución</a></li>
+        </ul>
+        <h2>Categorías</h2>
+        <ul>
+          <li><a href="#">Música</a></li>
+          <li><a href="#">Deportes</a></li>
+          <li><a href="#">Teatro</a></li>
+          <li><a href="#">Conferencias</a></li>
+        </ul>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-body">
+
+          <div class="event-detail">
+            <article class="event-item" style="border-bottom:0; padding:0;">
+              <img class="event-thumb" src="https://via.placeholder.com/140x100.png?text=Evento" alt="Evento" />
+              <div>
+                <h3 style="margin:0 0 0.25rem 0;">Maratón de Montevideo</h3>
+                <p style="margin:0.25rem 0;"><strong>Descripción:</strong> Competencia deportiva anual en la capital.</p>
+                <p style="margin:0.25rem 0;"><strong>Sigla:</strong> MARATON</p>
+                <p style="margin:0.25rem 0;"><strong>Categorías:</strong> Deporte, Salud</p>
+                <p style="margin:0.25rem 0;"><strong>Fecha Alta:</strong> 01/01/2022</p>
+              </div>
+            </article>
+            <div>
+              <div class="panel-header" style="border-radius:10px 10px 0 0;">Ediciones</div>
+              <div class="panel-body event-editions">
+                <a class="mini-card" href="#">
+                  <img src="https://via.placeholder.com/300x120.png?text=Marat%C3%B3n+2022" alt="Maratón 2022" />
+                  <div class="mini-card-title">Maratón 2022</div>
+                </a>
+                <a class="mini-card" href="#">
+                  <img src="https://via.placeholder.com/300x120.png?text=Marat%C3%B3n+2025" alt="Maratón 2025" />
+                  <div class="mini-card-title">Maratón 2025</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer></footer>
+</body>
+</html>
+
