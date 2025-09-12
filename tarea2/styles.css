@@ -324,3 +324,26 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+/* Utilidades para consulta de edición */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.card-ghost {
+  display: block;
+  text-align: center;
+  padding: 0.8rem 1rem;
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.card-ghost:hover {
+  background: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
