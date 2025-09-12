@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Usuarios · eventos.uy</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div>
+    <header class="header">
+      <h1>eventos.uy</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="#">Eventos</a></li>
+          <li><a href="#">Categorias</a></li>
+        </ul>
+      </nav>
+      <div>
+        <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
+        <a href="altausuario.html" class="btn-primary">Registrarse</a>
+      </div>
+    </header>
+
+    <div class="content single">
+      <main>
+        <section class="auth-container">
+          <div class="auth-card">
+            <h2>Listado de usuarios</h2>
+
+            <div style="overflow:auto; margin-top:1rem;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr style="text-align:left; border-bottom:1px solid #ddd;">
+                    <th style="padding:.5rem;">Avatar</th>
+                    <th style="padding:.5rem;">Nickname</th>
+                    <th style="padding:.5rem;">Nombre</th>
+                    <th style="padding:.5rem;">Rol</th>
+                    <th style="padding:.5rem;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyUsuarios"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer></footer>
+
+  <script>
+    // Hardcode Parte 1
+    const USERS = [
+      {
+        nick: "organizador1",
+        nombre: "Laura Pérez",
+        email: "laura@example.com",
+        rol: "organizador",
+        avatar: "img/organizador1.jpg",
+        descripcion: "Organizadora de eventos culturales y deportivos.",
+        web: "https://mi-sitio.org",
+        ediciones: [
+          { nombre: "Concierto de Rock 2025", estado: "Aceptada" },
+          { nombre: "Festival de Jazz 2025", estado: "Ingresada" },
+          { nombre: "Congreso Tech 2024", estado: "Rechazada" }
+        ]
+      },
+      {
+        nick: "asistente1",
+        nombre: "Diego Luna",
+        email: "diego@example.com",
+        rol: "asistente",
+        avatar: "img/asistente1.jpg",
+        apellido: "Luna",
+        nacimiento: "1999-10-12",
+        institucion: "Udelar",
+        registros: [
+          { edicion: "Concierto de Rock 2025", tipo: "General", costo: 1500, patrocinio: false, fecha: "2025-09-01" },
+          { edicion: "Festival de Jazz 2025",  tipo: "Estudiante", costo:   0, patrocinio:  true, fecha: "2025-09-05" }
+        ]
+      },
+      {
+        nick: "organizador2",
+        nombre: "Ana Silva",
+        email: "ana@example.com",
+        rol: "organizador",
+        avatar: "img/organizador2.jpg",
+        descripcion: "Productora ejecutiva.",
+        web: "https://ana-producciones.com",
+        ediciones: [
+          { nombre: "Expo Tecnología 2025", estado: "Aceptada" }
+        ]
+      }
+    ];
+
+    // Guardamos los datos para que perfilUsuario los lea (opcional pero cómodo en Parte 1)
+    localStorage.setItem('USERS_MOCK', JSON.stringify(USERS));
+
+    const tbody = document.getElementById('tbodyUsuarios');
+    tbody.innerHTML = USERS.map(u => `
+      <tr style="border-bottom:1px solid #eee;">
+        <td style="padding:.5rem;">
+          <img src="${u.avatar || 'img/user.png'}" alt="avatar"
+               style="width:48px;height:48px;border-radius:50%;object-fit:cover;"/>
+        </td>
+        <td style="padding:.5rem;">${u.nick}</td>
+        <td style="padding:.5rem;">${u.nombre}</td>
+        <td style="padding:.5rem; text-transform:capitalize;">${u.rol}</td>
+        <td style="padding:.5rem;">
+          <a class="btn-primary" href="perfilUsuario.html?nick=${encodeURIComponent(u.nick)}">Seleccionar</a>
+        </td>
+      </tr>
+    `).join('');
+  </script>
+</body>
+</html>
