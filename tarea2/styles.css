@@ -55,33 +55,8 @@ body { color: #000; }
 .user-badge .avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.6); }
 .user-badge .nickname { font-weight:700; color:#fff; }
 
-/* Sección del perfil del usuario debajo del header */
-.user-profile {
-	width: 100%;
-	padding: 1rem 10rem;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.user-profile .user-badge {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-}
-
-.user-profile .avatar {
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 2px solid #ddd;
-}
-
-.user-profile .nickname {
-	font-weight: 700;
-	color: #333;
-	font-size: 1.1rem;
-}
+/* Contenedor derecho del header (acciones + usuario) */
+.header-right { display:flex; align-items:center; gap:0.75rem; }
 
 /* Lista de enlaces de navegación en el header */
 .nav-links {
