@@ -1,77 +1,66 @@
 <!DOCTYPE html>
-<html lang = "es">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>consulta de Tipo de Registro</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Consulta Tipo de Registro - eventos.uy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-<header class="header">
-  	<h1>eventos.uy</h1>
-	<nav>
-    	<ul class="nav-links">
-     	 	<li><a href="index.html">Inicio</a></li>
-      		<li><a href="#">Eventos</a></li>
-      		<li><a href="#">Categorías</a></li>
-    	</ul>
-  	</nav>
-  	<div>
-    	<a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
-    	<a href="altausuario.html" class="btn-primary">Registrarse</a>
-      <a href="listarUsuarios.html" class="btn-primary">Usuario</a>
- 		</div>
- 	</header>
- 	
- 	<div class="content single">
- 		<main>
- 			<section class="auth-container">
- 				<div class="auth-card">
- 					<h2>Consulta de Tipo de Registro</h2>
- 					
- 					<form id="formConsultaTipoRegistro" class="auth-form" novalidate>
- 						
- 						<label class="form-group">
- 							<span class="label-text">Evento * </span>
- 								<select name="evento" required>
-    								<option value="">Seleccionar Evento…</option>
-   									<option value="rock">Concierto Rock </option>
-    								<option value="maraton">Maratón </option>
-    								<option value="teatro">Teatro </option>
- 								 </select>
-						</label>
- 								
- 						<label class="form-group">
- 							<span class = "label-text">Edicion * </span>
- 							<select name="edicion" required>				
- 								<option value="">Seleccionar Edicion…</option>
-   									<option value="rock2024">Concierto Rock2025 </option>
-    								<option value="maraton2024">Maratón2024 </option>
-    								<option value="teatro2024">Teatro2024 </option>
-    						</select>
-    					</label>
-    						
-    					<label class="form-group">
- 							<span class = "label-text">Tipo de Registro * </span>
- 							<select name="tipoRegistro" required>				
- 								<option value="">Seleccionar TipoRegistro…</option>
-   									<option value="estudiante">Estudiante </option>
-    								<option value="general">General </option>
-    								<option value="+65">+65 </option>
-    						</select>
-    					
-    					</label>
-    					<button type="submit" class="btn-primary" style="margin-top: 1rem; width: 100%;">Consultar</button>	
- 					</form>
- 				</div>
- 			</section>
- 		</main>
- 	</div>
- 	
- 	
+    <div>
+        <header class="header">
+  		<h1>eventos.uy</h1>
+ 		 <div class="header-right">
+    			<div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+      				<img src="img/fotoMujer.webp" alt="vale23" class="avatar" style="width: 32px; border-radius: 50%;">
+      				<span class="nickname">vale23</span>
+     				 <a href="#" class="btn-primary">Cerrar sesión</a>
+    			</div>
+  			</div>
+		</header>
+        <div class="content">
+            <aside class="sidebar">
+                <div class="panel sidebar">
+                    <div class="panel-header">Categorías</div>
+                    <ul class="menu-list">
+                        <li><a href="#">Tecnología</a></li>
+                        <li><a href="#">Innovación</a></li>
+                        <li><a href="#">Literatura</a></li>
+                        <li><a href="#">Cultura</a></li>
+                        <li><a href="#">Música</a></li>
+                        <li><a href="#">Deporte</a></li>
+                        <li><a href="#">Salud</a></li>
+                        <li><a href="#">Entretenimiento</a></li>
+                        <li><a href="#">Agro</a></li>
+                        <li><a href="#">Negocios</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main>
+                <section class="panel">
+                    <div class="panel-header">
+                        Tipo de Registro: <strong>Corredor 21K</strong>
+                    </div>
+                    <div class="panel-body">
+                        <p><strong>Descripción:</strong> Registro para participar en la carrera de 21 kilómetros.</p>
+                        <p><strong>Costo:</strong> $750 UYU</p>
+                        <p><strong>Cupos:</strong> 250</p>
+      
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top: 2rem;">
+                    <div class="panel-header">Volver a la edición</div>
+                    <div class="panel-body">
+                        <a href="consultaedicion.html" class="btn-primary">← Volver a la edición MARATON22</a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
 </body>
 </html>
