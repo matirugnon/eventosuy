@@ -10,21 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
 </head>
 <body>
-	<header class="header">
-  	<h1>eventos.uy</h1>
-  	<nav>
-    	<ul class="nav-links">
-     	 	<li><a href="index.html">Inicio</a></li>
-      		<li><a href="#">Eventos</a></li>
-      		<li><a href="#">Categorías</a></li>
-    	</ul>
-  	</nav>
-  	<div>
-    	<a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
-    	<a href="altausuario.html" class="btn-primary">Registrarse</a>
-      <a href="listarUsuarios.html" class="btn-primary">Usuario</a>
- 		</div>
- 	</header>
+	 <header class="header">
+    <h1>eventos.uy</h1>
+    <div class="header-right">
+     <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+  		<img src="img/adidas.png" alt="ADIDAS" class="avatar" style="width: 32px; border-radius: 50%;">
+  		<span class="nickname">ADIDAS</span>
+  		<a href="#" class="btn-primary">Cerrar sesión</a>
+	</div>
+    </div>
+  </header>
  	<div class="content single">
   		<main>
    			<section class="auth-container">
@@ -66,10 +61,11 @@
 
 <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
 
-	<button type="submit" class="btn-primary" style="margin-top:1rem; width:100%;">Crear tipo de registro</button>
-	<div style="text-align:center; margin-top:.5rem;">
-  	<a class="btn-outline" href="index.html">Cancelar</a>
+	<div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
+  <button type="submit" class="btn-primary" style="flex: 1;">Crear tipo de registro</button>
+  <button type="button" class="btn-outline" onclick="window.location.href='index.html'">Cancelar</button>
 </div>
+
        		 	</form>
      		 </div>
     		</section>

@@ -229,15 +229,20 @@ main {
 }
 
 .btn-outline {
-  /* Botón secundario transparente para el header */
-  display: inline-block;
-  background: transparent;
+  background-color: #666;
   color: white;
+  border: 1px solid #666;
   padding: 0.5rem 0.9rem;
   border-radius: 8px;
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.2);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
   margin-left: 0.5rem;
+}
+
+.btn-outline:hover {
+  background-color: #444;
+  border-color: #444;
 }
 
  /* Ajustes específicos de esta página sin romper estilos globales */
