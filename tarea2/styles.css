@@ -218,9 +218,7 @@ main {
 }
 
 /* Campos de entrada del login */
-.auth-form input[type="text"],
-.auth-form input[type="password"],
-.auth-form input[type="email"] {
+.write {
   height: 3rem;
   padding: 0 0.75rem;
   border: 1px solid #ccc;
