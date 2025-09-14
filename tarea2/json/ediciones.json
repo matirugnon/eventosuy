@@ -12,12 +12,12 @@
       "fechaAlta": "01/06/2024",
       "lugar": "Estadio Centenario",
       "descripcion": "Una noche llena de música y energía con las mejores bandas de rock.",
-      "img": "img/rock.jpg",
-      "logoEvento": "img/rock_logo.png",
-      "logoOrganizador": "img/antel.png",
+      "img": "../img/rock.jpg",
+      "logoEvento": "../img/rock_logo.png",
+      "logoOrganizador": "../img/antel.png",
       "patrocinios": [
-        "img/pilsen.png",
-        "img/antel.png"
+        "../img/pilsen.png",
+        "../img/antel.png"
       ],
       "tiposRegistro": ["Entrada General", "VIP", "Backstage"]
     },
@@ -33,10 +33,10 @@
       "fechaAlta": "10/07/2024",
       "lugar": "Parque Rodó",
       "descripcion": "Únete a corredores de todo el país en este evento deportivo.",
-      "img": "img/maraton.webp",
-      "logoEvento": "img/maraton.webp",
-      "logoOrganizador": "img/imm.webp",
-      "patrocinios": ["img/adidas.png"],
+      "img": "../img/maraton.webp",
+      "logoEvento": "../img/maraton.webp",
+      "logoOrganizador": "../img/imm.webp",
+      "patrocinios": ["../img/adidas.png"],
       "tiposRegistro": ["Corredor 10K", "Corredor 21K", "Corredor 42K"]
     },
     {
@@ -51,10 +51,10 @@
       "fechaAlta": "20/08/2024",
       "lugar": "Teatro Solís",
       "descripcion": "Una adaptación moderna del clásico de Calderón de la Barca.",
-      "img": "img/teatro.webp",
-      "logoEvento": "img/teatro.webp",
-      "logoOrganizador": "img/solis_logo.png",
-      "patrocinios": ["img/mec.png"],
+      "img": "../img/teatro.webp",
+      "logoEvento": "../img/teatro.webp",
+      "logoOrganizador": "../img/solis_logo.png",
+      "patrocinios": ["../img/mec.png"],
       "tiposRegistro": ["Butaca Baja", "Butaca Alta", "Palco"]
     },
     {
@@ -70,9 +70,9 @@
       "lugar": "Plaza Independencia",
       "descripcion": "Descubre y compra productos únicos hechos a mano por artesanos locales.",
       "img": "https://correopuntadeleste.com/wp-content/uploads/2019/06/bergara.jpg",
-      "logoEvento": "img/artesanias.png",
-      "logoOrganizador": "img/municipio.png",
-      "patrocinios": ["img/mides.png"],
+      "logoEvento": "../img/artesanias.png",
+      "logoOrganizador": "../img/municipio.png",
+      "patrocinios": ["../img/mides.png"],
       "tiposRegistro": ["Expositor", "Visitante"]
     },
     {
@@ -87,10 +87,10 @@
       "fechaAlta": "15/09/2024",
       "lugar": "Cine Universitario",
       "descripcion": "Proyecciones de películas de todo el mundo, seguidas de debates con directores y actores.",
-      "img": "img/luis.jpg",
-      "logoEvento": "img/cine_logo.png",
-      "logoOrganizador": "img/cineuni.png",
-      "patrocinios": ["img/netflix.png", "img/hbo.png"],
+      "img": "../img/luis.jpg",
+      "logoEvento": "../img/cine_logo.png",
+      "logoOrganizador": "../img/cineuni.png",
+      "patrocinios": ["../img/netflix.png", "../img/hbo.png"],
       "tiposRegistro": ["Entrada General", "Estudiante", "Profesional de Cine"]
     }
   ]

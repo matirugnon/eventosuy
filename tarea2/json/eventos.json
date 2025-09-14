@@ -4,21 +4,21 @@
     "fecha": "15 de Julio, 2024",
     "lugar": "Estadio Centenario",
     "descripcion": "Una noche llena de música y energía con las mejores bandas de rock.",
-    "imagen": "img/rock.jpg!d"
+    "imagen": "../img/rock.jpg!d"
   },
   {
     "titulo": "Maratón Anual",
     "fecha": "22 de Agosto, 2024",
     "lugar": "Parque Rodó",
     "descripcion": "Únete a corredores de todo el país en este evento deportivo.",
-    "imagen": "img/maraton.webp"
+    "imagen": "../img/maraton.webp"
   },
   {
     "titulo": "Obra de Teatro 'La Vida es Sueño'",
     "fecha": "5 de Septiembre, 2024",
     "lugar": "Teatro Solís",
     "descripcion": "Una adaptación moderna del clásico de Calderón de la Barca.",
-    "imagen": "img/teatro.webp"
+    "imagen": "../img/teatro.webp"
   },
     {
         "titulo": "Feria de Artesanías",
@@ -32,7 +32,7 @@
         "fecha": "20 de Noviembre, 2024",
         "lugar": "Cine Universitario",
         "descripcion": "Proyecciones de películas de todo el mundo, seguidas de debates con directores y actores.",
-        "imagen": "img/luis.jpg"
+        "imagen": "../img/luis.jpg"
     }
 
 ]

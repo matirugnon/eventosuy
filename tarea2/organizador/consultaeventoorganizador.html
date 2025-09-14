@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalle de Evento · eventos.uy</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi perfil · eventos.uy</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+  
 </head>
 <body>
   <header class="header">
-    <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+    <h1><a href="inicioOrganizador.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
   </header>
   <div class="content">
       <aside class="sidebar">
@@ -73,14 +74,14 @@
 
     const ediDiv = document.getElementById('ediciones-detalle');
 
-    fetch("ediciones.json")
+    fetch("../json/ediciones.json")
       .then(res => res.json())
       .then(data => {
         // filtrar solo las ediciones del evento actual
         const ediciones = data.ediciones.filter(e => e.evento === titulo);
 
         ediDiv.innerHTML = ediciones.map(e => `
-          <a class="mini-card" href="consultaEdicion.html?id=${e.id}">
+          <a class="mini-card" href="consultaEdicionOrganizador.html?id=${e.id}">
             <img src="${e.img}" alt="${e.nombre}" />
             <div class="mini-card-title">${e.nombre}</div>
           </a>
@@ -101,10 +102,11 @@
             descripcion: e.descripcion,
             evento: e.evento
           }).toString();
-          window.location.href = `consultaEdicion.html?${params}`;
+          window.location.href = `consultaEdicionOrganizador.html?${params}`;
         };
       }
     });
   </script>
 </body>
 </html>
+

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eventos.uy</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -12,11 +12,13 @@
 <body>
     <div>
         <header class="header">
-            <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
-            <div>
-                <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
-                <a href="altadeusuario.html" class="btn-primary">Registrarse</a>
-                <a href="listarUsuarios.html" class="btn-primary">Usuario</a>
+            <h1><a href="../index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+            <div class="header-right">
+                <div class="user-badge">
+                    <img class="avatar" src="../img/suarez.jpg" alt="Avatar de luissuarez9" />
+                    <span class="nickname">luissuarez9</span>
+                </div>
+                <a href="../login.html" class="btn-primary">Cerrar sesión</a>
             </div>
         </header>
         <div class="content">
@@ -53,7 +55,7 @@
     </div>
     <script>
         // Cargar eventos desde eventos.json y mostrarlos
-        fetch('json/eventos.json')
+        fetch('../json/eventos.json')
             .then(response => response.json())
             .then(eventos => {
                 const contenedor = document.getElementById('eventos-list');
@@ -79,7 +81,7 @@
                             descripcion: ev.descripcion,
                             imagen: ev.imagen
                         }).toString();
-                        window.location.href = `consultaEventoVisitante.html?${params}`;
+                        window.location.href = `consultaEventoorganizador.html?${params}`;
                     };
                     contenedor.appendChild(art);
                 });
