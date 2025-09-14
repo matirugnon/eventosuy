@@ -1,102 +1,89 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> eventos.uy</title>
-
+    <title>eventos.uy</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div>
         <header class="header">
-            <h1>eventos.uy</h1>
-           
+            <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
             <div>
-                <div>
-  				<a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
-  				<a href="altadeusuario.html" class="btn-primary">Registrarse</a>
-                
-				</div>
+                <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
+                <a href="altadeusuario.html" class="btn-primary">Registrarse</a>
+                <a href="listarUsuarios.html" class="btn-primary">Usuario</a>
             </div>
         </header>
         <div class="content">
-     <aside class="sidebar">
-    <div class="panel sidebar">
-        <div class="panel-header">Categorías</div>
-        <ul class="menu-list">
-            <li><a href="#">Tecnología</a></li>
-            <li><a href="#">Innovación</a></li>
-            <li><a href="#">Literatura</a></li>
-            <li><a href="#">Cultura</a></li>
-            <li><a href="#">Música</a></li>
-            <li><a href="#">Deporte</a></li>
-            <li><a href="#">Salud</a></li>
-            <li><a href="#">Entretenimiento</a></li>
-            <li><a href="#">Agro</a></li>
-            <li><a href="#">Negocios</a></li>
-        </ul>
-    </div>
-
-    <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-        <a href="listarUsuarios.html" style="
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #182080;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 0.75rem;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-            background-color: rgba(24, 32, 128, 0.05);
-        ">
-            
-            Ver listado de usuarios
-        </a>
-    </div>
-</aside>
+            <aside class="sidebar">
+                <div class="panel sidebar">
+                    <div class="panel-header">Categorías</div>
+                    <ul class="menu-list">
+                        <li><a href="#">Tecnología</a></li>
+                        <li><a href="#">Innovación</a></li>
+                        <li><a href="#">Literatura</a></li>
+                        <li><a href="#">Cultura</a></li>
+                        <li><a href="#">Música</a></li>
+                        <li><a href="#">Deporte</a></li>
+                        <li><a href="#">Salud</a></li>
+                        <li><a href="#">Entretenimiento</a></li>
+                        <li><a href="#">Agro</a></li>
+                        <li><a href="#">Negocios</a></li>
+                    </ul>
+                </div>
+                <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+                    <a href="listarUsuarios.html" style="display: flex;align-items: center;gap: 0.5rem;color: #182080;font-weight: 600;text-decoration: none;padding: 0.75rem;border-radius: 6px;transition: background-color 0.2s;background-color: rgba(24, 32, 128, 0.05);">
+                        Ver listado de usuarios
+                    </a>
+                </div>
+            </aside>
             <main>
-                
                 <section>
                     <h2>Próximos Eventos</h2>
-                    <article class="event">
-                        <img src="img/rock.jpg!d" alt="Concierto de Rock" class="event-img">
-                        <div class="event-content">
-                            <h3>Concierto de Rock</h3>
-                            <p>Fecha: 15 de Julio, 2024</p>
-                            <p>Lugar: Estadio Centenario</p>
-                            <p>Descripción: Una noche llena de música y energía con las mejores bandas de rock.</p>
-                        </div>
-                    </article>
-                    <article class="event">
-                        <img src="img/maraton.webp" alt="Maratón Anual" class="event-img">
-                        <div class="event-content">
-                            <h3>Maratón Anual</h3>
-                            <p>Fecha: 22 de Agosto, 2024</p>
-                            <p>Lugar: Parque Rodó</p>
-                            <p>Descripción: Únete a corredores de todo el país en este evento deportivo.</p>
-                        </div>
-                    </article>
-                    <article class="event">
-                        <img src="img/teatro.webp" alt="Obra de Teatro" class="event-img">
-                        <div class="event-content">
-                            <h3>Obra de Teatro "La Vida es Sueño"</h3>
-                            <p>Fecha: 5 de Septiembre, 2024</p>
-                            <p>Lugar: Teatro Solís</p>
-                            <p>Descripción: Una adaptación moderna del clásico de Calderón de la Barca.</p>
-                        </div>
-                    </article>
+                    <div id="eventos-list"></div>
                 </section>
             </main>
         </div>
-        <footer>
-
-        </footer>
+        <footer></footer>
     </div>
+    <script>
+        // Cargar eventos desde eventos.json y mostrarlos
+        fetch('eventos.json')
+            .then(response => response.json())
+            .then(eventos => {
+                const contenedor = document.getElementById('eventos-list');
+                contenedor.innerHTML = '';
+                eventos.forEach(ev => {
+                    const art = document.createElement('article');
+                    art.className = 'event';
+                    art.style.cursor = 'pointer';
+                    art.innerHTML = `
+                        <img src="${ev.imagen}" alt="${ev.titulo}" class="event-img">
+                        <div class="event-content">
+                            <h3>${ev.titulo}</h3>
+                            <p>Fecha: ${ev.fecha}</p>
+                            <p>Lugar: ${ev.lugar}</p>
+                            <p>Descripción: ${ev.descripcion}</p>
+                        </div>
+                    `;
+                    art.onclick = () => {
+                        const params = new URLSearchParams({
+                            titulo: ev.titulo,
+                            fecha: ev.fecha,
+                            lugar: ev.lugar,
+                            descripcion: ev.descripcion,
+                            imagen: ev.imagen
+                        }).toString();
+                        window.location.href = `consultaEventoVisitante.html?${params}`;
+                    };
+                    contenedor.appendChild(art);
+                });
+            });
+    </script>
 </body>
 </html>
