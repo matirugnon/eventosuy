@@ -352,3 +352,15 @@ main {
   background: #f0f0f0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
+
+.menu-list a {
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+}
+
+.panel-header{
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+}

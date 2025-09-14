@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alta de evento · eventos.uy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div>
+    <header class="header">
+      <h1>eventos.uy</h1>
+      <div class="header-right">
+        <a href="login.html" class="btn-primary">Cerrar sesión</a>
+        <div class="user-badge">
+          <img class="avatar" src="img/suarez.jpg" alt="Avatar organizador" />
+          <span class="nickname">luissuarez9</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <aside class="sidebar">
+        <div class="panel sidebar">
+          <div class="panel-header">Mi perfil</div>
+        <ul class="menu-list">
+          <li><a href="altaEvento.html">Alta Evento</a></li>
+          <li><a href="#">Alta Edición</a></li>
+          <li><a href="#">Alta Institución</a></li>
+        </ul>
+        </div>
+
+        <div class="panel sidebar" style="margin-top:1rem;">
+          <div class="panel-header">Categorías</div>
+          <ul class="menu-list">
+            <li><a href="#">Tecnología</a></li>
+            <li><a href="#">Innovación</a></li>
+            <li><a href="#">Literatura</a></li>
+            <li><a href="#">Cultura</a></li>
+            <li><a href="#">Música</a></li>
+            <li><a href="#">Deporte</a></li>
+            <li><a href="#">Salud</a></li>
+            <li><a href="#">Entretenimiento</a></li>
+            <li><a href="#">Agro</a></li>
+            <li><a href="#">Negocios</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <main>
+        <section class="panel">
+          <div class="panel-header">Alta de Evento</div>
+          <div class="panel-body">
+            <form id="formEvento" class="auth-form" novalidate>
+              <div class="grid-2">
+                <label class="form-group">
+                  <span class="label-text">Nombre del evento *</span>
+                  <input name="nombre" required maxlength="120" placeholder="p.ej. Concierto de Rock" />
+                </label>
+
+                <label class="form-group">
+                  <span class="label-text">Sigla *</span>
+                  <input name="sigla" required maxlength="15" placeholder="p.ej. CR2025" />
+                </label>
+              </div>
+
+              <label class="form-group">
+                <span class="label-text">Descripción *</span>
+                <textarea name="descripcion" rows="3" maxlength="800" required placeholder="Breve descripción del evento…"></textarea>
+              </label>
+
+              <div class="form-group">
+                <span class="label-text">Categorías (elige al menos una) *</span>
+                <div class="row" id="categoriasBox" style="flex-wrap: wrap; gap: .75rem; margin-top:.25rem;">
+                  <!-- Se llena por JS -->
+                </div>
+              </div>
+
+              <label class="form-group">
+                <span class="label-text">Imagen (opcional)</span>
+                <input type="file" name="imagen" accept="image/*" />
+              </label>
+              <div id="preview" style="display:none; margin:.5rem 0;">
+                <img id="previewImg" alt="Previsualización" style="max-width:220px;border:1px solid #ddd;border-radius:8px;" />
+              </div>
+
+              <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.25rem;"></div>
+
+              <div style="display:flex; gap:.5rem; margin-top:.5rem;">
+                <button type="submit" class="btn-primary">Crear evento</button>
+                <a class="btn-outline" href="consultaeventoorganizador.html">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer></footer>
+
+  <script>
+    (function(){
+      const $ = s => document.querySelector(s);
+      const $$ = s => document.querySelectorAll(s);
+
+      // Fuente única de categorías visibles (alineadas a index)
+      const CATS = [
+        'Tecnología','Innovación','Literatura','Cultura','Música',
+        'Deporte','Salud','Entretenimiento','Agro','Negocios'
+      ];
+
+      // Mock de eventos persistido localmente
+      const LS_KEY = 'EVENTS_MOCK';
+      const EXISTENTES = (JSON.parse(localStorage.getItem(LS_KEY) || 'null')) || [
+        { nombre: 'Concierto de Rock', sigla: 'CR2024', categorias:['Música'], descripcion:'…', fechaAlta:'2024-07-15' },
+        { nombre: 'Maratón Anual', sigla: 'MAR2024', categorias:['Deporte'], descripcion:'…', fechaAlta:'2024-08-22' },
+        { nombre: 'Obra de Teatro "La Vida es Sueño"', sigla: 'TEATRO2024', categorias:['Cultura'], descripcion:'…', fechaAlta:'2024-09-05' }
+      ];
+
+      const form = $('#formEvento');
+      const msg = $('#msg');
+      const catBox = $('#categoriasBox');
+      const inputImg = form.elements['imagen'];
+      const preview = $('#preview');
+      const previewImg = $('#previewImg');
+
+      // Pinta categorías como checkboxes
+      function renderCategorias(){
+        catBox.innerHTML = CATS.map((c,i)=>
+          `<label class="row" style="gap:.35rem;">
+             <input type="checkbox" name="cat" value="${c}" /> ${c}
+           </label>`
+        ).join('');
+      }
+
+      function showPreview(file){
+        if(!file){ preview.style.display='none'; previewImg.src=''; return; }
+        const reader = new FileReader();
+        reader.onload = () => { previewImg.src = reader.result; preview.style.display = ''; };
+        reader.readAsDataURL(file);
+      }
+
+      function validar(){
+        msg.textContent = '';
+        if(!form.reportValidity()) return false;
+
+        // Categorías: al menos una
+        const catSel = [...$$('input[name="cat"]')].filter(i=>i.checked).map(i=>i.value);
+        if(catSel.length === 0){ msg.textContent = 'Selecciona al menos una categoría.'; return false; }
+
+        // Unicidad de nombre (case-insensitive)
+        const nombre = form.elements['nombre'].value.trim().toLowerCase();
+        const dup = EXISTENTES.some(e => e.nombre.trim().toLowerCase() === nombre);
+        if(dup){ msg.textContent = 'Ya existe un evento con ese nombre. Corrige los datos o cancela.'; return false; }
+
+        return true;
+      }
+
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        if(!validar()) return;
+
+        const nombre = form.elements['nombre'].value.trim();
+        const sigla = form.elements['sigla'].value.trim();
+        const descripcion = form.elements['descripcion'].value.trim();
+        const categorias = [...$$('input[name="cat"]')].filter(i=>i.checked).map(i=>i.value);
+
+        const fechaAlta = new Date();
+        const yyyy = fechaAlta.getFullYear();
+        const mm = String(fechaAlta.getMonth()+1).padStart(2,'0');
+        const dd = String(fechaAlta.getDate()).padStart(2,'0');
+        const fechaISO = `${yyyy}-${mm}-${dd}`; // “fecha actual”
+
+        const nuevo = { nombre, sigla, categorias, descripcion, fechaAlta: fechaISO };
+        const arr = [...EXISTENTES, nuevo];
+        localStorage.setItem(LS_KEY, JSON.stringify(arr));
+
+        msg.style.color = '#2a7f2e';
+        msg.textContent = '✅ Evento dado de alta con fecha ' + fechaISO + ' (simulado).';
+        setTimeout(()=>{ window.location.href = 'consultaeventoorganizador.html'; }, 1200);
+      });
+
+      inputImg && inputImg.addEventListener('change', e => showPreview(e.target.files?.[0]));
+
+      renderCategorias();
+    })();
+  </script>
+</body>
+</html>
+
