@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    
 </head>
 <body>
     <div>
@@ -24,107 +23,92 @@
         </header>
 
         <div class="content">
-    <aside class="sidebar">
-    <div class="panel sidebar">
-        <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
-        <ul class="menu-list">
-            <li><a href="#" style="white-space: nowrap;">Registro a Edición</a></li>
-        </ul>
-    </div>
-
-    <div class="panel sidebar">
-        <div class="panel-header">Categorías</div>
-        <ul class="menu-list">
-            <li><a href="#">Tecnología</a></li>
-            <li><a href="#">Innovación</a></li>
-            <li><a href="#">Literatura</a></li>
-            <li><a href="#">Cultura</a></li>
-            <li><a href="#">Música</a></li>
-            <li><a href="#">Deporte</a></li>
-            <li><a href="#">Salud</a></li>
-            <li><a href="#">Entretenimiento</a></li>
-            <li><a href="#">Agro</a></li>
-            <li><a href="#">Negocios</a></li>
-        </ul>
-    </div>
-</aside>
-
-           <main>
-                <section class="panel">
-                 <div class="panel-body">
-    <div class="event-detail" style="display: flex; gap: 2rem;">
-        <div style="flex: 1;">
-            <article class="event-item" style="border-bottom:0;">
-                <img class="event-thumb" src="img/maraton2022.jpg" alt="Maratón de Montevideo 2022">
-                <div>
-                    <p style="margin:0.25rem 0;"><strong>Ciudad:</strong> Montevideo</p>
-                    <p style="margin:0.25rem 0;"><strong>País:</strong> Uruguay</p>
-                    <p style="margin:0.25rem 0;"><strong>Sigla:</strong> MARATON22</p>
-                    <p style="margin:0.25rem 0;"><strong>Fecha Inicio:</strong> 08/05/2022</p>
-                    <p style="margin:0.25rem 0;"><strong>Fecha Fin:</strong> 08/05/2022</p>
-                    <p style="margin:0.25rem 0;"><strong>Fecha Alta:</strong> 21/04/2022</p>
-                </div>
-            </article>
-
-            <div class="panel" style="margin-top: 1rem; max-width: 200px;">
-                <div class="panel-header">Tipos de registro</div>
-                <div class="panel-body">
-                    <ul class="menu-list" style="margin-left: 0;">
-                        <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 10K</a></li>
-                        <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 21K</a></li>
-                        <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 42K</a></li>
+            <aside class="sidebar">
+                <div class="panel sidebar">
+                    <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
+                    <ul class="menu-list">
+                        <li><a href="#" style="white-space: nowrap;">Registro a Edición</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>
 
-     <div style="width: 250px; display: flex; flex-direction: column; gap: 2rem;">
-    <div>
-        <h3 style="color: #182080; margin-bottom: 1rem;">Evento</h3>
-        <div style="padding: 0.5rem;">
-            <img src="img/maraton.webp" alt="Logo evento" style="width: 100px; height: auto;">
-        </div>
-    </div>
+                <div class="panel sidebar">
+                    <div class="panel-header">Categorías</div>
+                    <ul class="menu-list">
+                        <li><a href="#">Tecnología</a></li>
+                        <li><a href="#">Innovación</a></li>
+                        <li><a href="#">Literatura</a></li>
+                        <li><a href="#">Cultura</a></li>
+                        <li><a href="#">Música</a></li>
+                        <li><a href="#">Deporte</a></li>
+                        <li><a href="#">Salud</a></li>
+                        <li><a href="#">Entretenimiento</a></li>
+                        <li><a href="#">Agro</a></li>
+                        <li><a href="#">Negocios</a></li>
+                    </ul>
+                </div>
+            </aside>
 
-    <div>
-        <h3 style="color: #182080; margin-bottom: 1rem;">Organizador</h3>
-        <div style="padding: 0.5rem;">
-            <img src="img/imm.webp" alt="Logo organizador" style="width: 100px; height: auto;">
-        </div>
-    </div>
+            <main>
+                <section class="panel">
+                    <div class="panel-body">
+                        <!-- Contenedor dinámico -->
+                        <div id="edicion-detalle" class="event-detail"></div>
 
-    <div>
-        <h3 style="color: #182080; margin-bottom: 1rem;">Patrocinios</h3>
-        <div style="padding: 0.5rem;">
-            <img src="img/adidas.png" alt="Logo patrocinio" style="width: 100px; height: auto;">
-        </div>
-    </div>
-</div>
+                        <div class="panel" style="margin-top: 1rem; max-width: 200px;">
+                            <div class="panel-header">Tipos de registro</div>
+                            <div class="panel-body">
+                                <ul class="menu-list" style="margin-left: 0;">
+                                    <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 10K</a></li>
+                                    <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 21K</a></li>
+                                    <li><a href="#" style="display: block; padding: 0.5rem 0;">Corredor 42K</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </main>
         </div>
     </div>
+
     <script>
-    function getParam(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name);
-    }
-    const nombre = getParam('nombre') || '';
-    const img = getParam('img') || '';
-    const fecha = getParam('fecha') || '';
-    const lugar = getParam('lugar') || '';
-    const evento = getParam('evento') || '';
-    const detalle = document.getElementById('edicion-detalle');
-    if(detalle) {
-      detalle.innerHTML = `
-        <img src="${img}" alt="${nombre}" style="max-width:320px;border-radius:10px;margin-bottom:1rem;" />
-        <h2 style="color:#182080;font-size:2rem;font-family:'Inter',sans-serif;margin-bottom:0.5rem;">${nombre}</h2>
-        <p style="margin:0.25rem 0;"><strong>Evento:</strong> ${evento}</p>
-        <p style="margin:0.25rem 0;"><strong>Fecha:</strong> ${fecha}</p>
-        <p style="margin:0.25rem 0;"><strong>Lugar:</strong> ${lugar}</p>
-      `;
-    }
-  </script>
+        
+        function getParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+        }
+
+        const id = getParam("id");
+
+        fetch("ediciones.json")
+        .then(res => res.json())
+        .then(data => {
+            const edicion = data.ediciones.find(e => e.id === id);
+            if (!edicion) return;
+
+            const detalle = document.getElementById("edicion-detalle");
+            detalle.innerHTML = `
+            <img src="${edicion.img}" alt="${edicion.nombre}" style="max-width:320px;border-radius:10px;margin-bottom:1rem;" />
+            <h2 style="color:#182080;font-size:2rem;font-family:'Inter',sans-serif;margin-bottom:0.5rem;">${edicion.nombre}</h2>
+            <p><strong>Evento:</strong> ${edicion.evento}</p>
+            <p><strong>Ciudad:</strong> ${edicion.ciudad}</p>
+            <p><strong>País:</strong> ${edicion.pais}</p>
+            <p><strong>Sigla:</strong> ${edicion.sigla}</p>
+            <p><strong>Fecha Inicio:</strong> ${edicion.fechaInicio}</p>
+            <p><strong>Fecha Fin:</strong> ${edicion.fechaFin}</p>
+            <p><strong>Fecha Alta:</strong> ${edicion.fechaAlta}</p>
+            <p><strong>Lugar:</strong> ${edicion.lugar}</p>
+            <p><strong>Descripción:</strong> ${edicion.descripcion}</p>
+            `;
+
+            // Render de tipos de registro
+            const listaTipos = document.querySelector(".panel-body ul.menu-list");
+            if (listaTipos) {
+            listaTipos.innerHTML = edicion.tiposRegistro.map(t =>
+                `<li><a href="#">${t}</a></li>`
+            ).join("");
+            }
+        });
+
+    </script>
 </body>
 </html>
-
