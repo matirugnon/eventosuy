@@ -13,7 +13,7 @@
 <body>
     <div>
         <header class="header">
-            <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+            <h1>eventos.uy</h1>
             <div class="header-right">
                 <div class="user-badge">
                     <img src="img/fotoMujer.webp" alt="vale23" class="avatar">
@@ -104,27 +104,6 @@
             </main>
         </div>
     </div>
-    <script>
-    function getParam(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name);
-    }
-    const nombre = getParam('nombre') || '';
-    const img = getParam('img') || '';
-    const fecha = getParam('fecha') || '';
-    const lugar = getParam('lugar') || '';
-    const evento = getParam('evento') || '';
-    const detalle = document.getElementById('edicion-detalle');
-    if(detalle) {
-      detalle.innerHTML = `
-        <img src="${img}" alt="${nombre}" style="max-width:320px;border-radius:10px;margin-bottom:1rem;" />
-        <h2 style="color:#182080;font-size:2rem;font-family:'Inter',sans-serif;margin-bottom:0.5rem;">${nombre}</h2>
-        <p style="margin:0.25rem 0;"><strong>Evento:</strong> ${evento}</p>
-        <p style="margin:0.25rem 0;"><strong>Fecha:</strong> ${fecha}</p>
-        <p style="margin:0.25rem 0;"><strong>Lugar:</strong> ${lugar}</p>
-      `;
-    }
-  </script>
 </body>
 </html>
 

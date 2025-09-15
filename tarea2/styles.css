@@ -182,27 +182,6 @@ main {
   color: #182080;
 }
 
-/* Bloque extra debajo del login */
-.auth-extra {
-  margin-top: 2rem;
-  text-align: center;
-}
-.auth-extra-title {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: #333;
-  font-size: 1rem;
-}
-.auth-extra-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-.auth-extra-buttons .btn-primary,
-.auth-extra-buttons .btn-outline {
-  min-width: 140px;
-}
-
 /* Grupo de campos del formulario de login */
 .auth-form .form-group {
   display: flex;
