@@ -28,7 +28,7 @@
   }
 </style>
   
-</style>
+
 </head>
 <body>
 <header class="header">
@@ -66,11 +66,26 @@
 
           <!-- Info tipo registro -->
 		<div id="infoTipoRegistro" class="info-box hidden">
-  			<h3>Descripción</h3>
-  			<p id="descripcionTipoRegistro" style="white-space: pre-wrap;"></p>
-  			<p><strong>Costo:</strong> <span id="costoTipoRegistro"></span> UYU</p>
-  			<p><strong>Cupo:</strong> <span id="cupoTipoRegistro"></span></p>
-		</div>
+  <h3>Descripción</h3>
+
+  <div id="desc-corredor10k" class="desc-tipo hidden" style="white-space: pre-wrap;">
+    Participación en carrera de 10 kilómetros. Ideal para corredores principiantes.
+    <p><strong>Costo:</strong> 300.00 UYU</p>
+    <p><strong>Cupo:</strong> 150</p>
+  </div>
+
+  <div id="desc-corredor21k" class="desc-tipo hidden" style="white-space: pre-wrap;">
+    Participación en media maratón de 21 kilómetros. Nivel intermedio.
+    <p><strong>Costo:</strong> 750.00 UYU</p>
+    <p><strong>Cupo:</strong> 250</p>
+  </div>
+
+  <div id="desc-corredor42k" class="desc-tipo hidden" style="white-space: pre-wrap;">
+    Participación en maratón completa de 42 kilómetros. Nivel avanzado.
+    <p><strong>Costo:</strong> 1200.00 UYU</p>
+    <p><strong>Cupo:</strong> 100</p>
+  </div>
+</div>
 		
 		
 		
@@ -117,14 +132,15 @@
             <span class="label-text">Código de Patrocinio *</span>
             <input id="codigoPatrocinio" name="codigoPatrocinio" type="text" maxlength="20" placeholder="Código único" required />
           </label>
-
+		</div>
+          
           <div id="msg" style="color:#c00; margin-top:1rem; min-height:1.5rem;"></div>
 
           <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
             <button type="submit" class="btn-primary" style="flex: 1;">Crear patrocinio</button>
             <button type="button" class="btn-outline" onclick="window.location.href='index.html'">Cancelar</button>
           </div>
-        </div>
+        
       </form>
     </section>
   </main>
@@ -135,77 +151,77 @@
 	  const tipoRegistroSelect = document.getElementById('tipoRegistro');
 	  const formDetalles = document.getElementById('formDetalles');
 	  const infoTipoRegistroDiv = document.getElementById('infoTipoRegistro');
-	  const descripcionTipoRegistroP = document.getElementById('descripcionTipoRegistro');
-	  const costoTipoRegistroSpan = document.getElementById('costoTipoRegistro');
-	  const cupoTipoRegistroSpan = document.getElementById('cupoTipoRegistro');
 	  const msg = document.getElementById('msg');
 
-	  const tiposRegistro = {
-	    corredor10k: {
-	      descripcion: "Participación en carrera de 10 kilómetros. Ideal para corredores principiantes.",
-	      costo: 300,
-	      cupo: 150
-	    },
-	    corredor21k: {
-	      descripcion: "Participación en media maratón de 21 kilómetros. Nivel intermedio.",
-	      costo: 750,
-	      cupo: 250
-	    },
-	    corredor42k: {
-	      descripcion: "Participación en maratón completa de 42 kilómetros. Nivel avanzado.",
-	      costo: 1200,
-	      cupo: 100
-	    }
-	  };
+	  const descTipos = document.querySelectorAll('.desc-tipo');
 
 	  tipoRegistroSelect.addEventListener('change', () => {
 	    const seleccionado = tipoRegistroSelect.value;
-	    if (seleccionado && tiposRegistro[seleccionado]) {
-	      const tipo = tiposRegistro[seleccionado];
-	      descripcionTipoRegistroP.textContent = tipo.descripcion;
-	      costoTipoRegistroSpan.textContent = tipo.costo.toFixed(2);
-	      cupoTipoRegistroSpan.textContent = tipo.cupo;
+
+	    // Oculto todo por defecto
+	    descTipos.forEach(div => div.classList.add('hidden'));
+
+	    if (seleccionado) {
+	      // Mostrar info general y el div específico
 	      infoTipoRegistroDiv.classList.remove('hidden');
 	      formDetalles.classList.remove('hidden');
+
+	      const divMostrar = document.getElementById(`desc-${seleccionado}`);
+	      if (divMostrar) divMostrar.classList.remove('hidden');
 	    } else {
 	      infoTipoRegistroDiv.classList.add('hidden');
 	      formDetalles.classList.add('hidden');
-	      descripcionTipoRegistroP.textContent = '';
-	      costoTipoRegistroSpan.textContent = '';
-	      cupoTipoRegistroSpan.textContent = '';
 	    }
+
+	    msg.textContent = '';
 	  });
 
 	  document.getElementById('formPatrocinio').addEventListener('submit', e => {
-	    e.preventDefault();
-	    msg.style.color = '#c00';
-	    msg.textContent = '';
+		  e.preventDefault();
+		  msg.style.color = '#c00';
+		  msg.textContent = '';
 
-	    const form = e.target;
-	    if (!form.checkValidity()) {
-	    	  form.reportValidity(); 
-	    	  msg.textContent = 'Por favor complete todos los campos correctamente.';
-	    	  return;
-	    	}
+		  const form = e.target;
 
-	    const tipoRegistro = tipoRegistroSelect.value;
-	    const aporte = parseFloat(form.aporteEconomico.value);
-	    const registrosGratis = parseInt(form.registrosGratuitos.value);
-	    const costoRegistro = tiposRegistro[tipoRegistro].costo;
+		  if (!form.checkValidity()) {
+		    form.reportValidity();
+		    msg.textContent = 'Por favor complete todos los campos correctamente.';
+		    return;
+		  }
 
-	    if (registrosGratis * costoRegistro > aporte * 0.20) {
-	      msg.textContent = '⚠️ El costo de los registros gratuitos supera el 20% del aporte económico.';
-	      return;
-	    }
+		  const tipoRegistro = tipoRegistroSelect.value;
+		  const aporte = parseFloat(form.aporteEconomico.value);
+		  const registrosGratis = parseInt(form.registrosGratuitos.value);
 
-	    // Aquí validar existencia de patrocinio duplicado si quieres...
+		  const costos = {
+		    corredor10k: 300,
+		    corredor21k: 750,
+		    corredor42k: 1200
+		  };
 
-	    msg.style.color = '#2a7f2e';
-	    msg.textContent = '✅ Patrocinio registrado correctamente (simulado).';
+		  const costoRegistro = costos[tipoRegistro];
 
-	    setTimeout(() => window.location.href = 'index.html', 1500);
-	  });
+		  if (registrosGratis * costoRegistro > aporte * 0.20) {
+		    msg.textContent = '⚠️ El costo de los registros gratuitos supera el 20% del aporte económico.';
+		    return;
+		  }
+
+		  msg.style.color = '#2a7f2e';
+		  msg.textContent = '✅ Patrocinio registrado correctamente (simulado).';
+
+		  setTimeout(() => {
+		    window.location.href = 'edicionesOrganizadasEvento.html';
+		  }, 1500);
+		});
+
+		// Botón cancelar
+		document.querySelector('.btn-outline').addEventListener('click', () => {
+		  window.location.href = 'edicionesOrganizadasEvento.html';
+		});
+
+
 	})();
+
 </script>
 
 </body>
