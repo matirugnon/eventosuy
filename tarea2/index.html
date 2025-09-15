@@ -53,7 +53,7 @@
     </div>
     <script>
         // Cargar eventos desde eventos.json y mostrarlos
-        fetch('json/eventos.json')
+        fetch('eventos.json')
             .then(response => response.json())
             .then(eventos => {
                 const contenedor = document.getElementById('eventos-list');
