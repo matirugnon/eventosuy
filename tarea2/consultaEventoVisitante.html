@@ -70,23 +70,18 @@
         <p style="margin:0.25rem 0;"><strong>Fecha Alta:</strong> ${fecha}</p>
       </div>
     `;
-
+    // Render ediciones (simulado)
     const ediDiv = document.getElementById('ediciones-detalle');
-
-    fetch("ediciones.json")
-      .then(res => res.json())
-      .then(data => {
-        // filtrar solo las ediciones del evento actual
-        const ediciones = data.ediciones.filter(e => e.evento === titulo);
-
-        ediDiv.innerHTML = ediciones.map(e => `
-          <a class="mini-card" href="consultaEdicion.html?id=${e.id}">
-            <img src="${e.img}" alt="${e.nombre}" />
-            <div class="mini-card-title">${e.nombre}</div>
-          </a>
-        `).join('');
-      });
-
+    const ediciones = [
+      { nombre: titulo + ' 2024', img: imagen, fecha: '2024-07-15', lugar: lugar },
+      { nombre: titulo + ' 2023', img: imagen, fecha: '2023-07-15', lugar: lugar }
+    ];
+    ediDiv.innerHTML = ediciones.map((e, idx) => `
+      <a class="mini-card" href="#" id="edicion-${idx}">
+        <img src="${e.img}" alt="${e.nombre}" />
+        <div class="mini-card-title">${e.nombre}</div>
+      </a>
+    `).join('');
     // Agregar evento click para cada edición
     ediciones.forEach((e, idx) => {
       const a = document.getElementById(`edicion-${idx}`);
@@ -98,8 +93,7 @@
             img: e.img,
             fecha: e.fecha,
             lugar: e.lugar,
-            descripcion: e.descripcion,
-            evento: e.evento
+            evento: titulo
           }).toString();
           window.location.href = `consultaEdicion.html?${params}`;
         };
