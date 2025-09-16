@@ -8,17 +8,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* Agrandar caja de usuarios solo para esta página */
+    .auth-card {
+      width: 800px;
+      max-width: 95%;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
   <div>
     <header class="header">
       <h1>eventos.uy</h1>
-
       <div>
         <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
         <a href="altadeusuario.html" class="btn-primary">Registrarse</a>
         <a href="listarUsuarios.html" class="btn-primary">Usuario</a>
-        
       </div>
     </header>
 
@@ -39,9 +45,39 @@
                     <th style="padding:.5rem;">Acciones</th>
                   </tr>
                 </thead>
-                <tbody id="tbodyUsuarios"></tbody>
+                <tbody>
+                  <!-- US01 — Asistente -->
+                  <tr style="border-bottom:1px solid #eee;">
+                    <td style="padding:.5rem;">
+                      <img src="img/IMG-US01.jpg" alt="Avatar de atorres"
+                           style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
+                    </td>
+                    <td style="padding:.5rem;">atorres</td>
+                    <td style="padding:.5rem;">Ana</td>
+                    <td style="padding:.5rem;">Asistente</td>
+                    <td style="padding:.5rem;">
+                      <a class="btn-primary" href="perfilUsuario-atorres.html">Seleccionar</a>
+                    </td>
+                  </tr>
+
+                  <!-- US04 — Organizador -->
+                  <tr>
+                    <td style="padding:.5rem;">
+                      <img src="img/IMG-US04.jpeg" alt="Avatar de miseventos"
+                           style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
+                    </td>
+                    <td style="padding:.5rem;">miseventos</td>
+                    <td style="padding:.5rem;">MisEventos</td>
+                    <td style="padding:.5rem;">Organizador</td>
+                    <td style="padding:.5rem;">
+                      <a class="btn-primary" href="perfilUsuario-miseventos.html">Seleccionar</a>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
+
+            
           </div>
         </section>
       </main>
@@ -49,70 +85,5 @@
   </div>
 
   <footer></footer>
-
-  <script>
-    // Hardcode Parte 1
-    const USERS = [
-      {
-        nick: "organizador1",
-        nombre: "Laura Pérez",
-        email: "laura@example.com",
-        rol: "organizador",
-        avatar: "img/organizador1.jpg",
-        descripcion: "Organizadora de eventos culturales y deportivos.",
-        web: "https://mi-sitio.org",
-        ediciones: [
-          { nombre: "Concierto de Rock 2025", estado: "Aceptada" },
-          { nombre: "Festival de Jazz 2025", estado: "Ingresada" },
-          { nombre: "Congreso Tech 2024", estado: "Rechazada" }
-        ]
-      },
-      {
-        nick: "asistente1",
-        nombre: "Diego Luna",
-        email: "diego@example.com",
-        rol: "asistente",
-        avatar: "img/asistente1.jpg",
-        apellido: "Luna",
-        nacimiento: "1999-10-12",
-        institucion: "Udelar",
-        registros: [
-          { edicion: "Concierto de Rock 2025", tipo: "General", costo: 1500, patrocinio: false, fecha: "2025-09-01" },
-          { edicion: "Festival de Jazz 2025",  tipo: "Estudiante", costo:   0, patrocinio:  true, fecha: "2025-09-05" }
-        ]
-      },
-      {
-        nick: "organizador2",
-        nombre: "Ana Silva",
-        email: "ana@example.com",
-        rol: "organizador",
-        avatar: "img/organizador2.jpg",
-        descripcion: "Productora ejecutiva.",
-        web: "https://ana-producciones.com",
-        ediciones: [
-          { nombre: "Expo Tecnología 2025", estado: "Aceptada" }
-        ]
-      }
-    ];
-
-    // Guardamos los datos para que perfilUsuario los lea (opcional pero cómodo en Parte 1)
-    localStorage.setItem('USERS_MOCK', JSON.stringify(USERS));
-
-    const tbody = document.getElementById('tbodyUsuarios');
-    tbody.innerHTML = USERS.map(u => `
-      <tr style="border-bottom:1px solid #eee;">
-        <td style="padding:.5rem;">
-          <img src="${u.avatar || 'img/user.png'}" alt="avatar"
-               style="width:48px;height:48px;border-radius:50%;object-fit:cover;"/>
-        </td>
-        <td style="padding:.5rem;">${u.nick}</td>
-        <td style="padding:.5rem;">${u.nombre}</td>
-        <td style="padding:.5rem; text-transform:capitalize;">${u.rol}</td>
-        <td style="padding:.5rem;">
-          <a class="btn-primary" href="perfilUsuario.html?nick=${encodeURIComponent(u.nick)}">Seleccionar</a>
-        </td>
-      </tr>
-    `).join('');
-  </script>
 </body>
 </html>
