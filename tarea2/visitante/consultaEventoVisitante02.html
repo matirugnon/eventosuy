@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mi perfil · eventos.uy</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Evento · eventos.uy</title>
+  <link rel="stylesheet" href="../styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
@@ -16,31 +16,38 @@
       <h1>eventos.uy</h1>
      
     <div class="header-right">
-  <div class="user-badge">
-    <img class="avatar" src="img/IMG-US04.jpeg" alt="Avatar de luissuarez9" />
-    <span class="nickname"> MisEventos</span>
-  </div>
-  <a href="login.html" class="btn-primary">Cerrar sesión</a>
-</div>
+      <a href="../iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
+      <a href="../altadeusuario.html" class="btn-primary">Registrarse</a>
+    </div>
     </header>
 
     <div class="content">
       <aside class="sidebar">
          <div class="panel sidebar">
-        <div class="panel-header">Mi perfil</div>
-        <ul class="menu-list">
-          <li><a href="altaEvento.html">Alta Evento</a></li>
-          <li><a href="#">Alta Edición</a></li>
-          <li><a href="#">Alta Institución</a></li>
-        </ul>
-                    <div class="panel-header">Categorías</div>
-                    <ul class="menu-list">
-                        <li><a href="#">Tecnología</a></li>
-                        <li><a href="#">Innovación</a></li>
-                        <li><a href="#">Salud</a></li>
-                        <li><a href="#">Deporte</a></li>
-                    </ul>
-                </div>
+            <div class="panel-header">Categorías</div>
+            <ul class="menu-list">
+                <li><a href="tecnologia.html">Tecnología</a></li>
+                <li><a href="innovacion.html">Innovación</a></li>
+                <li><a href="salud.html">Salud</a></li>
+                <li><a href="deporte.html">Deporte</a></li>
+            </ul>
+          </div>
+        <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+          <a href="../listarUsuarios.html" style="
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: #182080;
+              font-weight: 600;
+              text-decoration: none;
+              padding: 0.75rem;
+              border-radius: 6px;
+              transition: background-color 0.2s;
+              background-color: rgba(24, 32, 128, 0.05);
+          ">
+            Ver listado de usuarios
+          </a>
+        </div>
       </aside>
 
       <main>
@@ -49,7 +56,7 @@
 
           <div class="event-detail">
             <article class="event-item" style="border-bottom:0;">
-              <img src="img/IMG-EV04.png">
+              <img src="../img/IMG-EV04.png">
               <div>
                 <h3 style="margin:0 0 0.25rem 0;">Maraton de Montevideo</h3>
                 <p style="margin:0.25rem 0;"><strong>Descripción:</strong> Competencia deportiva anual en la capital</p>
@@ -61,12 +68,12 @@
             <div>
               <div class="panel-header" style="border-radius:10px 10px 0 0;">Ediciones</div>
               <div class="panel-body event-editions">
-                <a class="mini-card" href="#">
-                      <img src="img/IMG-EDEV03.jpeg" alt="Concierto de Rock 2023" />
+                <a class="mini-card" href="consultaEdicionVisitanteEv02Ed01.html">
+                      <img src="../img/IMG-EDEV03.jpeg" alt="Concierto de Rock 2023" />
                   <div class="mini-card-title"> Maraton de Montevideo 2024</div>
                 </a>
-                <a class="mini-card" href="#">
-                  <img src="img/IMG-EDEV04.jpeg" alt="Concierto de Rock 2023" />
+                <a class="mini-card" href="consultaEdicionVisitanteEv02Ed02.html">
+                  <img src="../img/IMG-EDEV04.jpeg" alt="Concierto de Rock 2023" />
                   <div class="mini-card-title"> Maraton de Montevideo 2022</div>
                 </a>
               </div>
@@ -81,4 +88,3 @@
   <footer></footer>
 </body>
 </html>
-
