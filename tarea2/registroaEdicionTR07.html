@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro a Edición · eventos.uy</title>
+  <title>Registro a Edición - Maratón de Montevideo 2024 - Corredor 21K · eventos.uy</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,12 +25,15 @@
     <main>
       <section class="auth-container">
         <div class="auth-card">
-          <h2>Registro a Edición: Concierto Rock 2024</h2>
+          <h2>Registro a Edición: Maratón de Montevideo 2024</h2>
+			<p style="font-size: 1rem; color: #182080; margin: 0 0 1.5rem 0;">
+  				Tipo de Registro: <strong>Corredor 21K</strong>
+			</p>
 
           <form id="formRegistro" class="auth-form" novalidate>
-            <!-- Tipo de registro -->
+            <!-- Opción -->
             <label class="form-group">
-              <span class="label-text">Tipo de Registro *</span>
+              <span class="label-text">Opción *</span>
               <select name="tipoRegistro" id="tipoRegistro" required>
                 <option value="">Seleccione una opción...</option>
                 <option value="general">General</option>
@@ -38,7 +41,7 @@
               </select>
             </label>
 
-            <!-- Código de patrocinio: oculto inicialmente -->
+            <!-- Código de patrocinio -->
             <label class="form-group" id="campoCodigo" style="display:none;">
               <span class="label-text">Código de patrocinio *</span>
               <input type="text" name="codigoPatrocinio" id="codigoPatrocinio" placeholder="Ingrese el código" />
@@ -47,9 +50,9 @@
             <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
 
             <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
-    <button type="submit" class="btn-primary" style="flex: 1;">Registrar</button>
-    <button type="button" class="btn-outline" onclick="window.location.href='consultaTipodeRegistroAsistente.html'">Cancelar</button>
-  </div>
+              <button type="submit" class="btn-primary" style="flex: 1;">Registrar</button>
+              <button type="button" class="btn-outline" onclick="window.location.href='consultaTipodeRegistroAsistenteTR07.html'">Cancelar</button>
+            </div>
           </form>
         </div>
       </section>
@@ -64,7 +67,6 @@
       const form = document.getElementById('formRegistro');
       const msg = document.getElementById('msg');
 
-      // Mostrar u ocultar el campo código según selección
       tipoRegistro.addEventListener('change', () => {
         if (tipoRegistro.value === 'codigo') {
           campoCodigo.style.display = 'block';
@@ -78,22 +80,19 @@
       });
 
       form.addEventListener('submit', (e) => {
-    	  e.preventDefault();
-    	  msg.style.color = '#c00';
-    	  msg.textContent = '';
+        e.preventDefault();
+        msg.style.color = '#c00';
+        msg.textContent = '';
 
-    	  if (!form.checkValidity()) {
-    	    form.reportValidity();
-    	    return;
-    	  }
-        
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
 
-        // Simular éxito
         msg.style.color = '#2a7f2e';
         msg.textContent = '✅ Registro completado correctamente (simulado).';
 
-        // Simular redirección después de 1.5 segundos
-        setTimeout(() => window.location.href = 'consultaTipodeRegistroAsistente.html', 1200);
+        setTimeout(() => window.location.href = 'consultaTipodeRegistroAsistenteTR07.html', 1200);
       });
     })();
   </script>

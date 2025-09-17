@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Alta de Tipo de Registro EDEV03 · eventos.uy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+</head>
+<body>
+ <header class="header">
+  <h1>eventos.uy</h1>
+  <div class="header-right">
+    <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+      <img src="img/IMG-US04.jpeg" alt="MisEventos" class="avatar">
+      <span class="nickname">MisEventos</span>
+      <a href="login.html" class="btn-primary">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
+
+
+  <div class="content single">
+    <main>
+      <section class="auth-container">
+        <div class="auth-card">
+          <h2>Alta de Tipo de Registro - Maratón de Montevideo 2024</h2>
+
+          <form id="formAltaTipoRegistro" class="auth-form" novalidate>
+            <!-- Edición fija -->
+            <label class="form-group">
+              <span class="label-text">Edición</span>
+              <input name="edicion" value="Maratón de Montevideo 2024" readonly />
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Nombre del tipo de registro *</span>
+              <input name="nombre" required maxlength="60" placeholder="Nombre único"/>
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Descripción *</span>
+              <textarea name="descripcion" required rows="3" maxlength="300" placeholder="Descripción del tipo de registro…"></textarea>
+            </label>
+
+            <div class="grid-2">
+              <label class="form-group">
+                <span class="label-text">Costo (UYU) *</span>
+                <input name="costo" type="number" min="0" step="0.01" required placeholder="0.00"/>
+              </label>
+              <label class="form-group">
+                <span class="label-text">Cupo *</span>
+                <input name="cupo" type="number" min="1" step="1" required placeholder="Ej. 100"/>
+              </label>
+            </div>
+
+            <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
+
+            <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
+              <button type="submit" class="btn-primary" style="flex: 1;">Alta Tipo de Registro</button>
+              <button type="button" class="btn-outline" onclick="window.location.href='listaEdicionesOrganizadasAltaTipo.html'">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById('formAltaTipoRegistro');
+      const msg = document.getElementById('msg');
+
+      function validarFormulario() {
+        msg.textContent = '';
+        return form.reportValidity()
+      }
+      
+
+       
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!validarFormulario()) return;
+
+        msg.style.color = '#2a7f2e';
+        msg.textContent = '✅ Tipo de registro creado correctamente (simulado).';
+        setTimeout(() => {
+          window.location.href = 'listaEdicionesOrganizadasAltaTipo.html';
+        }, 1200);
+      });
+    })();
+  </script>
+</body>
+</html>
