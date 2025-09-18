@@ -12,14 +12,14 @@
 <body>
   <div>
     <header class="header">
-      <h1>eventos.uy</h1>
-      <div class="header-right">
-        <a href="login.html" class="btn-primary">Cerrar sesión</a>
-        <div class="user-badge">
-          <img class="avatar" src="../img/suarez.jpg" alt="Avatar organizador" />
-          <span class="nickname">luissuarez9</span>
-        </div>
-      </div>
+      	<h1>eventos.uy</h1>
+      	<div class="header-right">
+  			<a href="../iniciodesesion.html" class="btn-primary">Cerrar sesión</a>
+  			<div class="user-badge">
+    			<img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar organizador miseventos" />
+    			<span class="nickname">miseventos</span>
+  			</div>
+		</div>
     </header>
 
     <div class="content">
@@ -27,8 +27,8 @@
         <div class="panel sidebar">
           <div class="panel-header">Mi perfil</div>
         <ul class="menu-list">
-          <li><a href="altaEvento.html">Alta Evento</a></li>
-          <li><a href="#">Alta Edición</a></li>
+          
+          <li><a href="altaEdicion.html">Alta Edición</a></li>
           <li><a href="#">Alta Institución</a></li>
         </ul>
         </div>
@@ -71,22 +71,25 @@
           <div class="panel-header">Alta de Evento</div>
           <div class="panel-body">
             <form id="formEvento" class="auth-form" novalidate>
-              <div class="grid-2">
-                <label class="form-group">
-                  <span class="label-text">Nombre del evento *</span>
-                  <input name="nombre" required maxlength="120" placeholder="p.ej. Concierto de Rock" />
-                </label>
+  				<div class="grid-2">
+    				<label class="form-group">
+      					<span class="label-text">Nombre del evento *</span>
+      					<input name="nombre" type="text" required maxlength="120"
+             			placeholder="p.ej. Concierto de Rock" />
+    				</label>
 
-                <label class="form-group">
-                  <span class="label-text">Sigla *</span>
-                  <input name="sigla" required maxlength="15" placeholder="p.ej. CR2025" />
-                </label>
-              </div>
+    				<label class="form-group">
+      					<span class="label-text">Sigla *</span>
+      					<input name="sigla" type="text" required maxlength="15"
+             			placeholder="p.ej. CR2025" />
+    				</label>
+  				</div>
 
-              <label class="form-group">
-                <span class="label-text">Descripción *</span>
-                <textarea name="descripcion" rows="3" maxlength="800" required placeholder="Breve descripción del evento…"></textarea>
-              </label>
+  				<label class="form-group">
+    				<span class="label-text">Descripción *</span>
+    				<textarea name="descripcion" rows="3" maxlength="800" required
+              		placeholder="Breve descripción del evento…"></textarea>
+  				</label>
 
               <div class="form-group">
                 <span class="label-text">Categorías (elige al menos una) *</span>
