@@ -13,20 +13,18 @@
     .table { width:100%; border-collapse: collapse; }
     .table th, .table td { padding:.6rem; border-bottom:1px solid #ddd; text-align:left; }
     .btn-outline { display:inline-block; padding:.4rem .7rem; border:1px solid #ccc; border-radius:10px; text-decoration:none; }
-
   </style>
 </head>
 <body>
   <div>
-    <header class="header">
-      <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
-      <nav>
-      
-      </nav>
-      <div>
-        <a href="../iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
-        <a href="../altadeusuario.html" class="btn-primary">Registrarse</a>
-     
+       <header class="header">
+      <a href="principalOrganizador.html"><h1>eventos.uy</h1></a>
+      <div class="header-right">
+        <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+          <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar de organizador" />
+          <span class="nickname">MisEventos</span>
+          <a href="../index.html" class="btn-primary">Cerrar sesión</a>
+        </div>
       </div>
     </header>
 
@@ -51,7 +49,7 @@
             </div>
 
             <!-- Ediciones (solo Aceptadas para esta Parte 1) -->
-            <h3 style="margin-top:1rem; color:#182080;">Ediciones del organizador</h3>
+            <h3 style="margin-top:1rem; color:#182080;">Ediciones del organizador (Aceptadas)</h3>
             <table class="table">
               <thead>
                 <tr>
@@ -67,45 +65,27 @@
                   <td>Maratón de Montevideo</td>
                   <td>Maratón de Montevideo 2024 (EDEV03)</td>
                   <td>MARATON24</td>
-                  <td><a class="btn-consultar" href="consultaedicion.html">Consultar</a></td>
+                  <td><a class="btn-outline" href="consultaedicion.html">Consultar edición</a></td>
                 </tr>
                 <!-- EDEV08 -->
                 <tr>
                   <td>Conferencia de Tecnología</td>
                   <td>Tecnología Punta del Este 2026 (EDEV08)</td>
                   <td>CONFTECH26</td>
-                  <td><a class="btn-consultar" href="consultaedicion.html">Consultar</a></td>
+                  <td><a class="btn-outline" href="consultaedicion.html">Consultar edición</a></td>
                 </tr>
                 <!-- EDEV10 -->
                 <tr>
                   <td>Conferencia de Tecnología</td>
                   <td>Web Summit 2026 (EDEV10)</td>
                   <td>WS26</td>
-                  <td><a class="btn-consultar" href="consultaedicion.html">Consultar</a></td>
+                  <td><a class="btn-outline" href="consultaedicion.html">Consultar edición</a></td>
                 </tr>
-                <!-- EDEV04 -- recjazada --> 
-                <tr>
-                  <td>Maratón de Montevideo</td>
-                  <td>Maratón de Montevideo 2022</td>
-                  <td>MARATON2022</td>
-                  <td><a class="btn-rechazada">Rechazada</a></td>
-                </tr>
-
-                <!-- EDEV09 -- Ingresada --> 
-                <tr>
-                  <td>Conferencia de tecnologia</td>
-                  <td>Mobile World Congress 2025</td>
-                  <td>MWC</td>
-                  <td><a class="btn-ingresada">Ingresada</a></td>
-                </tr>
-
-
               </tbody>
             </table>
 
             <div style="margin-top:1rem;">
-              <a class="btn-primary" href="listarUsuarios.html">← Volver al listado</a>
-
+              <a class="btn-primary" href="listarUsuariosOrganizador.html">← Volver al listado</a>
             </div>
           </div>
         </section>

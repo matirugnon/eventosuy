@@ -1,3 +1,55 @@
+/* Botones de estado para ediciones */
+.btn-rechazada {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #e74c3c;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#e74c3c;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #e74c3c22;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-rechazada:hover {
+  background:#c0392b;
+  border-color:#c0392b;
+}
+.btn-ingresada {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #f39c12;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#f39c12;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #f39c1222;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-ingresada:hover {
+  background:#d35400;
+  border-color:#d35400;
+}
+.btn-consultar {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #182080;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#182080;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #18208022;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-consultar:hover {
+  background:#0f155a;
+  border-color:#0f155a;
+}
 /* Elimina todos los estilos por defecto del navegador */
 * {
 	margin: 0;
@@ -74,9 +126,13 @@ body { color: #000; }
 	flex-direction: row;
 }
 
-/* Variante de content a una sola columna (sin sidebar) */
-.content.single {
-	display: block;
+.single {
+  width: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Barra lateral izquierda unificada */
@@ -163,17 +219,6 @@ main {
 	padding: 50px;
   }
   
-  /* Tarjeta visual del login */
- .auth-card {
-  width: 600px;       /* más ancho */
-  max-width: 95%;     /* se adapta en pantallas chicas */
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 50px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
-  
 
 /* Título dentro de la tarjeta de login */
 .auth-card h2 {
@@ -182,39 +227,34 @@ main {
   color: #182080;
 }
 
-/* Grupo de campos del formulario de login */
-.auth-form .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.75rem;
-}
-
 /* Etiqueta de cada campo del login */
-.auth-form .label-text {
+.label-text {
   margin-bottom: 0.35rem;
   font-size: 0.9rem;
   color: #333;
 }
 
-/* Campos de entrada del login */
-.auth-form input[type="text"],
-.auth-form input[type="password"],
-.auth-form input[type="email"] {
-  height: 3rem;
+/* Campos de entrada del login menos el select */
+input:not([type="radio"]):not([type="checkbox"]), select, textarea{
+  height: 2rem;
   padding: 0 0.75rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
 }
-
-/* Estilos al enfocar los campos del login */
-.auth-form input[type="text"]:focus,
-.auth-form input[type="password"]:focus {
+input:not([type="radio"]):not([type="checkbox"]):focus {
   border-color: #4b6cf7;
   box-shadow: 0 0 0 3px rgba(75,108,247,0.08);
 }
 
+
+
+textarea {
+  min-height: 80px;
+  padding-top: 0.5rem;
+  resize: vertical;
+}
 /* Botón principal (estilo coherente con header) */
 .btn-primary {
   display: inline-block;

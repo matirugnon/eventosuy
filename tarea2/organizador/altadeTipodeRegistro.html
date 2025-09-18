@@ -1,126 +1,187 @@
 <!DOCTYPE html>
-<html lang = "es">
+<html lang="es">
+
 <head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Alta de Tipo de Registro · eventos.uy</title>
- <link rel="stylesheet" href="../styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alta de Tipo de Registro · eventos.uy</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
+
 <body>
-	 <header class="header">
-    <h1>eventos.uy</h1>
+  <header class="header">
+    <a href="principalOrganizador.html">
+      <h1>eventos.uy</h1>
+    </a>
     <div class="header-right">
+<<<<<<< HEAD
+      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+        <img src="../img/adidas.png" alt="ADIDAS" class="avatar">
+        <span class="nickname">ADIDAS</span>
+        <a href="#" class="btn-primary">Cerrar sesión</a>
+      </div>
+=======
      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-		<img src="../img/adidas.png" alt="ADIDAS" class="avatar">
-  		<span class="nickname">ADIDAS</span>
-  		<a href="#" class="btn-primary">Cerrar sesión</a>
+		<img src="../img/IMG-US04.jpeg" class="avatar">
+  		<span class="nickname">MisEventos</span>
+  		<a href="../index.html" class="btn-primary">Cerrar sesión</a>
 	</div>
+>>>>>>> 3b58d1159a2974449798595b49d63c596d57cc0e
     </div>
   </header>
- 	<div class="content single">
-  		<main>
-   			<section class="auth-container">
-    		 <div class="auth-card">
-        		<h2>Alta de Tipo de Registro</h2>
+  <div class="content single">
+    <main>
+      <section class="auth-container">
+        <div class="auth-card">
+          <h2>Alta de Tipo de Registro</h2>
 
-       			 <form id="formAltaTipoRegistro" class="auth-form" novalidate>
-          			<label class="form-group">
-  <span class="label-text">Edición *</span>
-  <select name="edicion" required>
-    <option value="">Seleccionar edición…</option>
-    <option value="rock2024">Concierto Rock 2024</option>
-    <option value="maraton2024">Maratón 2024</option>
-    <option value="teatro2024">Teatro 2024</option>
-  </select>
-	</label>
-	
-	<label class="form-group">
-  		<span class="label-text">Nombre del tipo de registro *</span>
-  		<input name="nombre" required maxlength="60" placeholder="Nombre único"/>
-	</label>
-	
-	<label class="form-group">
-  		<span class="label-text">Descripción *</span>
-  		<textarea name="descripcion" required rows="3" maxlength="300" placeholder="Descripción del tipo de registro…"></textarea>
-	</label>
-	
-	<div class="grid-2">
-  <label class="form-group">
-    <span class="label-text">Costo (UYU) *</span>
-    <input name="costo" type="number" min="0" step="0.01" required placeholder="0.00"/>
-  </label>
-  
-  <label class="form-group">
-    <span class="label-text">Cupo *</span>
-    <input name="cupo" type="number" min="1" step="1" required placeholder="Ej. 100"/>
-  </label>
-</div>
+          <form id="formAltaTipoRegistro" class="auth-form" novalidate>
+            <label class="form-group">
+              <span class="label-text">Edición *</span>
+              <select name="edicion" required>
+                <option value="">Seleccionar edición…</option>
+                <option value="rock2024">Concierto Rock 2024</option>
+                <option value="maraton2024">Maratón 2024</option>
+                <option value="teatro2024">Teatro 2024</option>
+              </select>
+            </label>
 
-<div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
+            <label class="form-group">
+              <span class="label-text">Nombre del tipo de registro *</span>
+              <input name="nombre" required maxlength="60" placeholder="Nombre único" />
+            </label>
 
-	<div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
-  <button type="submit" class="btn-primary" style="flex: 1;">Alta Tipo de Registro</button>
-  <button type="button" class="btn-outline" onclick="window.location.href='listaEdicionesOrganizadasAltaTipo.html'">Cancelar</button>
-</div>
+            <label class="form-group">
+              <span class="label-text">Descripción *</span>
+              <textarea name="descripcion" required rows="3" maxlength="300"
+                placeholder="Descripción del tipo de registro…"></textarea>
+            </label>
 
-       		 	</form>
-     		 </div>
-    		</section>
-  		</main>
-	</div>
- 	
+            <div class="grid-2">
+              <label class="form-group">
+                <span class="label-text">Costo (UYU) *</span>
+                <input name="costo" type="number" min="0" step="0.01" required placeholder="0.00" />
+              </label>
 
-<script>
-  (function () {
-	  const form = document.getElementById('formAltaTipoRegistro');
-    const msg = document.getElementById('msg');
+              <label class="form-group">
+                <span class="label-text">Cupo *</span>
+                <input name="cupo" type="number" min="1" step="1" required placeholder="Ej. 100" />
+              </label>
+            </div>
 
-    const registrosExistentes = {
-      rock2024: ['general', 'vip'],
-      maraton2024: ['participante', 'premium'],
-      teatro2024: ['platea', 'palco']
-    };
+            <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
 
-    function validarNombreUnico() {
-      const edicion = form.elements['edicion'].value;
-      const nombre = form.elements['nombre'].value.trim().toLowerCase();
-      const existentes = registrosExistentes[edicion] || [];
-      return !existentes.includes(nombre);
+            <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
+              <button type="submit" class="btn-primary" style="flex: 1;">Alta Tipo de Registro</button>
+              <button type="button" class="btn-outline"
+                onclick="window.location.href='listaEdicionesOrganizadasAltaTipo.html'">Cancelar</button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <style>
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
     }
 
-    function validarFormulario() {
-      msg.textContent = '';
-      if (!form.reportValidity()) return false;
+    .auth-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-      if (!validarNombreUnico()) {
-        msg.textContent = '⚠️ Ya existe un tipo de registro con ese nombre para esta edición.';
-        return false;
+    .auth-form .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .auth-form .form-group .label-text {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-form input[type="text"],
+    .auth-form input[type="file"],
+    .auth-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .auth-form input[type="text"]:focus,
+    .auth-form input[type="file"]:focus,
+    .auth-form textarea:focus {
+      border-color: #182080;
+      outline: none;
+      box-shadow: 0 0 3px rgba(24, 32, 128, 0.5);
+    }
+
+    .auth-form textarea {
+      resize: vertical;
+    }
+  </style>
+
+
+  <script>
+    (function () {
+      const form = document.getElementById('formAltaTipoRegistro');
+      const msg = document.getElementById('msg');
+
+      const registrosExistentes = {
+        rock2024: ['general', 'vip'],
+        maraton2024: ['participante', 'premium'],
+        teatro2024: ['platea', 'palco']
+      };
+
+      function validarNombreUnico() {
+        const edicion = form.elements['edicion'].value;
+        const nombre = form.elements['nombre'].value.trim().toLowerCase();
+        const existentes = registrosExistentes[edicion] || [];
+        return !existentes.includes(nombre);
       }
 
-      return true;
-    }
+      function validarFormulario() {
+        msg.textContent = '';
+        if (!form.reportValidity()) return false;
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      if (!validarFormulario()) return;
+        if (!validarNombreUnico()) {
+          msg.textContent = '⚠️ Ya existe un tipo de registro con ese nombre para esta edición.';
+          return false;
+        }
 
-      msg.style.color = '#2a7f2e';
-      msg.textContent = '✅ Tipo de registro creado correctamente (simulado).';
-      setTimeout(() => {
-	    window.location.href = 'listaEdicionesOrganizadasAltaTipo.html';
-    	}, 1200);
+        return true;
+      }
 
-    });
-  })();
-</script>
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!validarFormulario()) return;
 
-	
-	
- 	
+        msg.style.color = '#2a7f2e';
+        msg.textContent = '✅ Tipo de registro creado correctamente (simulado).';
+        setTimeout(() => {
+          window.location.href = 'listaEdicionesOrganizadasAltaTipo.html';
+        }, 1200);
+
+      });
+    })();
+  </script>
+
+
+
+
 
 
 </body>
+
 </html>
