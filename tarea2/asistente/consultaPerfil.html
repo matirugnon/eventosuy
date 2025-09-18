@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
@@ -22,16 +22,48 @@
             <a href="principalAsistente.html"><h1>eventos.uy</h1></a>
             <div class="header-right">
                 <div class="user-badge">
-                    <a href="consultaPerfil.html" style="display:flex;align-items:center;gap:.5rem;text-decoration:none;color:inherit;">
-                      <img src="../img/IMG-US01.jpg" alt="vale23" class="avatar">
-                      <span class="nickname">atorres</span>
-                    </a>
+                    <img src="../img/IMG-US01.jpg" alt="vale23" class="avatar">
+                    <span class="nickname">atorres</span>
                     <a href="../index.html" class="btn-primary">Cerrar sesión</a>
                 </div>
             </div>
       </header>
 
-   <div class="content single">
+   <div class="content">
+      <aside class="sidebar">
+        <div class="panel sidebar">
+          <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
+          <ul class="menu-list">
+            <li><a href="registroAedicion.html" style="white-space: nowrap;">Registro a Edición</a></li>
+          </ul>
+        </div>
+
+        <div class="panel sidebar">
+          <div class="panel-header">Categorías</div>
+          <ul class="menu-list">
+            <li><a href="tecnologiaAsistente.html">Tecnología</a></li>
+            <li><a href="innovacionAsistente.html">Innovación</a></li>
+            <li><a href="saludAsistente.html">Salud</a></li>
+            <li><a href="deporteAsistente.html">Deporte</a></li>
+          </ul>
+        </div>
+        <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+          <a href="listarUsuariosAsistente.html" style="
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: #182080;
+              font-weight: 600;
+              text-decoration: none;
+              padding: 0.75rem;
+              border-radius: 6px;
+              transition: background-color 0.2s;
+              background-color: rgba(24, 32, 128, 0.05);
+          ">
+              Ver listado de usuarios
+          </a>
+        </div>
+      </aside>
       <main>
         <section class="auth-container">
           <div class="auth-card">
@@ -55,38 +87,8 @@
               </div>
             </div>
 
-            <!-- Registros del asistente (solo info b&aacute;sica + botones) -->
-            <h3 style="margin-top:1rem; color:#182080;">Registros del asistente</h3>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Evento</th>
-                  <th>Edici&oacute;n</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- RE02: US01 en EDEV03 (TR07) -->
-                <tr>
-                  <td>Marat&oacute;n de Montevideo</td>
-                  <td>Marat&oacute;n de Montevideo 2024 (EDEV03)</td>
-                  <td class="actions">
-                    <a class="btn-outline" href="consultaregistro-atorres-1.html">Consultar registro</a>
-                  </td>
-                </tr>
-                <!-- RE03: US01 en EDEV10 (TR25) -->
-                <tr>
-                  <td>Conferencia de Tecnolog&iacute;a</td>
-                  <td>Web Summit 2026 (EDEV10)</td>
-                  <td class="actions">
-                    <a class="btn-outline" href="consultaregistro-atorres-2.html">Consultar registro</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style="margin-top:1rem;">
-              <a class="btn-primary" href="listarUsuariosAsistente.html">&larr; Volver al listado</a>
+            <div style="margin-top:1.5rem; display:flex; gap:.75rem;">
+              <a class="btn-primary" href="modificarusuario-atorres.html">Editar usuario</a>
             </div>
           </div>
         </section>
