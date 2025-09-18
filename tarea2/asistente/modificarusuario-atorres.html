@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Modificar Usuario · atorres</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="../styles.css"/>
   <style>
     .auth-card { width: 760px; max-width: 95%; margin: 0 auto; }
     .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
@@ -18,18 +18,15 @@
 </head>
 <body>
   <header class="header">
-    <a href="principalAsistente.html"><h1>eventos.uy</h1></a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="listarUsuarios.html">Usuarios</a></li>
-      </ul>
-    </nav>
-    <div>
-      <a class="btn-primary" href="iniciodesesion.html">Iniciar sesión</a>
-    </div>
-  </header>
-
+      <a href="principalAsistente.html"><h1>eventos.uy</h1></a>
+      <div class="header-right">
+        <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+          <img class="avatar" src="../img/IMG-US01.jpg" alt="Avatar de asistente" />
+          <span class="nickname">atorres</span>
+          <a href="../index.html" class="btn-primary">Cerrar sesión</a>
+        </div>
+      </div>
+   </header>
   <div class="content single">
     <main>
       <section class="auth-container">
