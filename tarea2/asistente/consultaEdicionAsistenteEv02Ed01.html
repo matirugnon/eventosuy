@@ -8,10 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <style>
+        <style>
       .table { width:100%; border-collapse: collapse; }
       .table th, .table td { padding:.6rem; border-bottom:1px solid #e5e5e5; text-align:left; }
       .btn-outline { display:inline-block; padding:.4rem .75rem; border:1px solid #ccc; border-radius:10px; text-decoration:none; }
+      .edition-layout { display:flex; flex-direction:column; gap:2rem; min-height:100%; }
+      .registro-asistente-bottom { margin-top:auto; display:flex; justify-content:center; padding-top:1.5rem; }
+      .registro-asistente-bottom .panel { min-width:320px; max-width:520px; width:100%; }
     </style>
 </head>
 <body>
@@ -60,7 +63,7 @@
 
       <main>
         <section class="panel">
-          <div class="panel-body">
+          <div class="panel-body edition-layout">
 
             <div class="event-detail" style="display: flex; gap: 2rem;">
               <div style="flex: 1;">
@@ -100,8 +103,11 @@
 
                 <div>
                   <h3 style="color: #182080; margin-bottom: 1rem;">Organizador</h3>
-                  <div style="border-radius: 8px;">
-                    <h4 style="margin: 0; font-size: 1.1rem; color: #333; font-family: 'Inter', sans-serif;">US06</h4>
+                  <div style="border-radius: 8px; display: flex; justify-content: center; padding: 0.75rem 0;">
+                    <img src="../img/IMG-US04.jpeg" alt="Avatar de MisEventos" style="width: 168px; height: 112px; border-radius: 12px; object-fit: cover; border: 3px solid rgba(24, 32, 128, 0.15);" />
+                  </div>
+                  <div style="padding: 0.5rem; text-align: center;">
+                    <span style="font-weight: 600; color: #182080;">MisEventos</span>
                   </div>
                 </div>
 
@@ -111,35 +117,38 @@
               </div>
             </div>
 
+
             <!-- Registro del asistente para esta edición -->
-            <div class="panel" style="margin-top:1.5rem;">
-              <div class="panel-header">Registro del asistente</div>
-              <div class="panel-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Asistente</th>
-                      <th>Registro</th>
-                      <th>Tipo</th>
-                      <th>Fecha</th>
-                      <th>Costo</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- US01 está registrado en EDEV03 como RE02 / TR07 Corredor 21K -->
-                    <tr>
-                      <td>atorres (US01)</td>
-                      <td>RE02</td>
-                      <td>TR07 — Corredor 21K</td>
-                      <td>30/07/2024</td>
-                      <td>$ 500</td>
-                      <td>
-                        <a class="btn-outline" href="../consultaregistro.html">Consultar registro</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="registro-asistente-bottom">
+              <div class="panel">
+                <div class="panel-header">Registro del asistente</div>
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Asistente</th>
+                        <th>Registro</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Costo</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- US01 está registrado en EDEV03 como RE02 / TR07 Corredor 21K -->
+                      <tr>
+                        <td>atorres (US01)</td>
+                        <td>RE02</td>
+                        <td>TR07 — Corredor 21K</td>
+                        <td>30/07/2024</td>
+                        <td>$ 500</td>
+                        <td>
+                          <a class="btn-outline" href="../consultaregistro.html">Consultar registro</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
@@ -150,5 +159,15 @@
   </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
