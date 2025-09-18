@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alta de Institución · eventos.uy</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <style>
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .form-group input[type="file"] {
+      border: none;
+    }
+
+    .message {
+      margin-top: 1rem;
+      min-height: 1.5rem;
+    }
+
+    .message.success {
+      color: #2a7f2e;
+    }
+
+    .message.error {
+      color: #c00;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="principalOrganizador.html"><h1>eventos.uy</h1></a>
+    <div class="header-right">
+      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+        <img src="../img/organizador.png" alt="Organizador" class="avatar" />
+        <span class="nickname">organizador1</span>
+        <a href="#" class="btn-primary">Cerrar sesión</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="content single">
+    <main>
+      <section class="panel">
+        <div class="panel-header">Alta de Institución</div>
+        <div class="panel-body">
+          <form id="formInstitucion" novalidate>
+            <label class="form-group">
+              <span class="label-text">Nombre de la institución *</span>
+              <input type="text" id="nombreInstitucion" name="nombreInstitucion" required />
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Descripción *</span>
+              <textarea id="descripcionInstitucion" name="descripcionInstitucion" rows="4" required></textarea>
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Sitio Web *</span>
+              <input type="url" id="sitioWebInstitucion" name="sitioWebInstitucion" placeholder="https://..." required />
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Logo (opcional)</span>
+              <input type="file" id="logoInstitucion" name="logoInstitucion" accept="image/*" />
+            </label>
+
+            <div id="msg" class="message"></div>
+
+            <div style="display: flex; gap: 1rem;">
+              <button type="submit" class="btn-primary">Crear Institución</button>
+              <button type="button" class="btn-outline" onclick="window.location.href='principalOrganizador.html'">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const form = document.getElementById('formInstitucion');
+      const msg = document.getElementById('msg');
+
+      // Simulador de nombres ya usados
+      const institucionesExistentes = ['Instituto Nacional del Deporte', 'TechGlobal Inc'];
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        msg.textContent = '';
+        msg.className = 'message';
+
+        const nombre = form.nombreInstitucion.value.trim();
+        const descripcion = form.descripcionInstitucion.value.trim();
+        const sitioWeb = form.sitioWebInstitucion.value.trim();
+
+        // Validación HTML5
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          msg.textContent = 'Por favor complete todos los campos obligatorios.';
+          msg.classList.add('error');
+          return;
+        }
+
+        // Validación de nombre único
+        if (institucionesExistentes.some(nombreExistente => nombreExistente.toLowerCase() === nombre.toLowerCase())) {
+          msg.textContent = '⚠️ Ya existe una institución con ese nombre. Por favor ingrese uno diferente.';
+          msg.classList.add('error');
+          return;
+        }
+
+        // Simular alta exitosa
+        msg.textContent = '✅ Institución creada correctamente (simulado).';
+        msg.classList.add('success');
+
+        setTimeout(() => {
+          window.location.href = 'principalOrganizador.html'; // o donde quieras redirigir
+        }, 1500);
+      });
+    })();
+  </script>
+</body>
+</html>

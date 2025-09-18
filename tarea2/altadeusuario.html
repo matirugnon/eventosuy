@@ -27,6 +27,32 @@
                 <label class="row"><input type="radio" name="rol" value="organizador"> Organizador</label>
               </div>
             </div>
+    <header class="header">
+      <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+  
+      <div>
+        <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
+        <a href="altadeusuario.html" class="btn-primary">Registrarse</a>
+      </div>
+    </header>
+
+    <div class="content single">
+      <main>
+        <section class="auth-container">
+          <div class="auth-card">
+            <h2>Alta de usuario</h2>
+            
+
+            <!-- Parte 1: el action es # (mock) y validamos en cliente -->
+            <form id="formAlta" class="auth-form" autocomplete="on" novalidate>
+              <!-- Rol -->
+              <div class="form-group">
+                <span class="label-text">Rol</span>
+                <div style="display:flex; gap:1rem;">
+                  <label class="row"><input type="radio" name="rol" value="asistente" checked> Asistente</label>
+                  <label class="row"><input type="radio" name="rol" value="organizador"> Organizador</label>
+                </div>
+              </div>
 
             <label class="input-group">
               <span class="label-text">Nickname *</span>
