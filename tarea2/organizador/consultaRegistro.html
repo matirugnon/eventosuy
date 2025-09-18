@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulta de Registro · eventos.uy</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div>
+    <header class="header">
+      <h1><a href="principalOrganizador.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+      <div class="header-right">
+        <div class="user-badge">
+          <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar organizador" />
+          <span class="nickname" id="nick">MisEventos</span>
+        </div>
+        <a href="../index.html" class="btn-primary">Cerrar sesión</a>
+      </div>
+    </header>
+    <div class="content">
+      <main>
+        <section class="panel" style="max-width:700px;margin:0 auto;">
+          <div class="panel-header">Consulta de Registro</div>
+          <div class="panel-body">
+            <!-- Paso 1: Selección de edición -->
+            <div id="step-edicion" class="consulta-registro-form-row">
+              <label class="form-group" style="margin-bottom:0;">
+                <span class="label-text">Seleccioná una edición</span>
+              </label>
+              <select id="edicionSelect" required>
+                <option value="">Seleccionar…</option>
+                <option value="EDEV03">Maratón de Montevideo 2024</option>
+                <option value="EDEV08">Tecnología Punta del Este 2026</option>
+                <option value="EDEV10">Web Summit 2026</option>
+              </select>
+            </div>
+            <!-- Paso 2: Listado de usuarios registrados -->
+            <div id="step-usuarios" class="consulta-registro-form-row" style="display:none;">
+              <label class="form-group" style="margin-bottom:0;">
+                <span class="label-text">Usuarios registrados en la edición</span>
+              </label>
+              <select id="usuarioSelect" required>
+                <option value="">Seleccionar…</option>
+                <option value="usu1">Juan Pérez</option>
+                <option value="usu2">Ana Gómez</option>
+                <option value="usu3">Carlos López</option>
+              </select>
+            </div>
+            <!-- Paso 3: Detalle del registro -->
+            <div id="step-detalle" style="display:none;">
+              <div class="panel" style="background:#f8f9ff;">
+                <div class="panel-header" style="color:#182080;">Detalle del registro</div>
+                <div class="panel-body">
+                  <p><strong>Fecha de registro:</strong> <span id="fechaRegistro">12/09/2025</span></p>
+                  <p><strong>Tipo de registro:</strong> <span id="tipoRegistro">General</span></p>
+                  <p><strong>¿Usó código de patrocinio?</strong> <span id="patrocinio">No</span></p>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:1.5rem;">
+              <a class="btn-outline" href="principalOrganizador.html">← Volver</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    // Mock de datos para la demo
+    const registros = {
+      'EDEV03': [
+        { id: 'usu1', nombre: 'Juan Pérez', fecha: '12/09/2025', tipo: 'General', patrocinio: false },
+        { id: 'usu2', nombre: 'Ana Gómez', fecha: '13/09/2025', tipo: 'VIP', patrocinio: true },
+      ],
+      'EDEV08': [
+        { id: 'usu3', nombre: 'Carlos López', fecha: '15/09/2025', tipo: 'General', patrocinio: false }
+      ],
+      'EDEV10': []
+    };
+    const edicionSelect = document.getElementById('edicionSelect');
+    const usuarioSelect = document.getElementById('usuarioSelect');
+    const stepUsuarios = document.getElementById('step-usuarios');
+    const stepDetalle = document.getElementById('step-detalle');
+    const fechaRegistro = document.getElementById('fechaRegistro');
+    const tipoRegistro = document.getElementById('tipoRegistro');
+    const patrocinio = document.getElementById('patrocinio');
+
+    edicionSelect.addEventListener('change', function() {
+      const val = edicionSelect.value;
+      usuarioSelect.innerHTML = '<option value="">Seleccionar…</option>';
+      if (!val || !registros[val] || registros[val].length === 0) {
+        stepUsuarios.style.display = 'none';
+        stepDetalle.style.display = 'none';
+        return;
+      }
+      registros[val].forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = u.nombre;
+        usuarioSelect.appendChild(opt);
+      });
+      stepUsuarios.style.display = '';
+      stepDetalle.style.display = 'none';
+    });
+
+    usuarioSelect.addEventListener('change', function() {
+      const ed = edicionSelect.value;
+      const usu = usuarioSelect.value;
+      if (!usu) {
+        stepDetalle.style.display = 'none';
+        return;
+      }
+      const reg = registros[ed].find(u => u.id === usu);
+      if (reg) {
+        fechaRegistro.textContent = reg.fecha;
+        tipoRegistro.textContent = reg.tipo;
+        patrocinio.textContent = reg.patrocinio ? 'Sí' : 'No';
+        stepDetalle.style.display = '';
+      }
+    });
+  </script>
+</body>
+</html>

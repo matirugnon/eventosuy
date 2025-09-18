@@ -8,21 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
-  <style>
-    .note { color:#555; font-size: .9rem; }
-    .auth-form { max-width: 600px; margin: 0 auto; }
-    .auth-form .form-group { margin-bottom: 1rem; }
-    .auth-form .form-group .label-text { display:block; font-weight:600; margin-bottom:.25rem; }
-    .auth-form input, .auth-form select, .auth-form textarea {
-      width: 100%; padding: .75rem 1rem; border:1px solid #ccc; border-radius:12px;
-      font-size:1rem; font-family:inherit; outline:none; transition: border-color .2s, box-shadow .2s; background:#fff; box-sizing:border-box;
-    }
-    .auth-form textarea { min-height:120px; resize:vertical; }
-    .auth-form input:focus, .auth-form select:focus, .auth-form textarea:focus {
-      border-color:#182080; box-shadow:0 0 0 2px rgba(24,32,128,.1);
-    }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-  </style>
 </head>
 <body>
   <div>
@@ -147,7 +132,7 @@
       const $ = s => document.querySelector(s);
 
       // Usuario actual (mock)
-      const CURRENT_USER = (localStorage.getItem('CURRENT_USER') || 'luissuarez9');
+      const CURRENT_USER = (localStorage.getItem('CURRENT_USER') || 'miseventos').trim();
       const nickEl = document.getElementById('nick');
       if (nickEl) nickEl.textContent = CURRENT_USER;
 
