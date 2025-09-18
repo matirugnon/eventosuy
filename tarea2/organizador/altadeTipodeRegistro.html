@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,28 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
-
 <body>
   <header class="header">
-    <a href="principalOrganizador.html">
-      <h1>eventos.uy</h1>
-    </a>
+    <a href="principalOrganizador.html"><h1>eventos.uy</h1></a>
     <div class="header-right">
-<<<<<<< HEAD
-      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-        <img src="../img/adidas.png" alt="ADIDAS" class="avatar">
-        <span class="nickname">ADIDAS</span>
-        <a href="#" class="btn-primary">Cerrar sesión</a>
+      <div class="user-badge" style="display:flex; align-items:center; gap:.5rem;">
+        <img src="../img/IMG-US04.jpeg" class="avatar" alt="Avatar MisEventos">
+        <span class="nickname">miseventos</span>
+        <a href="../index.html" class="btn-primary">Cerrar sesión</a>
       </div>
-=======
-     <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-		<img src="../img/IMG-US04.jpeg" class="avatar">
-  		<span class="nickname">MisEventos</span>
-  		<a href="../index.html" class="btn-primary">Cerrar sesión</a>
-	</div>
->>>>>>> 3b58d1159a2974449798595b49d63c596d57cc0e
     </div>
   </header>
+
   <div class="content single">
     <main>
       <section class="auth-container">
@@ -40,12 +29,25 @@
 
           <form id="formAltaTipoRegistro" class="auth-form" novalidate>
             <label class="form-group">
-              <span class="label-text">Edición *</span>
+              <span class="label-text">Evento *</span>
+              <select name="evento" required>
+                <option value="">Seleccionar evento…</option>
+                <option value="EV04">Maratón de Montevideo</option>
+                <option value="EV01">Conferencia de Tecnología</option>
+              </select>
+            </label>
+
+            <label class="form-group">
+              <span class="label-text">Edición  *</span>
               <select name="edicion" required>
                 <option value="">Seleccionar edición…</option>
-                <option value="rock2024">Concierto Rock 2024</option>
-                <option value="maraton2024">Maratón 2024</option>
-                <option value="teatro2024">Teatro 2024</option>
+                <optgroup label="Maratón de Montevideo">
+                  <option value="EDEV03">Maratón de Montevideo 2024 (EDEV03) — MARATON24</option>
+                </optgroup>
+                <optgroup label="Conferencia de Tecnología">
+                  <option value="EDEV08">Tecnología Punta del Este 2026 (EDEV08) — CONFTECH26</option>
+                  <option value="EDEV10">Web Summit 2026 (EDEV10) — WS26</option>
+                </optgroup>
               </select>
             </label>
 
@@ -56,8 +58,7 @@
 
             <label class="form-group">
               <span class="label-text">Descripción *</span>
-              <textarea name="descripcion" required rows="3" maxlength="300"
-                placeholder="Descripción del tipo de registro…"></textarea>
+              <textarea name="descripcion" required rows="3" maxlength="300" placeholder="Descripción del tipo de registro…"></textarea>
             </label>
 
             <div class="grid-2">
@@ -65,7 +66,6 @@
                 <span class="label-text">Costo (UYU) *</span>
                 <input name="costo" type="number" min="0" step="0.01" required placeholder="0.00" />
               </label>
-
               <label class="form-group">
                 <span class="label-text">Cupo *</span>
                 <input name="cupo" type="number" min="1" step="1" required placeholder="Ej. 100" />
@@ -74,114 +74,33 @@
 
             <div id="msg" style="color:#c00; margin-top:.5rem; min-height:1.5rem;"></div>
 
-            <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
-              <button type="submit" class="btn-primary" style="flex: 1;">Alta Tipo de Registro</button>
-              <button type="button" class="btn-outline"
-                onclick="window.location.href='listaEdicionesOrganizadasAltaTipo.html'">Cancelar</button>
+            <div style="margin-top:1rem; display:flex; gap:1rem; justify-content:center;">
+              <button type="submit" class="btn-primary" style="flex:1;">Alta Tipo de Registro</button>
+              <a class="btn-outline" style="flex:1; text-align:center;" href="listaEdicionesOrganizadasAltaTipo.html">Cancelar</a>
             </div>
-
           </form>
         </div>
       </section>
     </main>
   </div>
-  <style>
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-    }
 
-    .auth-form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
+ <style>
+  /* Forzar más espacio entre todos los campos del formulario */
+  form.auth-form label.form-group {
+    margin-bottom: 2rem !important;
+  }
 
-    .auth-form .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .auth-form .form-group .label-text {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .auth-form input[type="text"],
-    .auth-form input[type="file"],
-    .auth-form textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-family: inherit;
-      box-sizing: border-box;
-    }
-
-    .auth-form input[type="text"]:focus,
-    .auth-form input[type="file"]:focus,
-    .auth-form textarea:focus {
-      border-color: #182080;
-      outline: none;
-      box-shadow: 0 0 3px rgba(24, 32, 128, 0.5);
-    }
-
-    .auth-form textarea {
-      resize: vertical;
-    }
-  </style>
-
-
-  <script>
-    (function () {
-      const form = document.getElementById('formAltaTipoRegistro');
-      const msg = document.getElementById('msg');
-
-      const registrosExistentes = {
-        rock2024: ['general', 'vip'],
-        maraton2024: ['participante', 'premium'],
-        teatro2024: ['platea', 'palco']
-      };
-
-      function validarNombreUnico() {
-        const edicion = form.elements['edicion'].value;
-        const nombre = form.elements['nombre'].value.trim().toLowerCase();
-        const existentes = registrosExistentes[edicion] || [];
-        return !existentes.includes(nombre);
-      }
-
-      function validarFormulario() {
-        msg.textContent = '';
-        if (!form.reportValidity()) return false;
-
-        if (!validarNombreUnico()) {
-          msg.textContent = '⚠️ Ya existe un tipo de registro con ese nombre para esta edición.';
-          return false;
-        }
-
-        return true;
-      }
-
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        if (!validarFormulario()) return;
-
-        msg.style.color = '#2a7f2e';
-        msg.textContent = '✅ Tipo de registro creado correctamente (simulado).';
-        setTimeout(() => {
-          window.location.href = 'listaEdicionesOrganizadasAltaTipo.html';
-        }, 1200);
-
-      });
-    })();
-  </script>
-
-
-
-
-
+  /* Opcional: hacer los inputs más altos para que respiren */
+  form.auth-form input,
+  form.auth-form select,
+  form.auth-form textarea {
+    padding: 0.9rem 1rem !important;
+  }
+  form.auth-form .form-group {
+    margin-bottom: 1.5rem !important; /* espacio vertical entre campos */
+  }
+</style>
 
 </body>
-
 </html>
+
