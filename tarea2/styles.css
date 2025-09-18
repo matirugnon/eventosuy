@@ -1,3 +1,55 @@
+/* Botones de estado para ediciones */
+.btn-rechazada {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #e74c3c;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#e74c3c;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #e74c3c22;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-rechazada:hover {
+  background:#c0392b;
+  border-color:#c0392b;
+}
+.btn-ingresada {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #f39c12;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#f39c12;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #f39c1222;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-ingresada:hover {
+  background:#d35400;
+  border-color:#d35400;
+}
+.btn-consultar {
+  display:inline-block;
+  padding:.4rem .7rem;
+  border:1px solid #182080;
+  border-radius:10px;
+  text-decoration:none;
+  color:#fff;
+  background:#182080;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 2px 8px #18208022;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-consultar:hover {
+  background:#0f155a;
+  border-color:#0f155a;
+}
 /* Elimina todos los estilos por defecto del navegador */
 * {
 	margin: 0;
