@@ -45,7 +45,7 @@
 <div class="content single">
   <main>
     <section class="panel">
-      <h2>Alta de Patrocinio</h2>
+      <div class="panel-header">Alta de Patrocinio</div>
       <form id="formPatrocinio" novalidate>
         <!-- Edición fija, oculta -->
         <input type="hidden" name="edicion" value="MARATON2022" />
@@ -55,9 +55,7 @@
   				<span class="label-text">Tipo de registro *</span>
   				<select id="tipoRegistro" name="tipoRegistro" required>
     				<option value="">Seleccionar tipo de registro…</option>
-    				<option value="corredor10k">Corredor 10k</option>
-    				<option value="corredor21k">Corredor 21k</option>
-    				<option value="corredor42k">Corredor 42k</option>
+    				<option value="tipo">Corredor 21K</option>
   				</select>
 			</label>
 			
@@ -66,25 +64,14 @@
 
           <!-- Info tipo registro -->
 		<div id="infoTipoRegistro" class="info-box hidden">
-  <h3>Descripción</h3>
 
-  <div id="desc-corredor10k" class="desc-tipo hidden" style="white-space: pre-wrap;">
-    Participación en carrera de 10 kilómetros. Ideal para corredores principiantes.
-    <p><strong>Costo:</strong> 300.00 UYU</p>
-    <p><strong>Cupo:</strong> 150</p>
+  <div id="desc-tipo" class="desc-tipo hidden" style="white-space: pre-wrap;">
+    <p><strong>Descripcion:</strong>Inscripcíon a la media maratón</p>
+    <p><strong>Costo:</strong> 500 UYU</p>
+    <p><strong>Cupo:</strong> 500</p>
   </div>
 
-  <div id="desc-corredor21k" class="desc-tipo hidden" style="white-space: pre-wrap;">
-    Participación en media maratón de 21 kilómetros. Nivel intermedio.
-    <p><strong>Costo:</strong> 750.00 UYU</p>
-    <p><strong>Cupo:</strong> 250</p>
-  </div>
-
-  <div id="desc-corredor42k" class="desc-tipo hidden" style="white-space: pre-wrap;">
-    Participación en maratón completa de 42 kilómetros. Nivel avanzado.
-    <p><strong>Costo:</strong> 1200.00 UYU</p>
-    <p><strong>Cupo:</strong> 100</p>
-  </div>
+ 
 </div>
 		
 		
@@ -97,9 +84,7 @@
             <span class="label-text">Institución *</span>
             <select id="institucion" name="institucion" required>
               <option value="">Seleccione una institución…</option>
-              <option value="institucion1">Institución 1</option>
-              <option value="institucion2">Institución 2</option>
-              <option value="institucion3">Institución 3</option>
+              <option value="institucion">Facultad de Ingeniería</option>
             </select>
           </label>
 
@@ -194,9 +179,7 @@
 		  const registrosGratis = parseInt(form.registrosGratuitos.value);
 
 		  const costos = {
-		    corredor10k: 300,
-		    corredor21k: 750,
-		    corredor42k: 1200
+		    tipo: 500,
 		  };
 
 		  const costoRegistro = costos[tipoRegistro];
