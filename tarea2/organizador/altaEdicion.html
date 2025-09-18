@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,181 +9,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
   <style>
-    /* === Ajustes visuales para inputs/textarea (look redondito) === */
-    .auth-form input,
-    .auth-form textarea,
-    .auth-form select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      background: #fff;
-    }
-    .auth-form textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-    .auth-form input:focus,
-    .auth-form textarea:focus,
-    .auth-form select:focus {
-      border-color: #182080;
-      box-shadow: 0 0 0 2px rgba(24,32,128,0.1);
-    }
     .note { color:#555; font-size: .9rem; }
+    .auth-form { max-width: 600px; margin: 0 auto; }
+    .auth-form .form-group { margin-bottom: 1rem; }
+    .auth-form .form-group .label-text { display:block; font-weight:600; margin-bottom:.25rem; }
+    .auth-form input, .auth-form select, .auth-form textarea {
+      width: 100%; padding: .75rem 1rem; border:1px solid #ccc; border-radius:12px;
+      font-size:1rem; font-family:inherit; outline:none; transition: border-color .2s, box-shadow .2s; background:#fff; box-sizing:border-box;
+    }
+    .auth-form textarea { min-height:120px; resize:vertical; }
+    .auth-form input:focus, .auth-form select:focus, .auth-form textarea:focus {
+      border-color:#182080; box-shadow:0 0 0 2px rgba(24,32,128,.1);
+    }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   </style>
 </head>
-<body>
-  <div>
-    <header class="header">
-      <h1><a href="../index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
-      <div class="header-right">
-        <!-- ✅ Header actualizado a miseventos -->
-        <div class="user-badge">
-          <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar organizador miseventos" />
-          <span class="nickname">miseventos</span>
-        </div>
-        <a href="../iniciodesesion.html" class="btn-primary">Cerrar sesión</a>
-      </div>
-    </header>
-
-    <div class="content">
-      <aside class="sidebar">
-        <div class="panel sidebar">
-          <div class="panel-header">Mi perfil</div>
-          <ul class="menu-list">
-            <li><a href="altaEvento.html">Alta Evento</a></li>
-            <li><a href="#">Alta Institución</a></li>
-          </ul>
-        </div>
-
-        <div class="panel sidebar" style="margin-top:1rem;">
-          <div class="panel-header">Categorías</div>
-          <ul class="menu-list">
-            <li><a href="#">Tecnología</a></li>
-            <li><a href="#">Innovación</a></li>
-            <li><a href="#">Literatura</a></li>
-            <li><a href="#">Cultura</a></li>
-            <li><a href="#">Música</a></li>
-            <li><a href="#">Deporte</a></li>
-            <li><a href="#">Salud</a></li>
-            <li><a href="#">Entretenimiento</a></li>
-            <li><a href="#">Agro</a></li>
-            <li><a href="#">Negocios</a></li>
-          </ul>
-        </div>
-
-        <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-          <a href="../listarUsuariosOrganizador.html" style="
-              display: flex; align-items: center; gap: 0.5rem;
-              color: #182080; font-weight: 600; text-decoration: none;
-              padding: 0.75rem; border-radius: 6px; transition: background-color 0.2s;
-              background-color: rgba(24, 32, 128, 0.05);">
-            Ver listado de usuarios
-          </a>
-        </div>
-      </aside>
-
-      <main>
-        <section class="panel">
-          <div class="panel-header">Alta de Edición de Evento</div>
-          <div class="panel-body">
-            <!-- ✅ Parte 1: todo hardcodeado/cliente, sin dependencias externas -->
-            <form class="auth-form" action="#" novalidate>
-              <!-- ✅ En Parte 1 simplificamos: seleccionar evento desde un SELECT -->
-              <div class="grid-2">
-                <label class="form-group">
-                  <span class="label-text">Evento *</span>
-                  <select name="evento" required>
-                    <!-- Ejemplos alineados con tus datos de prueba -->
-                    <option value="">Seleccionar…</option>
-                    <option value="EDEV03">Maratón de Montevideo</option>
-                    <option value="EDEV08">Tecnología Punta del Este</option>
-                    <option value="EDEV10">Web Summit</option>
-                  </select>
-                  <span class="note">Elegí el evento al cual pertenece esta edición.</span>
-                </label>
-
-                <label class="form-group">
-                  <span class="label-text">Nombre de la edición (único) *</span>
-                  <input name="nombre" required maxlength="140" placeholder="Ej.: Maratón de Montevideo 2027" />
-                </label>
-              </div>
-
-              <div class="grid-2">
-                <label class="form-group">
-                  <span class="label-text">Sigla *</span>
-                  <input name="sigla" required maxlength="20" placeholder="Ej.: MARATON27" />
-                </label>
-                <label class="form-group">
-                  <span class="label-text">Ciudad *</span>
-                  <input name="ciudad" required maxlength="60" placeholder="Ej.: Montevideo" />
-                </label>
-              </div>
-
-              <div class="grid-2">
-                <label class="form-group">
-                  <span class="label-text">País *</span>
-                  <input name="pais" required maxlength="60" placeholder="Ej.: Uruguay" />
-                </label>
-                <div></div>
-              </div>
-
-              <div class="grid-2">
-                <label class="form-group">
-                  <span class="label-text">Fecha de inicio *</span>
-                  <input type="date" name="fechaInicio" required />
-                </label>
-                <label class="form-group">
-                  <span class="label-text">Fecha de fin *</span>
-                  <input type="date" name="fechaFin" required />
-                </label>
-              </div>
-
-              <label class="form-group">
-                <span class="label-text">Imagen (opcional)</span>
-                <input type="file" name="imagen" accept="image/*" />
-              </label>
-
-              <div style="color:#c00; margin-top:.5rem; min-height:1.25rem;">
-                <!-- En Parte 1 podés mostrar mensajes de validación manuales si querés -->
-              </div>
-
-              <div style="display:flex; gap:.5rem; margin-top:.5rem;">
-                <button type="submit" class="btn-primary">Crear edición</button>
-                <a class="btn-outline" href="consultaeventoorganizador.html">Cancelar</a>
-              </div>
-              <p class="note" style="margin-top:.5rem;">
-                Parte 1: esta acción es solo maqueta visual. En Parte 2 la lógica validará el nombre único y guardará en el servidor.
-              </p>
-            </form>
-          </div>
-        </section>
-      </main>
-    </div>
-  </div>
-
-  <footer></footer>
-</body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alta de edición · eventos.uy</title>
-  <link rel="stylesheet" href="../styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
-  <style>
-    /* Pequeños ajustes específicos para esta vista */
-    .note { color:#555; font-size: .9rem; }
-  </style>
-  </head>
 <body>
   <div>
     <header class="header">
@@ -195,7 +34,6 @@
           <span class="nickname" id="nick">MisEventos</span>
         </div>
         <a href="../index.html" class="btn-primary">Cerrar sesión</a>
-        
       </div>
     </header>
 
@@ -220,17 +58,8 @@
         </div>
         <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
           <a href="../listarUsuariosOrganizador.html" style="
-              display: flex;
-              align-items: center;
-              gap: 0.5rem;
-              color: #182080;
-              font-weight: 600;
-              text-decoration: none;
-              padding: 0.75rem;
-              border-radius: 6px;
-              transition: background-color 0.2s;
-              background-color: rgba(24, 32, 128, 0.05);
-          ">
+              display:flex; align-items:center; gap:.5rem; color:#182080; font-weight:600; text-decoration:none;
+              padding:.75rem; border-radius:6px; transition:background-color .2s; background-color:rgba(24,32,128,.05);">
             Ver listado de usuarios
           </a>
         </div>
@@ -242,22 +71,29 @@
           <div class="panel-body">
             <form id="formEdicion" class="auth-form" novalidate>
               <div class="grid-2">
+                <!-- SOLO cambio: select hardcodeado + hidden fields -->
                 <label class="form-group">
-                  <span class="label-text">Evento</span>
-                  <input name="eventoTitulo" readonly />
+                  <span class="label-text">Evento *</span>
+                  <select name="eventoSelect" id="eventoSelect" required>
+                    <option value="">Seleccionar…</option>
+                    <option value="maraton-de-montevideo">Maratón de Montevideo</option>
+                    <option value="tecnologia-punta-del-este">Tecnología Punta del Este</option>
+                    <option value="web-summit">Web Summit</option>
+                  </select>
+                  <input type="hidden" name="eventoTitulo" />
                   <input type="hidden" name="eventoSlug" />
                 </label>
 
                 <label class="form-group">
                   <span class="label-text">Nombre de la edición (único) *</span>
-                  <input name="nombre" required maxlength="140"  />
+                  <input name="nombre" required maxlength="140" />
                 </label>
               </div>
 
               <div class="grid-2">
                 <label class="form-group">
                   <span class="label-text">Sigla *</span>
-                  <input name="sigla" required maxlength="20"  />
+                  <input name="sigla" required maxlength="20" />
                 </label>
                 <label class="form-group">
                   <span class="label-text">Ciudad *</span>
@@ -268,7 +104,7 @@
               <div class="grid-2">
                 <label class="form-group">
                   <span class="label-text">País *</span>
-                  <input name="pais" required maxlength="60"  />
+                  <input name="pais" required maxlength="60" />
                 </label>
                 <div></div>
               </div>
@@ -298,6 +134,7 @@
                 <button type="submit" class="btn-primary">Crear edición</button>
                 <a class="btn-outline" href="consultaeventoorganizador.html">Cancelar</a>
               </div>
+              <p class="note" style="margin-top:.5rem;">La edición se da de alta en estado “Ingresada”.</p>
             </form>
           </div>
         </section>
@@ -305,53 +142,9 @@
     </div>
   </div>
 
-  <style>
-    .auth-form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .auth-form .form-group {
-      margin-bottom: 1rem;
-    }
-    .auth-form .form-group .label-text {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-    .auth-form input[type="text"],
-    .auth-form input[type="file"],
-    .auth-form textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-family: inherit;
-      box-sizing: border-box;
-    }
-    .auth-form input[type="text"]:focus,
-    .auth-form input[type="file"]:focus,
-    .auth-form textarea:focus {
-      border-color: #182080;
-      outline: none;
-      box-shadow: 0 0 3px rgba(24, 32, 128, 0.5);
-    }
-    .auth-form textarea {
-      resize: vertical;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    
-  </style>
-
-
   <script>
     (function(){
       const $ = s => document.querySelector(s);
-      const $$ = s => document.querySelectorAll(s);
 
       // Usuario actual (mock)
       const CURRENT_USER = (localStorage.getItem('CURRENT_USER') || 'luissuarez9');
@@ -359,14 +152,14 @@
       if (nickEl) nickEl.textContent = CURRENT_USER;
 
       // Keys LS
-      const LS_EVENTS = 'EVENTS_MOCK';
       const LS_EDITIONS = 'EDITIONS_MOCK';
 
       const form = $('#formEdicion');
       const msg = $('#msg');
       const inputImg = form.elements['imagen'];
       const preview = $('#preview');
-      const previewImg = $('#previewImg');
+      const previewImg = $('#previewImg'); // <-- bug corregido
+      const selEvento = $('#eventoSelect');
       const inputEventoTitulo = form.elements['eventoTitulo'];
       const inputEventoSlug = form.elements['eventoSlug'];
 
@@ -384,58 +177,13 @@
         return `${dd}/${mm}/${yyyy}`;
       }
 
-      function todayDDMMYYYY(){
-        return toDDMMYYYY(new Date());
-      }
+      function todayDDMMYYYY(){ return toDDMMYYYY(new Date()); }
 
       function showPreview(file){
         if(!file){ preview.style.display='none'; previewImg.src=''; return; }
         const reader = new FileReader();
         reader.onload = () => { previewImg.src = reader.result; preview.style.display = ''; };
         reader.readAsDataURL(file);
-      }
-
-      // Resolver evento desde parámetros
-      function getParam(name){
-        const u = new URL(window.location.href);
-        return u.searchParams.get(name);
-      }
-      async function inicializarEventoDesdeURL(){
-        const slugURL = getParam('evento');
-        const tituloURL = getParam('titulo');
-        if(!slugURL && !tituloURL){
-          msg.textContent = 'No se especificó el evento. Vuelve al detalle del evento para crear la edición.';
-          return false;
-        }
-        // Intentar resolver título si no vino
-        let titulo = tituloURL || '';
-        if(!titulo){
-          // Buscar en eventos.json y EVENTS_MOCK por coincidencia de slug
-          const locales = JSON.parse(localStorage.getItem(LS_EVENTS) || '[]').map(e=>e.nombre);
-          let externos = [];
-          try {
-            const r = await fetch('eventos.json');
-            externos = (await r.json()).map(e=>e.titulo);
-          } catch {}
-          const candidatos = [...externos, ...locales];
-          const hit = candidatos.find(t => slugify(t) === slugURL);
-          if(hit) titulo = hit;
-        }
-        inputEventoSlug.value = slugURL || slugify(titulo);
-        inputEventoTitulo.value = titulo || '(evento sin título)';
-        return !!inputEventoSlug.value;
-      }
-
-      // Cargar ediciones existentes para validar unicidad por nombre
-      async function cargarEdicionesExistentes(){
-        let json = [];
-        try {
-          const r = await fetch('ediciones.json');
-          const data = await r.json();
-          json = Array.isArray(data.ediciones) ? data.ediciones : [];
-        } catch {}
-        const locales = JSON.parse(localStorage.getItem(LS_EDITIONS) || '[]');
-        return [...json, ...locales];
       }
 
       function validarRangoFechas(fi, ff){
@@ -449,14 +197,37 @@
         return form.reportValidity();
       }
 
+      // Sincronizar hidden fields cuando cambia el select
+      selEvento.addEventListener('change', () => {
+        if (!selEvento.value){
+          inputEventoTitulo.value = '';
+          inputEventoSlug.value = '';
+          return;
+        }
+        const titulo = selEvento.options[selEvento.selectedIndex].textContent;
+        inputEventoTitulo.value = titulo;
+        inputEventoSlug.value = selEvento.value || slugify(titulo);
+        msg.textContent = '';
+      });
+
       inputImg && inputImg.addEventListener('change', e => showPreview(e.target.files?.[0]));
+
+      // Cargar ediciones existentes (solo de LS) para validar unicidad
+      function cargarEdicionesLocales(){
+        return JSON.parse(localStorage.getItem(LS_EDITIONS) || '[]');
+      }
 
       form.addEventListener('submit', async (e)=>{
         e.preventDefault();
         if(!validarCampos()) return;
 
-        const tituloEvento = inputEventoTitulo.value;
-        const slugEvento = inputEventoSlug.value;
+        if (!selEvento.value){
+          msg.textContent = 'Seleccioná un evento.';
+          return;
+        }
+
+        const tituloEvento = inputEventoTitulo.value.trim();
+        const slugEvento = (inputEventoSlug.value || slugify(tituloEvento)).trim();
         const nombre = form.elements['nombre'].value.trim();
         const sigla = form.elements['sigla'].value.trim();
         const ciudad = form.elements['ciudad'].value.trim();
@@ -469,8 +240,8 @@
           return;
         }
 
-        // Unicidad de nombre de edición
-        const existentes = await cargarEdicionesExistentes();
+        // Unicidad de nombre de edición (solo local)
+        const existentes = cargarEdicionesLocales();
         const dup = existentes.some(e => (e.nombre || '').trim().toLowerCase() === nombre.toLowerCase());
         if(dup){
           msg.textContent = 'El nombre de la edición ya está en uso. Modifícalo o cancela.';
@@ -480,8 +251,7 @@
         const anio = new Date(fi).getFullYear();
         const id = `${slugEvento}-${anio}`;
 
-        // Imagen: tomar base64 si hay
-        const imgSrc = previewImg && previewImg.src ? previewImg.src : '';
+        const imgSrc = (previewImg && previewImg.src) ? previewImg.src : '';
 
         const nueva = {
           id,
@@ -492,7 +262,7 @@
           sigla,
           fechaInicio: toDDMMYYYY(fi),
           fechaFin: toDDMMYYYY(ff),
-          fechaAlta: todayDDMMYYYY(), // fecha actual
+          fechaAlta: todayDDMMYYYY(),
           img: imgSrc,
           estado: 'Ingresada',
           organizador: CURRENT_USER
@@ -507,10 +277,10 @@
         setTimeout(()=>{ window.location.href = 'consultaeventoorganizador.html'; }, 1200);
       });
 
-      // Inicializar
-      inicializarEventoDesdeURL();
+      // Estado inicial: hidden vacíos
+      inputEventoTitulo.value = '';
+      inputEventoSlug.value = '';
     })();
   </script>
 </body>
 </html>
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr15.git
