@@ -31,25 +31,19 @@
       <aside class="sidebar">
         <div class="panel sidebar">
           <div class="panel-header">Mi perfil</div>
-          <ul class="menu-list">
+          <ul class="menu-list" style="margin-bottom: 3rem;">
             <li><a href="altaEvento.html">Alta Evento</a></li>
-            <li><a href="#">Alta Institución</a></li>
+            <li><a href="altaEdicion.html">Alta Edición</a></li>
+            <li><a href="altaInstitucion.html">Alta Institución</a></li>
+            <li><a href="altadeTipodeRegistro.html">Alta Tipo de Registro</a></li>
+            <li><a href="consultaRegistro.html">Consulta Registro</a></li>
           </ul>
-        </div>
-
-        <div class="panel sidebar" style="margin-top:1rem;">
           <div class="panel-header">Categorías</div>
           <ul class="menu-list">
-            <li><a href="#">Tecnología</a></li>
-            <li><a href="#">Innovación</a></li>
-            <li><a href="#">Literatura</a></li>
-            <li><a href="#">Cultura</a></li>
-            <li><a href="#">Música</a></li>
-            <li><a href="#">Deporte</a></li>
-            <li><a href="#">Salud</a></li>
-            <li><a href="#">Entretenimiento</a></li>
-            <li><a href="#">Agro</a></li>
-            <li><a href="#">Negocios</a></li>
+            <li><a href="tecnologiaOrganizador.html">Tecnología</a></li>
+            <li><a href="innovacionOrganizador.html">Innovación</a></li>
+            <li><a href="saludOrganizador.html">Salud</a></li>
+            <li><a href="deporteOrganizador.html">Deporte</a></li>
           </ul>
         </div>
         <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
@@ -139,7 +133,48 @@
     </div>
   </div>
 
-  <footer></footer>
+  <style>
+    .auth-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .auth-form .form-group {
+      margin-bottom: 1rem;
+    }
+    .auth-form .form-group .label-text {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .auth-form input[type="text"],
+    .auth-form input[type="file"],
+    .auth-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .auth-form input[type="text"]:focus,
+    .auth-form input[type="file"]:focus,
+    .auth-form textarea:focus {
+      border-color: #182080;
+      outline: none;
+      box-shadow: 0 0 3px rgba(24, 32, 128, 0.5);
+    }
+    .auth-form textarea {
+      resize: vertical;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+  </style>
+
 
   <script>
     (function(){
