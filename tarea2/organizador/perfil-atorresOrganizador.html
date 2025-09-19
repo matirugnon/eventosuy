@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Perfil de Usuario · eventos.uy</title>
+  <link rel="icon" type="image/png" href="../img/favicon.png">
   <link rel="stylesheet" href="../styles.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -22,8 +23,10 @@
       <a href="principalOrganizador.html"><h1>eventos.uy</h1></a>
       <div class="header-right">
         <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-          <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar de organizador" />
-          <span class="nickname">MisEventos</span>
+          <a href="consultaPerfil.html" style="display: flex; align-items: center; gap: 0.5rem;">
+            <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar de organizador" />
+            <span class="nickname">miseventos</span>
+          </a>
           <a href="../index.html" class="btn-primary">Cerrar sesión</a>
         </div>
       </div>
@@ -38,42 +41,21 @@
             <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
               <img src="../img/IMG-US01.jpg" alt="Avatar de atorres"
                    style="width:110px;height:110px;border-radius:50%;object-fit:cover;">
-              <div>
+              <div class="user-details-list">
                 <p><strong>Nickname:</strong> atorres</p>
                 <p><strong>Nombre:</strong> Ana</p>
                 <p><strong>Correo:</strong> atorres@gmail.com</p>
                 <p><strong>Rol:</strong> Asistente</p>
                 <p><strong>Apellido:</strong> Torres</p>
                 <p><strong>Fecha de nacimiento:</strong> 12/05/1990</p>
-                <p><strong>Institución:</strong> INS01 — Facultad de Ingeniería,
-                  Facultad de Ingeniería de la Universidad de la República —
+                <p><strong>Institución:</strong> INS01 — Facultad de Ingeniería,<br>
+                  Facultad de Ingeniería de la Universidad de la República —<br>
                   <a href="https://www.fing.edu.uy" target="_blank">https://www.fing.edu.uy</a>
                 </p>
               </div>
             </div>
 
             <!-- Registros del asistente (solo info básica + botones) -->
-            <h3 style="margin-top:1rem; color:#182080;">Registros del asistente</h3>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Evento</th>
-                  <th>Edición</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- RE02: US01 en EDEV03 (TR07) -->
-                <tr>
-                  <td>Maratón de Montevideo</td>
-                  <td>Maratón de Montevideo 2024 (EDEV03)</td>
-                </tr>
-                <!-- RE03: US01 en EDEV10 (TR25) -->
-                <tr>
-                  <td>Conferencia de Tecnología</td>
-                  <td>Web Summit 2026 (EDEV10)</td>
-                </tr>
-              </tbody>
-            </table>
 
             <div style="margin-top:1rem;">
               <a class="btn-primary" href="listarUsuariosOrganizador.html">← Volver al listado</a>

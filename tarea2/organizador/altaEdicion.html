@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alta de edición · eventos.uy</title>
+  <link rel="icon" type="image/png" href="../img/favicon.png">
   <link rel="stylesheet" href="../styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,9 +15,11 @@
     <header class="header">
       <h1><a href="principalOrganizador.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
       <div class="header-right">
-        <div class="user-badge">
-          <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar organizador" />
-          <span class="nickname" id="nick">MisEventos</span>
+        <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+          <a href="consultaPerfil.html" style="display: flex; align-items: center; gap: 0.5rem;">
+            <img class="avatar" src="../img/IMG-US04.jpeg" alt="Avatar organizador" />
+            <span class="nickname" id="nick">miseventos</span>
+          </a>
         </div>
         <a href="../index.html" class="btn-primary">Cerrar sesión</a>
       </div>
@@ -31,6 +34,7 @@
             <li><a href="altaEdicion.html">Alta Edición</a></li>
             <li><a href="altaInstitucion.html">Alta Institución</a></li>
             <li><a href="altadeTipodeRegistro.html">Alta Tipo de Registro</a></li>
+            <li><a href="edicionesOrganizadasEvento.html">Alta Patrocinio</a></li>
             <li><a href="consultaRegistro.html">Consulta Registro</a></li>
           </ul>
           <div class="panel-header">Categorías</div>
@@ -42,7 +46,7 @@
           </ul>
         </div>
         <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-          <a href="../listarUsuariosOrganizador.html" style="
+          <a href="listarUsuariosOrganizador.html" style="
               display:flex; align-items:center; gap:.5rem; color:#182080; font-weight:600; text-decoration:none;
               padding:.75rem; border-radius:6px; transition:background-color .2s; background-color:rgba(24,32,128,.05);">
             Ver listado de usuarios
@@ -117,7 +121,7 @@
 
               <div style="display:flex; gap:.5rem; margin-top:.5rem;">
                 <button type="submit" class="btn-primary">Crear edición</button>
-                <a class="btn-outline" href="consultaeventoorganizador.html">Cancelar</a>
+                <a class="btn-outline" href="principalOrganizador.html">Cancelar</a>
               </div>
               <p class="note" style="margin-top:.5rem;">La edición se da de alta en estado “Ingresada”.</p>
             </form>
