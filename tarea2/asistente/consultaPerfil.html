@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Perfil de Usuario - eventos.uy</title>
+  <title>Perfil de Usuario · eventos.uy</title>
   <link rel="stylesheet" href="../styles.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -12,7 +12,6 @@
     .auth-card { width: 760px; max-width: 95%; margin: 0 auto; }
     .table { width:100%; border-collapse: collapse; }
     .table th, .table td { padding:.6rem; border-bottom:1px solid #ddd; text-align:left; }
-    .actions { display:flex; gap:.5rem; flex-wrap:wrap; }
     .btn-outline { display:inline-block; padding:.4rem .7rem; border:1px solid #ccc; border-radius:10px; text-decoration:none; }
   </style>
 </head>
@@ -33,11 +32,10 @@
       <aside class="sidebar">
         <div class="panel sidebar">
           <div class="panel-header">Mi perfil</div>
-          <ul class="menu-list">
+          <ul class="menu-list" style="margin-bottom: 3rem;">
             <li><a href="registroAedicion.html">Registro a Edición</a></li>
+            
           </ul>
-        </div>
-        <div class="panel sidebar" style="margin-top:1rem;">
           <div class="panel-header">Categorías</div>
           <ul class="menu-list">
             <li><a href="tecnologiaAsistente.html">Tecnología</a></li>
@@ -51,44 +49,91 @@
               display: flex;
               align-items: center;
               gap: 0.5rem;
-              color: #182080;
               font-weight: 600;
               text-decoration: none;
               padding: 0.75rem;
               border-radius: 6px;
               transition: background-color 0.2s;
-              background-color: rgba(24, 32, 128, 0.05);
-          ">
-              Ver listado de usuarios
+              background-color: rgba(24, 32, 128, 0.05);">
+            Ver listado de usuarios
           </a>
         </div>
       </aside>
       <main>
-        <section class="auth-container">
-          <div class="auth-card">
-            <h2>Perfil de Usuario</h2>
-
-            <!-- Encabezado: avatar + datos del asistente -->
-            <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
-              <img src="../img/IMG-US01.jpg" alt="Avatar de atorres"
-                   style="width:110px;height:110px;border-radius:50%;object-fit:cover;">
-              <div class="user-details-list">
-                <p><strong>Nickname:</strong> atorres</p>
-                <p><strong>Nombre:</strong> Ana</p>
-                <p><strong>Correo:</strong> atorres@gmail.com</p>
-                <p><strong>Rol:</strong> Asistente</p>
-                <p><strong>Apellido:</strong> Torres</p>
-                <p><strong>Fecha de nacimiento:</strong> 12/05/1990</p>
-                <p><strong>Instituci&oacute;n:</strong> INS01 &mdash; Facultad de Ingenier&iacute;a,<br>
-                  Facultad de Ingenier&iacute;a de la Universidad de la Rep&uacute;blica &mdash;<br>
-                  <a href="https://www.fing.edu.uy" target="_blank">https://www.fing.edu.uy</a>
-                </p>
+        <section class="panel" style="max-width: 760px; margin: 2rem auto 0 auto;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="flex-shrink:0;">
+              <img src="../img/IMG-US01.jpg" alt="Avatar de atorres" style="width:110px;height:110px;border-radius:12px;object-fit:cover;display:block;" />
+            </div>
+            <div style="flex:1; display: flex; align-items: center; min-height:110px;">
+              <h2 style="font-size:1.5rem;font-weight:700;margin:0; text-align:left;">Ana Torres</h2>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <div style="display:flex;gap:0.5rem;">
+              <button id="tab-datos" class="btn-outline" style="border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:0;background:#fff;font-weight:600;color:#000;">Datos del usuario</button>
+              <button id="tab-registros" class="btn-outline" style="border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:0;background:#f5f5f5;font-weight:600;color:#000;">Registros</button>
+            </div>
+            <div id="panel-datos" style="border:1px solid #bbb;border-radius:0 0 12px 12px;padding:1.2rem 1.5rem 1.2rem 1.5rem;background:#fff;">
+              <h3 style="margin:0 0 1rem 0; color:#182080;">Datos del usuario</h3>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="font-size:1rem; line-height:1.7;">
+                  <b>Nickname:</b> atorres<br>
+                  <b>Nombre:</b> Ana Torres<br>
+                  <b>Correo:</b> atorres@gmail.com<br>
+                  <b>Rol:</b> Asistente<br>
+                  <b>Fecha de nacimiento:</b> 12/05/1990<br>
+                  <b>Institución:</b> Facultad de Ingeniería<br>
+                  <b>Sitio web:</b> <a href="https://www.fing.edu.uy" target="_blank">https://www.fing.edu.uy</a>
+                </div>
+                <a href="modificarusuario-atorres.html" class="btn-primary" style="margin-left:1.5rem;white-space:nowrap;">Editar usuario</a>
               </div>
             </div>
-
-            <div style="margin-top:1.5rem; display:flex; gap:.75rem;">
-              <a class="btn-primary" href="modificarusuario-atorres.html">Editar usuario</a>
+            <div id="panel-registros" style="display:none;border:1px solid #bbb;border-radius:0 0 12px 12px;padding:1.2rem 1.5rem 1.2rem 1.5rem;background:#fff;">
+              <h3 style="margin:0 0 1rem 0; color:#182080;">Registros</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Evento</th>
+                    <th>Edición</th>
+                    <th>Tipo de Registro</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Conferencia de Tecnología</td>
+                    <td>Tecnología Punta del Este 2026</td>
+                    <td>General</td>
+                    <td><a class="btn-consultar" href="consultaRegistroAtorres1.html">Consultar</a></td>
+                  </tr>
+                  <tr>
+                    <td>Maratón de Montevideo</td>
+                    <td>Maratón de Montevideo 2024</td>
+                    <td>VIP</td>
+                    <td><a class="btn-consultar" href="consultaRegistroAtorres2.html">Consultar</a></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <script>
+              const tabDatos = document.getElementById('tab-datos');
+              const tabRegistros = document.getElementById('tab-registros');
+              const panelDatos = document.getElementById('panel-datos');
+              const panelRegistros = document.getElementById('panel-registros');
+              tabDatos.onclick = function() {
+                panelDatos.style.display = '';
+                panelRegistros.style.display = 'none';
+                tabDatos.style.background = '#fff';
+                tabRegistros.style.background = '#f5f5f5';
+              };
+              tabRegistros.onclick = function() {
+                panelDatos.style.display = 'none';
+                panelRegistros.style.display = '';
+                tabDatos.style.background = '#f5f5f5';
+                tabRegistros.style.background = '#fff';
+              };
+            </script>
           </div>
         </section>
       </main>
