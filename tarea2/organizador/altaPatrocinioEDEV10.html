@@ -44,10 +44,10 @@
 </header>
 
 <div class="content single">
-  <main>
+  <main class="alta-patrocinio-container">
     <section class="panel">
       <div class="panel-header">Alta de Patrocinio / Web Summit 2026</div>
-      <form id="formPatrocinio" novalidate>
+        <form id="formPatrocinio" class="alta-patrocinio-form" novalidate>
 
         <!-- Selector tipo de registro -->
 			<label class="form-group">
@@ -120,13 +120,14 @@
           
           <div id="msg" style="color:#c00; margin-top:1rem; min-height:1.5rem;"></div>
 
-          <div style="margin-top:1rem; display: flex; gap: 1rem; justify-content: center;">
-            <button type="submit" class="btn-primary" style="flex: 1;">Crear patrocinio</button>
+          <div class="alta-patrocinio-buttons">
+            <button type="submit" class="btn-primary">Crear patrocinio</button>
             <button type="button" class="btn-outline" onclick="window.location.href='edicionesOrganizadasEvento.html'">Cancelar</button>
           </div>
         
       </form>
     </section>
+  </main>
   </main>
 </div>
 
