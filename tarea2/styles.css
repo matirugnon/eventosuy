@@ -155,9 +155,33 @@
   padding: 0.8rem 1rem;
   border: 1.5px solid #d1d5db;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   transition: all 0.2s ease;
   background: #ffffff;
+}
+
+.alta-patrocinio-form select {
+  min-height: 44px;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.alta-patrocinio-form select option[value=""] {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.alta-patrocinio-form select option:not([value=""]) {
+  color: #374151;
+  font-style: normal;
+}
+
+.alta-patrocinio-form select:invalid {
+  color: #9ca3af;
+}
+
+.alta-patrocinio-form select:valid {
+  color: #374151;
 }
 
 .alta-patrocinio-form input:focus,
