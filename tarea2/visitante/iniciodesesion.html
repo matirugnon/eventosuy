@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar sesión · eventos.uy</title>
   <link rel="icon" type="image/png" href="img/favicon.png">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,7 +17,7 @@
 <body>
   <div>
     <header class="header">
-      <h1><a href="index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+      <h1><a href="../index.html" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
 
       <div>
         <a href="iniciodesesion.html" class="btn-primary">Iniciar sesión</a>
@@ -67,9 +67,9 @@
         const user = form.user.value;
         const password = form.password.value;
         if (user === 'atorres' && password === '123.torres') {
-          window.location.href = 'asistente/principalAsistente.html';
+          window.location.href = '../asistente/principalAsistente.html';
         } else if (user === 'miseventos' && password === '22miseventos') {
-          window.location.href = 'organizador/principalOrganizador.html';
+          window.location.href = '../organizador/principalOrganizador.html';
         } else {
           alert('Credenciales incorrectas');
         }
