@@ -75,6 +75,7 @@
                 <option value="EDEV10">Web Summit 2026</option>
               </select>
             </div>
+
             <!-- Paso 2: Listado de usuarios registrados -->
             <div id="step-usuarios" class="consulta-registro-form-row" style="display:none;">
               <label class="form-group" style="margin-bottom:0;">
@@ -82,22 +83,24 @@
               </label>
               <select id="usuarioSelect" required>
                 <option value="">Seleccionar…</option>
-                <option value="usu1">Juan Pérez</option>
-                <option value="usu2">Ana Gómez</option>
-                <option value="usu3">Carlos López</option>
+                <!-- Se completa según la edición (solo 'atorres' en EDEV03 y EDEV10) -->
               </select>
             </div>
+
             <!-- Paso 3: Detalle del registro -->
             <div id="step-detalle" style="display:none;">
               <div class="panel" style="background:#f8f9ff;">
                 <div class="panel-header" style="color:#182080;">Detalle del registro</div>
                 <div class="panel-body">
-                  <p><strong>Fecha de registro:</strong> <span id="fechaRegistro">12/09/2025</span></p>
-                  <p><strong>Tipo de registro:</strong> <span id="tipoRegistro">General</span></p>
-                  <p><strong>¿Usó código de patrocinio?</strong> <span id="patrocinio">No</span></p>
+                  <p><strong>Registro:</strong> <span id="refRegistro">—</span></p>
+                  <p><strong>Usuario:</strong> <span id="usuarioNombre">—</span></p>
+                  <p><strong>Tipo de registro:</strong> <span id="tipoRegistro">—</span></p>
+                  <p><strong>Fecha de registro:</strong> <span id="fechaRegistro">—</span></p>
+                  <p><strong>Costo:</strong> <span id="costoRegistro">—</span></p>
                 </div>
               </div>
             </div>
+
             <div style="margin-top:1.5rem;">
               <a class="btn-outline" href="principalOrganizador.html">← Volver</a>
             </div>
@@ -106,59 +109,75 @@
       </main>
     </div>
   </div>
+
   <script>
-    // Mock de datos para la demo
+    // Datos oficiales (solo atorres y solo dos registros válidos)
+    // EDEV08 no tiene registros → no habrá usuarios para seleccionar
     const registros = {
       'EDEV03': [
-        { id: 'usu1', nombre: 'Juan Pérez', fecha: '12/09/2025', tipo: 'General', patrocinio: false },
-        { id: 'usu2', nombre: 'Ana Gómez', fecha: '13/09/2025', tipo: 'VIP', patrocinio: true },
+        { id: 'US01', nick: 'atorres', ref: 'RE02', tipoRef: 'TR07', tipoNombre: 'Corredor 21K', fecha: '30/07/2024', costo: 500 }
       ],
-      'EDEV08': [
-        { id: 'usu3', nombre: 'Carlos López', fecha: '15/09/2025', tipo: 'General', patrocinio: false }
+      'EDEV10': [
+        { id: 'US01', nick: 'atorres', ref: 'RE03', tipoRef: 'TR25', tipoNombre: 'Estudiante',  fecha: '21/08/2025', costo: 300 }
       ],
-      'EDEV10': []
+      'EDEV08': [] // sin registros
     };
-    const edicionSelect = document.getElementById('edicionSelect');
-    const usuarioSelect = document.getElementById('usuarioSelect');
-    const stepUsuarios = document.getElementById('step-usuarios');
-    const stepDetalle = document.getElementById('step-detalle');
-    const fechaRegistro = document.getElementById('fechaRegistro');
-    const tipoRegistro = document.getElementById('tipoRegistro');
-    const patrocinio = document.getElementById('patrocinio');
 
-    edicionSelect.addEventListener('change', function() {
-      const val = edicionSelect.value;
+    const edicionSelect   = document.getElementById('edicionSelect');
+    const usuarioSelect   = document.getElementById('usuarioSelect');
+    const stepUsuarios    = document.getElementById('step-usuarios');
+    const stepDetalle     = document.getElementById('step-detalle');
+
+    const refRegistroEl   = document.getElementById('refRegistro');
+    const usuarioNombreEl = document.getElementById('usuarioNombre');
+    const tipoRegistroEl  = document.getElementById('tipoRegistro');
+    const fechaRegistroEl = document.getElementById('fechaRegistro');
+    const costoRegistroEl = document.getElementById('costoRegistro');
+
+    edicionSelect.addEventListener('change', function () {
+      const ed = edicionSelect.value;
+
+      // Reset UI
       usuarioSelect.innerHTML = '<option value="">Seleccionar…</option>';
-      if (!val || !registros[val] || registros[val].length === 0) {
+      stepDetalle.style.display = 'none';
+
+      // Sin edición o sin registros → ocultar usuarios y terminar
+      if (!ed || !registros[ed] || registros[ed].length === 0) {
         stepUsuarios.style.display = 'none';
-        stepDetalle.style.display = 'none';
         return;
       }
-      registros[val].forEach(u => {
+
+      // Cargar solo atorres para EDEV03 y EDEV10
+      registros[ed].forEach(u => {
         const opt = document.createElement('option');
-        opt.value = u.id;
-        opt.textContent = u.nombre;
+        opt.value = u.id;  // US01
+        opt.textContent = `${u.nick}`;
         usuarioSelect.appendChild(opt);
       });
+
       stepUsuarios.style.display = '';
-      stepDetalle.style.display = 'none';
     });
 
-    usuarioSelect.addEventListener('change', function() {
+    usuarioSelect.addEventListener('change', function () {
       const ed = edicionSelect.value;
-      const usu = usuarioSelect.value;
-      if (!usu) {
+      const usu = usuarioSelect.value; // US01
+      if (!ed || !usu) {
         stepDetalle.style.display = 'none';
         return;
       }
-      const reg = registros[ed].find(u => u.id === usu);
-      if (reg) {
-        fechaRegistro.textContent = reg.fecha;
-        tipoRegistro.textContent = reg.tipo;
-        patrocinio.textContent = reg.patrocinio ? 'Sí' : 'No';
-        stepDetalle.style.display = '';
-      }
+      const reg = (registros[ed] || []).find(r => r.id === usu);
+      if (!reg) { stepDetalle.style.display = 'none'; return; }
+
+      // Mostrar detalles correctos del registro
+      refRegistroEl.textContent   = reg.ref;
+      usuarioNombreEl.textContent = `${reg.nick} (${reg.id})`;
+      tipoRegistroEl.textContent  = `${reg.tipoRef} — ${reg.tipoNombre}`;
+      fechaRegistroEl.textContent = reg.fecha;
+      costoRegistroEl.textContent = `$ ${reg.costo}`;
+
+      stepDetalle.style.display = '';
     });
   </script>
 </body>
 </html>
+
