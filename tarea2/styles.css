@@ -72,7 +72,7 @@
 
 .btn-edicion {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1rem;
   background-color: #182080;
   color: white;
   border-radius: 8px;
@@ -81,8 +81,18 @@
   font-size: 0.95rem;
   transition: background-color 0.2s ease, transform 0.1s ease;
   white-space: nowrap;
-  min-width: 120px;
+  width: fit-content;
   text-align: center;
+  margin: 0.25rem;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-top: auto;
+  padding: 1rem 0;
 }
 
 .btn-edicion:hover {
