@@ -74,15 +74,15 @@
 
             <label class="form-group">
               <span class="label-text">Edición  *</span>
-              <select name="edicion" required>
+              <select name="edicion" required disabled>
                 <option value="">Seleccionar edición…</option>
-                <optgroup label="Maratón de Montevideo">
-                  <option value="EDEV03">Maratón de Montevideo 2024 (EDEV03) — MARATON24</option>
-                </optgroup>
-                <optgroup label="Conferencia de Tecnología">
-                  <option value="EDEV08">Tecnología Punta del Este 2026 (EDEV08) — CONFTECH26</option>
-                  <option value="EDEV10">Web Summit 2026 (EDEV10) — WS26</option>
-                </optgroup>
+                
+                  <option value="EDEV03">Maratón de Montevideo 2024</option>
+                
+                
+                  <option value="EDEV08">Tecnología Punta del Este 2026</option>
+                  <option value="EDEV10">Web Summit 2026</option>
+               
               </select>
             </label>
 
@@ -120,23 +120,45 @@
     </main>
   </div>
 
- <style>
-  /* Forzar más espacio entre todos los campos del formulario */
-  form.auth-form label.form-group {
-    margin-bottom: 2rem !important;
-  }
+  
 
-  /* Opcional: hacer los inputs más altos para que respiren */
-  form.auth-form input,
-  form.auth-form select,
-  form.auth-form textarea {
-    padding: 0.9rem 1rem !important;
-  }
-  form.auth-form .form-group {
-    margin-bottom: 1.5rem !important; /* espacio vertical entre campos */
-  }
-</style>
+  <!-- Script: filtra y habilita "Edición" según "Evento" -->
+  <script>
+    (function(){
+      // 1) Referencias a los selects
+      const eventoSel  = document.querySelector('select[name="evento"]');
+      const edicionSel = document.querySelector('select[name="edicion"]');
 
+      // 2) Mapeo estático: ediciones aceptadas por evento (Parte 1)
+      const EDICIONES_POR_EVENTO = {
+        EV01: ['EDEV08','EDEV10'], // Conferencia de Tecnología
+        EV04: ['EDEV03']           // Maratón de Montevideo
+      };
+
+      // 3) Función que aplica el filtro cada vez que cambia el evento
+      function filtrarEdiciones() {
+        const ev = eventoSel.value;
+        edicionSel.value = '';            // resetea selección
+        edicionSel.disabled = !ev;        // deshabilita si no hay evento
+
+        // Recorremos todas las opciones y mostramos/ocultamos según corresponda
+        const permitidas = EDICIONES_POR_EVENTO[ev] || [];
+        Array.from(edicionSel.options).forEach(opt => {
+          // La opción vacía "Seleccionar edición…" siempre visible
+          if (opt.value === '') { opt.hidden = false; return; }
+          // Muestra solo las ediciones permitidas para el evento elegido
+          opt.hidden = permitidas.length ? !permitidas.includes(opt.value) : true;
+        });
+      }
+
+      // 4) Estado inicial: edición deshabilitada y filtrada
+      filtrarEdiciones();
+
+      // 5) Reaccionar cuando el usuario elija un evento
+      eventoSel.addEventListener('change', filtrarEdiciones);
+    })();
+  </script>
 </body>
 </html>
+
 
