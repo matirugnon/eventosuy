@@ -125,36 +125,35 @@
   <!-- Script: filtra y habilita "Edición" según "Evento" -->
   <script>
     (function(){
-      // 1) Referencias a los selects
+      
       const eventoSel  = document.querySelector('select[name="evento"]');
       const edicionSel = document.querySelector('select[name="edicion"]');
 
-      // 2) Mapeo estático: ediciones aceptadas por evento (Parte 1)
+      
       const EDICIONES_POR_EVENTO = {
-        EV01: ['EDEV08','EDEV10'], // Conferencia de Tecnología
-        EV04: ['EDEV03']           // Maratón de Montevideo
+        EV01: ['EDEV08','EDEV10'], 
+        EV04: ['EDEV03']           
       };
 
-      // 3) Función que aplica el filtro cada vez que cambia el evento
+      
       function filtrarEdiciones() {
         const ev = eventoSel.value;
-        edicionSel.value = '';            // resetea selección
-        edicionSel.disabled = !ev;        // deshabilita si no hay evento
-
-        // Recorremos todas las opciones y mostramos/ocultamos según corresponda
+        edicionSel.value = '';            
+        edicionSel.disabled = !ev;        
+        
         const permitidas = EDICIONES_POR_EVENTO[ev] || [];
         Array.from(edicionSel.options).forEach(opt => {
-          // La opción vacía "Seleccionar edición…" siempre visible
+          
           if (opt.value === '') { opt.hidden = false; return; }
-          // Muestra solo las ediciones permitidas para el evento elegido
+          
           opt.hidden = permitidas.length ? !permitidas.includes(opt.value) : true;
         });
       }
 
-      // 4) Estado inicial: edición deshabilitada y filtrada
+      
       filtrarEdiciones();
 
-      // 5) Reaccionar cuando el usuario elija un evento
+      
       eventoSel.addEventListener('change', filtrarEdiciones);
     })();
   </script>
