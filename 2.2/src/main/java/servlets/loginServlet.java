@@ -14,6 +14,7 @@ import logica.Controladores.IControladorUsuario;
 import logica.Controladores.IControladorRegistro;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTUsuario;
+import logica.manejadores.ManejadorUsuario; // Importar ManejadorUsuario
 import utils.Utils;
 
 
@@ -23,10 +24,21 @@ public class loginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response); // Reutilizar lógica común
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response); // Reutilizar lógica común
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            ManejadorUsuario manejador = ManejadorUsuario.getinstance();
 
             String usuario = request.getParameter("usuario");
             String password = request.getParameter("password");
@@ -46,14 +58,15 @@ public class loginServlet extends HttpServlet {
                 );
             }
 
-            Usuario user = ctrlUsuario.obtenerUsuario(usuario);
+            Usuario user = manejador.obtenerUsuario(usuario);
             if (user != null && user.getPassword().equals(password)) {
                 DTUsuario dtUsuario = ctrlUsuario.getDTUsuario(usuario);
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", dtUsuario.getNickname());
                 session.setAttribute("avatar", dtUsuario.getAvatar()); // Agregado el atributo avatar
-                request.setAttribute("role", user.getTipo());
-                request.setAttribute("avatar", dtUsuario.getAvatar());
+                session.setAttribute("role", user.getTipo()); // Guardar el rol en la sesión
+                response.sendRedirect(request.getContextPath() + "/inicio"); // Redirigir a la página de inicio
+                return;
             } else {
                 request.setAttribute("error", "Usuario o contraseña incorrectos.");
             }

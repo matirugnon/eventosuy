@@ -41,7 +41,8 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     //alta Asistente
-    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password, String avatar)
+    @Override
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
         if (!correo.contains("@")) {
@@ -60,7 +61,6 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new FechaInvalidaException(fechanac.getDia(), fechanac.getMes(), fechanac.getAnio());
         }
 
-
         DTFecha hoy = new DTFecha(java.time.LocalDate.now().getDayOfMonth(),
                 java.time.LocalDate.now().getMonthValue(),
                 java.time.LocalDate.now().getYear());
@@ -71,12 +71,13 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
-        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar); // Incluir avatar
+        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, null); // Avatar puede ser null
         altaUsuario(a);
     }
 
     //alta Organizador
-    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password, String avatar)
+    @Override
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException {
 
         if (!correo.contains("@")) {
@@ -91,7 +92,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
-        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, avatar); // Incluir avatar
+        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, null); // Avatar puede ser null
         altaUsuario(o);
     }
 
@@ -271,16 +272,9 @@ public class ControladorUsuario implements IControladorUsuario {
 	    return (anio % 4 == 0 && anio % 100 != 0) || (anio % 400 == 0);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
+	@Override
+	public Usuario obtenerUsuario(String identificador) {
+		return manejador.obtenerUsuario(identificador); // Delegar al manejador
+	}
 
 }
