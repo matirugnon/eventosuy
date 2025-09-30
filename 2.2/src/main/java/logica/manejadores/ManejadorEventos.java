@@ -8,6 +8,7 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
+import logica.DatatypesYEnum.DTEvento;
 
 public class ManejadorEventos {
 
@@ -107,7 +108,13 @@ public class ManejadorEventos {
 
 
 
-
+    public Set<DTEvento> getDTEventos() {
+		Set<DTEvento> res = new HashSet<>();
+		for (Evento e : eventos.values()) {
+			res.add(new DTEvento(e));
+		}
+		return res;
+	}
     //exists
     public boolean existeCategoria(String cat){
     	return categorias.containsKey(cat);

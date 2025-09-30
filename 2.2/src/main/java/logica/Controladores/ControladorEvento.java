@@ -299,6 +299,13 @@ public class ControladorEvento implements IControladorEvento {
 		 ins.agregarPatrocinio(pat);
 
 	 }
+	 
+	
+public Set<DTEvento> obtenerDTEventos(){
+	ManejadorEventos manejador = ManejadorEventos.getInstance();
+	return manejador.getDTEventos();
+}
+
 
 	 public Set<String> listarPatrocinios(String nomEdicion){
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();

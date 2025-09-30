@@ -17,6 +17,7 @@ import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTSeleccionEvento;
 import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.DatatypesYEnum.DTEvento;
 
 public interface IControladorEvento {
 
@@ -66,4 +67,6 @@ public interface IControladorEvento {
 
 	public boolean esFechaValida(int dia, int mes, int anio);
 	public Set<String> listarCategorias();
+	
+	public Set<DTEvento> obtenerDTEventos();
 }

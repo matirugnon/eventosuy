@@ -1,12 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>eventos.uy</title>
-
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
@@ -23,24 +21,37 @@
   <!-- Contenido principal -->
   <div class="content">
 
-    <!-- Sidebar -->
-    <aside class="sidebar panel">
-      <div class="panel-header">Categorías</div>
-      <div class="panel-body menu-list">
-        <c:choose>
-          <c:when test="${empty categorias}">
-            <p class="muted">No hay categorías disponibles.</p>
-          </c:when>
-          <c:otherwise>
-            <c:forEach var="cat" items="${categorias}">
-              <a href="#">${cat}</a>
-            </c:forEach>
-          </c:otherwise>
-        </c:choose>
-      </div>
-    </aside>
+   <!-- Sidebar: categorías -->
+<aside class="sidebar panel">
+  <div class="panel-header">Categorías</div>
+  <div class="panel-body menu-list">
+    <c:choose>
+      <c:when test="${empty categorias}">
+        <p class="muted">No hay categorías disponibles.</p>
+      </c:when>
+      <c:otherwise>
+        <!-- Link para ver todas -->
+        <c:url var="urlTodas" value="/inicio"/>
+        <a href="${urlTodas}"
+           class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
 
-    <!-- Main -->
+        <!-- Links por categoría -->
+        <c:forEach var="cat" items="${categorias}">
+          <c:url var="catUrl" value="/inicio">
+            <c:param name="categoria" value="${cat}"/>
+          </c:url>
+          <a href="${catUrl}"
+             class="${cat eq categoriaSeleccionada ? 'active' : ''}">
+            ${cat}
+          </a>
+        </c:forEach>
+      </c:otherwise>
+    </c:choose>
+  </div>
+</aside>
+
+
+    <!-- Main: eventos -->
     <main>
       <h2>Próximos Eventos</h2>
 
@@ -56,8 +67,8 @@
           <c:forEach var="e" items="${eventos}">
             <div class="event">
               <div class="event-content">
-                <h3>${e}</h3>
-                <p>Descripción del evento…</p>
+                <h3>${e.nombre}</h3>
+                <p>${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
               </div>
             </div>
           </c:forEach>
