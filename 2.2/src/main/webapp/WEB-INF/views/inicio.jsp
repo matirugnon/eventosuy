@@ -12,10 +12,10 @@
   <!-- Header -->
   <header class="header">
     <h1>eventos.uy</h1>
-    <nav class="nav-links">
-      <a href="#">Iniciar sesión</a>
-      <a href="#">Registrarse</a>
-    </nav>
+ <nav class="nav-links">
+  <a href="<c:url value='/login'/>">Iniciar sesión</a>
+  <a href="<c:url value='/registro'/>">Registrarse</a>
+</nav>
   </header>
 
   <!-- Contenido principal -->

@@ -6,8 +6,8 @@ public class DTAsistente extends DTUsuario {
     private DTFecha fechaNacimiento;
     private String institucion;
 
-    public DTAsistente(String nickname, String nombre, String correo, String password, String apellido, DTFecha fechaNacimiento, String institucion) {
-        super(nickname, nombre, correo, password); // Actualizado para incluir password
+    public DTAsistente(String nickname, String nombre, String correo, String password, String apellido, DTFecha fechaNacimiento, String institucion, String avatar) {
+        super(nickname, nombre, correo, password, avatar); // Actualizado para incluir password
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.institucion = institucion;

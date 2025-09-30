@@ -124,7 +124,7 @@ class prueba1 {
 
 		DTUsuario DTPruebaus = contrU.getDTUsuario("atorres");
 		DTAsistente DTAsis = (DTAsistente) DTPruebaus;
-		DTAsistente DTAsisesp = new DTAsistente("atorres", "Ana","atorres@gmail.com","Torres", new DTFecha(12,5,1990), "Facultad de Ingeniería");
+		DTAsistente DTAsisesp = new DTAsistente("atorres", "Ana","atorres@gmail.com","Torres", null, new DTFecha(12,5,1990), "Facultad de Ingeniería", null);
 		assertEquals(DTAsis.getApellido(),DTAsisesp.getApellido());
 		assertEquals(DTAsis.getNombre(),DTAsisesp.getNombre());
 		assertEquals(DTAsis.getCorreo(),DTAsisesp.getCorreo());
@@ -187,7 +187,7 @@ class prueba1 {
 		DTSeleccionEvento DTSel = contE.seleccionarEvento("Montevideo Rock");
 		Set<String> edEs = new HashSet<>();
 		edEs.add("Montevideo Rock 2025");
-		DTEvento DTEventes = new DTEvento("Montevideo Rock","MONROCK","Festival de rock con artistas nacionales e internacionales",new DTFecha(15,3,2023));
+		DTEvento DTEventes = new DTEvento("Montevideo Rock","MONROCK","Festival de rock con artistas nacionales e internacionales",new DTFecha(15,3,2023), edEs);
 		DTSeleccionEvento DTSelesp = new DTSeleccionEvento(DTEventes,Set.of("Cultura", "Música"),edEs);
 		assertEquals(DTSelesp.getCategorias(),DTSel.getCategorias());
 		assertEquals(DTSelesp.getDescripcion(),DTSel.getDescripcion());
@@ -213,7 +213,7 @@ class prueba1 {
 		assertEquals(DTed.getTiposDeRegistro(),DTedEsp.getTiposDeRegistro());
 
 
-		DTOrganizador orgMod = new DTOrganizador("udelar","hola","hola@gmail.com","hola, buenas tarde","hola.edu.uy");
+		DTOrganizador orgMod = new DTOrganizador("udelar","hola","hola@gmail.com","hola, buenas tarde","hola.edu.uy", null, null);
 		contrU.modificarUsuario("udelar", orgMod);
 		DTOrganizador obt = (DTOrganizador) contrU.getDTUsuario("udelar");
 		assertEquals(obt.getNombre(),"hola");
@@ -221,7 +221,7 @@ class prueba1 {
 		assertEquals(obt.getLink(),"hola.edu.uy");
 
 
-		DTAsistente asMod = new DTAsistente("atorres", "chau",  "chau@gmail.com", "chaucha", new DTFecha(28,9,1891), "Facultad de Ingeniería");
+		DTAsistente asMod = new DTAsistente("atorres", "chau",  "chau@gmail.com", "chaucha", null, new DTFecha(28,9,1891), "Facultad de Ingeniería", null);
 		contrU.modificarUsuario("atorres", asMod);
 		DTAsistente asObt = (DTAsistente) contrU.getDTUsuario("atorres");
 		assertEquals(asObt.getNombre(),"chau");
