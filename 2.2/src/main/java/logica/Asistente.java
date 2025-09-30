@@ -16,8 +16,8 @@ public class Asistente extends Usuario {
     private Set<Registro> registros;
     private String institucion;
 
-    public Asistente(String nickname, String nombre, String correo, String apellido, DTFecha fechaNacimiento, String ins) {
-        super(nickname, nombre, correo);
+    public Asistente(String nickname, String nombre, String correo, String apellido, DTFecha fechaNacimiento, String ins, String password, String avatar) {
+        super(nickname, nombre, correo, password, avatar); // Actualizado para incluir avatar
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.registros = new HashSet<>();
@@ -65,7 +65,7 @@ public class Asistente extends Usuario {
 	}
 
 	public DTUsuario getDTAsistente() {
-		return new DTAsistente(nickname, nombre,correo, apellido, fechaNacimiento, institucion);
+		return new DTAsistente(nickname, nombre,correo, password, apellido, fechaNacimiento, institucion, avatar); // Incluir avatar
 	}
 
 	public DTRegistro getRegistro(String nomTipoReg) {

@@ -5,8 +5,8 @@ public class DTOrganizador extends DTUsuario {
     private String descripcion;
     private String link;
 
-    public DTOrganizador(String nickname, String nombre, String correo, String descripcion, String link ) {
-        super(nickname, nombre, correo); // inicializa los campos heredados
+    public DTOrganizador(String nickname, String nombre, String correo, String password, String descripcion, String link) {
+        super(nickname, nombre, correo, password); // Actualizado para incluir password
         this.descripcion = descripcion;
         this.link = link;
     }

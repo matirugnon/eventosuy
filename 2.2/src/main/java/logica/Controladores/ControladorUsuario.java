@@ -41,7 +41,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     //alta Asistente
-    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion)
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password, String avatar)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
         if (!correo.contains("@")) {
@@ -71,12 +71,12 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
-        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion);
+        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar); // Incluir avatar
         altaUsuario(a);
     }
 
     //alta Organizador
-    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link)
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password, String avatar)
             throws UsuarioRepetidoException, CorreoInvalidoException {
 
         if (!correo.contains("@")) {
@@ -91,7 +91,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
-        Usuario o = new Organizador(nick, nombre, correo, descripcion, link);
+        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, avatar); // Incluir avatar
         altaUsuario(o);
     }
 
@@ -103,7 +103,7 @@ public class ControladorUsuario implements IControladorUsuario {
     public boolean ExisteNickname(String nick) {
 
     	 ManejadorUsuario mu = ManejadorUsuario.getinstance();
-         Usuario u = mu.obtenerUsuario(nick);
+         Usuario u = mu.obtenerUsuario(nick); // Ya soporta nickname o correo
 
          if (u != null) {return true;}
 
@@ -149,8 +149,8 @@ public class ControladorUsuario implements IControladorUsuario {
     	return manejador.getNickAsistentes();
     }
 
-    public boolean existeInstitucion(String nomInstitucion) {
-    	return manejador.existeInstitucion(nomInstitucion);
+    public boolean existeInstitucion(String nombre) {
+        return manejador.existeInstitucion(nombre);
     }
 
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web) throws ExisteInstitucionException {
@@ -169,13 +169,13 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
 
-	public DTUsuario getDTUsuario(String nombreU)
+	public DTUsuario getDTUsuario(String identificador)
 			throws UsuarioNoExisteException{
 
-		Usuario u = manejador.obtenerUsuario(nombreU);
+		Usuario u = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
 		if (u == null) {
-			throw new UsuarioNoExisteException(nombreU);
+			throw new UsuarioNoExisteException(identificador);
 		}
 
 		if (u instanceof Organizador) {
@@ -190,9 +190,9 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	}
 
-	public Set<String> obtenerRegistros(String nombreAsistente) {
+	public Set<String> obtenerRegistros(String identificador) {
 
-		Asistente a = (Asistente) manejador.obtenerUsuario(nombreAsistente);
+		Asistente a = (Asistente) manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
 
 		Set<String> registros = a.getNomsTipo();
@@ -201,9 +201,9 @@ public class ControladorUsuario implements IControladorUsuario {
 	}
 
 
-	public Set<String> listarEdicionesOrganizador(String nombreOrganizador) {
+	public Set<String> listarEdicionesOrganizador(String identificador) {
 
-		Usuario u = manejador.obtenerUsuario(nombreOrganizador);
+		Usuario u = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
 		Organizador o = (Organizador) u;
 
@@ -226,6 +226,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	    // Actualizamos los campos editables
 	    usuario.setNombre(datosUsuario.getNombre());
+	    usuario.setAvatar(datosUsuario.getAvatar()); // Actualizar avatar
 
 	    if (usuario instanceof Asistente && datosUsuario instanceof DTAsistente) {
 	        Asistente a = (Asistente) usuario;

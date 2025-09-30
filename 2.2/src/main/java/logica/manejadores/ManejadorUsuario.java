@@ -20,16 +20,16 @@ import logica.Usuario;
 
 public class ManejadorUsuario {
 
-	//hasmap que linkea un nickname con un usuario
     private Map<String, Usuario> usuariosNick;
-
+    private Map<String, String> correosUsuarios; // Nuevo mapa para asociar correos con nicks
     private Map<String, Institucion> instituciones;
 
     private static ManejadorUsuario instancia = null;
 
     private ManejadorUsuario() {
-    	usuariosNick = new HashMap<String, Usuario>();
-    	instituciones = new HashMap<>();
+        usuariosNick = new HashMap<>();
+        correosUsuarios = new HashMap<>(); // Inicializar el nuevo mapa
+        instituciones = new HashMap<>();
     }
 
     //singleton
@@ -40,12 +40,23 @@ public class ManejadorUsuario {
     }
 
     public void addUsuario(Usuario usu) {
-        String nick = usu.getNickname(); //implementar
+        String nick = usu.getNickname();
+        String correo = usu.getCorreo(); // Suponiendo que Usuario tiene un método getCorreo()
         usuariosNick.put(nick, usu);
+        correosUsuarios.put(correo, nick); // Asociar el correo con el nick
     }
 
-    public Usuario obtenerUsuario(String nick) {
-        return ((Usuario) usuariosNick.get(nick));
+    /**
+     * Método para obtener un usuario por su nickname o correo.
+     * @param identificador Puede ser un nickname o un correo.
+     * @return El usuario correspondiente, o null si no se encuentra.
+     */
+    public Usuario obtenerUsuario(String identificador) {
+        if (identificador.contains("@")) { // Si contiene '@', se asume que es un correo
+            String nick = correosUsuarios.get(identificador);
+            return usuariosNick.get(nick);
+        }
+        return usuariosNick.get(identificador); // Si no, se asume que es un nickname
     }
 
     public Set<Usuario> getUsuarios() {
@@ -82,13 +93,24 @@ public class ManejadorUsuario {
     }
 
     public boolean existeInstitucion(String nombreInstitucion) {
-    	return instituciones.containsKey(nombreInstitucion);
+        return instituciones.containsKey(nombreInstitucion);
     }
 
     public Set<String> getNombreInstituciones(){
     	return instituciones.keySet();
     }
+    
+    /**
+     * Método para validar las credenciales de un usuario.
+     * @param nickname El nickname del usuario.
+     * @param password La contraseña del usuario.
+     * @return true si las credenciales son correctas, false en caso contrario.
+     */
+    public boolean validarCredenciales(String nickname, String password) {
+        Usuario usuario = usuariosNick.get(nickname);
+        if (usuario != null) {
+            return usuario.getPassword().equals(password); // Compara la contraseña
+        }
+        return false; // Usuario no encontrado
+    }
 }
-
-
-

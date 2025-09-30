@@ -17,8 +17,8 @@ public class Organizador extends Usuario {
     private Map<String, Edicion> ediciones;
 
 
-    public Organizador(String nickname, String nombre, String correo, String descripcion, String link) {
-        super(nickname, nombre, correo);
+    public Organizador(String nickname, String nombre, String correo, String descripcion, String link, String password, String avatar) {
+        super(nickname, nombre, correo, password, avatar); // Actualizado para incluir avatar
         this.descripcion = descripcion;
         this.link = link;
 
@@ -74,7 +74,7 @@ public class Organizador extends Usuario {
 	}
 
 	public DTUsuario getDTOrganizador() {
-		return new DTOrganizador(nickname,nombre,correo,descripcion,link);
+		return new DTOrganizador(nickname, nombre, correo, password, descripcion, link, avatar); // Incluir avatar
 	}
 
 
