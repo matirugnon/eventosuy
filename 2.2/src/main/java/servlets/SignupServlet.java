@@ -42,7 +42,7 @@ public class SignupServlet extends HttpServlet {
             throw new ServletException("Error cargando datos iniciales", e);
         }
     }
-    }
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         

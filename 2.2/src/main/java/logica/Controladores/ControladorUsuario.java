@@ -45,7 +45,10 @@ public class ControladorUsuario implements IControladorUsuario {
     public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
-        if (!correo.contains("@")) {
+        correo = correo.trim(); // Eliminar espacios en blanco
+        System.out.println("Validando correo: " + correo); // Depuración
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new CorreoInvalidoException(correo);
         }
 
@@ -80,7 +83,10 @@ public class ControladorUsuario implements IControladorUsuario {
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException {
 
-        if (!correo.contains("@")) {
+        correo = correo.trim(); // Eliminar espacios en blanco
+        System.out.println("Validando correo: " + correo); // Depuración
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new CorreoInvalidoException(correo);
         }
 
