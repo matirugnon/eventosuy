@@ -97,7 +97,10 @@
           <c:forEach var="e" items="${eventos}">
             <div class="event">
               <div class="event-content">
-                <h3>${e.nombre}</h3>
+                <c:url var="eventoUrl" value="/consultaEvento">
+                  <c:param name="evento" value="${e.nombre}" />
+                </c:url>
+                <h3><a href="${eventoUrl}" style="color: inherit; text-decoration: none;">${e.nombre}</a></h3>
                 <p>${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
               </div>
             </div>
