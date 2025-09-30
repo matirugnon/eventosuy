@@ -249,4 +249,3 @@ public class SignupServlet extends HttpServlet {
         request.setAttribute("error", error);
         request.getRequestDispatcher("/WEB-INF/views/altadeusuario.jsp").forward(request, response);
     }
-}

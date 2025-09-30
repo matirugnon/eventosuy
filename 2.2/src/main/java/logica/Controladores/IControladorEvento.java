@@ -69,4 +69,6 @@ public interface IControladorEvento {
 	public Set<String> listarCategorias();
 	
 	public Set<DTEvento> obtenerDTEventos();
+	
+	public DTEvento obtenerEventoPorEdicion(String nomEdicion);
 }

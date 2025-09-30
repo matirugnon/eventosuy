@@ -313,6 +313,24 @@ public Set<DTEvento> obtenerDTEventos(){
 		 return ed.getCodigosPatrocinios();
 	 }
 
+	public DTEvento obtenerEventoPorEdicion(String nomEdicion) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Set<DTEvento> eventos = manejador.getDTEventos();
+		
+		// Buscar el evento que contiene esta edición
+		for (DTEvento evento : eventos) {
+			try {
+				DTSeleccionEvento seleccion = seleccionarEvento(evento.getNombre());
+				if (seleccion.getEdiciones().contains(nomEdicion)) {
+					return evento;
+				}
+			} catch (Exception e) {
+				// Continuar con el siguiente evento
+			}
+		}
+		return null;
+	}
+
 	 public boolean existeCodigoPatrocinioEnEdicion(String edicion, String codigo) {
 
 		 Edicion e = manejadorE.obtenerEdicion(edicion);
