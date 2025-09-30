@@ -46,8 +46,6 @@ public class ControladorUsuario implements IControladorUsuario {
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
         correo = correo.trim(); // Eliminar espacios en blanco
-        System.out.println("Validando correo: " + correo); // Depuración
-
         if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new CorreoInvalidoException(correo);
         }
@@ -84,8 +82,6 @@ public class ControladorUsuario implements IControladorUsuario {
             throws UsuarioRepetidoException, CorreoInvalidoException {
 
         correo = correo.trim(); // Eliminar espacios en blanco
-        System.out.println("Validando correo: " + correo); // Depuración
-
         if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new CorreoInvalidoException(correo);
         }
@@ -138,15 +134,32 @@ public class ControladorUsuario implements IControladorUsuario {
 
     }
 
+    
+
+
     public Set<String> listarUsuarios() {
         Set<Usuario> usuarios = manejador.getUsuarios();
+        
         Set<String> nicks = new HashSet<>();
         for (Usuario u : usuarios) {
-            nicks.add(u.getNickname()); // o getNickname(), según lo que qusieras mostrar
+            nicks.add(u.getNickname());
         }
+        
         return nicks;
     }
 
+    public Set<DTUsuario> listarUsuariosDT() {
+        Set<Usuario> usuarios = manejador.getUsuarios();
+        Set<DTUsuario> dtUsuarios = new HashSet<>();
+        for (Usuario u : usuarios) {
+            if (u instanceof Organizador) {
+                dtUsuarios.add(((Organizador) u).getDTOrganizador());
+            } else if (u instanceof Asistente) {
+                dtUsuarios.add(((Asistente) u).getDTAsistente());
+            }
+        }
+        return dtUsuarios;
+    }
 
     public Set<String> listarOrganizadores(){
         return manejador.obtenerNicksOrganizadores();

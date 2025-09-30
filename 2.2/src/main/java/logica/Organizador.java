@@ -31,7 +31,7 @@ public class Organizador extends Usuario {
 
     @Override
     public String getTipo() {
-        return "Organizador";
+        return "organizador";
     }
 
 	public void setDescripcion(String desc) {

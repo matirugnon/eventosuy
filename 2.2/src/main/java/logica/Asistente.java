@@ -29,7 +29,7 @@ public class Asistente extends Usuario {
 
     @Override
     public String getTipo() {
-        return "Asistente";
+        return "asistente";
     }
 
 	public void setApellido(String text) {

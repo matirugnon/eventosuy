@@ -19,7 +19,7 @@
           <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
             <img class="avatar" src="${avatar}" alt="Avatar de usuario" />
             <span class="nickname">${nickname}</span>
-            <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
+            <a href="/EventosUy/logout" class="btn-primary">Cerrar sesión</a>
           </div>
         </c:when>
         <c:otherwise>
@@ -79,6 +79,24 @@
             </c:otherwise>
           </c:choose>
         </div>
+      </div>
+
+      <!-- Botón "Ver listado de Usuarios" -->
+      <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+        <a href="${pageContext.request.contextPath}/listarUsuarios" style="
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #182080;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+            background-color: rgba(24, 32, 128, 0.05);
+        ">
+          Ver listado de Usuarios
+        </a>
       </div>
     </aside>
 

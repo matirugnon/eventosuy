@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -57,6 +58,9 @@ public class loginServlet extends HttpServlet {
                     IControladorRegistro.getInstance()
                 );
             }
+
+            Set<String> usuarios = ctrlUsuario.listarUsuarios();
+            request.setAttribute("usuarios", usuarios);
 
             Usuario user = manejador.obtenerUsuario(usuario);
             if (user != null && user.getPassword().equals(password)) {

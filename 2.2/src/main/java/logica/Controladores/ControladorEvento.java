@@ -350,9 +350,8 @@ public Set<DTEvento> obtenerDTEventos(){
 
 
 		public Set<String> listarCategorias() {
-
 			Set<String> categorias = manejadorE.getNombresCategorias();
-
+			System.out.println("Categorías en el manejador: " + categorias); // Depuración
 			return categorias;
 		}
 
