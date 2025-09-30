@@ -28,7 +28,7 @@ public class SignupServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         // Cargar datos si es necesario
-       /* try {
+        try {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             // Verificar si hay datos cargados
             if (ctrlUsuario.listarUsuarios().isEmpty()) {
@@ -41,7 +41,7 @@ public class SignupServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException("Error cargando datos iniciales", e);
         }
-    }*/
+    }
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

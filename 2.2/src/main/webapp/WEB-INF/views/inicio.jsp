@@ -25,7 +25,7 @@
         <c:otherwise>
           <nav class="nav-links">
             <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
-            <a href="${pageContext.request.contextPath}/register">Registrarse</a>
+            <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
           </nav>
         </c:otherwise>
       </c:choose>

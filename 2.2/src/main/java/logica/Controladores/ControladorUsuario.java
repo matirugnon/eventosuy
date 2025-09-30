@@ -273,21 +273,7 @@ public class ControladorUsuario implements IControladorUsuario {
 	}
 
 
-	@Override
-	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac,
-			String institucion, String password)
-			throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
-		// TODO Auto-generated method stub
-		
-	}
 
-
-	@Override
-	public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link,
-			String password) throws UsuarioRepetidoException, CorreoInvalidoException {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	@Override

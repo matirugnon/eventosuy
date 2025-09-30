@@ -153,6 +153,18 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlEvento.AltaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
                             new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025));
 
+        if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
+            ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
+                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026));
+
+        if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
+            ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
+                            new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024));
+
+        if (!ctrlEvento.existeEdicion("Web Summit 2026"))
+            ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
+                            new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
+
 
 
 		// TipoRegistro

@@ -22,7 +22,7 @@
 
       <div>
         
-        <a href="<%= request.getContextPath() %>/WEB-INF/views/altadeusuario.jsp" class="btn-primary">Registrarse</a>
+       <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
       </div>
     </header>
 
