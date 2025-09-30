@@ -37,7 +37,7 @@ public class Evento {
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<String> getCategorias() { return new HashSet<>(categorias); }
     public Set<String> getEdiciones() { return ediciones.keySet(); }
-
+   
     public void agregarEdicion(Edicion ed) {
         ediciones.put(ed.getNombre(),ed);
     }
