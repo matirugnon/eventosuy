@@ -61,6 +61,12 @@ public class inicioServlet extends HttpServlet {
       request.setAttribute("categoriaSeleccionada", 
           (categoriaSeleccionada == null || categoriaSeleccionada.isBlank()) ? "todas" : categoriaSeleccionada);
 
+      // Obtener el rol desde la sesión y pasarlo a la JSP
+      String role = (String) request.getSession().getAttribute("role");
+      request.setAttribute("role", role);
+      request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
+      request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
+
       request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response);
 
     } catch (Exception e) {

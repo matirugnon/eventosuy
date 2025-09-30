@@ -24,9 +24,10 @@ public interface IControladorUsuario {
 	public void altaUsuario(Usuario u);
 
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
-			throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;
+        throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;
 
-    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password) throws UsuarioRepetidoException, CorreoInvalidoException;
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
+        throws UsuarioRepetidoException, CorreoInvalidoException;
 
 
     public boolean ExisteNickname(String nick);
