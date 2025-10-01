@@ -12,13 +12,15 @@
 
   <!-- Header -->
   <header class="header">
-    <h1>eventos.uy</h1>
+    <h1><a href="<%= request.getContextPath() %>/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
     <div class="header-right">
       <c:choose>
         <c:when test="${not empty role}">
           <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-            <img class="avatar" src="${avatar}" alt="Avatar de usuario" />
-            <span class="nickname">${nickname}</span>
+            <a href="${pageContext.request.contextPath}/perfilUsuario?nickname=${nickname}" class="avatar-link">
+  				<img class="avatar" src="${avatar}" alt="Avatar de usuario" />
+  				<span class="nickname">${nickname}</span>
+			</a>
             <a href="/EventosUy/logout" class="btn-primary">Cerrar sesión</a>
           </div>
         </c:when>
@@ -134,4 +136,3 @@
 
 </body>
 </html>
-
