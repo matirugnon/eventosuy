@@ -169,10 +169,26 @@
                                 <div>
                                     <h3 style="color: #182080; margin-bottom: 1rem;">Organizador</h3>
                                     <div style="border-radius: 8px; display: flex; justify-content: center; padding: 0.75rem 0;">
-                                        <img src="${pageContext.request.contextPath}/img/IMG-US04.jpeg" alt="Avatar de ${edicion.organizador}" style="width: 168px; height: 112px; border-radius: 12px; object-fit: cover; border: 3px solid rgba(24, 32, 128, 0.15);" />
+                                        <a href="${pageContext.request.contextPath}/perfilUsuario?nickname=${edicion.organizador}&from=edicion&edicion=${edicion.nombre}" style="text-decoration: none;">
+                                            <div style="position: relative; width: 168px; height: 112px;">
+                                                <img src="${pageContext.request.contextPath}${avatarOrganizador}" 
+                                                     alt="Avatar de ${edicion.organizador}" 
+                                                     style="width: 168px; height: 112px; border-radius: 12px; object-fit: cover; border: 3px solid rgba(24, 32, 128, 0.15); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" 
+                                                     onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';" 
+                                                     onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <div style="display: none; width: 168px; height: 112px; border-radius: 12px; border: 3px solid rgba(24, 32, 128, 0.15); background: linear-gradient(135deg, #182080, #4a90e2); color: white; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"
+                                                     onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';" 
+                                                     onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                                                    ${edicion.organizador.substring(0, 1).toUpperCase()}
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
                                     <div style="padding: 0.5rem; text-align: center;">
-                                        <span style="font-weight: 600; color: #182080;">${edicion.organizador}</span>
+                                        <a href="${pageContext.request.contextPath}/perfilUsuario?nickname=${edicion.organizador}&from=edicion&edicion=${edicion.nombre}" style="text-decoration: none;">
+                                            <span style="font-weight: 600; color: #182080; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#0d4f8c';" onmouseout="this.style.color='#182080';">${edicion.organizador}</span>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -185,6 +201,7 @@
                                                     <li style="padding: 0.5rem 1rem;">
                                                         <c:url var="patrocinioUrl" value="/consultaPatrocinio">
                                                             <c:param name="codigo" value="${patrocinio}" />
+                                                            <c:param name="edicion" value="${edicion.nombre}" />
                                                         </c:url>
                                                         <a href="${patrocinioUrl}" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit;">
                                                             <span style="font-weight: 500;">${patrocinio}</span>

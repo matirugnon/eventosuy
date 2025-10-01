@@ -223,9 +223,9 @@
               </table>
             </c:if>
 
-            <!-- Botón de volver -->
+            <!-- Botón de volver dinámico -->
             <div style="margin-top:1rem;">
-              <a class="btn-primary" href="${pageContext.request.contextPath}/listarUsuarios">← Volver al listado</a>
+              <a class="btn-primary" href="${backUrl}">${backLabel}</a>
             </div>
           </div>
         </section>

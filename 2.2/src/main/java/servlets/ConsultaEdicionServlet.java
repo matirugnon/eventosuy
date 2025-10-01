@@ -10,8 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorUsuario;
+import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTEvento;
+import logica.DatatypesYEnum.DTUsuario;
+import logica.Usuario;
+import utils.Utils;
 
 @WebServlet("/consultaEdicion")
 public class ConsultaEdicionServlet extends HttpServlet {
@@ -21,6 +26,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             IControladorEvento ctrl = IControladorEvento.getInstance();
+            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 
             // Obtener el nombre de la edición desde el parámetro
             String nombreEdicion = request.getParameter("edicion");
@@ -28,6 +34,16 @@ public class ConsultaEdicionServlet extends HttpServlet {
             if (nombreEdicion == null || nombreEdicion.trim().isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
+            }
+
+            // Carga inicial de datos si hace falta
+            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
+            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
+                Utils.cargarDatos(
+                    ctrlUsuario,
+                    ctrl,
+                    logica.Controladores.IControladorRegistro.getInstance()
+                );
             }
 
             // Obtener información de la edición específica
@@ -41,12 +57,34 @@ public class ConsultaEdicionServlet extends HttpServlet {
             // Obtener información del evento padre
             DTEvento eventoPadre = ctrl.obtenerEventoPorEdicion(nombreEdicion);
             
+            // Obtener información del organizador
+            String nicknameOrganizador = edicion.getOrganizador();
+            DTUsuario organizador = null;
+            String avatarOrganizador = "/img/avatar-default.png"; // Avatar por defecto
+            
+            if (nicknameOrganizador != null && !nicknameOrganizador.trim().isEmpty()) {
+                try {
+                    organizador = ctrlUsuario.getDTUsuario(nicknameOrganizador);
+                    if (organizador != null) {
+                        // Obtener el avatar del organizador
+                        Usuario usuarioOrganizador = ctrlUsuario.obtenerUsuario(nicknameOrganizador);
+                        if (usuarioOrganizador != null && usuarioOrganizador.getAvatar() != null) {
+                            avatarOrganizador = usuarioOrganizador.getAvatar();
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error obteniendo información del organizador: " + e.getMessage());
+                }
+            }
+            
             // Obtener todas las categorías para el sidebar
             Set<String> categorias = ctrl.listarCategorias();
 
             // Pasar los datos a la JSP
             request.setAttribute("edicion", edicion);
             request.setAttribute("eventoPadre", eventoPadre);
+            request.setAttribute("organizador", organizador);
+            request.setAttribute("avatarOrganizador", avatarOrganizador);
             request.setAttribute("categorias", categorias);
 
             // Obtener el rol desde la sesión y pasarlo a la JSP
