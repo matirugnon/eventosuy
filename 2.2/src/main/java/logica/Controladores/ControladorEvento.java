@@ -238,7 +238,7 @@ public class ControladorEvento implements IControladorEvento {
 	    }
 
 	    for (Patrocinio p : pats) {
-	        if (p != null && p.getCodigo() == codPatrocinio) {
+	        if (p != null && p.getCodigo().equals(codPatrocinio)) {
 	            return new DTPatrocinio(
 	                p.getFechaAlta(),
 	                p.getMonto(),

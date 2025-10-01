@@ -21,7 +21,7 @@
       <h1><a href="<%= request.getContextPath() %>/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
 
       <div>
-        
+
        <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
       </div>
     </header>

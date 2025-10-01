@@ -86,6 +86,21 @@ public class PerfilUsuarioServlet extends HttpServlet {
             // Obtener categorías para el sidebar
             Set<String> categorias = ctrlEvento.listarCategorias();
 
+            // Manejar parámetros de navegación de regreso
+            String from = request.getParameter("from");
+            String edicionOrigen = request.getParameter("edicion");
+            
+            // Configurar información de regreso
+            if ("edicion".equals(from) && edicionOrigen != null && !edicionOrigen.trim().isEmpty()) {
+                request.setAttribute("backTo", "edicion");
+                request.setAttribute("backLabel", "← Volver a la edición " + edicionOrigen);
+                request.setAttribute("backUrl", request.getContextPath() + "/consultaEdicion?edicion=" + edicionOrigen);
+            } else {
+                request.setAttribute("backTo", "listado");
+                request.setAttribute("backLabel", "← Volver al listado");
+                request.setAttribute("backUrl", request.getContextPath() + "/listarUsuarios");
+            }
+
             // Pasar los datos como atributos a la JSP
             request.setAttribute("usuario", usuario);
             request.setAttribute("tipoUsuario", tipoUsuario);

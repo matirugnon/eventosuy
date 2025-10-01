@@ -12,7 +12,7 @@
 
   <!-- Header -->
   <header class="header">
-    <h1>eventos.uy</h1>
+    <h1><a href="<%= request.getContextPath() %>/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
     <div class="header-right">
       <c:choose>
         <c:when test="${not empty role}">
@@ -138,4 +138,3 @@
 
 </body>
 </html>
-
