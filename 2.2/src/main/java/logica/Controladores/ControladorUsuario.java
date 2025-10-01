@@ -297,8 +297,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	@Override
 	public Usuario obtenerUsuario(String identificador) {
-		// TODO Auto-generated method stub
-		return null;
+		return manejador.obtenerUsuario(identificador);
 	}
 
 

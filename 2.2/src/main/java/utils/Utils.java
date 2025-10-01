@@ -13,7 +13,7 @@ import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
-
+import logica.Usuario;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
@@ -81,6 +81,37 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlUsuario.altaOrganizador("udelar", "Universidad de la República", "contacto@udelar.edu.uy", "Universidad pública de Uruguay.", "https://udelar.edu.uy", "1234");
         if (!ctrlUsuario.ExisteNickname("mec"))
             ctrlUsuario.altaOrganizador("mec", "Ministerio de Educación y Cultura", "mec@mec.gub.uy", "Institución pública promotora de cultura.", "https://mec.gub.uy", "1234");
+
+        // Asignar avatares a usuarios específicos
+        if (ctrlUsuario.ExisteNickname("atorres")) {
+            Usuario atorres = ctrlUsuario.obtenerUsuario("atorres");
+            if (atorres != null) {
+                atorres.setAvatar("/img/IMG-US01.jpg");
+            } else {
+                System.out.println("WARNING: Usuario 'atorres' existe pero obtenerUsuario devolvió null");
+            }
+        }
+        if (ctrlUsuario.ExisteNickname("miseventos")) {
+            Usuario miseventos = ctrlUsuario.obtenerUsuario("miseventos");
+            if (miseventos != null) {
+                miseventos.setAvatar("/img/IMG-US04.jpeg");
+            } else {
+                System.out.println("WARNING: Usuario 'miseventos' existe pero obtenerUsuario devolvió null");
+            }
+        }
+        // Asignar avatar por defecto a otros usuarios
+        String[] usuarios = {"msilva", "sofirod", "vale23", "luciag", "andrearod", "AnaG", "JaviL", "MariR", "SofiM", 
+                           "techcorp", "imm", "udelar", "mec"};
+        for (String nick : usuarios) {
+            if (ctrlUsuario.ExisteNickname(nick)) {
+                Usuario usuario = ctrlUsuario.obtenerUsuario(nick);
+                if (usuario != null && usuario.getAvatar() == null) {
+                    usuario.setAvatar("/img/avatar-default.png");
+                } else if (usuario == null) {
+                    System.out.println("WARNING: Usuario '" + nick + "' existe pero obtenerUsuario devolvió null");
+                }
+            }
+        }
 
         // Categorias
         if (!ctrlEvento.existeCategoria("Tecnología"))

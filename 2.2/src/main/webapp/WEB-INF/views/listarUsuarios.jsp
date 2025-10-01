@@ -8,6 +8,17 @@
   <title>Usuarios · eventos.uy</title>
   <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* Agrandar caja de usuarios solo para esta página */
+    .auth-card {
+      width: 800px;
+      max-width: 95%;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
   <div>
@@ -24,10 +35,8 @@
             </div>
           </c:when>
           <c:otherwise>
-            <nav class="nav-links">
-              <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
-              <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
-            </nav>
+            <a href="${pageContext.request.contextPath}/login" class="btn-primary">Iniciar sesión</a>
+            <a href="${pageContext.request.contextPath}/signup" class="btn-primary">Registrarse</a>
           </c:otherwise>
         </c:choose>
       </div>
@@ -63,23 +72,44 @@
         <!-- Categorías -->
         <div class="panel sidebar" style="margin-top: 1rem;">
           <div class="panel-header">Categorías</div>
-          <div class="panel-body menu-list">
+          <ul class="menu-list">
             <c:choose>
               <c:when test="${empty categorias}">
-                <p class="muted">No hay categorías disponibles.</p>
+                <li><span class="muted">No hay categorías disponibles.</span></li>
               </c:when>
               <c:otherwise>
-                <c:url var="urlTodas" value="/inicio"/>
-                <a href="${urlTodas}" class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
-                <c:forEach var="cat" items="${categorias}">
-                  <c:url var="catUrl" value="/inicio">
-                    <c:param name="categoria" value="${cat}"/>
-                  </c:url>
-                  <a href="${catUrl}" class="${cat eq categoriaSeleccionada ? 'active' : ''}">${cat}</a>
+                <li>
+                  <c:url var="urlTodas" value="/inicio"/>
+                  <a href="${urlTodas}">Todas</a>
+                </li>
+                <c:forEach var="categoria" items="${categorias}">
+                  <li>
+                    <c:url var="categoriaUrl" value="/inicio">
+                      <c:param name="categoria" value="${categoria}" />
+                    </c:url>
+                    <a href="${categoriaUrl}">${categoria}</a>
+                  </li>
                 </c:forEach>
               </c:otherwise>
             </c:choose>
-          </div>
+          </ul>
+        </div>
+
+        <!-- Botón "Ver listado de Usuarios" -->
+        <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+          <a href="${pageContext.request.contextPath}/listarUsuarios" style="
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: #182080;
+              font-weight: 600;
+              text-decoration: none;
+              padding: 0.75rem;
+              border-radius: 6px;
+              transition: background-color 0.2s;
+              background-color: rgba(24, 32, 128, 0.05);">
+              Ver listado de usuarios
+          </a>
         </div>
       </aside>
 
@@ -100,22 +130,44 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <c:forEach var="usuario" items="${usuarios}">
-                    <tr style="border-bottom:1px solid #eee;">
-                      <td style="padding:.5rem;">
-                        <img src="${usuario.avatar}" alt="Avatar de ${usuario.nickname}"
-                             style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
-                      </td>
-                      <td style="padding:.5rem;">${usuario.nickname}</td>
-                      <td style="padding:.5rem;">${usuario.nombre}</td>
-                      <td style="padding:.5rem;">${usuario.tipo}</td>
-                      <td style="padding:.5rem;">
-                        <a class="btn-primary" href="${pageContext.request.contextPath}/consultausuario?nickname=${usuario.nickname}">
-                          Seleccionar
-                        </a>
-                      </td>
-                    </tr>
-                  </c:forEach>
+                  <c:choose>
+                    <c:when test="${empty usuarios}">
+                      <tr>
+                        <td colspan="5" style="padding:2rem; text-align:center; color:#666;">
+                          No hay usuarios registrados.
+                        </td>
+                      </tr>
+                    </c:when>
+                    <c:otherwise>
+                      <c:forEach var="usuario" items="${usuarios}">
+                        <tr style="border-bottom:1px solid #eee;">
+                          <td style="padding:.5rem;">
+                            <c:choose>
+                              <c:when test="${not empty usuario.avatar}">
+                                <img src="${pageContext.request.contextPath}${usuario.avatar}" alt="Avatar de ${usuario.nickname}"
+                                     style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
+                              </c:when>
+                              <c:otherwise>
+                                <img src="${pageContext.request.contextPath}/img/avatar-default.png" alt="Avatar de ${usuario.nickname}"
+                                     style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
+                              </c:otherwise>
+                            </c:choose>
+                          </td>
+                          <td style="padding:.5rem;">${usuario.nickname}</td>
+                          <td style="padding:.5rem;">${usuario.nombre}</td>
+                          <td style="padding:.5rem;">${tiposUsuarios[usuario.nickname]}</td>
+                          <td style="padding:.5rem;">
+                            <c:url var="perfilUsuarioUrl" value="/perfilUsuario">
+                              <c:param name="nickname" value="${usuario.nickname}" />
+                            </c:url>
+                            <a class="btn-primary" href="${perfilUsuarioUrl}">
+                              Seleccionar
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                    </c:otherwise>
+                  </c:choose>
                 </tbody>
               </table>
             </div>

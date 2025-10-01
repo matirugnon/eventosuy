@@ -37,15 +37,57 @@
 
     <div class="content">
       <aside class="sidebar">
-        <div class="panel sidebar">
+        <c:choose>
+          <c:when test="${role == 'organizador'}">
+            <div class="panel sidebar">
+              <div class="panel-header">Mi perfil</div>
+              <ul class="menu-list">
+                <li><a href="#">Alta Evento</a></li>
+                <li><a href="#">Alta Edición</a></li>
+                <li><a href="#">Alta Institución</a></li>
+                <li><a href="#">Alta Tipo de Registro</a></li>
+                <li><a href="#">Alta Patrocinio</a></li>
+                <li><a href="#">Consulta Registro</a></li>
+              </ul>
+            </div>
+          </c:when>
+          <c:when test="${role == 'asistente'}">
+            <div class="panel sidebar">
+              <div class="panel-header">Mi perfil</div>
+              <ul class="menu-list">
+                <li><a href="#">Registro a Edición</a></li>
+              </ul>
+            </div>
+          </c:when>
+        </c:choose>
+
+        <!-- Categorías -->
+        <div class="panel sidebar" style="margin-top: 1rem;">
           <div class="panel-header">Categorías</div>
           <ul class="menu-list">
-            <c:forEach items="${categorias}" var="categoria">
-              <li><a href="${pageContext.request.contextPath}/inicio?categoria=${categoria}">${categoria}</a></li>
-            </c:forEach>
+            <c:choose>
+              <c:when test="${empty categorias}">
+                <li><span class="muted">No hay categorías disponibles.</span></li>
+              </c:when>
+              <c:otherwise>
+                <li>
+                  <c:url var="urlTodas" value="/inicio"/>
+                  <a href="${urlTodas}">Todas</a>
+                </li>
+                <c:forEach items="${categorias}" var="categoria">
+                  <li>
+                    <c:url var="catUrl" value="/inicio">
+                      <c:param name="categoria" value="${categoria}"/>
+                    </c:url>
+                    <a href="${catUrl}">${categoria}</a>
+                  </li>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
           </ul>
         </div>
         
+        <!-- Botón "Ver listado de Usuarios" -->
         <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
           <a href="${pageContext.request.contextPath}/listarUsuarios" style="
               display: flex;

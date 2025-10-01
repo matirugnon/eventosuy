@@ -62,23 +62,27 @@
       <!-- Categorías -->
       <div class="panel sidebar" style="margin-top: 1rem;">
         <div class="panel-header">Categorías</div>
-        <div class="panel-body menu-list">
+        <ul class="menu-list">
           <c:choose>
             <c:when test="${empty categorias}">
-              <p class="muted">No hay categorías disponibles.</p>
+              <li><span class="muted">No hay categorías disponibles.</span></li>
             </c:when>
             <c:otherwise>
-              <c:url var="urlTodas" value="/inicio"/>
-              <a href="${urlTodas}" class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
+              <li>
+                <c:url var="urlTodas" value="/inicio"/>
+                <a href="${urlTodas}" class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
+              </li>
               <c:forEach var="cat" items="${categorias}">
-                <c:url var="catUrl" value="/inicio">
-                  <c:param name="categoria" value="${cat}"/>
-                </c:url>
-                <a href="${catUrl}" class="${cat eq categoriaSeleccionada ? 'active' : ''}">${cat}</a>
+                <li>
+                  <c:url var="catUrl" value="/inicio">
+                    <c:param name="categoria" value="${cat}"/>
+                  </c:url>
+                  <a href="${catUrl}" class="${cat eq categoriaSeleccionada ? 'active' : ''}">${cat}</a>
+                </li>
               </c:forEach>
             </c:otherwise>
           </c:choose>
-        </div>
+        </ul>
       </div>
 
       <!-- Botón "Ver listado de Usuarios" -->

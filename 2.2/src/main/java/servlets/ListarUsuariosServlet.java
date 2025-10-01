@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -11,7 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import logica.Controladores.IControladorUsuario;
+import logica.Controladores.IControladorEvento;
+import logica.Controladores.IControladorRegistro;
+import logica.DatatypesYEnum.DTUsuario;
+import logica.DatatypesYEnum.DTAsistente;
+import logica.DatatypesYEnum.DTOrganizador;
 import logica.Usuario;
+import utils.Utils;
 
 @WebServlet("/listarUsuarios")
 public class ListarUsuariosServlet extends HttpServlet {
@@ -20,25 +28,55 @@ public class ListarUsuariosServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Obtener el controlador de usuarios
+            // Obtener los controladores
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+
+            // Carga inicial de datos si hace falta
+            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
+            System.out.println("DEBUG: Usuarios existentes: " + (usuariosExistentes != null ? usuariosExistentes.size() + " - " + usuariosExistentes : "null"));
+         
+            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
+                System.out.println("DEBUG: Cargando datos...");
+                try {
+                    Utils.cargarDatos(
+                        ctrlUsuario,
+                        ctrlEvento,
+                        IControladorRegistro.getInstance()
+                    );
+                    System.out.println("DEBUG: Datos cargados exitosamente.");
+                } catch (Exception e) {
+                    System.out.println("ERROR: Error al cargar datos: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
 
             // Obtener los nicks de los usuarios registrados
             Set<String> nicksUsuarios = ctrlUsuario.listarUsuarios();
+            System.out.println("DEBUG: Nicks después de carga: " + (nicksUsuarios != null ? nicksUsuarios.size() + " - " + nicksUsuarios : "null"));
+
+            // Usar el método más eficiente que devuelve DTUsuarios directamente
+            Set<DTUsuario> usuarios = ctrlUsuario.listarUsuariosDT();
+            System.out.println("DEBUG: DTUsuarios obtenidos directamente: " + (usuarios != null ? usuarios.size() : "null"));
             
-
-            // Convertir los nicks en objetos Usuario
-            Set<Usuario> usuarios = new HashSet<>();
-            for (String nick : nicksUsuarios) {
-                Usuario usuario = ctrlUsuario.obtenerUsuario(nick);
-                if (usuario != null) {
-                    usuarios.add(usuario);
+            Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
+            
+            if (usuarios != null && !usuarios.isEmpty()) {
+                for (DTUsuario dtUsuario : usuarios) {
+                    String tipo = (dtUsuario instanceof DTAsistente) ? "Asistente" : "Organizador";
+                    tiposUsuarios.put(dtUsuario.getNickname(), tipo);
+                    System.out.println("DEBUG: DTUsuario procesado: " + dtUsuario.getNickname() + " - " + dtUsuario.getNombre() + " (" + tipo + ")");
                 }
+            } else {
+                System.out.println("DEBUG: usuarios DTUsuario está vacío o es null");
             }
-           
+            System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar
+            Set<String> categorias = ctrlEvento.listarCategorias();
 
-            // Pasar los usuarios como atributo a la JSP
+            // Pasar los datos como atributos a la JSP
             request.setAttribute("usuarios", usuarios);
+            request.setAttribute("tiposUsuarios", tiposUsuarios);
+            request.setAttribute("categorias", categorias);
 
             // Pasar datos de sesión (nickname, avatar, nombre, role)
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));

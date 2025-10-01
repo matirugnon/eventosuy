@@ -34,7 +34,7 @@ public interface IControladorUsuario {
 
     public boolean ExisteCorreo(String correo);
 
-
+    public Set<DTUsuario> listarUsuariosDT();
     public Set<String> listarEdicionesOrganizador(String nombreOrganizador);
 
 
