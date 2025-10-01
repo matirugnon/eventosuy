@@ -169,7 +169,7 @@
                       <td>${edicion.evento}</td>
                       <td>${edicion.nombre}</td>
                       <td>${edicion.sigla}</td>
-                      <td><a href="${pageContext.request.contextPath}/consultarEdicion?nombre=${edicion.nombre}" class="btn-primary" style="background-color: blue; color: white;">Consultar</a></td>
+                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: blue; color: white;">Consultar</a></td>
                     </tr>
                   </c:forEach>
                   <c:forEach var="edicion" items="${edicionesIngresadas}">
@@ -177,7 +177,7 @@
                       <td>${edicion.evento}</td>
                       <td>${edicion.nombre}</td>
                       <td>${edicion.sigla}</td>
-                      <td><a href="${pageContext.request.contextPath}/consultarEdicion?nombre=${edicion.nombre}" class="btn-primary" style="background-color: yellow; color: black;">Ingresada</a></td>
+                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: yellow; color: black;">Ingresada</a></td>
                     </tr>
                   </c:forEach>
                   <c:forEach var="edicion" items="${edicionesRechazadas}">
@@ -185,7 +185,7 @@
                       <td>${edicion.evento}</td>
                       <td>${edicion.nombre}</td>
                       <td>${edicion.sigla}</td>
-                      <td><a href="#" class="btn-primary" style="background-color: red; color: white;">Rechazada</a></td>
+                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: red; color: white;">Rechazada</a></td>
                     </tr>
                   </c:forEach>
                 </tbody>
@@ -215,7 +215,7 @@
                       <td>${registro["fechaRegistro"]}</td>
                       <td>${registro["costo"]}</td>
                       <td>
-                        <a href="${pageContext.request.contextPath}/consultarRegistro?nombre=${registro["tipoDeRegistro"]}" class="btn-primary" style="background-color: blue; color: white;">Consultar registro</a>
+                        <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}" class="btn-primary" style="background-color: blue; color: white;">Consultar registro</a>
                       </td>
                     </tr>
                   </c:forEach>
