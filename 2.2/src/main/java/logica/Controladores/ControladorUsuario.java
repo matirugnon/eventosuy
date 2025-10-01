@@ -76,6 +76,40 @@ public class ControladorUsuario implements IControladorUsuario {
         altaUsuario(a);
     }
 
+    //alta Asistente con avatar
+    @Override
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password, String avatar)
+            throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
+
+        // Validación básica del correo
+        if (!esCorreoValido(correo)) {
+            throw new CorreoInvalidoException(correo);
+        }
+
+        if (ExisteNickname(nick)) {
+            throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
+        }
+
+        if (ExisteCorreo(correo)) {
+            throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
+        }
+
+        if (!esFechaValida(fechanac.getDia(), fechanac.getMes(), fechanac.getAnio())) {
+            throw new FechaInvalidaException(fechanac.getDia(), fechanac.getMes(), fechanac.getAnio());
+        }
+
+        DTFecha hoy = new DTFecha(java.time.LocalDate.now().getDayOfMonth(),
+                java.time.LocalDate.now().getMonthValue(),
+                java.time.LocalDate.now().getYear());
+
+        if (fechanac.compareTo(hoy) > 0) {
+        	throw new FechaInvalidaException("La fecha de nacimiento no puede ser futura.");
+        }
+
+        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
+        altaUsuario(a);
+    }
+
     //alta Organizador
     @Override
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
@@ -95,6 +129,28 @@ public class ControladorUsuario implements IControladorUsuario {
         }
 
         Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, null); // Avatar puede ser null
+        altaUsuario(o);
+    }
+
+    //alta Organizador con avatar
+    @Override
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password, String avatar)
+            throws UsuarioRepetidoException, CorreoInvalidoException {
+
+        // Validación básica del correo
+        if (!esCorreoValido(correo)) {
+            throw new CorreoInvalidoException(correo);
+        }
+
+        if (ExisteNickname(nick)) {
+            throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
+        }
+
+        if (ExisteCorreo(correo)) {
+            throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
+        }
+
+        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, avatar);
         altaUsuario(o);
     }
 

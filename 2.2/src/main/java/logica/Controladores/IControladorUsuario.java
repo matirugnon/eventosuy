@@ -26,7 +26,13 @@ public interface IControladorUsuario {
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
         throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;
 
+    public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password, String avatar)
+        throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;
+
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
+        throws UsuarioRepetidoException, CorreoInvalidoException;
+
+    public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password, String avatar)
         throws UsuarioRepetidoException, CorreoInvalidoException;
 
 

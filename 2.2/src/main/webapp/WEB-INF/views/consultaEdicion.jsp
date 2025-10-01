@@ -20,8 +20,12 @@
                 <c:choose>
                     <c:when test="${not empty role}">
                         <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-                            <img class="avatar" src="${avatar}" alt="Avatar de usuario" />
-                            <span class="nickname">${nickname}</span>
+                            <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
+                                <img class="avatar" 
+                                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                                     alt="Avatar de usuario" />
+                                <span class="nickname">${nickname}</span>
+                            </a>
                             <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
                         </div>
                     </c:when>

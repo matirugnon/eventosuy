@@ -96,11 +96,12 @@ public class SignupServlet extends HttpServlet {
             
         } catch (UsuarioRepetidoException e) {
             mostrarFormularioConError(request, response, "El nickname o email ya está en uso");
-        }catch (CorreoInvalidoException e) {
-            	mostrarFormularioConError(request, response, "El correo electrónico no es válido");
-            }
-         catch (FechaInvalidaException e) {
+        } catch (CorreoInvalidoException e) {
+            mostrarFormularioConError(request, response, "El correo electrónico no es válido");
+        } catch (FechaInvalidaException e) {
             mostrarFormularioConError(request, response, "La fecha de nacimiento no es válida");
+        } catch (IllegalArgumentException e) {
+            mostrarFormularioConError(request, response, e.getMessage());
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "Error al crear usuario: " + e.getMessage());
         }
@@ -129,13 +130,21 @@ public class SignupServlet extends HttpServlet {
         String rutaImagen = procesarImagen(request);
         
         // Crear asistente
-        if (institucion != null && !institucion.trim().isEmpty()) {
-            ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password);
+        if (rutaImagen != null) {
+            // Si hay imagen, usar el método con avatar
+            if (institucion != null && !institucion.trim().isEmpty()) {
+                ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password, rutaImagen);
+            } else {
+                ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, "", password, rutaImagen);
+            }
         } else {
-            ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, "", password);
+            // Si no hay imagen, usar el método original
+            if (institucion != null && !institucion.trim().isEmpty()) {
+                ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password);
+            } else {
+                ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, "", password);
+            }
         }
-        
-        // TODO: Manejar imagen si se procesó
     }
     
     private void crearOrganizador(HttpServletRequest request, IControladorUsuario ctrl,
@@ -149,9 +158,13 @@ public class SignupServlet extends HttpServlet {
         String rutaImagen = procesarImagen(request);
         
         // Crear organizador
-        ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb,password);
-        
-        // TODO: Manejar imagen si se procesó
+        if (rutaImagen != null) {
+            // Si hay imagen, usar el método con avatar
+            ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password, rutaImagen);
+        } else {
+            // Si no hay imagen, usar el método original
+            ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password);
+        }
     }
     
     private DTFecha convertirFecha(String fechaStr) throws FechaInvalidaException {
