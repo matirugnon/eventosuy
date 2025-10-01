@@ -9,6 +9,7 @@ import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
 import logica.DatatypesYEnum.DTEvento;
+import logica.DatatypesYEnum.EstadoEdicion;
 
 public class ManejadorEventos {
 
@@ -126,9 +127,14 @@ public class ManejadorEventos {
         return ediciones.containsKey(nomEdicion);
     }
 
-
-
-
-
+    public Set<Edicion> obtenerEdicionesPorEstado(EstadoEdicion estado) {
+        Set<Edicion> resultado = new HashSet<>();
+        for (Edicion ed : ediciones.values()) {
+            if (ed.getEstado() == estado) {
+                resultado.add(ed);
+            }
+        }
+        return resultado;
+    }
 
 }

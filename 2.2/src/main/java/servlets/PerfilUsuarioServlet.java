@@ -15,7 +15,10 @@ import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTUsuario;
 import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTOrganizador;
+import logica.DatatypesYEnum.EstadoEdicion;
+import logica.Edicion;
 import utils.Utils;
+import logica.DatatypesYEnum.DTEdicion;
 
 @WebServlet("/perfilUsuario")
 public class PerfilUsuarioServlet extends HttpServlet {
@@ -90,6 +93,19 @@ public class PerfilUsuarioServlet extends HttpServlet {
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
             request.setAttribute("role", request.getSession().getAttribute("role"));
             request.setAttribute("nombre", request.getSession().getAttribute("nombre"));
+
+            // Obtener ediciones organizadas por el usuario
+            Set<DTEdicion> edicionesAceptadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
+            request.setAttribute("edicionesAceptadas", edicionesAceptadas);
+
+            // Si el organizador es quien inició sesión
+            String sessionNickname = (String) request.getSession().getAttribute("usuario");
+            if (sessionNickname != null && sessionNickname.equals(nickname)) {
+                Set<DTEdicion> edicionesIngresadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(sessionNickname, EstadoEdicion.INGRESADA);
+                Set<DTEdicion> edicionesRechazadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(sessionNickname, EstadoEdicion.RECHAZADA);
+                request.setAttribute("edicionesIngresadas", edicionesIngresadas);
+                request.setAttribute("edicionesRechazadas", edicionesRechazadas);
+            }
 
             // Redirigir a la JSP
             request.getRequestDispatcher("/WEB-INF/views/perfilUsuario.jsp").forward(request, response);

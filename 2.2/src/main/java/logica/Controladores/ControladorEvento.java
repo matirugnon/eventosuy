@@ -31,6 +31,7 @@ import logica.DatatypesYEnum.DTSeleccionEvento;
 import logica.DatatypesYEnum.NivelPatrocinio;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
+import logica.DatatypesYEnum.EstadoEdicion;
 
 public class ControladorEvento implements IControladorEvento {
 
@@ -191,7 +192,8 @@ public class ControladorEvento implements IControladorEvento {
 	        }
 	        Organizador org = (Organizador) u;
 
-	        Edicion ed = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta,org);
+	        // Crear la edición con el evento asociado
+            Edicion ed = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, ev);
 
 
 	        org.agregarEdicion(ed);
@@ -374,15 +376,32 @@ public Set<DTEvento> obtenerDTEventos(){
 		}
 
 
+	public void actualizarEstadoEdicion(String nomEdicion, EstadoEdicion nuevoEstado) throws EdicionNoExisteException {
+		Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+		if (ed == null) {
+			throw new EdicionNoExisteException(nomEdicion);
+		}
+		ed.setEstado(nuevoEstado);
+	}
 
+	public Set<String> listarEdicionesPorEstado(EstadoEdicion estado) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Set<String> resultado = new HashSet<>();
+		for (Edicion ed : manejador.obtenerEdicionesPorEstado(estado)) {
+			resultado.add(ed.getNombre());
+		}
+		return resultado;
+	}
 
-
-
-
-
-
-
-
-
+	public Set<DTEdicion> listarEdicionesOrganizadasPorEstado(String nicknameOrganizador, EstadoEdicion estado) {
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Set<DTEdicion> resultado = new HashSet<>();
+		for (Edicion ed : manejador.obtenerEdicionesPorEstado(estado)) {
+			if (ed.getOrganizador().getNickname().equals(nicknameOrganizador)) {
+				resultado.add(ed.getDTEdicion());
+			}
+		}
+		return resultado;
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
+import excepciones.EdicionNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
@@ -22,6 +23,7 @@ import excepciones.UsuarioYaRegistradoEnEdicionException;
 
 
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.EstadoEdicion;
 import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Utils {
@@ -31,7 +33,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		throws UsuarioRepetidoException,
 				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
-				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException
+				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException
 
 {
 
@@ -197,6 +199,15 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
                             new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
 
 
+
+		// Estados definidos para mostrar en los perfiles
+		ctrlEvento.actualizarEstadoEdicion("Montevideo Rock 2025", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Maratón de Montevideo 2024", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Maratón de Montevideo 2022", EstadoEdicion.RECHAZADA);
+		ctrlEvento.actualizarEstadoEdicion("Montevideo Comics 2024", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Expointer Uruguay 2025", EstadoEdicion.RECHAZADA);
+		ctrlEvento.actualizarEstadoEdicion("Tecnología Punta del Este 2026", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Web Summit 2026", EstadoEdicion.RECHAZADA);
 
 		// TipoRegistro
 

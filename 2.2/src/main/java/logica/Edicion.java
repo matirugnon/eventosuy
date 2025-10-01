@@ -9,6 +9,7 @@ import java.util.Set;
 
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.EstadoEdicion;
 import logica.DatatypesYEnum.NivelPatrocinio;
 
 public class Edicion{
@@ -21,11 +22,14 @@ public class Edicion{
 	private String pais;
 	private String nombre;
 	private Organizador organizador;
+	private Evento evento; // Referencia al objeto Evento
 
 	private Map<String, TipoDeRegistro> tiposDeRegistro;
 	private Map<String,Patrocinio> patrocinios;
 
-	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org) {
+	private EstadoEdicion estado; // Nuevo atributo
+
+	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento) {
 
 
 		nombre = nom;
@@ -39,10 +43,11 @@ public class Edicion{
 		organizador = org;
 
 		altaEdicionDtFecha = alta;
+		this.evento = evento; // Inicializar la referencia al objeto Evento
 
 		this.tiposDeRegistro = new HashMap<>();
 		this.patrocinios = new HashMap<>();
-
+		this.estado = EstadoEdicion.INGRESADA; // Estado por defecto
 
 		//no me acuerdo como poner localdate :)
 	}
@@ -110,8 +115,8 @@ public class Edicion{
 	    for (TipoDeRegistro tipo : tiposDeRegistro.values()) {
 	        Set<Registro> registros = tipo.getRegistros();
 	        for (Registro reg : registros) {
-	            String nombreAsistente = reg.getAsistente();        // ✅ Ya es String
-	            String nombreTipo = reg.getNomTipo();          // "Estudiante", "Profesional", etc.
+	            String nombreAsistente = reg.getAsistente();
+	            String nombreTipo = reg.getNomTipo();
 
 	            // Crear par (asistente, tipoRegistro)
 	            Map.Entry<String, String> entry = new AbstractMap.SimpleImmutableEntry<>(nombreAsistente, nombreTipo);
@@ -119,13 +124,9 @@ public class Edicion{
 	        }
 	    }
 
-
-
-
-	    
-
 	    // Construir y devolver el DTEdicion
 	    return new DTEdicion(
+	        this.evento.getNombre(), // Obtener el nombre del evento desde el objeto Evento
 	        this.nombre,
 	        this.sigla,
 	        this.fechaInicioDtFecha,
@@ -136,7 +137,8 @@ public class Edicion{
 	        nicknameOrganizador,
 	        nombresTiposDeRegistro,
 	        registrosData,
-	        patrocinios
+	        patrocinios,
+	        this.estado // Incluir el estado
 	    );
 	}
 
@@ -156,5 +158,21 @@ public class Edicion{
 		this.patrocinios.put(codigo, pat);
 		return pat;
 	}
+
+	public EstadoEdicion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoEdicion estado) {
+        this.estado = estado;
+    }
+
+    public Evento getEvento() {
+        return evento;
+    }
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
 
 }

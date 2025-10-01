@@ -151,6 +151,47 @@
               </div>
             </div>
 
+            <!-- Sección de Ediciones para Organizador -->
+            <c:if test="${tipoUsuario == 'Organizador'}">
+              <h3>Ediciones del Organizador</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Evento</th>
+                    <th>Nombre</th>
+                    <th>Sigla</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <c:forEach var="edicion" items="${edicionesAceptadas}">
+                    <tr>
+                      <td>${edicion.evento}</td>
+                      <td>${edicion.nombre}</td>
+                      <td>${edicion.sigla}</td>
+                      <td><a href="${pageContext.request.contextPath}/consultarEdicion?nombre=${edicion.nombre}" class="btn-primary" style="background-color: blue; color: white;">Consultar</a></td>
+                    </tr>
+                  </c:forEach>
+                  <c:forEach var="edicion" items="${edicionesIngresadas}">
+                    <tr>
+                      <td>${edicion.evento}</td>
+                      <td>${edicion.nombre}</td>
+                      <td>${edicion.sigla}</td>
+                      <td><a href="${pageContext.request.contextPath}/consultarEdicion?nombre=${edicion.nombre}" class="btn-primary" style="background-color: yellow; color: black;">Ingresada</a></td>
+                    </tr>
+                  </c:forEach>
+                  <c:forEach var="edicion" items="${edicionesRechazadas}">
+                    <tr>
+                      <td>${edicion.evento}</td>
+                      <td>${edicion.nombre}</td>
+                      <td>${edicion.sigla}</td>
+                      <td><a href="#" class="btn-primary" style="background-color: red; color: white;">Rechazada</a></td>
+                    </tr>
+                  </c:forEach>
+                </tbody>
+              </table>
+            </c:if>
+
             <!-- Botón de volver -->
             <div style="margin-top:1rem;">
               <a class="btn-primary" href="${pageContext.request.contextPath}/listarUsuarios">← Volver al listado</a>

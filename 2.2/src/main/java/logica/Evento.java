@@ -51,7 +51,7 @@ public class Evento {
 
     public Edicion NuevaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin, DTFecha alta, Organizador org) {
 
-    	Edicion edicion = new Edicion(nombre, sigla, ciudad, pais, inicio, fin, alta,org);
+    	Edicion edicion = new Edicion(nombre, sigla, ciudad, pais, inicio, fin, alta, org, this);
 
     	ediciones.put(edicion.getNombre(),edicion);
 
