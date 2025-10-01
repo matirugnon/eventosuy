@@ -130,9 +130,9 @@ public class SignupServlet extends HttpServlet {
         
         // Crear asistente
         if (institucion != null && !institucion.trim().isEmpty()) {
-            ctrl.altaAsistente(nickname, nombre, apellido, email, fechaNac, institucion, password);
+            ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password);
         } else {
-            ctrl.altaAsistente(nickname, nombre, apellido, email, fechaNac, "", password);
+            ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, "", password);
         }
         
         // TODO: Manejar imagen si se procesó
@@ -149,7 +149,7 @@ public class SignupServlet extends HttpServlet {
         String rutaImagen = procesarImagen(request);
         
         // Crear organizador
-        ctrl.altaOrganizador(nickname, nombre, descripcion, email, sitioWeb,password);
+        ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb,password);
         
         // TODO: Manejar imagen si se procesó
     }

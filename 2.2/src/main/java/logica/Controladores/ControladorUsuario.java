@@ -45,8 +45,8 @@ public class ControladorUsuario implements IControladorUsuario {
     public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
 
-        correo = correo.trim(); // Eliminar espacios en blanco
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+        // Validación básica del correo
+        if (!esCorreoValido(correo)) {
             throw new CorreoInvalidoException(correo);
         }
 
@@ -81,8 +81,8 @@ public class ControladorUsuario implements IControladorUsuario {
     public void altaOrganizador(String nick, String nombre, String correo, String descripcion, String link, String password)
             throws UsuarioRepetidoException, CorreoInvalidoException {
 
-        correo = correo.trim(); // Eliminar espacios en blanco
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+        // Validación básica del correo
+        if (!esCorreoValido(correo)) {
             throw new CorreoInvalidoException(correo);
         }
 
@@ -298,6 +298,30 @@ public class ControladorUsuario implements IControladorUsuario {
 	@Override
 	public Usuario obtenerUsuario(String identificador) {
 		return manejador.obtenerUsuario(identificador);
+	}
+
+	/**
+	 * Valida si un correo electrónico tiene un formato básico válido
+	 * @param correo El correo a validar
+	 * @return true si el correo es válido, false en caso contrario
+	 */
+	private boolean esCorreoValido(String correo) {
+		if (correo == null) {
+			return false;
+		}
+		
+		// Eliminar espacios en blanco
+		correo = correo.trim();
+		
+		// Verificar que no esté vacío
+		if (correo.isEmpty()) {
+			return false;
+		}
+		
+		// Patrón simple: letras, números, punto, guión bajo, más, guión + @ + dominio con punto + extensión
+		String patron = "^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+		
+		return correo.matches(patron);
 	}
 
 
