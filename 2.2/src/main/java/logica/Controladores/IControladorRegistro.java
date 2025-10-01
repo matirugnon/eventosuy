@@ -37,6 +37,6 @@ public interface IControladorRegistro {
 
 	public DTRegistro getRegistro(String usuario, String registro);
 
-
-
+	// Método para listar registros por asistente
+    public Set<DTRegistro> listarRegistrosPorAsistente(String nickname) throws UsuarioNoExisteException;
 }

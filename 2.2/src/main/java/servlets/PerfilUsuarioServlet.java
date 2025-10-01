@@ -2,6 +2,9 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,6 +22,8 @@ import logica.DatatypesYEnum.EstadoEdicion;
 import logica.Edicion;
 import utils.Utils;
 import logica.DatatypesYEnum.DTEdicion;
+import logica.Registro;
+import logica.DatatypesYEnum.DTRegistro;
 
 @WebServlet("/perfilUsuario")
 public class PerfilUsuarioServlet extends HttpServlet {
@@ -105,6 +110,30 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 Set<DTEdicion> edicionesRechazadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(sessionNickname, EstadoEdicion.RECHAZADA);
                 request.setAttribute("edicionesIngresadas", edicionesIngresadas);
                 request.setAttribute("edicionesRechazadas", edicionesRechazadas);
+            }
+
+            // Verificar si el usuario logueado es un asistente y está consultando su propio perfil
+            if (tipoUsuario.equals("Asistente") && sessionNickname != null && sessionNickname.equals(nickname)) {
+                IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+                Set<DTRegistro> registros = ctrlRegistro.listarRegistrosPorAsistente(sessionNickname);
+                Set<Map<String, String>> registrosAsistente = new HashSet<>();
+
+                for (DTRegistro registro : registros) {
+                    String nomEdicion = registro.getnomEdicion();
+                    DTEdicion edicion = ctrlEvento.consultarEdicion(nomEdicion);
+                    String nomEvento = edicion.getEvento(); // Assuming DTEdicion has a getEvento() method
+
+                    Map<String, String> registroData = new HashMap<>();
+                    registroData.put("evento", nomEvento);
+                    registroData.put("edicion", nomEdicion);
+                    registroData.put("tipoDeRegistro", registro.getTipoDeRegistro());
+                    registroData.put("fechaRegistro", registro.getFechaRegistro().toString());
+                    registroData.put("costo", registro.getCosto().toString());
+
+                    registrosAsistente.add(registroData);
+                }
+
+                request.setAttribute("registrosAsistente", registrosAsistente);
             }
 
             // Redirigir a la JSP

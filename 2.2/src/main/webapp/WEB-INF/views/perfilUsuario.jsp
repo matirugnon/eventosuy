@@ -192,6 +192,37 @@
               </table>
             </c:if>
 
+            <!-- Sección de Registros para Asistente -->
+            <c:if test="${tipoUsuario == 'Asistente' && not empty registrosAsistente}">
+              <h3>Registros del asistente</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Evento</th>
+                    <th>Edición</th>
+                    <th>Tipo de Registro</th>
+                    <th>Fecha</th>
+                    <th>Costo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <c:forEach var="registro" items="${registrosAsistente}">
+                    <tr>
+                      <td>${registro["evento"]}</td>
+                      <td>${registro["edicion"]}</td>
+                      <td>${registro["tipoDeRegistro"]}</td>
+                      <td>${registro["fechaRegistro"]}</td>
+                      <td>${registro["costo"]}</td>
+                      <td>
+                        <a href="${pageContext.request.contextPath}/consultarRegistro?nombre=${registro["tipoDeRegistro"]}" class="btn-primary" style="background-color: blue; color: white;">Consultar registro</a>
+                      </td>
+                    </tr>
+                  </c:forEach>
+                </tbody>
+              </table>
+            </c:if>
+
             <!-- Botón de volver -->
             <div style="margin-top:1rem;">
               <a class="btn-primary" href="${pageContext.request.contextPath}/listarUsuarios">← Volver al listado</a>

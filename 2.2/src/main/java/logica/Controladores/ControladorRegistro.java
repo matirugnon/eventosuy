@@ -1,6 +1,7 @@
 package logica.Controladores;
 
 import java.util.Set;
+import java.util.HashSet;
 
 import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
@@ -167,6 +168,29 @@ public class ControladorRegistro implements IControladorRegistro {
 
 
 	    return null;
+	}
+
+	@Override
+	public Set<DTRegistro> listarRegistrosPorAsistente(String nickAsistente) throws UsuarioNoExisteException {
+	    ManejadorUsuario mu = ManejadorUsuario.getinstance();
+	    Usuario us = mu.obtenerUsuario(nickAsistente);
+
+	    if (us instanceof Asistente as) {
+	        Set<DTRegistro> registros = new HashSet<>();
+	        for (Registro reg : as.getRegistros()) {
+	            DTRegistro dtRegistro = new DTRegistro(
+	                nickAsistente,
+	                reg.getTipoDeRegistro().getNombre(),
+	                reg.getFechaRegistro(),
+	                reg.getCosto(),
+	                reg.getTipoDeRegistro().getNombreEdicion()
+	            );
+	            registros.add(dtRegistro);
+	        }
+	        return registros;
+	    } else {
+	        throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
+	    }
 	}
 }
 
