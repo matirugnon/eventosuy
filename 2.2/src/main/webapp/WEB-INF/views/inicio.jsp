@@ -46,7 +46,7 @@
             <ul class="menu-list">
               <li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
               <li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
-              <li><a href="#">Alta Institución</a></li>
+                                  <li><a href="altaInstitucion">Alta Institución</a></li>
               <li><a href="#">Alta Tipo de Registro</a></li>
               <li><a href="#">Alta Patrocinio</a></li>
               <li><a href="#">Consulta Registro</a></li>

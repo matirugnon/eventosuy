@@ -10,6 +10,7 @@ import excepciones.UsuarioRepetidoException;
 import logica.Usuario;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTUsuario;
+import logica.DatatypesYEnum.DTInstitucion;
 
 /**
  * @author TProg2017
@@ -60,7 +61,12 @@ public interface IControladorUsuario {
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web)
     		throws ExisteInstitucionException;
 
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web, String logo)
+    		throws ExisteInstitucionException;
+
     public Set<String> listarInstituciones();
+
+    public DTInstitucion getInstitucion(String nombreInstitucion);
 
     public DTUsuario getDTUsuario(String nombreU)
     		throws UsuarioNoExisteException;

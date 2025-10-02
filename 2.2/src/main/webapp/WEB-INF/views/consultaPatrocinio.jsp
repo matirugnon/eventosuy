@@ -101,6 +101,18 @@
                     </div>
 
                     <div class="panel-body">
+                        <c:if test="${not empty institucion and institucion.tieneLogo()}">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                                <img src="${pageContext.request.contextPath}/${institucion.logo}" 
+                                     alt="Logo de ${institucion.nombre}" 
+                                     style="max-width: 80px; max-height: 60px; border-radius: 4px; border: 1px solid #ddd;">
+                                <div>
+                                    <strong>${institucion.nombre}</strong><br>
+                                    <span style="color: #666; font-size: 0.9rem;">${institucion.descripcion}</span>
+                                </div>
+                            </div>
+                        </c:if>
+                        
                         <p><strong>Edición:</strong> ${patrocinio.edicion}</p>
                         <p><strong>Institución:</strong> ${patrocinio.institucion}</p>
                         <p><strong>Nivel:</strong> ${patrocinio.nivel}</p>

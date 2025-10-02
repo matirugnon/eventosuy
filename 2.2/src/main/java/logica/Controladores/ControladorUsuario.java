@@ -16,6 +16,7 @@ import logica.DatatypesYEnum.DTAsistente;
 import logica.DatatypesYEnum.DTFecha;
 import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTUsuario;
+import logica.DatatypesYEnum.DTInstitucion;
 import logica.manejadores.ManejadorUsuario;
 
 public class ControladorUsuario implements IControladorUsuario {
@@ -236,12 +237,29 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new ExisteInstitucionException();
         }
 
+    	manejador.addInstitucion(ins);
+    }
+    
+    public void altaInstitucion(String nombreInstitucion, String descripcion, String web, String logo) throws ExisteInstitucionException {
+    	Institucion ins = new Institucion(nombreInstitucion, descripcion, web, logo);
+
+    	if (existeInstitucion(nombreInstitucion)) {
+            throw new ExisteInstitucionException();
+        }
 
     	manejador.addInstitucion(ins);
     }
 
     public Set<String> listarInstituciones(){
     	return manejador.getNombreInstituciones();
+    }
+    
+    public DTInstitucion getInstitucion(String nombreInstitucion) {
+    	Institucion ins = manejador.obtenerInstitucion(nombreInstitucion);
+    	if (ins == null) {
+    		return null;
+    	}
+    	return new DTInstitucion(ins.getNombre(), ins.getDescripcion(), ins.getSitioWeb(), ins.getLogo());
     }
 
 

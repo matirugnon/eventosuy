@@ -14,6 +14,7 @@ import logica.Controladores.IControladorUsuario;
 import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTPatrocinio;
 import logica.DatatypesYEnum.DTEdicion;
+import logica.DatatypesYEnum.DTInstitucion;
 import excepciones.EdicionNoExisteException;
 import excepciones.EdicionSinPatrociniosException;
 import excepciones.PatrocinioNoEncontradoException;
@@ -61,6 +62,9 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
                 return;
             }
 
+            // Obtener información de la institución (incluyendo logo)
+            DTInstitucion institucion = ctrlUsuario.getInstitucion(patrocinio.getInstitucion());
+
             // Obtener información de la edición
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
             
@@ -69,6 +73,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
 
             // Pasar los datos a la JSP
             request.setAttribute("patrocinio", patrocinio);
+            request.setAttribute("institucion", institucion);
             request.setAttribute("edicionInfo", edicionInfo);
             request.setAttribute("categorias", categorias);
 
