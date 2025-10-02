@@ -192,7 +192,7 @@
                     </c:if>
                   </c:if>
                 </div>
-                <a href="#" class="btn-primary" style="margin-left:1.5rem;white-space:nowrap;">Editar usuario</a>
+                <a href="${pageContext.request.contextPath}/modificarUsuario" class="btn-primary" style="margin-left:1.5rem;white-space:nowrap;">Editar usuario</a>
               </div>
             </div>
 
@@ -219,7 +219,14 @@
                             <td>${registro.tipoDeRegistro}</td>
                             <td>${registro.fechaRegistro.dia}/${registro.fechaRegistro.mes}/${registro.fechaRegistro.anio}</td>
                             <td>$${registro.costo}</td>
-                            <td><a class="btn-consultar" href="#">Consultar</a></td>
+                            <td>
+                              <c:url var="consultaRegistroUrl" value="/consultaRegistro">
+                                <c:param name="asistente" value="${registro.asistente}" />
+                                <c:param name="edicion" value="${registro.nomEdicion}" />
+                                <c:param name="tipoRegistro" value="${registro.tipoDeRegistro}" />
+                              </c:url>
+                              <a class="btn-consultar" href="${consultaRegistroUrl}">Consultar</a>
+                            </td>
                           </tr>
                         </c:forEach>
                       </tbody>
@@ -311,7 +318,7 @@
       };
       </c:if>
       
-      // Para organizadores
+      <!-- Para organizadores -->
       <c:if test="${tipoUsuario == 'Organizador'}">
       const tabEdiciones = document.getElementById('tab-ediciones');
       const panelEdiciones = document.getElementById('panel-ediciones');
