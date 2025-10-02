@@ -18,6 +18,52 @@
     .actions { display:flex; gap:.5rem; flex-wrap:wrap; }
     .btn-outline { display:inline-block; padding:.4rem .7rem; border:1px solid #ccc; border-radius:10px; text-decoration:none; }
     .user-details-list p { margin: 0.5rem 0; }
+    
+    /* Tabs y contenedor fijo */
+    .tabs { display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 1rem; }
+    .tab { 
+      padding: 0.75rem 1.5rem; 
+      background: #f8f9fa; 
+      border: 1px solid #ddd; 
+      border-bottom: none; 
+      cursor: pointer; 
+      border-radius: 8px 8px 0 0; 
+      margin-right: 4px;
+      transition: all 0.2s;
+    }
+    .tab.active { 
+      background: white; 
+      border-bottom: 2px solid white; 
+      margin-bottom: -2px; 
+      font-weight: 600;
+    }
+    .tab:hover:not(.active) { background: #e9ecef; }
+    
+    .tab-content { 
+      min-height: 400px; 
+      background: white; 
+      padding: 1.5rem; 
+      border-radius: 0 8px 8px 8px; 
+      border: 1px solid #e0e0e0; 
+      margin-bottom: 1rem;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    
+    .profile-header { 
+      display: flex; 
+      gap: 1rem; 
+      align-items: center; 
+      margin-bottom: 1.5rem; 
+      padding-bottom: 1rem; 
+      border-bottom: 1px solid #eee; 
+    }
+    .profile-avatar { 
+      width: 110px; 
+      height: 110px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+    }
   </style>
 </head>
 <body>
@@ -121,114 +167,163 @@
       <main>
         <section class="auth-container">
           <div class="auth-card">
-            <h2>Perfil de Usuario</h2>
-
-            <!-- Encabezado: avatar + datos del usuario -->
-            <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
+            <!-- Encabezado: avatar + nombre del usuario -->
+            <div class="profile-header">
               <img src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
                    alt="Avatar de ${usuario.nickname}"
-                   style="width:110px;height:110px;border-radius:50%;object-fit:cover;">
-              <div class="user-details-list">
-                <p><strong>Nickname:</strong> ${usuario.nickname}</p>
-                <p><strong>Nombre:</strong> ${usuario.nombre}</p>
-                <p><strong>Correo:</strong> ${usuario.correo}</p>
-                <p><strong>Rol:</strong> ${tipoUsuario}</p>
-                
-                <!-- Información específica para Asistente -->
-                <c:if test="${tipoUsuario == 'Asistente' && not empty asistente}">
-                  <p><strong>Apellido:</strong> ${asistente.apellido}</p>
-                  <p><strong>Fecha de nacimiento:</strong> ${asistente.fechaNacimiento.dia}/${asistente.fechaNacimiento.mes}/${asistente.fechaNacimiento.anio}</p>
-                  <c:if test="${not empty asistente.institucion}">
-                    <p><strong>Institución:</strong> ${asistente.institucion}</p>
+                   class="profile-avatar">
+              <div>
+                <h2 style="margin: 0; color: #333;">${usuario.nombre}
+                  <c:if test="${tipoUsuario == 'Asistente' && not empty asistente.apellido}">
+                    ${asistente.apellido}
                   </c:if>
-                </c:if>
-                
-                <!-- Información específica para Organizador -->
-                <c:if test="${tipoUsuario == 'Organizador' && not empty organizador}">
-                  <c:if test="${not empty organizador.descripcion}">
-                    <p><strong>Descripción:</strong> ${organizador.descripcion}</p>
-                  </c:if>
-                  <c:if test="${not empty organizador.link}">
-                    <p><strong>Enlace:</strong> <a href="${organizador.link}" target="_blank">${organizador.link}</a></p>
-                  </c:if>
-                </c:if>
+                </h2>
+                <p style="margin: 0.25rem 0; color: #666; font-size: 1.1rem;">@${usuario.nickname}</p>
               </div>
             </div>
 
-            <!-- Sección de Ediciones para Organizador -->
-            <c:if test="${tipoUsuario == 'Organizador'}">
-              <h3>Ediciones del Organizador</h3>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Evento</th>
-                    <th>Nombre</th>
-                    <th>Sigla</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <c:forEach var="edicion" items="${edicionesAceptadas}">
-                    <tr>
-                      <td>${edicion.evento}</td>
-                      <td>${edicion.nombre}</td>
-                      <td>${edicion.sigla}</td>
-                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: blue; color: white;">Consultar</a></td>
-                    </tr>
-                  </c:forEach>
-                  <c:forEach var="edicion" items="${edicionesIngresadas}">
-                    <tr>
-                      <td>${edicion.evento}</td>
-                      <td>${edicion.nombre}</td>
-                      <td>${edicion.sigla}</td>
-                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: yellow; color: black;">Ingresada</a></td>
-                    </tr>
-                  </c:forEach>
-                  <c:forEach var="edicion" items="${edicionesRechazadas}">
-                    <tr>
-                      <td>${edicion.evento}</td>
-                      <td>${edicion.nombre}</td>
-                      <td>${edicion.sigla}</td>
-                      <td><a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" class="btn-primary" style="background-color: red; color: white;">Rechazada</a></td>
-                    </tr>
-                  </c:forEach>
-                </tbody>
-              </table>
-            </c:if>
+            <!-- Tabs de navegación -->
+            <div class="tabs">
+              <div class="tab active" onclick="showTab('datos')">Datos del usuario</div>
+              <c:if test="${tipoUsuario == 'Asistente' && not empty registrosAsistente}">
+                <div class="tab" onclick="showTab('registros')">Registros</div>
+              </c:if>
+              <c:if test="${tipoUsuario == 'Organizador'}">
+                <div class="tab" onclick="showTab('ediciones')">Ediciones</div>
+              </c:if>
+            </div>
 
-            <!-- Sección de Registros para Asistente -->
-            <c:if test="${tipoUsuario == 'Asistente' && not empty registrosAsistente}">
-              <h3>Registros del asistente</h3>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Evento</th>
-                    <th>Edición</th>
-                    <th>Tipo de Registro</th>
-                    <th>Fecha</th>
-                    <th>Costo</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <c:forEach var="registro" items="${registrosAsistente}">
-                    <tr>
-                      <td>${registro["evento"]}</td>
-                      <td>${registro["edicion"]}</td>
-                      <td>${registro["tipoDeRegistro"]}</td>
-                      <td>${registro["fechaRegistro"]}</td>
-                      <td>${registro["costo"]}</td>
-                      <td>
-                        <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}" class="btn-primary" style="background-color: blue; color: white;">Consultar registro</a>
-                      </td>
-                    </tr>
-                  </c:forEach>
-                </tbody>
-              </table>
-            </c:if>
+            <!-- Contenido de los tabs con tamaño fijo -->
+            <div class="tab-content">
+              <!-- Panel de Datos del Usuario -->
+              <div id="datos" class="tab-panel active">
+                <h3 style="color: #182080; margin-top: 0;">Datos del usuario</h3>
+                <div class="user-details-list">
+                  <p><strong>Nickname:</strong> ${usuario.nickname}</p>
+                  <p><strong>Nombre:</strong> ${usuario.nombre}</p>
+                  <p><strong>Correo:</strong> ${usuario.correo}</p>
+                  <p><strong>Rol:</strong> ${tipoUsuario}</p>
+                  
+                  <!-- Información específica para Asistente -->
+                  <c:if test="${tipoUsuario == 'Asistente' && not empty asistente}">
+                    <p><strong>Apellido:</strong> ${asistente.apellido}</p>
+                    <p><strong>Fecha de nacimiento:</strong> ${asistente.fechaNacimiento.dia}/${asistente.fechaNacimiento.mes}/${asistente.fechaNacimiento.anio}</p>
+                    <c:if test="${not empty asistente.institucion}">
+                      <p><strong>Institución:</strong> ${asistente.institucion}</p>
+                    </c:if>
+                  </c:if>
+                  
+                  <!-- Información específica para Organizador -->
+                  <c:if test="${tipoUsuario == 'Organizador' && not empty organizador}">
+                    <c:if test="${not empty organizador.descripcion}">
+                      <p><strong>Descripción:</strong> ${organizador.descripcion}</p>
+                    </c:if>
+                    <c:if test="${not empty organizador.link}">
+                      <p><strong>Sitio web:</strong> <a href="${organizador.link}" target="_blank">${organizador.link}</a></p>
+                    </c:if>
+                  </c:if>
+                </div>
+              </div>
 
-            <!-- Botón de volver dinámico -->
-            <div style="margin-top:1rem;">
+              <!-- Panel de Registros para Asistente -->
+              <c:if test="${tipoUsuario == 'Asistente' && not empty registrosAsistente}">
+                <div id="registros" class="tab-panel">
+                  <h3 style="color: #182080; margin-top: 0;">Registros</h3>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Edición</th>
+                        <th>Tipo de Registro</th>
+                        <th>Fecha Registro</th>
+                        <th>Costo</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="registro" items="${registrosAsistente}">
+                        <tr>
+                          <td>${registro["edicion"]}</td>
+                          <td>${registro["tipoDeRegistro"]}</td>
+                          <td>${registro["fechaRegistro"]}</td>
+                          <td>$${registro["costo"]}</td>
+                          <td>
+                            <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}" 
+                               class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                               Consultar
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                </div>
+              </c:if>
+
+              <!-- Panel de Ediciones para Organizador -->
+              <c:if test="${tipoUsuario == 'Organizador'}">
+                <div id="ediciones" class="tab-panel">
+                  <h3 style="color: #182080; margin-top: 0;">Ediciones</h3>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Evento</th>
+                        <th>Nombre</th>
+                        <th>Sigla</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="edicion" items="${edicionesAceptadas}">
+                        <tr>
+                          <td>${edicion.evento}</td>
+                          <td>${edicion.nombre}</td>
+                          <td>${edicion.sigla}</td>
+                          <td><span style="color: #2a7f2e; font-weight: 600;">Aceptada</span></td>
+                          <td>
+                            <a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" 
+                               class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                               Consultar
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                      <c:forEach var="edicion" items="${edicionesIngresadas}">
+                        <tr>
+                          <td>${edicion.evento}</td>
+                          <td>${edicion.nombre}</td>
+                          <td>${edicion.sigla}</td>
+                          <td><span style="color: #b8860b; font-weight: 600;">Ingresada</span></td>
+                          <td>
+                            <a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" 
+                               class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                               Consultar
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                      <c:forEach var="edicion" items="${edicionesRechazadas}">
+                        <tr>
+                          <td>${edicion.evento}</td>
+                          <td>${edicion.nombre}</td>
+                          <td>${edicion.sigla}</td>
+                          <td><span style="color: #dc3545; font-weight: 600;">Rechazada</span></td>
+                          <td>
+                            <a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}" 
+                               class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                               Consultar
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                </div>
+              </c:if>
+            </div>
+
+            <!-- Botón de volver -->
+            <div style="margin-top: 1rem;">
               <a class="btn-primary" href="${backUrl}">${backLabel}</a>
             </div>
           </div>
@@ -238,5 +333,27 @@
   </div>
 
   <footer></footer>
+
+  <script>
+    function showTab(tabName) {
+      // Ocultar todos los paneles
+      const panels = document.querySelectorAll('.tab-panel');
+      panels.forEach(panel => panel.classList.remove('active'));
+      
+      // Desactivar todas las tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      // Mostrar el panel seleccionado
+      const selectedPanel = document.getElementById(tabName);
+      if (selectedPanel) {
+        selectedPanel.classList.add('active');
+      }
+      
+      // Activar la tab correspondiente
+      const selectedTab = event.target;
+      selectedTab.classList.add('active');
+    }
+  </script>
 </body>
 </html>
