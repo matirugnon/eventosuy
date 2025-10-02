@@ -96,8 +96,7 @@
                     <li><a href="altaEvento">Alta Evento</a></li>
                     <li><a href="altaEdicion">Alta Edición</a></li>
                     <li><a href="altaInstitucion" class="active">Alta Institución</a></li>
-                    <li><a href="#">Alta Tipo de Registro</a></li>
-                    <li><a href="#">Alta Patrocinio</a></li>
+                    <li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
                     <li><a href="consultaTipoRegistro">Consulta Registro</a></li>
                 </ul>
                 <div class="panel-header">Categorías</div>
