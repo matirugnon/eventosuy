@@ -127,20 +127,14 @@
                 </ul>
                 <div class="panel-header">Categorías</div>
                 <ul class="menu-list">
-                    <c:choose>
-                        <c:when test="${not empty categorias}">
-                            <c:forEach var="categoria" items="${categorias}">
-                                <li><a href="categoria?nombre=${categoria}">${categoria}</a></li>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <!-- Fallback en caso de que no se carguen desde el servidor -->
-                            <li><a href="categoria?nombre=Tecnología">Tecnología</a></li>
-                            <li><a href="categoria?nombre=Innovación">Innovación</a></li>
-                            <li><a href="categoria?nombre=Salud">Salud</a></li>
-                            <li><a href="categoria?nombre=Deporte">Deporte</a></li>
-                        </c:otherwise>
-                    </c:choose>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/inicio">Todas</a>
+                    </li>
+                    <c:forEach var="categoria" items="${categorias}">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/inicio?categoria=${categoria}">${categoria}</a>
+                        </li>
+                    </c:forEach>
                 </ul>
             </div>
             <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
@@ -192,8 +186,8 @@
                                             </p>
                                         </div>
                                         <div class="edicion-actions">
-                                            <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.sigla}">Alta Tipo Registro</a>
-                                            <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.sigla}">Alta Patrocinio</a>
+                                            <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.nombre}">Alta Tipo Registro</a>
+                                            <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.nombre}">Alta Patrocinio</a>
                                         </div>
                                     </div>
                                 </c:forEach>

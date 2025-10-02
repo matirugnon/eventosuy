@@ -1,15 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alta de Institución · eventos.uy</title>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
         .form-group {
             display: flex;
@@ -68,76 +69,106 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="inicio"><h1>eventos.uy</h1></a>
-        <div class="header-right">
-            <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="miPerfil" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.avatar}">
-                            <img src="${pageContext.request.contextPath}/${sessionScope.avatar}" alt="Usuario" class="avatar">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/img/default-avatar.png" alt="Usuario" class="avatar">
-                        </c:otherwise>
-                    </c:choose>
-                    <span class="nickname">${sessionScope.usuario}</span>
-                </a>
-                <a href="logout" class="btn-primary">Cerrar sesión</a>
+    <div>
+        <header class="header">
+            <h1><a href="<%= request.getContextPath() %>/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+            <div class="header-right">
+                <c:choose>
+                    <c:when test="${not empty role}">
+                        <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
+                                <img class="avatar" 
+                                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                                     alt="Avatar de usuario" />
+                                <span class="nickname">${nickname}</span>
+                            </a>
+                            <a href="/EventosUy/logout" class="btn-primary">Cerrar sesión</a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <nav class="nav-links">
+                            <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
+                            <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
+                        </nav>
+                    </c:otherwise>
+                </c:choose>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="content">
-        <aside class="sidebar">
-            <div class="panel sidebar">
-                <div class="panel-header">Mi perfil</div>
-                <ul class="menu-list" style="margin-bottom: 3rem;">
-                    <li><a href="altaEvento">Alta Evento</a></li>
-                    <li><a href="altaEdicion">Alta Edición</a></li>
-                    <li><a href="altaInstitucion" class="active">Alta Institución</a></li>
-                    <li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
-                    <li><a href="consultaTipoRegistro">Consulta Registro</a></li>
-                </ul>
-                <div class="panel-header">Categorías</div>
-                <ul class="menu-list">
-                    <c:choose>
-                        <c:when test="${not empty categorias}">
-                            <c:forEach var="categoria" items="${categorias}">
-                                <li><a href="categoria?nombre=${categoria}">${categoria}</a></li>
+        <div class="content">
+            <aside class="sidebar">
+                <c:choose>
+                  <c:when test="${role == 'organizador'}">
+                    <div class="panel sidebar">
+                      <div class="panel-header">Mi perfil</div>
+                      <ul class="menu-list">
+                        <li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
+                        <li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
+                        <li><a href="altaInstitucion" class="active">Alta Institución</a></li>
+                        <li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
+                        <li><a href="#">Consulta Registro</a></li>
+                      </ul>
+                    </div>
+                  </c:when>
+                  <c:when test="${role == 'asistente'}">
+                    <div class="panel sidebar">
+                      <div class="panel-header">Mi perfil</div>
+                      <ul class="menu-list">
+                        <li><a href="#">Registro a Edición</a></li>
+                      </ul>
+                    </div>
+                  </c:when>
+                </c:choose>
+
+                <!-- Categorías -->
+                <div class="panel sidebar" style="margin-top: 1rem;">
+                    <div class="panel-header">Categorías</div>
+                    <ul class="menu-list">
+                        <c:choose>
+                          <c:when test="${empty categorias}">
+                            <li><span class="muted">No hay categorías disponibles.</span></li>
+                          </c:when>
+                          <c:otherwise>
+                            <li>
+                              <c:url var="urlTodas" value="/inicio"/>
+                              <a href="${urlTodas}">Todas</a>
+                            </li>
+                            <c:forEach items="${categorias}" var="categoria">
+                              <li>
+                                <c:url var="catUrl" value="/inicio">
+                                  <c:param name="categoria" value="${categoria}"/>
+                                </c:url>
+                                <a href="${catUrl}">${categoria}</a>
+                              </li>
                             </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <!-- Fallback en caso de que no se carguen desde el servidor -->
-                            <li><a href="categoria?nombre=Tecnología">Tecnología</a></li>
-                            <li><a href="categoria?nombre=Innovación">Innovación</a></li>
-                            <li><a href="categoria?nombre=Salud">Salud</a></li>
-                            <li><a href="categoria?nombre=Deporte">Deporte</a></li>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-            </div>
-            <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-                <a href="listarUsuarios" style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    color: #182080;
-                    font-weight: 600;
-                    text-decoration: none;
-                    padding: 0.75rem;
-                    border-radius: 6px;
-                    transition: background-color 0.2s;
-                    background-color: rgba(24, 32, 128, 0.05);">
-                    Ver listado de usuarios
-                </a>
-            </div>
-        </aside>
+                          </c:otherwise>
+                        </c:choose>
+                    </ul>
+                </div>
+
+                <!-- Botón "Ver listado de Usuarios" -->
+                <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+                    <a href="${pageContext.request.contextPath}/listarUsuarios" style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        color: #182080;
+                        font-weight: 600;
+                        text-decoration: none;
+                        padding: 0.75rem;
+                        border-radius: 6px;
+                        transition: background-color 0.2s;
+                        background-color: rgba(24, 32, 128, 0.05);
+                    ">
+                        Ver listado de usuarios
+                    </a>
+                </div>
+            </aside>
         
         <main>
             <section class="panel">
-                <div class="panel-header">Alta de Institución</div>
                 <div class="panel-body">
+                    <h2 style="margin: 0 0 1.5rem 0; color: #182080;">Alta de Institución</h2>
                     <c:if test="${not empty error}">
                         <div class="error-message">
                             ⚠️ ${error}
