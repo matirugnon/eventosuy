@@ -54,7 +54,7 @@
               <div class="panel-header">Mi perfil</div>
               <ul class="menu-list" style="margin-bottom: 3rem;">
                 <li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
-                <li><a href="#">Alta Edición</a></li>
+                <li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
                 <li><a href="#">Alta Institución</a></li>
                 <li><a href="#">Alta Tipo de Registro</a></li>
                 <li><a href="#">Alta Patrocinio</a></li>

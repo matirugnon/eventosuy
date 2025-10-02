@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alta de Evento · eventos.uy</title>
+    <title>Alta de Edición · eventos.uy</title>
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +33,7 @@
             color: #333;
         }
         .form-group input,
+        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -44,37 +45,11 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         .form-group input:focus,
+        .form-group select:focus,
         .form-group textarea:focus {
             border-color: #182080;
             outline: none;
             box-shadow: 0 0 0 2px rgba(24, 32, 128, 0.1);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .categorias-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        .categoria-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            transition: all 0.2s;
-        }
-        .categoria-item:hover {
-            background: #e9ecef;
-        }
-        .categoria-item input[type="checkbox"] {
-            width: auto;
-            margin: 0;
         }
         .preview-container {
             margin-top: 0.5rem;
@@ -101,6 +76,11 @@
             padding: 0.75rem;
             border-radius: 8px;
             margin-bottom: 1rem;
+        }
+        .note {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-style: italic;
         }
     </style>
 </head>
@@ -203,7 +183,7 @@
             <main>
                 <section class="panel">
                     <div class="panel-body">
-                        <h2 style="margin: 0 0 1.5rem 0; color: #182080;">Alta de Evento</h2>
+                        <h2 style="margin: 0 0 1.5rem 0; color: #182080;">Alta de Edición de Evento</h2>
 
                         <!-- Mostrar mensaje de error si existe -->
                         <c:if test="${not empty error}">
@@ -219,58 +199,82 @@
                             </div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/altaEvento" method="post" enctype="multipart/form-data" id="formEvento">
-                            <!-- Campos básicos -->
+                        <form action="${pageContext.request.contextPath}/altaEdicion" method="post" enctype="multipart/form-data" id="formEdicion">
+                            <!-- Evento y Nombre -->
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label for="nombre">Nombre del evento *</label>
-                                    <input type="text" id="nombre" name="nombre" 
-                                           value="${param.nombre}" 
-                                           required maxlength="120" 
-                                           placeholder="ej. Concierto de Rock">
+                                    <label for="evento">Evento *</label>
+                                    <select id="evento" name="evento" required>
+                                        <option value="">Seleccionar evento...</option>
+                                        <c:forEach var="evento" items="${eventos}">
+                                            <option value="${evento}" 
+                                                    <c:if test="${param.evento == evento}">selected</c:if>>
+                                                ${evento}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="nombre">Nombre de la edición *</label>
+                                    <input type="text" id="nombre" name="nombre" 
+                                           value="${param.nombre}" 
+                                           required maxlength="140" 
+                                           placeholder="ej. Montevideo Comics 2025">
+                                </div>
+                            </div>
+
+                            <!-- Sigla y Ciudad -->
+                            <div class="form-grid">
                                 <div class="form-group">
                                     <label for="sigla">Sigla *</label>
                                     <input type="text" id="sigla" name="sigla" 
                                            value="${param.sigla}" 
-                                           required maxlength="15" 
-                                           placeholder="ej. CR2025">
+                                           required maxlength="20" 
+                                           placeholder="ej. COMICS25">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ciudad">Ciudad *</label>
+                                    <input type="text" id="ciudad" name="ciudad" 
+                                           value="${param.ciudad}" 
+                                           required maxlength="60" 
+                                           placeholder="ej. Montevideo">
                                 </div>
                             </div>
 
-                            <!-- Descripción -->
-                            <div class="form-group">
-                                <label for="descripcion">Descripción *</label>
-                                <textarea id="descripcion" name="descripcion" 
-                                          required maxlength="800" 
-                                          placeholder="Breve descripción del evento...">${param.descripcion}</textarea>
+                            <!-- País -->
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pais">País *</label>
+                                    <input type="text" id="pais" name="pais" 
+                                           value="${param.pais}" 
+                                           required maxlength="60" 
+                                           placeholder="ej. Uruguay">
+                                </div>
+                                <div></div>
                             </div>
 
-                            <!-- Categorías -->
-                            <div class="form-group">
-                                <label>Categorías (selecciona al menos una) *</label>
-                                <div class="categorias-grid">
-                                    <c:forEach var="categoria" items="${categorias}">
-                                        <div class="categoria-item">
-                                            <input type="checkbox" 
-                                                   id="cat_${categoria}" 
-                                                   name="categorias" 
-                                                   value="${categoria}"
-                                                   <c:if test="${paramValues.categorias != null}">
-                                                       <c:forEach var="selected" items="${paramValues.categorias}">
-                                                           <c:if test="${selected == categoria}">checked</c:if>
-                                                       </c:forEach>
-                                                   </c:if>>
-                                            <label for="cat_${categoria}">${categoria}</label>
-                                        </div>
-                                    </c:forEach>
+                            <!-- Fechas -->
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fechaInicio">Fecha de inicio *</label>
+                                    <input type="date" id="fechaInicio" name="fechaInicio" 
+                                           value="${param.fechaInicio}" 
+                                           required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fechaFin">Fecha de fin *</label>
+                                    <input type="date" id="fechaFin" name="fechaFin" 
+                                           value="${param.fechaFin}" 
+                                           required>
                                 </div>
                             </div>
 
                             <!-- Imagen -->
                             <div class="form-group">
-                                <label for="imagen">Imagen del evento (opcional)</label>
+                                <label for="imagen">Imagen de la edición (opcional)</label>
                                 <input type="file" id="imagen" name="imagen" accept="image/*">
                                 <div class="preview-container" id="previewContainer">
                                     <img id="previewImg" class="preview-img" alt="Vista previa">
@@ -279,9 +283,11 @@
 
                             <!-- Botones -->
                             <div style="display: flex; gap: 0.75rem; margin-top: 2rem;">
-                                <button type="submit" class="btn-primary">Crear evento</button>
+                                <button type="submit" class="btn-primary">Crear edición</button>
                                 <a href="${pageContext.request.contextPath}/inicio" class="btn-outline">Cancelar</a>
                             </div>
+
+                            <p class="note" style="margin-top: 1rem;">La edición se da de alta en estado "Ingresada".</p>
                         </form>
                     </div>
                 </section>
@@ -291,10 +297,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('formEvento');
+            const form = document.getElementById('formEdicion');
             const imagenInput = document.getElementById('imagen');
             const previewContainer = document.getElementById('previewContainer');
             const previewImg = document.getElementById('previewImg');
+            const fechaInicio = document.getElementById('fechaInicio');
+            const fechaFin = document.getElementById('fechaFin');
 
             // Vista previa de imagen
             imagenInput.addEventListener('change', function(e) {
@@ -311,13 +319,30 @@
                 }
             });
 
+            // Validación de fechas
+            function validarFechas() {
+                if (fechaInicio.value && fechaFin.value) {
+                    const inicio = new Date(fechaInicio.value);
+                    const fin = new Date(fechaFin.value);
+                    
+                    if (fin < inicio) {
+                        fechaFin.setCustomValidity('La fecha de fin debe ser posterior a la fecha de inicio');
+                    } else {
+                        fechaFin.setCustomValidity('');
+                    }
+                }
+            }
+
+            fechaInicio.addEventListener('change', validarFechas);
+            fechaFin.addEventListener('change', validarFechas);
+
             // Validación del formulario
             form.addEventListener('submit', function(e) {
-                const categorias = document.querySelectorAll('input[name="categorias"]:checked');
-                if (categorias.length === 0) {
+                validarFechas();
+                
+                if (!form.checkValidity()) {
                     e.preventDefault();
-                    alert('Debe seleccionar al menos una categoría');
-                    return false;
+                    e.stopPropagation();
                 }
             });
         });
