@@ -74,7 +74,7 @@ public class Organizador extends Usuario {
 	}
 
 	public DTUsuario getDTOrganizador() {
-		return new DTOrganizador(nickname, nombre, correo, descripcion, link, avatar); // Incluir avatar
+		return new DTOrganizador(nickname, nombre, correo, password, descripcion, link, avatar); // Incluir avatar
 	}
 
 
