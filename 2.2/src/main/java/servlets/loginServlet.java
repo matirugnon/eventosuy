@@ -78,7 +78,5 @@ public class loginServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException("Error procesando el login: " + e.getMessage(), e);
         }
-
-        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 }
