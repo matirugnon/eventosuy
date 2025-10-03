@@ -8,12 +8,11 @@ public class DTUsuario {
 	private String password; // Nuevo atributo
 	private String avatar; // Nuevo atributo
 
-	public DTUsuario(String nickname, String nombre, String correo, String password, String avatar) {
+	public DTUsuario(String nickname, String nombre, String correo, String avatar) {
 
 		this.correo = correo;
 		this.nickname = nickname;
 		this.nombre = nombre;
-		this.password = password; // Asignar el nuevo atributo
 		this.avatar = avatar; // Asignar el nuevo atributo
 	}
 

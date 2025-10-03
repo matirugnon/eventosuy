@@ -32,8 +32,9 @@ public class ModificarUsuarioFrame extends JInternalFrame {
     private JTextField txtDescripcion;
     private JTextField txtLink;
     private JTextField txtDia, txtMes, txtAnio;
+    private JTextField txtAvatar;
 
-    private JLabel lblApellido, lblDescripcion, lblLink, lblFecha;
+    private JLabel lblApellido, lblDescripcion, lblLink, lblFecha, lblAvatar; 
 
 
     private DTUsuario dtUsuarioActual; // Referencia al DTUsuario seleccionado
@@ -81,7 +82,12 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int fila = 0;
-
+        
+        //Avatar
+        lblAvatar = new JLabel("Avatar:");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblAvatar, gbc);
+        gbc.gridx = 1; txtAvatar = new JTextField(20); panelCampos.add(txtAvatar, gbc); fila++;
+        
         // Nombre
         gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(new JLabel("Nombre:"), gbc);
         gbc.gridx = 1; txtNombre = new JTextField(20); panelCampos.add(txtNombre, gbc); fila++;
@@ -148,6 +154,9 @@ public class ModificarUsuarioFrame extends JInternalFrame {
             return;
         }
 
+        //cargar avatar
+        txtAvatar.setText(dtUsuarioActual.getAvatar());
+        
         // Cargar nombre común a todos
         txtNombre.setText(dtUsuarioActual.getNombre());
 
@@ -200,6 +209,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
             return;
         }
+        String avatar = txtAvatar.getText().trim();
 
         String nombre = txtNombre.getText().trim();
         if (nombre.isEmpty()) {
@@ -241,7 +251,8 @@ public class ModificarUsuarioFrame extends JInternalFrame {
                     dtA.getCorreo(),        // no se modifica
                     apellido,
                     fechaNac,
-                    dtA.getInstitucion()    // no se modifica
+                    dtA.getInstitucion(),
+                    avatar
                 );
             }
             else if (dtUsuarioActual instanceof DTOrganizador) {
@@ -254,7 +265,8 @@ public class ModificarUsuarioFrame extends JInternalFrame {
                     nombre,
                     dtO.getCorreo(),        // no se modifica
                     descripcion,
-                    link
+                    link,
+                    avatar
                 );
             }
             else {

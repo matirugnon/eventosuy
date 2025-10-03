@@ -49,7 +49,7 @@ public abstract class Usuario {
     }
 
     public DTUsuario getDTUsuario() {
-    	return new DTUsuario(nickname,nombre,correo, password, avatar); // Incluir avatar
+    	return new DTUsuario(nickname,nombre,correo,avatar); // Incluir avatar
     }
 
 
