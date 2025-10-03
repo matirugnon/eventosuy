@@ -33,13 +33,13 @@ public class ModificarUsuarioFrame extends JInternalFrame {
     private JTextField txtLink;
     private JTextField txtDia, txtMes, txtAnio;
 
-    private JLabel lblApellido, lblDescripcion, lblLink, lblFecha;
+    private JLabel lblNombre, lblApellido, lblDescripcion, lblLink, lblFecha;
 
-
-    private DTUsuario dtUsuarioActual; // Referencia al DTUsuario seleccionado
+    private DTUsuario dtUsuarioActual;
 
     private JButton btnGuardar;
     private IControladorUsuario ctrlUsuario;
+    private JPanel panelCampos;
 
     public ModificarUsuarioFrame() {
         ctrlUsuario = IControladorUsuario.getInstance();
@@ -64,18 +64,17 @@ public class ModificarUsuarioFrame extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-					mostrarDatosUsuario();
-				} catch (UsuarioNoExisteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                    mostrarDatosUsuario();
+                } catch (UsuarioNoExisteException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         panelSeleccion.add(comboUsuarios);
         add(panelSeleccion, BorderLayout.NORTH);
 
         // Panel central: campos editables
-        JPanel panelCampos = new JPanel(new GridBagLayout());
+        panelCampos = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -83,7 +82,8 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         int fila = 0;
 
         // Nombre
-        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(new JLabel("Nombre:"), gbc);
+        lblNombre = new JLabel("Nombre:");
+        gbc.gridx = 0; gbc.gridy = fila; panelCampos.add(lblNombre, gbc);
         gbc.gridx = 1; txtNombre = new JTextField(20); panelCampos.add(txtNombre, gbc); fila++;
 
         // Apellido
@@ -115,10 +115,8 @@ public class ModificarUsuarioFrame extends JInternalFrame {
         panelFecha.add(txtAnio);
         gbc.gridx = 1; panelCampos.add(panelFecha, gbc); fila++;
 
-        // Ocultar campos según tipo
-        ocultarCamposPorDefecto();
-
         add(panelCampos, BorderLayout.CENTER);
+        ocultarCamposPorDefecto();
 
         // Botón guardar
         btnGuardar = new JButton("Guardar Cambios");
@@ -132,6 +130,7 @@ public class ModificarUsuarioFrame extends JInternalFrame {
     }
 
     private void cargarUsuarios() {
+        comboUsuarios.addItem("-- Seleccionar usuario --");
         Set<String> usuarios = ctrlUsuario.listarUsuarios();
         for (String nick : usuarios) {
             comboUsuarios.addItem(nick);
@@ -140,7 +139,11 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
     private void mostrarDatosUsuario() throws UsuarioNoExisteException {
         String nick = (String) comboUsuarios.getSelectedItem();
-        if (nick == null) return;
+        if (nick == null || nick.equals("-- Seleccionar usuario --")) {
+            limpiarCampos();
+            ocultarCamposPorDefecto();
+            return;
+        }
 
         dtUsuarioActual = ctrlUsuario.getDTUsuario(nick);
         if (dtUsuarioActual == null) {
@@ -148,11 +151,9 @@ public class ModificarUsuarioFrame extends JInternalFrame {
             return;
         }
 
-        // Cargar nombre común a todos
         txtNombre.setText(dtUsuarioActual.getNombre());
-
-        // Limpiar y ocultar todos los campos específicos
         ocultarCamposPorDefecto();
+        mostrarCamposGenerales(true);
 
         if (dtUsuarioActual instanceof DTAsistente) {
             DTAsistente dtA = (DTAsistente) dtUsuarioActual;
@@ -164,13 +165,17 @@ public class ModificarUsuarioFrame extends JInternalFrame {
                 txtAnio.setText(String.valueOf(fecha.getAnio()));
             }
             mostrarCamposAsistente(true);
-        }
-        else if (dtUsuarioActual instanceof DTOrganizador) {
+        } else if (dtUsuarioActual instanceof DTOrganizador) {
             DTOrganizador dtO = (DTOrganizador) dtUsuarioActual;
             txtDescripcion.setText(dtO.getDescripcion());
             txtLink.setText(dtO.getLink());
             mostrarCamposOrganizador(true);
         }
+    }
+
+    private void mostrarCamposGenerales(boolean mostrar) {
+        lblNombre.setVisible(mostrar);
+        txtNombre.setVisible(mostrar);
     }
 
     private void mostrarCamposAsistente(boolean mostrar) {
@@ -190,14 +195,25 @@ public class ModificarUsuarioFrame extends JInternalFrame {
     }
 
     private void ocultarCamposPorDefecto() {
+        mostrarCamposGenerales(false);
         mostrarCamposAsistente(false);
         mostrarCamposOrganizador(false);
     }
 
+    private void limpiarCampos() {
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDescripcion.setText("");
+        txtLink.setText("");
+        txtDia.setText("dd");
+        txtMes.setText("mm");
+        txtAnio.setText("aaaa");
+    }
+
     private void guardarCambios() {
         String nick = (String) comboUsuarios.getSelectedItem();
-        if (nick == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
+        if (nick == null || nick.equals("-- Seleccionar usuario --")) {
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario válido.");
             return;
         }
 
@@ -234,34 +250,35 @@ public class ModificarUsuarioFrame extends JInternalFrame {
 
                 DTFecha fechaNac = new DTFecha(dia, mes, anio);
                 DTAsistente dtA = (DTAsistente) dtUsuarioActual;
-                // Conservamos el correo original y la institución (no se modifican)
+
                 dtModificado = new DTAsistente(
-                    nick,
-                    nombre,
-                    dtA.getCorreo(),        // no se modifica
-                    apellido,
-                    fechaNac,
-                    dtA.getInstitucion()    // no se modifica
+                        nick,
+                        nombre,
+                        dtA.getCorreo(),
+                        "", // password vacío
+                        apellido,
+                        fechaNac,
+                        dtA.getInstitucion(),
+                        "" // avatar vacío
                 );
-            }
-            else if (dtUsuarioActual instanceof DTOrganizador) {
+            } else if (dtUsuarioActual instanceof DTOrganizador) {
                 String descripcion = txtDescripcion.getText().trim();
                 String link = txtLink.getText().trim();
 
                 DTOrganizador dtO = (DTOrganizador) dtUsuarioActual;
                 dtModificado = new DTOrganizador(
-                    nick,
-                    nombre,
-                    dtO.getCorreo(),        // no se modifica
-                    descripcion,
-                    link
+                        nick,
+                        nombre,
+                        dtO.getCorreo(),
+                        "", // password vacío
+                        descripcion,
+                        link,
+                        "" // avatar vacío
                 );
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(this, "Tipo de usuario desconocido.");
                 return;
             }
-
 
             ctrlUsuario.modificarUsuario(nick, dtModificado);
             JOptionPane.showMessageDialog(this, "Usuario modificado con éxito.");
