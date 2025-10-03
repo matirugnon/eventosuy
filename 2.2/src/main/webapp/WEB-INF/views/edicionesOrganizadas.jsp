@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
         .ediciones-list {
             display: flex;
@@ -95,7 +95,7 @@
 </head>
 <body>
     <header class="header">
-        <a href="inicio"><h1>eventos.uy</h1></a>
+        <h1><a href="inicio">eventos.uy</a></h1>
         <div class="header-right">
             <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
                 <a href="miPerfil" style="display: flex; align-items: center; gap: 0.5rem;">
@@ -127,20 +127,14 @@
                 </ul>
                 <div class="panel-header">Categorías</div>
                 <ul class="menu-list">
-                    <c:choose>
-                        <c:when test="${not empty categorias}">
-                            <c:forEach var="categoria" items="${categorias}">
-                                <li><a href="categoria?nombre=${categoria}">${categoria}</a></li>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <!-- Fallback en caso de que no se carguen desde el servidor -->
-                            <li><a href="categoria?nombre=Tecnología">Tecnología</a></li>
-                            <li><a href="categoria?nombre=Innovación">Innovación</a></li>
-                            <li><a href="categoria?nombre=Salud">Salud</a></li>
-                            <li><a href="categoria?nombre=Deporte">Deporte</a></li>
-                        </c:otherwise>
-                    </c:choose>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/inicio">Todas</a>
+                    </li>
+                    <c:forEach var="categoria" items="${categorias}">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/inicio?categoria=${categoria}">${categoria}</a>
+                        </li>
+                    </c:forEach>
                 </ul>
             </div>
             <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
@@ -192,8 +186,8 @@
                                             </p>
                                         </div>
                                         <div class="edicion-actions">
-                                            <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.sigla}">Alta Tipo Registro</a>
-                                            <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.sigla}">Alta Patrocinio</a>
+                                            <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.nombre}">Alta Tipo Registro</a>
+                                            <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.nombre}">Alta Patrocinio</a>
                                         </div>
                                     </div>
                                 </c:forEach>
