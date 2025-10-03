@@ -246,21 +246,6 @@
             gap: 1rem;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
         .btn-outline {
             background-color: transparent;
             color: #6c757d;
