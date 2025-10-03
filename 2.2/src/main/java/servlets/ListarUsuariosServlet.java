@@ -1,8 +1,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,8 +59,12 @@ public class ListarUsuariosServlet extends HttpServlet {
 
             // Usar el método más eficiente que devuelve DTUsuarios directamente
             Set<DTUsuario> usuarios = ctrlUsuario.listarUsuariosDT();
-            System.out.println("DEBUG: DTUsuarios obtenidos directamente: " + (usuarios != null ? usuarios.size() : "null"));
+            System.out.println("DEBUG: DTUsuarios obtenidos directamente:" + (usuarios != null ? usuarios.size() : "null"));
             
+            List<DTUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
+
+            usuariosOrdenados.sort(Comparator.comparing(DTUsuario::getNickname));
+
             Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
             
             if (usuarios != null && !usuarios.isEmpty()) {
@@ -72,11 +78,32 @@ public class ListarUsuariosServlet extends HttpServlet {
             }
             System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar
             Set<String> categorias = ctrlEvento.listarCategorias();
+            
+            // --- PAGINACION ---
+            int pageSize = 5; // 5 usuarios por página
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) {
+                try { page = Integer.parseInt(pageParam); if (page < 1) page = 1; } 
+                catch (NumberFormatException e) { page = 1; }
+            }
+
+            int totalUsuarios = usuariosOrdenados.size();
+            int totalPages = (int) Math.ceil((double) totalUsuarios / pageSize);
+            if (page > totalPages) page = totalPages;
+
+            int fromIndex = (page - 1) * pageSize;
+            int toIndex = Math.min(fromIndex + pageSize, totalUsuarios);
+            List<DTUsuario> usuariosPagina = usuariosOrdenados.subList(fromIndex, toIndex);
+
 
             // Pasar los datos como atributos a la JSP
+            request.setAttribute("usuariosOrdenados", usuariosPagina);
             request.setAttribute("usuarios", usuarios);
             request.setAttribute("tiposUsuarios", tiposUsuarios);
             request.setAttribute("categorias", categorias);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
 
             // Pasar datos de sesión (nickname, avatar, nombre, role)
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));

@@ -287,7 +287,7 @@
 .auth-form .form-group .label-text { display:block; font-weight:600; margin-bottom:.25rem; }
 .auth-form input, .auth-form select, .auth-form textarea {
   width: 100%; padding: .75rem 1rem; border:1px solid #ccc; border-radius:12px;
-  font-size:1rem; font-family:inherit; outline:none; transition: border-color .2s, box-shadow .2s; background:#fff; box-sizing:border-box;
+  font-size:1rem; outline:none; transition: border-color .2s, box-shadow .2s; background:#fff; box-sizing:border-box;
 }
 .auth-form select {
   font-size: 0.98rem;
@@ -311,7 +311,6 @@
   color:#fff;
   background:#e74c3c;
   font-weight:600;
-  font-family:'Inter',sans-serif;
   box-shadow:0 2px 8px #e74c3c22;
   transition:background 0.2s,border 0.2s;
 }
@@ -328,7 +327,6 @@
   color:#fff;
   background:#f39c12;
   font-weight:600;
-  font-family:'Inter',sans-serif;
   box-shadow:0 2px 8px #f39c1222;
   transition:background 0.2s,border 0.2s;
 }
@@ -345,7 +343,6 @@
   color:#fff;
   background:#182080;
   font-weight:600;
-  font-family:'Inter',sans-serif;
   box-shadow:0 2px 8px #18208022;
   transition:background 0.2s,border 0.2s;
 }
@@ -353,6 +350,7 @@
   background:#0f155a;
   border-color:#0f155a;
 }
+
 /* Elimina todos los estilos por defecto del navegador */
 * {
 	margin: 0;
@@ -363,17 +361,13 @@
 }
 
 a {
-	color: inherit;
 	text-decoration: none;
-	background: none;
-	border: 0;
 }
 
 button {
 	background: none;
 	border: 0;
 	cursor: pointer;
-	font-family: inherit;
 	font-size: inherit;
 	color: inherit;
 }
@@ -382,7 +376,6 @@ button {
 
 html, body {
 	height: 100%;
-	font-family: inherit;
 	font-size: 100%;
 	line-height: 1;
 	background: none;
@@ -566,8 +559,6 @@ input:not([type="radio"]):not([type="checkbox"]):focus {
   border-color: #4b6cf7;
   box-shadow: 0 0 0 3px rgba(75,108,247,0.08);
 }
-
-
 
 textarea {
   min-height: 80px;

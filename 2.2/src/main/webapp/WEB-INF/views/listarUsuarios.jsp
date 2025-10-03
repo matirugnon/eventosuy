@@ -24,7 +24,7 @@
   <div>
     <!-- Header -->
     <header class="header">
-      <h1><a href="${pageContext.request.contextPath}/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+      <h1><a href="${pageContext.request.contextPath}/inicio">eventos.uy</a></h1>
       <div class="header-right">
         <c:choose>
           <c:when test="${not empty role}">
@@ -97,23 +97,6 @@
             </c:choose>
           </ul>
         </div>
-
-        <!-- Botón "Ver listado de Usuarios" -->
-        <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-          <a href="${pageContext.request.contextPath}/listarUsuarios" style="
-              display: flex;
-              align-items: center;
-              gap: 0.5rem;
-              color: #182080;
-              font-weight: 600;
-              text-decoration: none;
-              padding: 0.75rem;
-              border-radius: 6px;
-              transition: background-color 0.2s;
-              background-color: rgba(24, 32, 128, 0.05);">
-              Ver listado de usuarios
-          </a>
-        </div>
       </aside>
 
       <!-- Main: Listado de usuarios -->
@@ -134,7 +117,7 @@
                 </thead>
                 <tbody>
                   <c:choose>
-                    <c:when test="${empty usuarios}">
+                    <c:when test="${empty usuariosOrdenados}">
                       <tr>
                         <td colspan="5" style="padding:2rem; text-align:center; color:#666;">
                           No hay usuarios registrados.
@@ -142,7 +125,7 @@
                       </tr>
                     </c:when>
                     <c:otherwise>
-                      <c:forEach var="usuario" items="${usuarios}">
+                      <c:forEach var="usuario" items="${usuariosOrdenados}">
                         <tr style="border-bottom:1px solid #eee;">
                           <td style="padding:.5rem;">
                             <c:choose>
@@ -173,7 +156,19 @@
                   </c:choose>
                 </tbody>
               </table>
-            </div>
+              <div style="margin-top: 1rem; text-align: center;">
+  				<c:if test="${totalPages > 1}">
+    				<c:url var="prevUrl" value="/listarUsuarios">
+      					<c:param name="page" value="${currentPage - 1}" />
+   					</c:url>
+    				<c:url var="nextUrl" value="/listarUsuarios">
+      					<c:param name="page" value="${currentPage + 1}" />
+    				</c:url>
+    				<a class="btn-primary" href="${currentPage > 1 ? prevUrl : '#'}" style="${currentPage == 1 ? 'pointer-events:none; opacity:0.5;' : ''}">Anterior</a>
+    				Página ${currentPage} de ${totalPages}
+    				<a class="btn-primary" href="${currentPage < totalPages ? nextUrl : '#'}" style="${currentPage == totalPages ? 'pointer-events:none; opacity:0.5;' : ''}">Siguiente</a>
+  				</c:if>
+			</div>
           </div>
         </section>
       </main>
