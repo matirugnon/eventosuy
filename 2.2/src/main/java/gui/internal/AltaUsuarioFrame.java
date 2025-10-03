@@ -15,7 +15,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
     private static final long serialVersionUID = 1L;
 
     // Campos comunes
-    private JTextField txtNickname, txtNombre, txtCorreo;
+    private JTextField txtNickname, txtNombre, txtCorreo, txtPassword;
 
     // Campos asistente
     private JTextField txtApellido;
@@ -55,6 +55,10 @@ public class AltaUsuarioFrame extends JInternalFrame {
         form.add(new JLabel("Correo:"));
         txtCorreo = new JTextField();
         form.add(txtCorreo);
+        
+        form.add(new JLabel("Contraseña:"));
+        txtPassword = new JTextField();
+        form.add(txtPassword);
 
         form.add(new JLabel("Tipo Usuario:"));
         comboTipoUsuario = new JComboBox<>(new String[]{"Asistente", "Organizador"});
@@ -271,9 +275,11 @@ public class AltaUsuarioFrame extends JInternalFrame {
             if ("Organizador".equals(tipo)) {
                 String descr = txtDescripcion.getText().trim();
                 String link = txtLink.getText().trim();
-                cont.altaOrganizador(nickname, nombre, correo, descr, link);
+                String password = txtPassword.getText().trim();
+                cont.altaOrganizador(nickname, nombre, correo, descr, link, password);
             } else {
-                cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins);
+            	String password = txtPassword.getText().trim();
+                cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins, password);
             }
 
             JOptionPane.showMessageDialog(this, "Usuario dado de alta correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
