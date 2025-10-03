@@ -58,7 +58,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
             request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
             request.setAttribute("edicionSeleccionada", edicion);
 
-            request.getRequestDispatcher("/WEB-INF/jsp/altaPatrocinio.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
         } catch (Exception e) {
             throw new ServletException("Error al cargar el formulario de Alta Patrocinio", e);

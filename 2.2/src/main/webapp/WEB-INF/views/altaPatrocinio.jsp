@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Alta Patrocinio · eventos.uy</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+  <style>
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
 
@@ -29,7 +32,11 @@
         <select id="tipoRegistro" name="tipoRegistro" required>
           <option value="">Seleccionar tipo de registro…</option>
           <c:forEach var="tipo" items="${tiposRegistro}">
-            <option value="${tipo.nombre}">${tipo.nombre}</option>
+            <option value="${tipo.nombre}" 
+                    data-id="${tipo.nombre}"
+                    <c:if test="${tipoRegistroSeleccionado == tipo.nombre}">selected</c:if>>
+              ${tipo.nombre}
+            </option>
           </c:forEach>
         </select>
       </label>
@@ -54,7 +61,7 @@
           <select id="institucion" name="institucion" required>
             <option value="">Seleccione una institución…</option>
             <c:forEach var="inst" items="${instituciones}">
-              <option value="${inst}">${inst}</option>
+              <option value="${inst}" <c:if test="${institucionSeleccionada == inst}">selected</c:if>>${inst}</option>
             </c:forEach>
           </select>
         </label>
@@ -64,10 +71,10 @@
           <span class="label-text">Nivel de Patrocinio *</span>
           <select id="nivelPatrocinio" name="nivelPatrocinio" required>
             <option value="">Seleccione nivel…</option>
-            <option value="platino">Platino</option>
-            <option value="oro">Oro</option>
-            <option value="plata">Plata</option>
-            <option value="bronce">Bronce</option>
+            <option value="platino" <c:if test="${nivelSeleccionado == 'platino'}">selected</c:if>>Platino</option>
+            <option value="oro" <c:if test="${nivelSeleccionado == 'oro'}">selected</c:if>>Oro</option>
+            <option value="plata" <c:if test="${nivelSeleccionado == 'plata'}">selected</c:if>>Plata</option>
+            <option value="bronce" <c:if test="${nivelSeleccionado == 'bronce'}">selected</c:if>>Bronce</option>
           </select>
         </label>
 
@@ -75,25 +82,27 @@
         <label class="form-group" for="aporteEconomico">
           <span class="label-text">Aporte Económico (UYU) *</span>
           <input id="aporteEconomico" name="aporteEconomico" type="number" min="0" step="0.01"
-                 placeholder="Ej. 10000" required />
+                 placeholder="Ej. 10000" value="${aporteIngresado}" required />
         </label>
 
         <!-- Registros gratuitos -->
         <label class="form-group" for="registrosGratuitos">
           <span class="label-text">Cantidad de registros gratuitos *</span>
           <input id="registrosGratuitos" name="registrosGratuitos" type="number" min="0" step="1"
-                 placeholder="Ej. 10" required />
+                 placeholder="Ej. 10" value="${registrosIngresados}" required />
         </label>
 
         <!-- Código patrocinio -->
         <label class="form-group" for="codigoPatrocinio">
           <span class="label-text">Código de Patrocinio *</span>
           <input id="codigoPatrocinio" name="codigoPatrocinio" type="text" maxlength="20"
-                 placeholder="Código único" required />
+                 placeholder="Código único" value="${codigoIngresado}" required />
         </label>
       </div>
 
-      <div id="msg" class="alta-patrocinio-message" style="color:#c00;"></div>
+      <div id="msg" class="alta-patrocinio-message" style="color:#c00;">
+        ${msg}
+      </div>
 
       <div class="alta-patrocinio-buttons">
         <button type="submit" class="btn-primary">Crear patrocinio</button>
@@ -106,25 +115,24 @@
 </main>
 
 <script>
-(() => {
+document.addEventListener("DOMContentLoaded", () => {
   const tipoRegistroSelect = document.getElementById('tipoRegistro');
   const formDetalles = document.getElementById('formDetalles');
   const infoTipoRegistroDiv = document.getElementById('infoTipoRegistro');
   const msg = document.getElementById('msg');
   const descTipos = document.querySelectorAll('.desc-tipo');
 
-  tipoRegistroSelect.addEventListener('change', () => {
-    const seleccionado = tipoRegistroSelect.value;
-
-    // Oculto todo por defecto
+  const actualizarVista = () => {
+    const opt = tipoRegistroSelect.options[tipoRegistroSelect.selectedIndex];
+    const idMostrar = opt ? opt.dataset.id : null;
+    console.log("Seleccionado:", idMostrar); 
+    // Ocultar todas las descripciones
     descTipos.forEach(div => div.classList.add('hidden'));
 
-    if (seleccionado) {
-      // Mostrar info general y el div específico
+    if (idMostrar && idMostrar !== "") {
       infoTipoRegistroDiv.classList.remove('hidden');
       formDetalles.classList.remove('hidden');
-
-      const divMostrar = document.getElementById(`desc-${seleccionado}`);
+      const divMostrar = document.getElementById(`desc-${idMostrar}`);
       if (divMostrar) divMostrar.classList.remove('hidden');
     } else {
       infoTipoRegistroDiv.classList.add('hidden');
@@ -132,15 +140,21 @@
     }
 
     msg.textContent = '';
-  });
+  };
 
+  // Al cargar la página
+  actualizarVista();
+
+  // Al cambiar selección
+  tipoRegistroSelect.addEventListener('change', actualizarVista);
+
+  // Validación antes de enviar
   document.getElementById('formPatrocinio').addEventListener('submit', e => {
     e.preventDefault();
     msg.style.color = '#c00';
     msg.textContent = '';
 
     const form = e.target;
-
     if (!form.checkValidity()) {
       form.reportValidity();
       msg.textContent = 'Por favor complete todos los campos correctamente.';
@@ -158,7 +172,6 @@
     };
 
     const costoRegistro = costos[tipoRegistro];
-
     if (registrosGratis * costoRegistro > aporte * 0.20) {
       msg.textContent = '⚠️ El costo de los registros gratuitos supera el 20% del aporte económico.';
       return;
@@ -166,9 +179,12 @@
 
     form.submit();
   });
-})();
+});
 </script>
 
 </body>
 </html>
+
+
+
 
