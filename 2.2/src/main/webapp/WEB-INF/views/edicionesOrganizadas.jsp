@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
         .ediciones-list {
             display: flex;
@@ -95,7 +95,7 @@
 </head>
 <body>
     <header class="header">
-        <a href="inicio"><h1>eventos.uy</h1></a>
+        <h1><a href="inicio">eventos.uy</a></h1>
         <div class="header-right">
             <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
                 <a href="miPerfil" style="display: flex; align-items: center; gap: 0.5rem;">

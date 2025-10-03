@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iniciar sesión  eventos.uy</title>
+  <title>Iniciar sesiï¿½n  eventos.uy</title>
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,7 +18,7 @@
 <body>
   <div>
     <header class="header">
-      <h1><a href="<%= request.getContextPath() %>/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+      <h1><a href="<%= request.getContextPath() %>/inicio">eventos.uy</a></h1>
 
       <div>
 
@@ -30,7 +30,7 @@
       <main>
         <section class="auth-container">
           <div class="auth-card">
-            <h2>Iniciar sesión</h2>
+            <h2>Iniciar sesiï¿½n</h2>
 
             <form action="<%= request.getContextPath() %>/login" method="POST" class="auth-form" autocomplete="on">
               <label class="form-group">
@@ -39,11 +39,11 @@
               </label>
 
               <label class="form-group">
-                <span class="label-text">Contraseña</span>
+                <span class="label-text">Contraseï¿½a</span>
                 <input type="password" name="password" required />
               </label>
 
-              <button type="submit" class="btn-primary" style="margin-top:1rem;width:100%;">Iniciar sesión</button>
+              <button type="submit" class="btn-primary" style="margin-top:1rem;width:100%;">Iniciar sesiï¿½n</button>
             </form>
 
             <c:if test="${not empty error}">

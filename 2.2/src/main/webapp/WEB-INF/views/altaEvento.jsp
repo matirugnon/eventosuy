@@ -107,7 +107,7 @@
 <body>
     <div>
         <header class="header">
-            <h1><a href="${pageContext.request.contextPath}/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+            <h1><a href="${pageContext.request.contextPath}/inicio">eventos.uy</a></h1>
             <div class="header-right">
                 <c:choose>
                     <c:when test="${not empty role}">
