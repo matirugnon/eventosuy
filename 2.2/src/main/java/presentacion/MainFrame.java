@@ -5,6 +5,7 @@ import javax.swing.*;
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
+import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.ExisteInstitucionException;
@@ -162,7 +163,7 @@ public class MainFrame extends JFrame {
             try {
 				Utils.cargarDatos(contrU,contE,contR);
 				JOptionPane.showMessageDialog(this, "Datos cargados exitosamente");
-			} catch (UsuarioRepetidoException |
+			} catch (UsuarioRepetidoException | EdicionNoExisteException |
 					CorreoInvalidoException |
 					EventoRepetidoException |
 					FechaInvalidaException |
