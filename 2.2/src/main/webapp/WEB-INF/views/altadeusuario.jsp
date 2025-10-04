@@ -20,11 +20,11 @@
 <body>
   <div>
     <header class="header">
-      <h1><a href="${pageContext.request.contextPath}/" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
+      <h1><a href="${pageContext.request.contextPath}/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
   
       <div>
-        <a href="${pageContext.request.contextPath}/login" class="btn-primary">Iniciar sesión</a>
-        <a href="${pageContext.request.contextPath}/signup" class="btn-primary">Registrarse</a>
+        <a href="${pageContext.request.contextPath}/login" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Iniciar sesión</a>
+        <a href="${pageContext.request.contextPath}/signup" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Registrarse</a>
       </div>
     </header>
 

@@ -1,63 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-<<<<<<< HEAD
-                        
-    
-    
-    
-    
-    <wb-module deploy-name="EventosUy">
-                                                
-        
-=======
-                    
-    
-    
-    
-    <wb-module deploy-name="entrega2">
-                                        
->>>>>>> bdf97d421c9021098f891d966a52a3564a4850de
-        
-        
-        
+    <wb-module deploy-name="2.2">
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-<<<<<<< HEAD
-                                                
-        
-=======
-                                        
->>>>>>> bdf97d421c9021098f891d966a52a3564a4850de
-        
-        
-        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-<<<<<<< HEAD
-                                        
-        
-        
-        
+        <property name="java-output-path" value="/2.2/bin"/>
         <property name="context-root" value="EventosUy"/>
-        <property name="java-output-path" value="/EventosUy/build/classes"/>
-                                            
-    
-=======
-                                
-        
-        
-        <property name="context-root" value="EventosUy"/>
-        <property name="java-output-path" value="/entrega2/build/classes"/>
-                                    
->>>>>>> bdf97d421c9021098f891d966a52a3564a4850de
-    
-    
-    
     </wb-module>
-<<<<<<< HEAD
-                    
-
-=======
-                
->>>>>>> bdf97d421c9021098f891d966a52a3564a4850de
-
-
-
 </project-modules>
