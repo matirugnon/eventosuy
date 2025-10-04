@@ -3,15 +3,14 @@ package servlets;
 import java.io.IOException;
 import java.util.Set;
 
+import excepciones.EventoNoExisteException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import logica.Controladores.IControladorEvento;
 import logica.DatatypesYEnum.DTSeleccionEvento;
-import excepciones.EventoNoExisteException;
 
 @WebServlet("/consultaEvento")
 public class ConsultaEventoServlet extends HttpServlet {
@@ -24,7 +23,7 @@ public class ConsultaEventoServlet extends HttpServlet {
 
             // Obtener el nombre del evento desde el parámetro
             String nombreEvento = request.getParameter("evento");
-            
+
             if (nombreEvento == null || nombreEvento.trim().isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
@@ -32,7 +31,7 @@ public class ConsultaEventoServlet extends HttpServlet {
 
             // Obtener información del evento específico
             DTSeleccionEvento eventoSeleccionado = ctrl.seleccionarEvento(nombreEvento);
-            
+
             // Obtener todas las categorías para el sidebar
             Set<String> categorias = ctrl.listarCategorias();
 

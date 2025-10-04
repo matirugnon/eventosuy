@@ -188,6 +188,7 @@
                                         <div class="edicion-actions">
                                             <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.nombre}">Alta Tipo Registro</a>
                                             <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.nombre}">Alta Patrocinio</a>
+                                            <a class="btn-edicion" href="registrosEdicion?edicion=${edicion.nombre}">Consultar registros</a>
                                         </div>
                                     </div>
                                 </c:forEach>

@@ -30,7 +30,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             // Obtener parámetros
             String codigo = request.getParameter("codigo");
             String edicion = request.getParameter("edicion");
-            
+
             if (codigo == null || edicion == null || codigo.trim().isEmpty() || edicion.trim().isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
@@ -56,7 +56,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
 
             // Obtener información del patrocinio
             DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigo);
-            
+
             if (patrocinio == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patrocinio no encontrado");
                 return;
@@ -67,7 +67,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
 
             // Obtener información de la edición
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
-            
+
             // Obtener todas las categorías para el sidebar
             Set<String> categorias = ctrlEvento.listarCategorias();
 
