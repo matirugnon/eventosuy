@@ -1,4 +1,4 @@
-<!-- filepath: c:\Users\facu3\git\tpgr15\2.2\src\main\webapp\WEB-INF\views\inicio.jsp -->
+
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -9,15 +9,15 @@
   <title>eventos.uy</title>
   <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-<<<<<<< HEAD
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
-=======
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
->>>>>>> bdf97d421c9021098f891d966a52a3564a4850de
+
 </head>
 <body>
 
@@ -39,8 +39,8 @@
         </c:when>
         <c:otherwise>
           <nav class="nav-links">
-            <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
-            <a href="${pageContext.request.contextPath}/signup">Registrarse</a>
+            <a href="${pageContext.request.contextPath}/login" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Iniciar sesión</a>
+            <a href="${pageContext.request.contextPath}/signup" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Registrarse</a>
           </nav>
         </c:otherwise>
       </c:choose>
@@ -67,7 +67,7 @@
           <div class="panel sidebar">
             <div class="panel-header">Mi perfil</div>
             <ul class="menu-list">
-              <li><a href="#">Registro a Edición</a></li>
+              <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
             </ul>
           </div>
         </c:when>
