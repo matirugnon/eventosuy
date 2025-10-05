@@ -41,7 +41,7 @@
         </select>
       </label>
 
-      <!-- Info tipo registro -->
+      <!-- Info tipo registro dinámico -->
       <div id="infoTipoRegistro" class="info-box hidden">
         <c:forEach var="tipo" items="${tiposRegistro}">
           <div id="desc-${tipo.nombre}" class="desc-tipo hidden" style="white-space: pre-wrap;">
@@ -52,7 +52,7 @@
         </c:forEach>
       </div>
 
-      <!-- Todo lo demás oculto inicialmente -->
+      <!-- Detalles ocultos inicialmente -->
       <div id="formDetalles" class="hidden">
 
         <!-- Institución -->
@@ -71,10 +71,10 @@
           <span class="label-text">Nivel de Patrocinio *</span>
           <select id="nivelPatrocinio" name="nivelPatrocinio" required>
             <option value="">Seleccione nivel…</option>
-            <option value="platino" <c:if test="${nivelSeleccionado == 'platino'}">selected</c:if>>Platino</option>
-            <option value="oro" <c:if test="${nivelSeleccionado == 'oro'}">selected</c:if>>Oro</option>
-            <option value="plata" <c:if test="${nivelSeleccionado == 'plata'}">selected</c:if>>Plata</option>
-            <option value="bronce" <c:if test="${nivelSeleccionado == 'bronce'}">selected</c:if>>Bronce</option>
+            <option value="Platino" <c:if test="${nivelSeleccionado == 'Platino'}">selected</c:if>>Platino</option>
+            <option value="Oro" <c:if test="${nivelSeleccionado == 'Oro'}">selected</c:if>>Oro</option>
+            <option value="Plata" <c:if test="${nivelSeleccionado == 'Plata'}">selected</c:if>>Plata</option>
+            <option value="Bronce" <c:if test="${nivelSeleccionado == 'Bronce'}">selected</c:if>>Bronce</option>
           </select>
         </label>
 
@@ -123,17 +123,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const descTipos = document.querySelectorAll('.desc-tipo');
 
   const actualizarVista = () => {
-    const opt = tipoRegistroSelect.options[tipoRegistroSelect.selectedIndex];
-    const idMostrar = opt ? opt.dataset.id : null;
-    console.log("Seleccionado:", idMostrar); 
+    // valor seleccionado
+    const seleccionado = tipoRegistroSelect.value;
+    console.log("Seleccionado:", seleccionado);
+
     // Ocultar todas las descripciones
     descTipos.forEach(div => div.classList.add('hidden'));
 
-    if (idMostrar && idMostrar !== "") {
+    if (seleccionado && seleccionado !== "") {
       infoTipoRegistroDiv.classList.remove('hidden');
       formDetalles.classList.remove('hidden');
-      const divMostrar = document.getElementById(`desc-${idMostrar}`);
-      if (divMostrar) divMostrar.classList.remove('hidden');
+
+      const divMostrar = document.getElementById("desc-" + seleccionado);
+      console.log("Buscando:", "desc-" + seleccionado, "Encontrado:", divMostrar);
+
+      if (divMostrar) {
+        divMostrar.classList.remove('hidden');
+        console.log("Mostrando:", divMostrar.id);
+      }
     } else {
       infoTipoRegistroDiv.classList.add('hidden');
       formDetalles.classList.add('hidden');
@@ -142,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.textContent = '';
   };
 
-  // Al cargar la página
+  // Al cargar la página → si hay selección previa, mostrar
   actualizarVista();
 
   // Al cambiar selección
@@ -181,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 
 </body>
 </html>
