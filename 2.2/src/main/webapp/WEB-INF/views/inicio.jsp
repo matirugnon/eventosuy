@@ -34,7 +34,7 @@
                    alt="Avatar de usuario" />
               <span class="nickname">${nickname}</span>
             </a>
-            <a href="/EventosUy/logout" class="btn-primary">Cerrar sesión</a>
+            <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
           </div>
         </c:when>
         <c:otherwise>
@@ -68,6 +68,7 @@
             <div class="panel-header">Mi perfil</div>
             <ul class="menu-list">
               <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
+              <li><a href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a></li>
             </ul>
           </div>
         </c:when>

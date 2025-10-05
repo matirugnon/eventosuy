@@ -53,6 +53,7 @@
                         <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
                         <ul class="menu-list" style="margin-bottom: 3rem;">
                             <li><a href="${pageContext.request.contextPath}/registroAEdicion" style="white-space: nowrap;">Registro a Edición</a></li>
+                            <li><a href="${pageContext.request.contextPath}/misRegistros" style="white-space: nowrap;">Mis Registros</a></li>
                         </ul>
                     </div>
                   </c:when>

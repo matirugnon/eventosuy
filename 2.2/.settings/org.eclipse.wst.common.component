@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-<<<<<<< HEAD
+        
     <wb-module deploy-name="tarea2.2">
+                
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <property name="java-output-path" value="/tarea2.2/build/classes"/>
-=======
-    <wb-module deploy-name="2.2">
-        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                
         <property name="java-output-path" value="/2.2/bin"/>
->>>>>>> f06e5da66ed6b4e4b86f7d1cecc293c1877fa3fd
         <property name="context-root" value="EventosUy"/>
+            
     </wb-module>
+    
 </project-modules>

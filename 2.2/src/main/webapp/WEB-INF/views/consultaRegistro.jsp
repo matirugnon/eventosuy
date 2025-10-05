@@ -57,6 +57,7 @@
                         <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
                         <ul class="menu-list">
                             <li><a href="${pageContext.request.contextPath}/registroAEdicion" style="white-space: nowrap;">Registro a Edición</a></li>
+                            <li><a href="${pageContext.request.contextPath}/misRegistros" style="white-space: nowrap;">Mis Registros</a></li>
                         </ul>
                     </div>
                   </c:when>
@@ -109,7 +110,14 @@
 
                         <!-- Enlaces relacionados -->
                         <div style="margin-top:1.5rem; display:flex; gap:.75rem;">
-                            <a class="btn-outline" href="${pageContext.request.contextPath}/perfilUsuario?nickname=${registro.asistente}">Volver al perfil de usuario</a>
+                            <c:choose>
+                                <c:when test="${param.from == 'misRegistros'}">
+                                    <a class="btn-outline" href="${pageContext.request.contextPath}/misRegistros">Volver a Mis Registros</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="btn-outline" href="${pageContext.request.contextPath}/perfilUsuario?nickname=${registro.asistente}">Volver al perfil de usuario</a>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </section>

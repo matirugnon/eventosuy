@@ -35,6 +35,17 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 return;
             }
 
+            // Verificar que el usuario tenga permisos para ver este registro
+            String usuarioSesion = (String) request.getSession().getAttribute("usuario");
+            String rolSesion = (String) request.getSession().getAttribute("role");
+            
+            // Solo puede ver el registro si es el mismo asistente o es un organizador
+            if (usuarioSesion == null || 
+                (!asistente.equals(usuarioSesion) && !"organizador".equals(rolSesion))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para ver este registro");
+                return;
+            }
+
             // Obtener controladores
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
