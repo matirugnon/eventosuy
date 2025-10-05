@@ -112,7 +112,8 @@
             <div class="panel sidebar">
               <div class="panel-header">Mi perfil</div>
               <ul class="menu-list">
-                <li><a href="#">Registro a Edición</a></li>
+                <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
+                <li><a href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a></li>
               </ul>
             </div>
           </c:when>
@@ -246,7 +247,7 @@
                           <td>${registro["fechaRegistro"]}</td>
                           <td>$${registro["costo"]}</td>
                           <td>
-                            <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}" 
+                            <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}&from=perfilUsuario" 
                                class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
                                Consultar
                             </a>

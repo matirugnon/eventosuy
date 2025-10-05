@@ -66,7 +66,8 @@
             <div class="panel sidebar">
               <div class="panel-header">Mi perfil</div>
               <ul class="menu-list">
-                <li><a href="#">Registro a Edición</a></li>
+                <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
+                <li><a href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a></li>
               </ul>
             </div>
           </c:when>
