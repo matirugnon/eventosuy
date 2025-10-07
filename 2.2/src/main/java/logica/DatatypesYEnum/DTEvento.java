@@ -10,6 +10,7 @@ public class DTEvento {
     private final String descripcion;
     private final DTFecha fechaEvento;
     private final Set<String> categorias;
+    private final String imagen;
 
     public DTEvento(String nombre, String sigla, String descripcion, DTFecha fechaEvento, Set<String> categorias) {
         this.nombre = nombre;
@@ -17,6 +18,16 @@ public class DTEvento {
         this.descripcion = descripcion;
         this.fechaEvento = fechaEvento;
         this.categorias = categorias;
+        this.imagen = null;
+    }
+
+    public DTEvento(String nombre, String sigla, String descripcion, DTFecha fechaEvento, Set<String> categorias, String imagen) {
+        this.nombre = nombre;
+        this.sigla = sigla;
+        this.descripcion = descripcion;
+        this.fechaEvento = fechaEvento;
+        this.categorias = categorias;
+        this.imagen = imagen;
     }
 
     // Si querés construir desde un Evento:
@@ -26,6 +37,7 @@ public class DTEvento {
         this.descripcion = e.getDescripcion();
         this.fechaEvento = e.getFechaEvento();
 		this.categorias = e.getCategorias();
+        this.imagen = e.getImagen();
     }
 
     public String getNombre() { return nombre; }
@@ -33,4 +45,5 @@ public class DTEvento {
     public String getDescripcion() { return descripcion; }
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<String> getCategorias() {return categorias;}
+    public String getImagen() { return imagen; }
 }

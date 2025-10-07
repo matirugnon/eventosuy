@@ -28,10 +28,15 @@ public class Edicion{
 	private Map<String,Patrocinio> patrocinios;
 
 	private EstadoEdicion estado; // Nuevo atributo
+	private String imagen;
 
+	// Constructor sin imagen (mantiene compatibilidad)
 	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento) {
+		this(nom, s, ciu, p, ini, fin, alta, org, evento, null);
+	}
 
-
+	// Constructor con imagen (opcional)
+	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento, String imagen) {
 		nombre = nom;
 		fechaInicioDtFecha = ini;
 		fechafinDtFecha = fin;
@@ -44,6 +49,7 @@ public class Edicion{
 
 		altaEdicionDtFecha = alta;
 		this.evento = evento; // Inicializar la referencia al objeto Evento
+		this.imagen = imagen;
 
 		this.tiposDeRegistro = new HashMap<>();
 		this.patrocinios = new HashMap<>();
@@ -63,6 +69,9 @@ public class Edicion{
     public String getPais()         { return pais; }
 
     public String getSigla()        { return sigla;}
+    public String getImagen()       { return imagen; }
+    
+    public void setImagen(String imagen) { this.imagen = imagen; }
 
     public void setOrganizador(Organizador o) {
         organizador = o;
@@ -138,7 +147,8 @@ public class Edicion{
 	        nombresTiposDeRegistro,
 	        registrosData,
 	        patrocinios,
-	        this.estado // Incluir el estado
+	        this.estado, // Incluir el estado
+	        this.imagen  // Incluir la imagen
 	    );
 	}
 

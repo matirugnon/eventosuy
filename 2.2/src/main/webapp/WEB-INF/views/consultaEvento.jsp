@@ -24,7 +24,7 @@
             <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
               <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
                 <img class="avatar" 
-                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.jpeg')}" 
                      alt="Avatar de usuario" />
                 <span class="nickname">${nickname}</span>
               </a>
@@ -116,7 +116,9 @@
             <div class="event-detail">
               <article class="event-item" style="border-bottom:0;">
                 <div class="event-image" style="margin-bottom: 1rem; max-width: 250px;">
-                  <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" alt="${eventoSeleccionado.evento.nombre}" style="width: 100%; height: auto; border-radius: 8px;">
+                  <img src="${not empty eventoSeleccionado.evento.imagen ? pageContext.request.contextPath.concat(eventoSeleccionado.evento.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                       alt="${eventoSeleccionado.evento.nombre}" 
+                       style="width: 100%; height: auto; border-radius: 8px;">
                 </div>
                 <div>
                   <h3 style="margin:0 0 0.25rem 0;">${eventoSeleccionado.evento.nombre}</h3>
@@ -133,17 +135,18 @@
                 </div>
               </article>
               
-              <c:if test="${not empty eventoSeleccionado.ediciones}">
+              <c:if test="${not empty eventoSeleccionado.edicionesCompletas}">
                 <div>
                   <div class="panel-header" style="border-radius:10px 10px 0 0;">Ediciones</div>
                   <div class="panel-body event-editions">
-                    <c:forEach items="${eventoSeleccionado.ediciones}" var="edicion">
+                    <c:forEach items="${eventoSeleccionado.edicionesCompletas}" var="edicion">
                       <c:url var="edicionUrl" value="/consultaEdicion">
-                        <c:param name="edicion" value="${edicion}" />
+                        <c:param name="edicion" value="${edicion.nombre}" />
                       </c:url>
                       <a class="mini-card" href="${edicionUrl}">
-                        <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" alt="${edicion}" />
-                        <div class="mini-card-title">${edicion}</div>
+                        <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                             alt="${edicion.nombre}" />
+                        <div class="mini-card-title">${edicion.nombre}</div>
                       </a>
                     </c:forEach>
                   </div>

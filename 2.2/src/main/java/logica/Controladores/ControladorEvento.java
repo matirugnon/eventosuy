@@ -61,7 +61,14 @@ public class ControladorEvento implements IControladorEvento {
 
 	//altaEvento con excepcion
 
+	// Método sin imagen (mantiene compatibilidad)
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
+	        throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException {
+		darAltaEvento(nomEvento, desc, fechaAlta, sigla, nomcategorias, null);
+	}
+
+	// Método con imagen (opcional)
+	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias, String imagen)
 	        throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException {
 
 	    // Verificamos si ya existe un evento con ese nombre
@@ -80,7 +87,7 @@ public class ControladorEvento implements IControladorEvento {
 
 	    // Si no existe, creamos el evento
 	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
-	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias);
+	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
 	    manejadorE.addEvento(e);
 	}
 
@@ -124,16 +131,22 @@ public class ControladorEvento implements IControladorEvento {
 
 
         Set<String> nombresEdiciones = new HashSet<>();
+        Set<DTEdicion> edicionesCompletas = new HashSet<>();
         if (e.getEdiciones() != null) {
             for (String ed : e.getEdiciones()) {
 
                 if (ed != "") {
                     nombresEdiciones.add(ed);
+                    // Obtener la edición completa con su imagen
+                    Edicion edicion = manejadorE.obtenerEdicion(ed);
+                    if (edicion != null) {
+                        edicionesCompletas.add(edicion.getDTEdicion());
+                    }
                 }
             }
         }
 
-        return new DTSeleccionEvento(dto, nombresCategorias, nombresEdiciones);
+        return new DTSeleccionEvento(dto, nombresCategorias, nombresEdiciones, edicionesCompletas);
     }
 
     public DTEdicion consultarEdicion(String nomEdicion) {
@@ -164,7 +177,14 @@ public class ControladorEvento implements IControladorEvento {
 	}
 
 
+	// Método sin imagen (mantiene compatibilidad)
 	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
+			throws EdicionExistenteException, FechasIncompatiblesException{
+		AltaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, null);
+	}
+
+	// Método con imagen (opcional)
+	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)
 			throws EdicionExistenteException, FechasIncompatiblesException{
 
 	        ManejadorEventos me = ManejadorEventos.getInstance();
@@ -193,7 +213,7 @@ public class ControladorEvento implements IControladorEvento {
 	        Organizador org = (Organizador) u;
 
 	        // Crear la edición con el evento asociado
-            Edicion ed = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, ev);
+            Edicion ed = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, ev, imagen);
 
 
 	        org.agregarEdicion(ed);

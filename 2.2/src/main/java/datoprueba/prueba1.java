@@ -202,7 +202,7 @@ class prueba1 {
 		Set<Map.Entry<String, String>> regEsperados = new HashSet<>();
 		regEsperados.add(new AbstractMap.SimpleImmutableEntry<>("andrearod", "Estudiante"));
 		tiporeg.add("Full");tiporeg.add("General");tiporeg.add("Estudiante");
-		DTEdicion DTedEsp = new DTEdicion("Web Summit 2026", "WS26", new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025),  "Lisboa", "Portugal", "techcorp", tiporeg, regEsperados,patro);
+		DTEdicion DTedEsp = new DTEdicion("Web Summit 2026", "WS26", null, new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025),  "Lisboa", "Portugal", "techcorp", tiporeg, regEsperados,patro, null);
 		assertEquals(DTed.getCiudad(),DTedEsp.getCiudad());
 		assertEquals(DTed.getNombre(),DTedEsp.getNombre());
 		assertEquals(DTed.getOrganizador(),DTedEsp.getOrganizador());

@@ -30,7 +30,7 @@
           <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
             <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
               <img class="avatar" 
-                   src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                   src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
                    alt="Avatar de usuario" />
               <span class="nickname">${nickname}</span>
             </a>
@@ -133,13 +133,20 @@
         <c:otherwise>
           <c:forEach var="e" items="${eventos}">
             <div class="event">
-              <div class="event-content">
-                <c:url var="eventoUrl" value="/consultaEvento">
-                  <c:param name="evento" value="${e.nombre}" />
-                </c:url>
-                <h3><a href="${eventoUrl}" style="color: inherit; text-decoration: none;">${e.nombre}</a></h3>
-                <p>${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
-              </div>
+              <c:url var="eventoUrl" value="/consultaEvento">
+                <c:param name="evento" value="${e.nombre}" />
+              </c:url>
+              <a href="${eventoUrl}" style="text-decoration: none; color: inherit; display: flex; gap: 1rem; width: 100%;">
+                <div class="event-image" style="flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden;">
+                  <img src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                       alt="${e.nombre}" 
+                       style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="event-content" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                  <h3 style="margin: 0 0 0.5rem 0;">${e.nombre}</h3>
+                  <p style="margin: 0;">${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
+                </div>
+              </a>
             </div>
           </c:forEach>
         </c:otherwise>

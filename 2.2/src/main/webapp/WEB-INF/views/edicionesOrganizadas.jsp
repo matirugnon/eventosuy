@@ -174,7 +174,7 @@
                             <div class="ediciones-list">
                                 <c:forEach var="edicion" items="${edicionesOrganizadas}">
                                     <div class="edicion-item">
-                                        <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" 
+                                        <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
                                              alt="${edicion.nombre}" class="edicion-image" />
                                         <div class="edicion-details">
                                             <h3 class="edicion-title">${edicion.evento} - ${edicion.nombre}</h3>

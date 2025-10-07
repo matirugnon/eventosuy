@@ -22,7 +22,7 @@
                         <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
                             <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
                                 <img class="avatar" 
-                                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
                                      alt="Avatar de usuario" />
                                 <span class="nickname">${nickname}</span>
                             </a>
@@ -114,7 +114,9 @@
                         <div class="event-detail" style="display: flex; gap: 2rem;">
                             <div style="flex: 1;">
                                 <div class="event-image" style="margin-bottom: 1rem; max-width: 250px;">
-                                    <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" alt="${edicion.nombre}" style="width: 100%; height: auto; border-radius: 8px;">
+                                    <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                                         alt="${edicion.nombre}" 
+                                         style="width: 100%; height: auto; border-radius: 8px;">
                                 </div>
                             </div>
                             

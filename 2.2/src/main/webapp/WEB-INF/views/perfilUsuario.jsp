@@ -169,7 +169,7 @@
           <div class="auth-card">
             <!-- Encabezado: avatar + nombre del usuario -->
             <div class="profile-header">
-              <img src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+              <img src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
                    alt="Avatar de ${usuario.nickname}"
                    class="profile-avatar">
               <div>

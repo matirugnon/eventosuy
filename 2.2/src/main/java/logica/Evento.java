@@ -14,15 +14,21 @@ public class Evento {
     private DTFecha fechaEvento;
     private Set<String> categorias;
     private Map<String,Edicion> ediciones;
+    private String imagen;
 
-
+    // Constructor sin imagen (mantiene compatibilidad)
     public Evento(String nom, String desc, DTFecha fecha, String sig, Set<Categoria> categoriaObjetos) {
+        this(nom, desc, fecha, sig, categoriaObjetos, null);
+    }
+
+    // Constructor con imagen (opcional)
+    public Evento(String nom, String desc, DTFecha fecha, String sig, Set<Categoria> categoriaObjetos, String imagen) {
         this.nombre = nom;
         this.descripcion = desc;
         this.fechaEvento = fecha;
         this.sigla = sig;
         this.ediciones = new HashMap<>();
-
+        this.imagen = imagen;
 
         this.categorias = new HashSet<>();
         for (Categoria cat : categoriaObjetos) {
@@ -37,6 +43,9 @@ public class Evento {
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<String> getCategorias() { return new HashSet<>(categorias); }
     public Set<String> getEdiciones() { return ediciones.keySet(); }
+    public String getImagen() { return imagen; }
+    
+    public void setImagen(String imagen) { this.imagen = imagen; }
    
     public void agregarEdicion(Edicion ed) {
         ediciones.put(ed.getNombre(),ed);

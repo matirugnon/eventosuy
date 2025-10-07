@@ -76,7 +76,7 @@
           <c:when test="${not empty role}">
             <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
               <img class="avatar" 
-                   src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                   src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
                    alt="Avatar de usuario" />
               <span class="nickname">${nickname}</span>
               <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
@@ -167,7 +167,7 @@
           <div class="auth-card">
             <!-- Encabezado: avatar + nombre del usuario -->
             <div class="profile-header">
-              <img src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+              <img src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
                    alt="Avatar de ${usuario.nickname}"
                    class="profile-avatar">
               <div>

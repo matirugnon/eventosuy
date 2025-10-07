@@ -52,68 +52,40 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
 		// Usuarios - Asistentes
         if (!ctrlUsuario.ExisteNickname("atorres"))
-            ctrlUsuario.altaAsistente("atorres", "Ana", "atorres@gmail.com", "Torres", new DTFecha(12,5,1990), "Facultad de Ingeniería", "1234");
+            ctrlUsuario.altaAsistente("atorres", "Ana", "atorres@gmail.com", "Torres", new DTFecha(12,5,1990), "Facultad de Ingeniería", "123.torres", "/img/IMG-US01.jpg" );
         if (!ctrlUsuario.ExisteNickname("msilva"))
-            ctrlUsuario.altaAsistente("msilva", "Martin", "martin.silva@fing.edu.uy", "Silva", new DTFecha(21,8,1987), "Facultad de Ingeniería", "1234");
+            ctrlUsuario.altaAsistente("msilva", "Martin", "martin.silva@fing.edu.uy", "Silva", new DTFecha(21,8,1987), "Facultad de Ingeniería", "msilva2005", "/img/usSinFoto.webp");
         if (!ctrlUsuario.ExisteNickname("sofirod"))
-            ctrlUsuario.altaAsistente("sofirod", "Sofia", "srodriguez@outlook.com", "Rodriguez", new DTFecha(3,2,1995), "Universidad Católica del Uruguay", "1234");
+            ctrlUsuario.altaAsistente("sofirod", "Sofia", "srodriguez@outlook.com", "Rodriguez", new DTFecha(3,2,1995), "Universidad Católica del Uruguay", "srod.abc1","/img/IMG-US03.jpeg");
         if (!ctrlUsuario.ExisteNickname("vale23"))
-            ctrlUsuario.altaAsistente("vale23", "Valentina", "valentina.costa@mail.com", "Costa", new DTFecha(1,12,1992), "", "1234");
+            ctrlUsuario.altaAsistente("vale23", "Valentina", "valentina.costa@mail.com", "Costa", new DTFecha(1,12,1992), "", "valen11c", "/img/IMG-US07.jpeg");
         if (!ctrlUsuario.ExisteNickname("luciag"))
-            ctrlUsuario.altaAsistente("luciag", "Lucía", "lucia.garcia@mail.com", "García", new DTFecha(9,11,1993), "", "1234");
+            ctrlUsuario.altaAsistente("luciag", "Lucía", "lucia.garcia@mail.com", "García", new DTFecha(9,11,1993), "", "garcia.22l", "/img/IMG-US08.jpeg");
         if (!ctrlUsuario.ExisteNickname("andrearod"))
-            ctrlUsuario.altaAsistente("andrearod", "Andrea", "andrea.rod@mail.com", "Rodríguez", new DTFecha(10,6,2000), "Agencia Nacional de Investigación e Innovación (ANII)", "1234");
+            ctrlUsuario.altaAsistente("andrearod", "Andrea", "andrea.rod@mail.com", "Rodríguez", new DTFecha(10,6,2000), "Agencia Nacional de Investigación e Innovación (ANII)", "rod77and", "/img/IMG-US09.jpeg");
         if (!ctrlUsuario.ExisteNickname("AnaG"))
-            ctrlUsuario.altaAsistente("AnaG", "Ana", "ana.gomez@hotmail.com", "Gómez", new DTFecha(15,3,1998), "", "1234");
+            ctrlUsuario.altaAsistente("AnaG", "Ana", "ana.gomez@hotmail.com", "Gómez", new DTFecha(15,3,1998), "", "gomez88a", "/img/IMG-US12.png");
         if (!ctrlUsuario.ExisteNickname("JaviL"))
-            ctrlUsuario.altaAsistente("JaviL", "Javier", "javier.lopez@outlook.com", "López", new DTFecha(22,7,1995), "", "1234");
+            ctrlUsuario.altaAsistente("JaviL", "Javier", "javier.lopez@outlook.com", "López", new DTFecha(22,7,1995), "", "jl99lopez", "/img/IMG-US13.jpeg");
         if (!ctrlUsuario.ExisteNickname("MariR"))
-            ctrlUsuario.altaAsistente("MariR", "María", "maria.rodriguez@gmail.com", "Rodríguez", new DTFecha(10,11,2000), "", "1234");
+            ctrlUsuario.altaAsistente("MariR", "María", "maria.rodriguez@gmail.com", "Rodríguez", new DTFecha(10,11,2000), "", "maria55r", "/img/IMG-US14.jpeg");
         if (!ctrlUsuario.ExisteNickname("SofiM"))
-            ctrlUsuario.altaAsistente("SofiM", "Sofía", "sofia.martinez@yahoo.com", "Martínez", new DTFecha(5,2,1997), "", "1234");
+            ctrlUsuario.altaAsistente("SofiM", "Sofía", "sofia.martinez@yahoo.com", "Martínez", new DTFecha(5,2,1997), "", "smarti99z", "/img/IMG-US15.jpeg");
 
         // Usuarios - Organizadores
         if (!ctrlUsuario.ExisteNickname("miseventos"))
-            ctrlUsuario.altaOrganizador("miseventos", "MisEventos", "contacto@miseventos.com", "Empresa de organización de eventos.", "https://miseventos.com", "1234");
+            ctrlUsuario.altaOrganizador("miseventos", "MisEventos", "contacto@miseventos.com", "Empresa de organización de eventos.", "https://miseventos.com", "22miseventos", "/img/IMG-US04.jpeg");
         if (!ctrlUsuario.ExisteNickname("techcorp"))
-            ctrlUsuario.altaOrganizador("techcorp", "Corporación Tecnológica", "info@techcorp.com", "Empresa líder en tecnologías de la información.", "", "1234");
+            ctrlUsuario.altaOrganizador("techcorp", "Corporación Tecnológica", "info@techcorp.com", "Empresa líder en tecnologías de la información.", "", "tech25corp", "/img/usSinFoto.webp");
         if (!ctrlUsuario.ExisteNickname("imm"))
-            ctrlUsuario.altaOrganizador("imm", "Intendencia de Montevideo", "contacto@imm.gub.uy", "Gobierno departamental de Montevideo.", "https://montevideo.gub.uy", "1234");
+            ctrlUsuario.altaOrganizador("imm", "Intendencia de Montevideo", "contacto@imm.gub.uy", "Gobierno departamental de Montevideo.", "https://montevideo.gub.uy", "imm2025", "/img/IMG-US06.png");
         if (!ctrlUsuario.ExisteNickname("udelar"))
-            ctrlUsuario.altaOrganizador("udelar", "Universidad de la República", "contacto@udelar.edu.uy", "Universidad pública de Uruguay.", "https://udelar.edu.uy", "1234");
+            ctrlUsuario.altaOrganizador("udelar", "Universidad de la República", "contacto@udelar.edu.uy", "Universidad pública de Uruguay.", "https://udelar.edu.uy", "25udelar", "/img/usSinFoto.webp");
         if (!ctrlUsuario.ExisteNickname("mec"))
-            ctrlUsuario.altaOrganizador("mec", "Ministerio de Educación y Cultura", "mec@mec.gub.uy", "Institución pública promotora de cultura.", "https://mec.gub.uy", "1234");
+            ctrlUsuario.altaOrganizador("mec", "Ministerio de Educación y Cultura", "mec@mec.gub.uy", "Institución pública promotora de cultura.", "https://mec.gub.uy", "mec2025ok", "/img/IMG-US11.png");
 
         // Asignar avatares a usuarios específicos
-        if (ctrlUsuario.ExisteNickname("atorres")) {
-            Usuario atorres = ctrlUsuario.obtenerUsuario("atorres");
-            if (atorres != null) {
-                atorres.setAvatar("/img/IMG-US01.jpg");
-            } else {
-                System.out.println("WARNING: Usuario 'atorres' existe pero obtenerUsuario devolvió null");
-            }
-        }
-        if (ctrlUsuario.ExisteNickname("miseventos")) {
-            Usuario miseventos = ctrlUsuario.obtenerUsuario("miseventos");
-            if (miseventos != null) {
-                miseventos.setAvatar("/img/IMG-US04.jpeg");
-            } else {
-                System.out.println("WARNING: Usuario 'miseventos' existe pero obtenerUsuario devolvió null");
-            }
-        }
-        // Asignar avatar por defecto a otros usuarios
-        String[] usuarios = {"msilva", "sofirod", "vale23", "luciag", "andrearod", "AnaG", "JaviL", "MariR", "SofiM", 
-                           "techcorp", "imm", "udelar", "mec"};
-        for (String nick : usuarios) {
-            if (ctrlUsuario.ExisteNickname(nick)) {
-                Usuario usuario = ctrlUsuario.obtenerUsuario(nick);
-                if (usuario != null && usuario.getAvatar() == null) {
-                    usuario.setAvatar("/img/avatar-default.png");
-                } else if (usuario == null) {
-                    System.out.println("WARNING: Usuario '" + nick + "' existe pero obtenerUsuario devolvió null");
-                }
-            }
-        }
+       
 
         // Categorias
         if (!ctrlEvento.existeCategoria("Tecnología"))
@@ -145,50 +117,50 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         if (!ctrlEvento.existeEvento("Conferencia de Tecnología"))
             ctrlEvento.darAltaEvento("Conferencia de Tecnología", "Evento sobre innovación tecnológica", new DTFecha(1,10,2025), "CONFTEC", Set.of("Tecnología", "Innovación"));
         if (!ctrlEvento.existeEvento("Feria del Libro"))
-            ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(1,2,2025), "FERLIB", Set.of("Literatura", "Cultura"));
+            ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(1,2,2025), "FERLIB", Set.of("Literatura", "Cultura"), "/img/IMG-EV02.jpeg");
         if (!ctrlEvento.existeEvento("Montevideo Rock"))
-            ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(15,3,2023), "MONROCK", Set.of("Cultura", "Música"));
+            ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(15,3,2023), "MONROCK", Set.of("Cultura", "Música"), "/img/IMG-EV03.jpeg");
         if (!ctrlEvento.existeEvento("Maratón de Montevideo"))
-            ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(1,1,2022), "MARATON", Set.of("Deporte", "Salud"));
+            ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(1,1,2022), "MARATON", Set.of("Deporte", "Salud"), "/img/IMG-EV04.png");
         if (!ctrlEvento.existeEvento("Montevideo Comics"))
-            ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(10,4,2024), "COMICS", Set.of("Cultura", "Entretenimiento"));
+            ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(10,4,2024), "COMICS", Set.of("Cultura", "Entretenimiento"), "/img/IMG-EV05.png");
         if (!ctrlEvento.existeEvento("Expointer Uruguay"))
-            ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"));
+            ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"), "/img/IMG-EV06.png");
         if (!ctrlEvento.existeEvento("Montevideo Fashion Week"))
             ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(20,7,2025), "MFASHION", Set.of("Cultura", "Moda"));
 
         // Ediciones
         if (!ctrlEvento.existeEdicion("Montevideo Rock 2025"))
             ctrlEvento.AltaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
-                    new DTFecha(2025,11,20), new DTFecha(22,11,2025), new DTFecha(12,3,2025));
+                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
             ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-                            new DTFecha(2025,9,14), new DTFecha(14,9,2025), new DTFecha(5,2,2025));
+                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
             ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024));
+                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
             ctrlEvento.AltaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2022), new DTFecha(14,9,2022), new DTFecha(21,5,2022));
+                            new DTFecha(14,9,2022), new DTFecha(14,9,2022), new DTFecha(21,5,2022), "/img/IMG-EDEV04.jpeg");
 
         if (!ctrlEvento.existeEdicion("Montevideo Comics 2024"))
             ctrlEvento.AltaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2024", "COMICS24", "Montevideo", "Uruguay",
-                            new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024));
+                            new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024), "/img/IMG-EDEV05.jpeg");
 
         if (!ctrlEvento.existeEdicion("Montevideo Comics 2025"))
             ctrlEvento.AltaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2025", "COMICS25", "Montevideo", "Uruguay",
-                            new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025));
+                            new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025), "/img/IMG-EDEV06.jpeg");
 
         if (!ctrlEvento.existeEdicion("Expointer Uruguay 2025"))
             ctrlEvento.AltaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
-                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025));
+                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg");
 
         if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
             ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
-                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026));
+                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg");
 
         if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
             ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
@@ -198,16 +170,21 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlEvento.AltaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
                             new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
 
+            ctrlEvento.AltaEdicion("Montevideo Fashion Week", "mec",  "Montevideo Fashion Week 2026", "MFW26", "Nueva York", "Estados Unidos", new DTFecha(16,2,2026), new DTFecha(20,2,2026),new DTFecha(2,10,2025), "/img/IMG-EDEV11.jpeg");
 
 
 		// Estados definidos para mostrar en los perfiles
 		ctrlEvento.actualizarEstadoEdicion("Montevideo Rock 2025", EstadoEdicion.ACEPTADA);
+        ctrlEvento.actualizarEstadoEdicion("Maratón de Montevideo 2025", EstadoEdicion.ACEPTADA);
 		ctrlEvento.actualizarEstadoEdicion("Maratón de Montevideo 2024", EstadoEdicion.ACEPTADA);
 		ctrlEvento.actualizarEstadoEdicion("Maratón de Montevideo 2022", EstadoEdicion.RECHAZADA);
 		ctrlEvento.actualizarEstadoEdicion("Montevideo Comics 2024", EstadoEdicion.ACEPTADA);
-		ctrlEvento.actualizarEstadoEdicion("Expointer Uruguay 2025", EstadoEdicion.RECHAZADA);
+        ctrlEvento.actualizarEstadoEdicion("Montevideo Comics 2025", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Expointer Uruguay 2025", EstadoEdicion.INGRESADA);
 		ctrlEvento.actualizarEstadoEdicion("Tecnología Punta del Este 2026", EstadoEdicion.ACEPTADA);
-		ctrlEvento.actualizarEstadoEdicion("Web Summit 2026", EstadoEdicion.RECHAZADA);
+        ctrlEvento.actualizarEstadoEdicion("Mobile World Congress 2025", EstadoEdicion.ACEPTADA);
+		ctrlEvento.actualizarEstadoEdicion("Web Summit 2026", EstadoEdicion.ACEPTADA);
+        ctrlEvento.actualizarEstadoEdicion("Montevideo Fashion Week 2026", EstadoEdicion.INGRESADA);
 
 		// TipoRegistro
 
@@ -255,6 +232,10 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "Full", "Acceso ilimitado + Cena de gala", 900, 30);
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "General", "Acceso general", 650, 5);
 		ctrlRegistro.altaTipoDeRegistro("Web Summit 2026", "Estudiante", "Acceso para estudiantes", 300, 1);
+
+		// Montevideo Fashion Week 2026
+		ctrlRegistro.altaTipoDeRegistro("Montevideo Fashion Week 2026", "Full", "Acceso a todos los eventos de la semana", 450, 50);
+		ctrlRegistro.altaTipoDeRegistro("Montevideo Fashion Week 2026", "Visitante", "Acceso parcial a los eventos de la semana", 150, 25);
 
 
 		//Patrocinios
