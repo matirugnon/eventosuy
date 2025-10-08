@@ -101,7 +101,11 @@ public class MainFrame extends JFrame {
 			}
 		});
         menuEventos.add(registroAEdicion);
-
+        
+        
+        JMenuItem aceptarRechazarEdicion = new JMenuItem("Aceptar/Rechazar Edición");
+        aceptarRechazarEdicion.addActionListener(e -> openInternal(new AceptarRechazarEdicionFrame()));
+        menuEventos.add(aceptarRechazarEdicion);
 
 
         // Menú Instituciones
