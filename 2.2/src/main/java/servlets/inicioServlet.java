@@ -1,7 +1,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,62 +18,106 @@ import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
 import logica.DatatypesYEnum.DTEvento;
+import logica.DatatypesYEnum.DTUsuario;
 import utils.Utils;
 
 @WebServlet("/inicio")
 public class inicioServlet extends HttpServlet {
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    try {
-      IControladorEvento ctrl = IControladorEvento.getInstance();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            IControladorEvento ctrl = IControladorEvento.getInstance();
 
-      // Carga inicial de datos si hace falta
-      Set<DTEvento> eventos = ctrl.obtenerDTEventos();
-      if (eventos == null || eventos.isEmpty()) {
-        Utils.cargarDatos(
-            IControladorUsuario.getInstance(),
-            ctrl,
-            IControladorRegistro.getInstance()
-        );
-        eventos = ctrl.obtenerDTEventos();
-      }
+            // Carga inicial de datos si hace falta
+            Set<DTEvento> eventos = ctrl.obtenerDTEventos();
+            if (eventos == null || eventos.isEmpty()) {
+                Utils.cargarDatos(
+                        IControladorUsuario.getInstance(),
+                        ctrl,
+                        IControladorRegistro.getInstance()
+                );
+                eventos = ctrl.obtenerDTEventos();
+            }
 
-      // Categorías para el sidebar
-      Set<String> categorias = ctrl.listarCategorias();
+            // Categorías para el sidebar
+            Set<String> categorias = ctrl.listarCategorias();
 
-      // ---- FILTRO POR CATEGORÍA ----
-      String categoriaSeleccionada = request.getParameter("categoria"); // p.ej. "Tecnología"
-      if (categoriaSeleccionada != null && !categoriaSeleccionada.isBlank()
-          && !"todas".equalsIgnoreCase(categoriaSeleccionada)) {
+            // Parámetros del filtro
+            String categoriaSeleccionada = request.getParameter("categoria");
+            String busqueda = request.getParameter("busqueda");
 
-        // Supuesto: cada DTEvento expone getCategorias(): Set<String>
-        // (si fuera getCategoria() String, adapta el predicado del filter).
-        final String cat = categoriaSeleccionada;
-        eventos = eventos.stream()
-            .filter(e -> e.getCategorias() != null &&
-                         e.getCategorias().stream()
-                           .anyMatch(c -> c.equalsIgnoreCase(cat)))
-            .collect(Collectors.toCollection(LinkedHashSet::new)); // conserva orden
-      }
+            // FILTRO POR CATEGORÍA
+            if (categoriaSeleccionada != null && !categoriaSeleccionada.isBlank()
+                    && !"todas".equalsIgnoreCase(categoriaSeleccionada)) {
 
-      // Atributos para la JSP
-      request.setAttribute("eventos", eventos);
-      request.setAttribute("categorias", categorias);
-      request.setAttribute("categoriaSeleccionada", 
-          (categoriaSeleccionada == null || categoriaSeleccionada.isBlank()) ? "todas" : categoriaSeleccionada);
+                final String cat = categoriaSeleccionada;
+                eventos = eventos.stream()
+                        .filter(e -> e.getCategorias() != null &&
+                                     e.getCategorias().stream()
+                                       .anyMatch(c -> c.equalsIgnoreCase(cat)))
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
+            }
 
-      // Obtener el rol desde la sesión y pasarlo a la JSP
-      String role = (String) request.getSession().getAttribute("role");
-      request.setAttribute("role", role);
-      request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
-      request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
+            // FILTRO POR BUSQUEDA
+            if (busqueda != null && !busqueda.isBlank()) {
+                final String texto = normalizar(busqueda);
+                eventos = eventos.stream()
+                        .filter(e -> normalizar(e.getNombre()).contains(texto) ||
+                                     normalizar(e.getDescripcion()).contains(texto))
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
+            }
 
-      request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response);
+            // era para ordenar por orden porque recargabas la pag y se mostraban en ordenes distnsot
+            List<DTEvento> eventosOrdenados = new ArrayList<>(eventos);
+            eventosOrdenados.sort(Comparator.comparing(DTEvento::getNombre));
 
-    } catch (Exception e) {
-      throw new ServletException("Error obteniendo eventos", e);
+            // PAGINACION
+            int pageSize = 3;
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) {
+                try { page = Integer.parseInt(pageParam); if (page < 1) page = 1; } 
+                catch (NumberFormatException e) { page = 1; }
+            }
+
+            int totalEventos = eventos.size();
+            int totalPages = (int) Math.ceil((double) totalEventos / pageSize);
+            if (page > totalPages) page = totalPages;
+
+            int fromIndex = (page - 1) * pageSize;
+            int toIndex = Math.min(fromIndex + pageSize, totalEventos);
+            List<DTEvento> eventosPagina = eventosOrdenados.subList(fromIndex, toIndex);
+
+            // Atributos JSP
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("eventosOrdenados", eventosPagina);
+            request.setAttribute("eventos", eventos);
+            request.setAttribute("categorias", categorias);
+            request.setAttribute("categoriaSeleccionada", 
+                    (categoriaSeleccionada == null || categoriaSeleccionada.isBlank()) ? "todas" : categoriaSeleccionada);
+            request.setAttribute("busqueda", busqueda != null ? busqueda : "");
+
+            // Usuario
+            String role = (String) request.getSession().getAttribute("role");
+            request.setAttribute("role", role);
+            request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
+            request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
+
+            request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            throw new ServletException("Error obteniendo eventos", e);
+        }
     }
-  }
+    
+    //funcion para dejar un texto con poca sensibilidad a las minusculas/mayusculas y tildes
+    private String normalizar(String input) {
+        if (input == null) return "";
+        String espaniolizado = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+        espaniolizado = espaniolizado.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        return espaniolizado.toLowerCase();
+    }
 }

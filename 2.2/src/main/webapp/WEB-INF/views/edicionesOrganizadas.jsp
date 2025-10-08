@@ -68,6 +68,7 @@
             font-size: 0.9rem;
             text-align: center;
             transition: background-color 0.2s;
+            width: 100%;
         }
 
         .btn-edicion:hover {
@@ -156,7 +157,7 @@
         
         <main>
             <section class="panel">
-                <div class="panel-header">Ediciones organizadas</div>
+                <div class="panel-header"><h2 style="margin: 0 0 1.5rem 0; color: #182080;">Ediciones Organizadas</h2></div>
                 <div class="panel-body">
                     <c:if test="${not empty error}">
                         <div class="error-message">
