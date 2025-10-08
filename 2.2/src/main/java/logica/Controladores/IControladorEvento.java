@@ -221,6 +221,8 @@ public interface IControladorEvento {
 	public void darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> of,
 			String string4) throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
+	
+	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento,EstadoEdicion estado);
 
 
 }

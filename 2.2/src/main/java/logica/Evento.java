@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.EstadoEdicion;
 
 public class Evento {
 
@@ -50,7 +51,15 @@ public class Evento {
     public void agregarEdicion(Edicion ed) {
         ediciones.put(ed.getNombre(),ed);
     }
-
+    public Set<String> obtenerEdicionesPorEstado(EstadoEdicion estado) {
+    	 Set<String> res = new HashSet<>();
+    	 for (Edicion ed : ediciones.values()) {
+    	        if (ed.getEstado() == estado) {
+    	            res.add(ed.getNombre());
+    	        }
+    	 }
+    	 return res;
+    }
 
 
     @Override

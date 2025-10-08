@@ -94,7 +94,7 @@ public class AceptarRechazarEdicionFrame extends JInternalFrame {
         limpiarCampos();
 
         if (evento != null) {
-            Set<String> ediciones = ctrlEvento.listarEdicionesPorEstado(EstadoEdicion.INGRESADA);
+            Set<String> ediciones = ctrlEvento.listarEdicionesPorEstadoDeEvento(evento, EstadoEdicion.INGRESADA);
             for (String ed : ediciones) {
                 comboEdiciones.addItem(ed);
             }
@@ -120,11 +120,12 @@ public class AceptarRechazarEdicionFrame extends JInternalFrame {
                 sb.append("Nombre: ").append(dte.getNombre()).append("\n");
                 sb.append("Sigla: ").append(dte.getSigla()).append("\n");
                 sb.append("Organizador: ").append(dte.getOrganizador()).append("\n");
+                sb.append("Estado: ").append(formatearEstado(dte.getEstado())).append("\n");
                 sb.append("Ciudad: ").append(dte.getCiudad()).append("\n");
                 sb.append("País: ").append(dte.getPais()).append("\n");
                 sb.append("Fecha Inicio: ").append(dte.getFechaInicio()).append("\n");
                 sb.append("Fecha Fin: ").append(dte.getFechaFin()).append("\n");
-                sb.append("Estado Actual: ").append(dte.getEstado()).append("\n");
+                
                 areaDetalles.setText(sb.toString());
             }
         } catch (Exception ex) {
@@ -142,7 +143,7 @@ public class AceptarRechazarEdicionFrame extends JInternalFrame {
         try {
             ctrlEvento.actualizarEstadoEdicion(edicion, nuevoEstado);
             JOptionPane.showMessageDialog(this,
-                    "La edición '" + edicion + "' fue " + nuevoEstado.toString().toLowerCase(),
+                    "La edición '" + edicion + "' fue " + formatearEstado(nuevoEstado),
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
             onEventoSeleccionado();
         } catch (EdicionNoExisteException ex) {
@@ -155,5 +156,10 @@ public class AceptarRechazarEdicionFrame extends JInternalFrame {
     private void limpiarCampos() {
         areaDetalles.setText("");
     }
-}
 
+    private String formatearEstado(EstadoEdicion estado) {
+        if (estado == null) return "";
+        String texto = estado.toString().toLowerCase(); 
+        return texto.substring(0, 1).toUpperCase() + texto.substring(1); 
+    }
+}

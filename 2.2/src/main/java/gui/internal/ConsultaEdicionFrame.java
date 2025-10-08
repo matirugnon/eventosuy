@@ -4,6 +4,7 @@ import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.DatatypesYEnum.EstadoEdicion;
 import logica.DatatypesYEnum.DTPatrocinio;
 
 import javax.swing.*;
@@ -244,11 +245,14 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         detalles.append("Sigla: ").append(dte.getSigla()).append("\n");
         detalles.append("Evento: ").append(comboEventos.getSelectedItem()).append("\n");
         detalles.append("Organizador: ").append(dte.getOrganizador()).append("\n");
+        detalles.append("Estado: ").append(formatearEstado(dte.getEstado())).append("\n");
         detalles.append("Ciudad: ").append(dte.getCiudad()).append("\n");
         detalles.append("País: ").append(dte.getPais()).append("\n");
         detalles.append("Fecha Inicio: ").append(dte.getFechaInicio()).append("\n");
         detalles.append("Fecha Fin: ").append(dte.getFechaFin()).append("\n");
+        
 
+        
         // Tipos de registro
         Set<String> tiposDeRegistro = dte.getTiposDeRegistro();
         if (tiposDeRegistro.isEmpty()) {
@@ -315,5 +319,11 @@ public class ConsultaEdicionFrame extends JInternalFrame {
         areaDetalles.setText("");
         comboTipoDeRegistros.removeAllItems();
         comboPatrocinios.removeAllItems();
+    }
+    
+    private String formatearEstado(EstadoEdicion estado) {
+        if (estado == null) return "";
+        String texto = estado.toString().toLowerCase(); 
+        return texto.substring(0, 1).toUpperCase() + texto.substring(1); 
     }
 }

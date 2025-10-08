@@ -12,7 +12,7 @@ import logica.DatatypesYEnum.DTEdicion;
 import logica.DatatypesYEnum.DTOrganizador;
 import logica.DatatypesYEnum.DTRegistro;
 import logica.DatatypesYEnum.DTUsuario;
-
+import logica.DatatypesYEnum.EstadoEdicion;
 
 import java.awt.*;
 
@@ -307,6 +307,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
                 "Ciudad: " + dtEdicion.getCiudad() + "\n" +
                 "País: " + dtEdicion.getPais() + "\n" +
                 "Organizador: " + dtEdicion.getOrganizador() + "\n" +
+                "Estado: " + formatearEstado(dtEdicion.getEstado()) + "\n" +
                 "Patrocinios: " + String.join(", ", dtEdicion.getPatrocinios()) + "\n" +
                 "Tipos de Registro: " + String.join(", ", dtEdicion.getTiposDeRegistro())
             );
@@ -325,7 +326,11 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
     }
 
 
-
+    private String formatearEstado(EstadoEdicion estado) {
+        if (estado == null) return "";
+        String texto = estado.toString().toLowerCase(); 
+        return texto.substring(0, 1).toUpperCase() + texto.substring(1); 
+    }
 
 
 

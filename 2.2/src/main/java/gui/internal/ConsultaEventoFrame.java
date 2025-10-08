@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import excepciones.EventoNoExisteException;
 import logica.Controladores.IControladorEvento;
 import logica.DatatypesYEnum.DTSeleccionEvento;
+import logica.DatatypesYEnum.EstadoEdicion;
 
 import java.awt.*;
 import java.util.Set;
@@ -181,7 +182,8 @@ public class ConsultaEventoFrame extends JInternalFrame {
         html.append("<b>Ciudad:</b> ").append(dtEdicion.getCiudad()).append("<br>");
         html.append("<b>País:</b> ").append(dtEdicion.getPais()).append("<br>");
         html.append("<b>Organizador:</b> ").append(dtEdicion.getOrganizador()).append("<br>");
-
+        html.append("<b>Estado:</b> ").append(formatearEstado(dtEdicion.getEstado())).append("<br>");
+        
         // Patrocinios
         html.append("<b>Patrocinios:</b> ");
         if (dtEdicion.getPatrocinios().isEmpty()) {
@@ -221,5 +223,11 @@ public class ConsultaEventoFrame extends JInternalFrame {
             new Object[][]{{"(Seleccione un evento)"}},
             new String[]{"Nombre"}
         ));
+    }
+    
+    private String formatearEstado(EstadoEdicion estado) {
+        if (estado == null) return "";
+        String texto = estado.toString().toLowerCase(); 
+        return texto.substring(0, 1).toUpperCase() + texto.substring(1); 
     }
 }

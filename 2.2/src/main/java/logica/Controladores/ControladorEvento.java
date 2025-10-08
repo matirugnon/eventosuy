@@ -423,5 +423,11 @@ public Set<DTEvento> obtenerDTEventos(){
 		}
 		return resultado;
 	}
+	
+	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento,EstadoEdicion estado){
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Evento ev = manejador.obtenerEvento(nomEvento);
+		return ev.obtenerEdicionesPorEstado(estado);
+	}
 
 }
