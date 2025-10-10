@@ -115,9 +115,17 @@ public class ConsultaRegistroServlet extends HttpServlet {
 
             // Obtener el rol desde la sesión y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
+            String nickname = (String) request.getSession().getAttribute("usuario");
+            String avatar = (String) request.getSession().getAttribute("avatar");
+            
+            // Debug temporal
+            System.out.println("DEBUG ConsultaRegistroServlet - role: " + role);
+            System.out.println("DEBUG ConsultaRegistroServlet - nickname: " + nickname);
+            System.out.println("DEBUG ConsultaRegistroServlet - avatar: " + avatar);
+            
             request.setAttribute("role", role);
-            request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
-            request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
+            request.setAttribute("nickname", nickname);
+            request.setAttribute("avatar", avatar);
 
             request.getRequestDispatcher("/WEB-INF/views/consultaRegistro.jsp").forward(request, response);
 

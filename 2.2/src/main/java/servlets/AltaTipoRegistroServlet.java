@@ -85,6 +85,12 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             request.setAttribute("edicion", edicion);
             request.setAttribute("categorias", categorias);
             
+            // Pasar datos de sesión al JSP
+            request.setAttribute("nickname", nickname);
+            request.setAttribute("avatar", session.getAttribute("avatar"));
+            request.setAttribute("role", session.getAttribute("role"));
+            request.setAttribute("nombre", session.getAttribute("nombre"));
+            
             System.out.println("DEBUG: Redirigiendo a altaTipoRegistro.jsp");
             request.getRequestDispatcher("/WEB-INF/views/altaTipoRegistro.jsp").forward(request, response);
             

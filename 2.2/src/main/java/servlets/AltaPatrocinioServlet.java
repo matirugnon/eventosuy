@@ -57,6 +57,12 @@ public class AltaPatrocinioServlet extends HttpServlet {
             request.setAttribute("tiposRegistro", tiposRegistro);
             request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
             request.setAttribute("edicionSeleccionada", edicion);
+            
+            // Pasar datos de sesión al JSP
+            request.setAttribute("nickname", session.getAttribute("usuario"));
+            request.setAttribute("avatar", session.getAttribute("avatar"));
+            request.setAttribute("role", session.getAttribute("role"));
+            request.setAttribute("nombre", session.getAttribute("nombre"));
 
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 

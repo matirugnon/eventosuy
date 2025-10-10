@@ -23,10 +23,10 @@
                             <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
                                 <img class="avatar" 
                                      src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
-                                     alt="Avatar de usuario" />
+                                     alt="Avatar de ${nickname}" />
                                 <span class="nickname">${nickname}</span>
                             </a>
-                            <a href="/EventosUy/logout" class="btn-primary">Cerrar sesión</a>
+                            <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
                         </div>
                     </c:when>
                     <c:otherwise>
