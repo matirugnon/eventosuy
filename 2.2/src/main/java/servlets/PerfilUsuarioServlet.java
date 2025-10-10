@@ -196,6 +196,43 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 request.setAttribute("registrosAsistente", registrosAsistente);
             }
             
+            // Determinar qué registros puede consultar el usuario logueado
+            Set<String> registrosConsultables = new HashSet<>();
+            String sessionRole = (String) request.getSession().getAttribute("role");
+            
+            if (sessionNickname != null && tipoUsuario.equals("Asistente")) {
+                IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+                Set<DTRegistro> registros = ctrlRegistro.listarRegistrosPorAsistente(nickname);
+                
+                for (DTRegistro registro : registros) {
+                    // Verificar permisos para cada registro
+                    boolean puedeConsultar = false;
+                    
+                    // Caso 1: Es el mismo asistente
+                    if (nickname.equals(sessionNickname) && "asistente".equals(sessionRole)) {
+                        puedeConsultar = true;
+                    }
+                    // Caso 2: Es el organizador específico de esta edición
+                    else if ("organizador".equals(sessionRole)) {
+                        try {
+                            DTEdicion edicion = ctrlEvento.consultarEdicion(registro.getnomEdicion());
+                            if (edicion != null && sessionNickname.equals(edicion.getOrganizador())) {
+                                puedeConsultar = true;
+                            }
+                        } catch (Exception e) {
+                            // Si hay error, no dar permisos
+                        }
+                    }
+                    
+                    if (puedeConsultar) {
+                        // Crear una clave única para identificar el registro
+                        String claveRegistro = nickname + "|" + registro.getnomEdicion() + "|" + registro.getTipoDeRegistro();
+                        registrosConsultables.add(claveRegistro);
+                    }
+                }
+            }
+            request.setAttribute("registrosConsultables", registrosConsultables);
+            
             // Para organizadores, obtener ediciones organizadas - funcionalidad de MiPerfilServlet
             if (tipoUsuario.equals("Organizador") && sessionNickname != null && sessionNickname.equals(nickname)) {
                 Set<String> edicionesOrganizadas = new HashSet<>();

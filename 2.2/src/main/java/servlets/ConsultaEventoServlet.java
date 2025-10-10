@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.Controladores.IControladorEvento;
 import logica.DatatypesYEnum.DTSeleccionEvento;
+import logica.DatatypesYEnum.EstadoEdicion;
 
 @WebServlet("/consultaEvento")
 public class ConsultaEventoServlet extends HttpServlet {
@@ -31,6 +32,10 @@ public class ConsultaEventoServlet extends HttpServlet {
 
             // Obtener información del evento específico
             DTSeleccionEvento eventoSeleccionado = ctrl.seleccionarEvento(nombreEvento);
+
+            // Obtener solo las ediciones aceptadas del evento
+            Set<String> edicionesAceptadas = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
+            request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
             // Obtener todas las categorías para el sidebar
             Set<String> categorias = ctrl.listarCategorias();

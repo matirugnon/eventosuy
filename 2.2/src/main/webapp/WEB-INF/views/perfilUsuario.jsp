@@ -247,10 +247,19 @@
                           <td>${registro["fechaRegistro"]}</td>
                           <td>$${registro["costo"]}</td>
                           <td>
-                            <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}&from=perfilUsuario" 
-                               class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
-                               Consultar
-                            </a>
+                            <!-- Solo mostrar botón de consultar si el usuario tiene permisos específicos -->
+                            <c:set var="claveRegistro" value="${usuario.nickname}|${registro['edicion']}|${registro['tipoDeRegistro']}" />
+                            <c:choose>
+                              <c:when test="${registrosConsultables.contains(claveRegistro)}">
+                                <a href="${pageContext.request.contextPath}/consultaRegistro?asistente=${usuario.nickname}&edicion=${registro['edicion']}&tipoRegistro=${registro['tipoDeRegistro']}&from=perfilUsuario" 
+                                   class="btn-primary" style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                                   Consultar
+                                </a>
+                              </c:when>
+                              <c:otherwise>
+                                <span style="color: #666; font-style: italic;">No disponible</span>
+                              </c:otherwise>
+                            </c:choose>
                           </td>
                         </tr>
                       </c:forEach>

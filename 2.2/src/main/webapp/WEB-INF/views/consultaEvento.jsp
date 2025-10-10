@@ -135,18 +135,18 @@
                 </div>
               </article>
               
-              <c:if test="${not empty eventoSeleccionado.edicionesCompletas}">
+              <c:if test="${not empty edicionesAceptadas}">
                 <div>
                   <div class="panel-header" style="border-radius:10px 10px 0 0;">Ediciones</div>
                   <div class="panel-body event-editions">
-                    <c:forEach items="${eventoSeleccionado.edicionesCompletas}" var="edicion">
+                    <c:forEach items="${edicionesAceptadas}" var="nombreEdicion">
                       <c:url var="edicionUrl" value="/consultaEdicion">
-                        <c:param name="edicion" value="${edicion.nombre}" />
+                        <c:param name="edicion" value="${nombreEdicion}" />
                       </c:url>
                       <a class="mini-card" href="${edicionUrl}">
-                        <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
-                             alt="${edicion.nombre}" />
-                        <div class="mini-card-title">${edicion.nombre}</div>
+                        <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" 
+                             alt="${nombreEdicion}" />
+                        <div class="mini-card-title">${nombreEdicion}</div>
                       </a>
                     </c:forEach>
                   </div>

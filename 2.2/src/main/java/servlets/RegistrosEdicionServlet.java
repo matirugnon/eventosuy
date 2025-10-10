@@ -59,6 +59,12 @@ public class RegistrosEdicionServlet extends HttpServlet {
 
             request.setAttribute("edicion", dt);
             request.setAttribute("categorias", categorias);
+            
+            // Pasar datos de sesión al JSP
+            request.setAttribute("nickname", nickname);
+            request.setAttribute("role", role);
+            request.setAttribute("avatar", session.getAttribute("avatar"));
+            request.setAttribute("nombre", session.getAttribute("nombre"));
 
             request.getRequestDispatcher("/WEB-INF/views/registrosEdicion.jsp").forward(request, response);
 

@@ -39,9 +39,32 @@ public class ConsultaRegistroServlet extends HttpServlet {
             String usuarioSesion = (String) request.getSession().getAttribute("usuario");
             String rolSesion = (String) request.getSession().getAttribute("role");
             
-            // Solo puede ver el registro si es el mismo asistente o es un organizador
-            if (usuarioSesion == null || 
-                (!asistente.equals(usuarioSesion) && !"organizador".equals(rolSesion))) {
+            // Verificar permisos
+            boolean tienePermisos = false;
+            
+            if (usuarioSesion != null) {
+                // Caso 1: Es el mismo asistente que está registrado
+                if (asistente.equals(usuarioSesion) && "asistente".equals(rolSesion)) {
+                    tienePermisos = true;
+                }
+                // Caso 2: Es el organizador específico de esta edición
+                else if ("organizador".equals(rolSesion)) {
+                    try {
+                        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+                        DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
+                        // Solo permitir si el usuario logueado es exactamente el organizador de esta edición
+                        if (edicionInfo != null && usuarioSesion.equals(edicionInfo.getOrganizador())) {
+                            tienePermisos = true;
+                        }
+                    } catch (Exception e) {
+                        // Si hay error obteniendo la edición, no dar permisos
+                        tienePermisos = false;
+                    }
+                }
+                // Caso 3: Ningún otro rol tiene permisos (visitantes, otros organizadores, etc.)
+            }
+            
+            if (!tienePermisos) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para ver este registro");
                 return;
             }

@@ -79,7 +79,10 @@
                                             <td>${entry.value}</td>
                                             <td>
                                                 <div class="actions">
-                                                    <a class="btn-edicion" href="consultaRegistro?asistente=${entry.key}&edicion=${edicion.nombre}&tipoRegistro=${entry.value}">Ver registro</a>
+                                                    <!-- Solo mostrar el enlace si es el organizador de esta edición -->
+                                                    <c:if test="${role == 'organizador' && nickname == edicion.organizador}">
+                                                        <a class="btn-edicion" href="consultaRegistro?asistente=${entry.key}&edicion=${edicion.nombre}&tipoRegistro=${entry.value}">Ver registro</a>
+                                                    </c:if>
                                                     <a class="btn-outline" href="perfilUsuario?nickname=${entry.key}&from=edicion&edicion=${edicion.nombre}">Ver perfil</a>
                                                 </div>
                                             </td>

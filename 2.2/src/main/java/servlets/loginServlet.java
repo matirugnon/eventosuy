@@ -75,6 +75,9 @@ public class loginServlet extends HttpServlet {
                 request.setAttribute("error", "Usuario o contraseña incorrectos.");
             }
 
+            // Recargar la página de login con el mensaje de error
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+
         } catch (Exception e) {
             throw new ServletException("Error procesando el login: " + e.getMessage(), e);
         }

@@ -84,11 +84,25 @@ public class inicioServlet extends HttpServlet {
 
             int totalEventos = eventos.size();
             int totalPages = (int) Math.ceil((double) totalEventos / pageSize);
-            if (page > totalPages) page = totalPages;
+            
+            // Si no hay eventos, establecer página 1 y páginas totales en 1
+            if (totalEventos == 0) {
+                totalPages = 1;
+                page = 1;
+            } else if (page > totalPages) {
+                page = totalPages;
+            }
 
             int fromIndex = (page - 1) * pageSize;
             int toIndex = Math.min(fromIndex + pageSize, totalEventos);
-            List<DTEvento> eventosPagina = eventosOrdenados.subList(fromIndex, toIndex);
+            
+            // Solo crear sublista si hay elementos
+            List<DTEvento> eventosPagina;
+            if (totalEventos == 0) {
+                eventosPagina = new ArrayList<>();
+            } else {
+                eventosPagina = eventosOrdenados.subList(fromIndex, toIndex);
+            }
 
             // Atributos JSP
             request.setAttribute("currentPage", page);
