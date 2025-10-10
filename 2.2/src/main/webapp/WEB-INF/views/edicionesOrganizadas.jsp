@@ -124,7 +124,6 @@
                     <li><a href="altaEdicion">Alta Edición</a></li>
                     <li><a href="altaInstitucion">Alta Institución</a></li>
                     <li><a href="edicionesOrganizadas" class="active">Ediciones Organizadas</a></li>
-                    <li><a href="consultaTipoRegistro">Consulta Registro</a></li>
                 </ul>
                 <div class="panel-header">Categorías</div>
                 <ul class="menu-list">

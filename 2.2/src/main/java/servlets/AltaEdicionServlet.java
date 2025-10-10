@@ -127,7 +127,7 @@ public class AltaEdicionServlet extends HttpServlet {
             ctrlEvento.AltaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
 
             // Redirigir con mensaje de éxito
-            response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edición creada exitosamente");
+            response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edicion creada exitosamente");
 
         } catch (EdicionExistenteException e) {
             mostrarFormularioConError(request, response, "Ya existe una edición con ese nombre");

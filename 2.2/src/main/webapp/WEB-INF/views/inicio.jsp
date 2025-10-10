@@ -70,13 +70,10 @@
 					<div class="panel sidebar">
 						<div class="panel-header">Mi perfil</div>
 						<ul class="menu-list">
-							<li><a href="${pageContext.request.contextPath}/altaEvento">Alta
-									Evento</a></li>
-							<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta
-									Edición</a></li>
+							<li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
+							<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
 							<li><a href="altaInstitucion">Alta Institución</a></li>
 							<li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
-							<li><a href="#">Consulta Registro</a></li>
 						</ul>
 					</div>
 				</c:when>
@@ -162,7 +159,7 @@
 								<div class="event-image"
 									style="flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden;">
 									<img
-										src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}"
+										src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
 										alt="${e.nombre}"
 										style="width: 100%; height: 100%; object-fit: cover;" />
 								</div>

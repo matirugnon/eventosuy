@@ -100,13 +100,13 @@ public class AltaInstitucionServlet extends HttpServlet {
             }
             
             // Redirigir a página de éxito
-            response.sendRedirect("inicio?mensaje=Institución creada exitosamente");
+            response.sendRedirect("inicio?mensaje=Institucion creada exitosamente");
             
         } catch (ExisteInstitucionException e) {
             // La institución ya existe
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
-            request.setAttribute("error", "Ya existe una institución con ese nombre. Por favor ingrese uno diferente.");
+            request.setAttribute("error", "Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
             request.setAttribute("nombre", request.getParameter("nombre"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
             request.setAttribute("sitioWeb", request.getParameter("sitioWeb"));
