@@ -44,7 +44,6 @@
                         <li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
                         <li><a href="altaInstitucion">Alta Institución</a></li>
                         <li><a href="#">Ediciones Organizadas</a></li>
-                        <li><a href="#">Consulta Registro</a></li>
                       </ul>
                     </div>
                   </c:when>

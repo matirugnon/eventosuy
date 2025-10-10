@@ -70,13 +70,10 @@
 					<div class="panel sidebar">
 						<div class="panel-header">Mi perfil</div>
 						<ul class="menu-list">
-							<li><a href="${pageContext.request.contextPath}/altaEvento">Alta
-									Evento</a></li>
-							<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta
-									Edición</a></li>
+							<li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
+							<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
 							<li><a href="altaInstitucion">Alta Institución</a></li>
 							<li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
-							<li><a href="#">Consulta Registro</a></li>
 						</ul>
 					</div>
 				</c:when>
