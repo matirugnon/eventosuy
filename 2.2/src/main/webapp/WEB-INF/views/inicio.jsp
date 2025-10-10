@@ -159,7 +159,7 @@
 								<div class="event-image"
 									style="flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden;">
 									<img
-										src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}"
+										src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
 										alt="${e.nombre}"
 										style="width: 100%; height: 100%; object-fit: cover;" />
 								</div>
