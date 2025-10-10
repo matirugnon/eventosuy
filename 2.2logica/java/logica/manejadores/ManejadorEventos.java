@@ -57,7 +57,7 @@ public class ManejadorEventos {
 
 
     public Evento obtenerEvento(String nombreEvento) {
-        return ((Evento) eventos.get(nombreEvento));
+        return (Evento) eventos.get(nombreEvento);
     }
 
 
@@ -76,7 +76,7 @@ public class ManejadorEventos {
     }
 
     public Categoria obtenerCategoria(String nombreCategoria) {
-    	return ((Categoria) categorias.get(nombreCategoria));
+    	return (Categoria) categorias.get(nombreCategoria);
     }
 
     public boolean existe(String nomEvento) {

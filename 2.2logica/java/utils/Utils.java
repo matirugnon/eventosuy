@@ -14,7 +14,6 @@ import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
-import logica.Usuario;
 import logica.Controladores.IControladorEvento;
 import logica.Controladores.IControladorRegistro;
 import logica.Controladores.IControladorUsuario;
