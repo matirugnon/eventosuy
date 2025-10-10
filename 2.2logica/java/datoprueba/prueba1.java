@@ -43,6 +43,7 @@ class prueba1 {
     private IControladorEvento contE =  IControladorEvento.getInstance();
     private IControladorRegistro contR = IControladorRegistro.getInstance();
 
+    @Test
 	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
 
 
