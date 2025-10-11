@@ -3,10 +3,10 @@ package logica;
 import java.util.HashSet;
 import java.util.Set;
 
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTRegistro;
-import logica.DatatypesYEnum.DTUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTRegistro;
+import logica.datatypesyenum.DTUsuario;
 
 public class Asistente extends Usuario {
 

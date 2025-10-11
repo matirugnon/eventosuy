@@ -2,10 +2,9 @@ package gui.internal;
 
 import javax.swing.*;
 
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.IControladorEvento;
-
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.ControladorEvento;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTFecha;
 
 import java.awt.*;
 import java.util.HashSet;

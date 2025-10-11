@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 public class DTFecha implements Comparable<DTFecha> {
     private int dia, mes, anio;

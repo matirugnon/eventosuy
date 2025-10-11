@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 
 public class DTPatrocinio{
@@ -13,13 +13,13 @@ public class DTPatrocinio{
     private String tipoDeRegistro;
 
 
-    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv, String ed, String ins, int cantGratis, String tipoDeRegistro) {
+    public DTPatrocinio(DTFecha alta, double mont, String cod, NivelPatrocinio niv, String edi, String ins, int cantGratis, String tipoDeRegistro) {
 
         fechaAlta = alta;
-        monto = m;
+        monto = mont;
         codigo = cod;
         nivel = niv;
-        edicion = ed;
+        edicion = edi;
         institucion = ins;
         this.cantidadGratis = cantGratis;
         this.tipoDeRegistro = tipoDeRegistro;

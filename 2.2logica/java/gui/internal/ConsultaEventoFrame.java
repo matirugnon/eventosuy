@@ -4,9 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import excepciones.EventoNoExisteException;
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.DTSeleccionEvento;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTSeleccionEvento;
+import logica.datatypesyenum.EstadoEdicion;
 
 import java.awt.*;
 import java.util.Set;
@@ -162,7 +162,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
         }
 
         String nombreEdicion = (String) tablaEdiciones.getValueAt(fila, 0);
-        logica.DatatypesYEnum.DTEdicion dtEdicion = contrEvento.consultarEdicion(nombreEdicion);
+        logica.datatypesyenum.DTEdicion dtEdicion = contrEvento.consultarEdicion(nombreEdicion);
 
         if (dtEdicion == null) {
             JOptionPane.showMessageDialog(this,

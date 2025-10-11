@@ -9,11 +9,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
-import logica.DatatypesYEnum.DTEdicion;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTTipoDeRegistro;
+import logica.datatypesyenum.DTEdicion;
 import excepciones.EdicionNoExisteException;
 import utils.Utils;
 

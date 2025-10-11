@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 import java.util.Set;
 
@@ -8,9 +8,9 @@ import excepciones.FechaInvalidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Usuario;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.DTInstitucion;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTInstitucion;
+import logica.datatypesyenum.DTUsuario;
 
 /**
  * @author TProg2017
@@ -22,7 +22,7 @@ public interface IControladorUsuario {
         return ControladorUsuario.getInstance();
     }
 
-	public void altaUsuario(Usuario u);
+	public void altaUsuario(Usuario usr);
 
 	public void altaAsistente(String nick, String nombre, String correo, String apellido, DTFecha fechanac, String institucion, String password)
         throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException;

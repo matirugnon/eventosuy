@@ -6,10 +6,10 @@ import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import logica.DatatypesYEnum.DTFecha;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
 
 import java.awt.*;
 import java.time.LocalDate;

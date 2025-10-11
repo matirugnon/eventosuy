@@ -1,7 +1,7 @@
 package gui.internal;
 
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.EstadoEdicion;
 
 import javax.swing.*;
 import excepciones.EdicionNoExisteException;

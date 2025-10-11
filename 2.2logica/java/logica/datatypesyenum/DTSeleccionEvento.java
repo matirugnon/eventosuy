@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 import java.util.Set;
 

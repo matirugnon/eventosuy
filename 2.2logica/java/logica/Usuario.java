@@ -1,6 +1,6 @@
 package logica;
 
-import logica.DatatypesYEnum.DTUsuario;
+import logica.datatypesyenum.DTUsuario;
 
 /**
  * Representa a un usuario en el sistema con nombre, apellido y cédula de identidad.

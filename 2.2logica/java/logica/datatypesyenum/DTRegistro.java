@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 public class DTRegistro {
 
@@ -8,8 +8,8 @@ public class DTRegistro {
 	private Double costo;
 	private String nomEdicion;
 
-	public DTRegistro(String as, String tdr, DTFecha fecha, Double cos, String edicion){
-		asistente = as;
+	public DTRegistro(String asis, String tdr, DTFecha fecha, Double cos, String edicion){
+		asistente = asis;
 		tipoDeRegistro = tdr;
 		fechaRegistro = fecha;
 		costo = cos;

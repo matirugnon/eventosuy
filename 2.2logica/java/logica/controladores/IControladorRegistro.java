@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 import java.util.Set;
 
@@ -6,9 +6,9 @@ import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTRegistro;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTRegistro;
+import logica.datatypesyenum.DTTipoDeRegistro;
 
 
 public interface IControladorRegistro {

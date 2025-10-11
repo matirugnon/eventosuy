@@ -13,10 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTFecha;
 import excepciones.EdicionExistenteException;
 import excepciones.FechasIncompatiblesException;
 import utils.Utils;

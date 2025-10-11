@@ -9,9 +9,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.DTSeleccionEvento;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTSeleccionEvento;
+import logica.datatypesyenum.EstadoEdicion;
 
 @WebServlet("/consultaEvento")
 public class ConsultaEventoServlet extends HttpServlet {

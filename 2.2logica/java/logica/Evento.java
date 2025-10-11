@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.EstadoEdicion;
+
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.EstadoEdicion;
 
 public class Evento {
 

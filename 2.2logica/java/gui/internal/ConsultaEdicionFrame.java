@@ -1,11 +1,11 @@
 package gui.internal;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
-import logica.DatatypesYEnum.EstadoEdicion;
-import logica.DatatypesYEnum.DTPatrocinio;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTPatrocinio;
+import logica.datatypesyenum.DTTipoDeRegistro;
+import logica.datatypesyenum.EstadoEdicion;
 
 import javax.swing.*;
 import excepciones.*;

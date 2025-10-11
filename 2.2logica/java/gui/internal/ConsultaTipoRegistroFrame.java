@@ -4,9 +4,9 @@ import javax.swing.*;
 
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTTipoDeRegistro;
 
 import java.awt.*;
 import java.util.Set;

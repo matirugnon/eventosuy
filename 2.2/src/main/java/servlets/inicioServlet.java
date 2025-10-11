@@ -14,11 +14,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTEvento;
-import logica.DatatypesYEnum.DTUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.DTUsuario;
 import utils.Utils;
 
 @WebServlet("/inicio")

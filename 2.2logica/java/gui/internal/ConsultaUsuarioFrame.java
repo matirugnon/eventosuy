@@ -4,15 +4,15 @@ import javax.swing.*;
 
 
 import excepciones.UsuarioNoExisteException;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTRegistro;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTRegistro;
+import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.EstadoEdicion;
 
 import java.awt.*;
 

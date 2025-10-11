@@ -1,8 +1,9 @@
 package gui.internal;
 
-import logica.Controladores.IControladorUsuario;
-
 import javax.swing.*;
+
+import logica.controladores.IControladorUsuario;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

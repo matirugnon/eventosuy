@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 
 
@@ -43,34 +43,13 @@ import excepciones.PatrocinioDuplicadoException;
 
 
 import excepciones.PatrocinioNoEncontradoException;
-
-
-
-import logica.DatatypesYEnum.DTEdicion;
-
-
-
-import logica.DatatypesYEnum.DTFecha;
-
-
-
-import logica.DatatypesYEnum.DTPatrocinio;
-
-
-
-import logica.DatatypesYEnum.DTSeleccionEvento;
-
-
-
-import logica.DatatypesYEnum.NivelPatrocinio;
-
-
-
-import logica.DatatypesYEnum.DTEvento;
-
-
-
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTPatrocinio;
+import logica.datatypesyenum.DTSeleccionEvento;
+import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.NivelPatrocinio;
 
 
 
@@ -218,7 +197,7 @@ public interface IControladorEvento {
 
 
 
-	public void darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> of,
+	public void darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> nomCategorias,
 			String string4) throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 	

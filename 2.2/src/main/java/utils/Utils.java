@@ -15,16 +15,16 @@ import excepciones.PatrocinioDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import logica.Usuario;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
 
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 
 
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.EstadoEdicion;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.NivelPatrocinio;
 
 public class Utils {
 

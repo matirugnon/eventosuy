@@ -3,8 +3,8 @@ package logica;
 import java.util.HashSet;
 import java.util.Set;
 
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTTipoDeRegistro;
 
 public class TipoDeRegistro{
 

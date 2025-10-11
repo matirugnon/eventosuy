@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 import java.util.Map;
 import java.util.HashSet;
@@ -23,15 +23,15 @@ import logica.Organizador;
 import logica.Patrocinio;
 import logica.TipoDeRegistro;
 import logica.Usuario;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTEvento;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTPatrocinio;
-import logica.DatatypesYEnum.DTSeleccionEvento;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTPatrocinio;
+import logica.datatypesyenum.DTSeleccionEvento;
+import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.NivelPatrocinio;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
-import logica.DatatypesYEnum.EstadoEdicion;
 
 public class ControladorEvento implements IControladorEvento {
 
@@ -87,8 +87,8 @@ public class ControladorEvento implements IControladorEvento {
 
 	    // Si no existe, creamos el evento
 	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
-	    Evento e = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
-	    manejadorE.addEvento(e);
+	    Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
+	    manejadorE.addEvento(eve);
 	}
 
 	//listar
@@ -111,18 +111,18 @@ public class ControladorEvento implements IControladorEvento {
     public DTSeleccionEvento seleccionarEvento(String nomEvento)
     		throws EventoNoExisteException {
 
-        Evento e = manejadorE.obtenerEvento(nomEvento);
+        Evento eve = manejadorE.obtenerEvento(nomEvento);
 
-        if (e == null) {
+        if (eve == null) {
             throw new EventoNoExisteException(nomEvento);
         }
 
-        DTEvento dto = new DTEvento(e);
+        DTEvento dto = new DTEvento(eve);
 
         //no entiendo bien estas dos cosas todavia
         Set<String> nombresCategorias = new HashSet<>();
-        if (e.getCategorias() != null) {
-            for (String c : e.getCategorias()) {
+        if (eve.getCategorias() != null) {
+            for (String c : eve.getCategorias()) {
                 if (c != null && c != null) {
                     nombresCategorias.add(c);
                 }
@@ -132,8 +132,8 @@ public class ControladorEvento implements IControladorEvento {
 
         Set<String> nombresEdiciones = new HashSet<>();
         Set<DTEdicion> edicionesCompletas = new HashSet<>();
-        if (e.getEdiciones() != null) {
-            for (String ed : e.getEdiciones()) {
+        if (eve.getEdiciones() != null) {
+            for (String ed : eve.getEdiciones()) {
 
                 if (ed != "") {
                     nombresEdiciones.add(ed);
@@ -150,9 +150,9 @@ public class ControladorEvento implements IControladorEvento {
     }
 
     public DTEdicion consultarEdicion(String nomEdicion) {
-    	Edicion e = manejadorE.obtenerEdicion(nomEdicion);
+    	Edicion edi = manejadorE.obtenerEdicion(nomEdicion);
 
-    	DTEdicion dte = e.getDTEdicion();
+    	DTEdicion dte = edi.getDTEdicion();
     	return dte;
     }//responsabilizar a evento por la creacion del DT
 
@@ -187,9 +187,9 @@ public class ControladorEvento implements IControladorEvento {
 	public void altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)
 			throws EdicionExistenteException, FechasIncompatiblesException{
 
-	        ManejadorEventos me = ManejadorEventos.getInstance();
-	        Evento ev = me.obtenerEvento(nomEvento);
-	        if (ev == null) {
+	        ManejadorEventos manEv = ManejadorEventos.getInstance();
+	        Evento event = manEv.obtenerEvento(nomEvento);
+	        if (event == null) {
 	            throw new IllegalArgumentException("No existe el evento: " + nomEvento);
 	        }
 
@@ -202,36 +202,36 @@ public class ControladorEvento implements IControladorEvento {
 	        }
 
 
-	        ManejadorUsuario mu = ManejadorUsuario.getinstance();
-	        Usuario u = mu.obtenerUsuario(nickOrganizador);
-	        if (u == null) {
+	        ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+	        Usuario usu = manUs.obtenerUsuario(nickOrganizador);
+	        if (usu == null) {
 	            throw new IllegalArgumentException("No existe el usuario: " + nickOrganizador);
 	        }
-	        if (!(u instanceof Organizador)) {
+	        if (!(usu instanceof Organizador)) {
 	            throw new IllegalArgumentException("El usuario '" + nickOrganizador + "' no es organizador.");
 	        }
-	        Organizador org = (Organizador) u;
+	        Organizador org = (Organizador) usu;
 
 	        // Crear la edición con el evento asociado
-            Edicion ed = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, ev, imagen);
+            Edicion edi = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, event, imagen);
 
 
-	        org.agregarEdicion(ed);
-	        ev.agregarEdicion(ed);
-	        me.addEdicion(ed);
+	        org.agregarEdicion(edi);
+	        event.agregarEdicion(edi);
+	        manEv.addEdicion(edi);
 	}
 
 	public Set<String> listarEdiciones(String nomEvento)
 			throws EventoNoExisteException{
 
-	    ManejadorEventos me = ManejadorEventos.getInstance();
-	    Evento e = me.obtenerEvento(nomEvento);
+	    ManejadorEventos manEv = ManejadorEventos.getInstance();
+	    Evento event = manEv.obtenerEvento(nomEvento);
 
-	    if (e == null) {
+	    if (event == null) {
 	        throw new EventoNoExisteException(nomEvento);
 	    }
 
-	    Set<String> eds = e.getEdiciones();
+	    Set<String> eds = event.getEdiciones();
 	    Set<String> nombres = new java.util.HashSet<>();
 	    if (eds != null) {
 	        for (String ed : eds) {
@@ -245,13 +245,13 @@ public class ControladorEvento implements IControladorEvento {
 	public DTPatrocinio consultarTipoPatrocinioEdicion(String nomEdicion, String codPatrocinio)
 			throws EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
 
-	    Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+	    Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
 
-	    if (ed == null) {
+	    if (edicion == null) {
 	        throw new EdicionNoExisteException(nomEdicion);
 	    }
 
-	    Set<Patrocinio> pats = ed.getPatrocinios();
+	    Set<Patrocinio> pats = edicion.getPatrocinios();
 
 	    if (pats == null || pats.isEmpty()) {
 	        throw new EdicionSinPatrociniosException(nomEdicion);
@@ -278,16 +278,16 @@ public class ControladorEvento implements IControladorEvento {
 
 	 public boolean existePatrocinio(String nomEdicion, String nomInstitucion) {
 
-	    	Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
-	    	return ed.esPatrocinador(nomInstitucion);
+	    	Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
+	    	return edicion.esPatrocinador(nomInstitucion);
 
 	    }
 
 	 public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion, String nomTipoRegistro, double monto, int cantRegGrat) {
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
-		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
-		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
-		 double costo = tr.getCosto();
+		 Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
+		 TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
+		 double costo = tipo.getCosto();
 		 return cantRegGrat * costo > 0.2 * monto;
 	 }
 
@@ -296,10 +296,10 @@ public class ControladorEvento implements IControladorEvento {
 			 throws PatrocinioDuplicadoException {
 
 
-		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
+		 Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
 
 
-		 if (ed == null) {
+		 if (edicion == null) {
 		        throw new IllegalArgumentException("No existe la edición: " + nomEdicion);
 		 }
 
@@ -308,16 +308,16 @@ public class ControladorEvento implements IControladorEvento {
 		    }
 
 
-		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
+		 TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
 
-		 if (tr == null) {
+		 if (tipo == null) {
 		        throw new IllegalArgumentException("No existe el tipo de registro: " + nomTipoRegistro);
 		    }
 
 
 		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
 		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
-		 Patrocinio pat = ed.altaPatrocinio(ins, nivel, aporte, tr, cantRegistrosGratuitos, codigo, fechaAlta);
+		 Patrocinio pat = edicion.altaPatrocinio(ins, nivel, aporte, tipo, cantRegistrosGratuitos, codigo, fechaAlta);
 		 ins.agregarPatrocinio(pat);
 
 	 }
@@ -331,8 +331,8 @@ public Set<DTEvento> obtenerDTEventos(){
 
 	 public Set<String> listarPatrocinios(String nomEdicion){
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
-		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
-		 return ed.getCodigosPatrocinios();
+		 Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
+		 return edicion.getCodigosPatrocinios();
 	 }
 
 	public DTEvento obtenerEventoPorEdicion(String nomEdicion){
@@ -355,9 +355,9 @@ public Set<DTEvento> obtenerDTEventos(){
 
 	 public boolean existeCodigoPatrocinioEnEdicion(String edicion, String codigo) {
 
-		 Edicion e = manejadorE.obtenerEdicion(edicion);
+		 Edicion ed2 = manejadorE.obtenerEdicion(edicion);
 
-		 for (String c : e.getCodigosPatrocinios()) {
+		 for (String c : ed2.getCodigosPatrocinios()) {
 			 if (c.contentEquals(codigo)) {
 				return true;
 			}
@@ -397,11 +397,11 @@ public Set<DTEvento> obtenerDTEventos(){
 
 
 	public void actualizarEstadoEdicion(String nomEdicion, EstadoEdicion nuevoEstado) throws EdicionNoExisteException {
-		Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
-		if (ed == null) {
+		Edicion edi = manejadorE.obtenerEdicion(nomEdicion);
+		if (edi == null) {
 			throw new EdicionNoExisteException(nomEdicion);
 		}
-		ed.setEstado(nuevoEstado);
+		edi.setEstado(nuevoEstado);
 	}
 
 	public Set<String> listarEdicionesPorEstado(EstadoEdicion estado) {
@@ -426,8 +426,8 @@ public Set<DTEvento> obtenerDTEventos(){
 	
 	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Evento ev = manejador.obtenerEvento(nomEvento);
-		return ev.obtenerEdicionesPorEstado(estado);
+		Evento eve = manejador.obtenerEvento(nomEvento);
+		return eve.obtenerEdicionesPorEstado(estado);
 	}
 
 }

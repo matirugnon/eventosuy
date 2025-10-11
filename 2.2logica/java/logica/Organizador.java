@@ -7,8 +7,8 @@ import java.util.Map;
 
 import java.util.Set;
 
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTUsuario;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTUsuario;
 
 public class Organizador extends Usuario {
 

@@ -8,11 +8,11 @@ import excepciones.EventoNoExisteException;
 import java.awt.*;
 import java.time.LocalDate;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.NivelPatrocinio;
 
 public class AltaPatrocinioFrame extends JInternalFrame {
     private JComboBox<String> comboEventos;

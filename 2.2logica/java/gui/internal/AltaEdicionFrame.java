@@ -1,9 +1,9 @@
 package gui.internal;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.ControladorEvento;
-import logica.Controladores.ControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.ControladorEvento;
+import logica.controladores.ControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTFecha;
 
 import javax.swing.*;
 import java.awt.*;

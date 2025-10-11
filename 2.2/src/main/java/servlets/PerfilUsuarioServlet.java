@@ -12,18 +12,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.EstadoEdicion;
 import logica.Edicion;
 import utils.Utils;
-import logica.DatatypesYEnum.DTEdicion;
+import logica.datatypesyenum.DTEdicion;
 import logica.Registro;
-import logica.DatatypesYEnum.DTRegistro;
+import logica.datatypesyenum.DTRegistro;
 
 @WebServlet({"/perfilUsuario", "/miPerfil"})
 public class PerfilUsuarioServlet extends HttpServlet {

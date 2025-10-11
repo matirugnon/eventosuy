@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 
 
@@ -9,12 +9,12 @@ public class DTTipoRegistro{
     private float costo;
     private int cupo;
 
-    public DTTipoRegistro(String nom, String desc, float cost, int c) {
+    public DTTipoRegistro(String nom, String desc, float cost, int cup) {
 
         nombre = nom;
         descripcion = desc;
         costo = cost;
-        cupo = c;
+        cupo = cup;
 
     }
 

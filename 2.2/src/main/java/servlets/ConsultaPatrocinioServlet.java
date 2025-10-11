@@ -9,12 +9,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTPatrocinio;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTInstitucion;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTPatrocinio;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTInstitucion;
 import excepciones.EdicionNoExisteException;
 import excepciones.EdicionSinPatrociniosException;
 import excepciones.PatrocinioNoEncontradoException;

@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.DTEdicion;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTEdicion;
 
 @WebServlet("/registrosEdicion")
 public class RegistrosEdicionServlet extends HttpServlet {

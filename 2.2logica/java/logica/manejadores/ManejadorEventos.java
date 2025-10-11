@@ -8,8 +8,8 @@ import java.util.Set;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
-import logica.DatatypesYEnum.DTEvento;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.EstadoEdicion;
 
 public class ManejadorEventos {
 
@@ -34,20 +34,20 @@ public class ManejadorEventos {
     }
 
     //add
-    public void addEvento(Evento e) {
-        String nombreEvento = e.getNombre(); //implementar
-        eventos.put(nombreEvento, e);
+    public void addEvento(Evento evento) {
+        String nombreEvento = evento.getNombre(); //implementar
+        eventos.put(nombreEvento, evento);
     }
 
-    public void addEdicion(Edicion e) {
-        String nombreEdicion = e.getNombre(); //implementar
-        ediciones.put(nombreEdicion, e);
+    public void addEdicion(Edicion edicion) {
+        String nombreEdicion = edicion.getNombre(); //implementar
+        ediciones.put(nombreEdicion, edicion);
     }
 
-    public void addCategoria(Categoria c) {
+    public void addCategoria(Categoria cat) {
 
-    	String nomCategoria = c.getNombre();
-        categorias.put(nomCategoria, c);
+    	String nomCategoria = cat.getNombre();
+        categorias.put(nomCategoria, cat);
 
     }
 

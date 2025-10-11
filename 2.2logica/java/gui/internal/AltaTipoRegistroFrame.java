@@ -4,8 +4,8 @@ import javax.swing.*;
 
 import excepciones.EventoNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
 
 import java.awt.*;
 import java.util.Set;

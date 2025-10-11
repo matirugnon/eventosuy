@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 import java.util.Set;
 
@@ -31,13 +31,13 @@ public class DTEvento {
     }
 
     // Si querés construir desde un Evento:
-    public DTEvento(Evento e) {
-        this.nombre = e.getNombre();
-        this.sigla = e.getSigla();
-        this.descripcion = e.getDescripcion();
-        this.fechaEvento = e.getFechaEvento();
-		this.categorias = e.getCategorias();
-        this.imagen = e.getImagen();
+    public DTEvento(Evento event) {
+        this.nombre = event.getNombre();
+        this.sigla = event.getSigla();
+        this.descripcion = event.getDescripcion();
+        this.fechaEvento = event.getFechaEvento();
+		this.categorias = event.getCategorias();
+        this.imagen = event.getImagen();
     }
 
     public String getNombre() { return nombre; }

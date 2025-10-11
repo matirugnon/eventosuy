@@ -8,12 +8,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTTipoDeRegistro;
+import logica.datatypesyenum.NivelPatrocinio;
 import excepciones.PatrocinioDuplicadoException;
 
 @WebServlet("/altaPatrocinio")

@@ -12,12 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTFecha;
 import excepciones.UsuarioNoExisteException;
 import excepciones.FechaInvalidaException;
 import utils.Utils;
@@ -49,7 +49,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
             if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
                 Utils.cargarDatos(ctrlUsuario, ctrlEvento, 
-                    logica.Controladores.IControladorRegistro.getInstance());
+                    logica.controladores.IControladorRegistro.getInstance());
             }
 
             // Verificar que el usuario existe

@@ -1,4 +1,4 @@
-package logica.DatatypesYEnum;
+package logica.datatypesyenum;
 
 public class DTTipoDeRegistro {
 	private String nombre;

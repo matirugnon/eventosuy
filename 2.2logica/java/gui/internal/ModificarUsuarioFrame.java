@@ -17,11 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import excepciones.UsuarioNoExisteException;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTUsuario;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTUsuario;
 
 public class ModificarUsuarioFrame extends JInternalFrame {
 

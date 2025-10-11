@@ -4,9 +4,9 @@ import javax.swing.*;
 
 import excepciones.CorreoInvalidoException;
 import excepciones.UsuarioRepetidoException;
-import logica.Controladores.ControladorUsuario;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.ControladorUsuario;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
 
 import java.awt.*;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package logica;
 
-import logica.DatatypesYEnum.DTFecha;
+import logica.datatypesyenum.DTFecha;
 
 public class Registro{
 

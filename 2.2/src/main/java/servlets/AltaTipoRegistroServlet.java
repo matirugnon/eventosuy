@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.EstadoEdicion;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.EstadoEdicion;
 import excepciones.NombreTipoRegistroDuplicadoException;
 
 import java.io.IOException;

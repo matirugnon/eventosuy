@@ -76,8 +76,8 @@ public class ManejadorUsuario {
     public Set<String> getNickAsistentes(){
     	Set<String> nickAsistentes = new HashSet<>();
     	for (Usuario us : usuariosNick.values()) {
-    		if (us instanceof Asistente as) {
-    			nickAsistentes.add(as.getNickname());
+    		if (us instanceof Asistente asist) {
+    			nickAsistentes.add(asist.getNickname());
     		}
     	}
     	return nickAsistentes;

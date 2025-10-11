@@ -6,8 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
 import excepciones.ExisteInstitucionException;
 import jakarta.servlet.http.Part;
 

@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,11 +12,11 @@ import logica.Asistente;
 import logica.Institucion;
 import logica.Organizador;
 import logica.Usuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.DTInstitucion;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTInstitucion;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTUsuario;
 import logica.manejadores.ManejadorUsuario;
 
 public class ControladorUsuario implements IControladorUsuario {
@@ -37,8 +37,8 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
     //metodo para agregar usuario luego de creado
-    public void altaUsuario(Usuario u) {
-        manejador.addUsuario(u);
+    public void altaUsuario(Usuario usu) {
+        manejador.addUsuario(usu);
     }
 
     //alta Asistente
@@ -73,8 +73,8 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
-        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, null); // Avatar puede ser null
-        altaUsuario(a);
+        Usuario asis = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, null); // Avatar puede ser null
+        altaUsuario(asis);
     }
 
     //alta Asistente con avatar
@@ -107,8 +107,8 @@ public class ControladorUsuario implements IControladorUsuario {
         	throw new FechaInvalidaException("La fecha de nacimiento no puede ser futura.");
         }
 
-        Usuario a = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
-        altaUsuario(a);
+        Usuario asis = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
+        altaUsuario(asis);
     }
 
     //alta Organizador
@@ -129,8 +129,8 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
-        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, null); // Avatar puede ser null
-        altaUsuario(o);
+        Usuario org = new Organizador(nick, nombre, correo, descripcion, link, password, null); // Avatar puede ser null
+        altaUsuario(org);
     }
 
     //alta Organizador con avatar
@@ -151,8 +151,8 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
-        Usuario o = new Organizador(nick, nombre, correo, descripcion, link, password, avatar);
-        altaUsuario(o);
+        Usuario org = new Organizador(nick, nombre, correo, descripcion, link, password, avatar);
+        altaUsuario(org);
     }
 
 
@@ -162,10 +162,10 @@ public class ControladorUsuario implements IControladorUsuario {
 
     public boolean existeNickname(String nick) {
 
-    	 ManejadorUsuario mu = ManejadorUsuario.getinstance();
-         Usuario u = mu.obtenerUsuario(nick); // Ya soporta nickname o correo
+    	 ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+         Usuario usr = manUs.obtenerUsuario(nick); // Ya soporta nickname o correo
 
-         if (u != null) {return true; }
+         if (usr != null) {return true; }
 
 		return false;
     }
@@ -176,8 +176,8 @@ public class ControladorUsuario implements IControladorUsuario {
 
     	for (String nick : usuarios) {
 
-    		Usuario u = manejador.obtenerUsuario(nick);
-    		if (u.getCorreo().equals(correo)) {
+    		Usuario usr = manejador.obtenerUsuario(nick);
+    		if (usr.getCorreo().equals(correo)) {
 				return true;
 			}
 
@@ -266,19 +266,19 @@ public class ControladorUsuario implements IControladorUsuario {
 	public DTUsuario getDTUsuario(String identificador)
 			throws UsuarioNoExisteException{
 
-		Usuario u = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
+		Usuario usr = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
-		if (u == null) {
+		if (usr == null) {
 			throw new UsuarioNoExisteException(identificador);
 		}
 
-		if (u instanceof Organizador) {
-			Organizador o = (Organizador) u;
-			return o.getDTOrganizador();
+		if (usr instanceof Organizador) {
+			Organizador org = (Organizador) usr;
+			return org.getDTOrganizador();
 		}else {
 
-			Asistente a = (Asistente) u;
-			return a.getDTAsistente();
+			Asistente asis = (Asistente) usr;
+			return asis.getDTAsistente();
 		}
 
 
@@ -286,10 +286,10 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	public Set<String> obtenerRegistros(String identificador) {
 
-		Asistente a = (Asistente) manejador.obtenerUsuario(identificador); // Soporta nickname o correo
+		Asistente asis = (Asistente) manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
 
-		Set<String> registros = a.getNomsTipo();
+		Set<String> registros = asis.getNomsTipo();
 
 		return registros;
 	}
@@ -297,11 +297,11 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	public Set<String> listarEdicionesOrganizador(String identificador) {
 
-		Usuario u = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
+		Usuario usr = manejador.obtenerUsuario(identificador); // Soporta nickname o correo
 
-		Organizador o = (Organizador) u;
+		Organizador org = (Organizador) usr;
 
-		Set<String> ediciones = o.getNombresEdiciones();
+		Set<String> ediciones = org.getNombresEdiciones();
 
 		return ediciones;
 	}
@@ -323,21 +323,21 @@ public class ControladorUsuario implements IControladorUsuario {
 	    usuario.setAvatar(datosUsuario.getAvatar()); // Actualizar avatar
 
 	    if (usuario instanceof Asistente && datosUsuario instanceof DTAsistente) {
-	        Asistente a = (Asistente) usuario;
+	        Asistente asis = (Asistente) usuario;
 	        DTAsistente dtA = (DTAsistente) datosUsuario;
 
-	        a.setApellido(dtA.getApellido());
+	        asis.setApellido(dtA.getApellido());
 
 	        if (!esFechaValida(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio())) {
 	        	throw new FechaInvalidaException(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio());
 	        }
 
-	        a.setFechaNacimiento(dtA.getFechaNacimiento());
+	        asis.setFechaNacimiento(dtA.getFechaNacimiento());
 	    }else if (usuario instanceof Organizador && datosUsuario instanceof DTOrganizador) {
-	        Organizador o = (Organizador) usuario;
+	        Organizador org = (Organizador) usuario;
 	        DTOrganizador dtO = (DTOrganizador) datosUsuario;
-	        o.setDescripcion(dtO.getDescripcion());
-	        o.setLink(dtO.getLink());
+	        org.setDescripcion(dtO.getDescripcion());
+	        org.setLink(dtO.getLink());
 	    }
 	}
 

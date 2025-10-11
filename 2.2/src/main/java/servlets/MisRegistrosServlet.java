@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTRegistro;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTRegistro;
 
 import java.io.IOException;
 import java.util.Set;

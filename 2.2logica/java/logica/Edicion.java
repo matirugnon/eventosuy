@@ -7,10 +7,10 @@ import java.util.Map;
 
 import java.util.Set;
 
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.EstadoEdicion;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.NivelPatrocinio;
 
 public class Edicion{
 

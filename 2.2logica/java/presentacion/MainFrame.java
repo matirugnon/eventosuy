@@ -17,9 +17,9 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import gui.internal.*;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
 import utils.Utils;
 
 @SuppressWarnings("serial")

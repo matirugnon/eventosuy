@@ -2,10 +2,10 @@ package gui.internal;
 
 import javax.swing.*;
 
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTRegistro;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTRegistro;
 
 import java.awt.*;
 import java.util.Set;

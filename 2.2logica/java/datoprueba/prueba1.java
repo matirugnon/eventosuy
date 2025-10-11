@@ -21,21 +21,20 @@ import excepciones.PatrocinioDuplicadoException;
 import excepciones.PatrocinioNoEncontradoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTEvento;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTOrganizador;
-import logica.DatatypesYEnum.DTPatrocinio;
-import logica.DatatypesYEnum.DTRegistro;
-import logica.DatatypesYEnum.DTSeleccionEvento;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.NivelPatrocinio;
-
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTOrganizador;
+import logica.datatypesyenum.DTPatrocinio;
+import logica.datatypesyenum.DTRegistro;
+import logica.datatypesyenum.DTSeleccionEvento;
+import logica.datatypesyenum.DTTipoDeRegistro;
+import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.NivelPatrocinio;
 import utils.Utils;
 class prueba1 {
 

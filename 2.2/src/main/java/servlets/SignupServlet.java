@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-import logica.Controladores.IControladorUsuario;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTFecha;
 import excepciones.UsuarioRepetidoException;
 import excepciones.CorreoInvalidoException;
 import excepciones.FechaInvalidaException;
@@ -34,8 +34,8 @@ public class SignupServlet extends HttpServlet {
             if (ctrlUsuario.listarUsuarios().isEmpty()) {
                 utils.Utils.cargarDatos(
                     ctrlUsuario,
-                    logica.Controladores.IControladorEvento.getInstance(),
-                    logica.Controladores.IControladorRegistro.getInstance()
+                    logica.controladores.IControladorEvento.getInstance(),
+                    logica.controladores.IControladorRegistro.getInstance()
                 );
             }
         } catch (Exception e) {

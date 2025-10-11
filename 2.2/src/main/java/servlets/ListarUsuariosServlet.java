@@ -14,12 +14,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTUsuario;
-import logica.DatatypesYEnum.DTAsistente;
-import logica.DatatypesYEnum.DTOrganizador;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.DTAsistente;
+import logica.datatypesyenum.DTOrganizador;
 import logica.Usuario;
 import utils.Utils;
 

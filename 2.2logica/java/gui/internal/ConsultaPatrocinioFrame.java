@@ -9,9 +9,9 @@ import excepciones.PatrocinioNoEncontradoException;
 
 import java.awt.*;
 
-import logica.Controladores.IControladorEvento;
-import logica.DatatypesYEnum.DTPatrocinio;
-import logica.DatatypesYEnum.DTFecha;
+import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTPatrocinio;
 
 public class ConsultaPatrocinioFrame extends JInternalFrame {
     /**

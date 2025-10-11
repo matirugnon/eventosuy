@@ -1,7 +1,7 @@
 package logica;
 
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.NivelPatrocinio;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.NivelPatrocinio;
 
 public class Patrocinio{
 
@@ -42,4 +42,7 @@ public class Patrocinio{
 		   return institucion.getNombre();
 	   }
 
+	   public String getNombreEdicion() {
+		   return edicion.getNombre();
+	   }
 }

@@ -1,4 +1,4 @@
-package logica.Controladores;
+package logica.controladores;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -14,9 +14,9 @@ import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
 import logica.TipoDeRegistro;
 import logica.Usuario;
-import logica.DatatypesYEnum.DTFecha;
-import logica.DatatypesYEnum.DTRegistro;
-import logica.DatatypesYEnum.DTTipoDeRegistro;
+import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTRegistro;
+import logica.datatypesyenum.DTTipoDeRegistro;
 
 public class ControladorRegistro implements IControladorRegistro {
 
@@ -38,8 +38,8 @@ public class ControladorRegistro implements IControladorRegistro {
 //Alta de Tipo de Registro
 	public boolean existeTipoDeRegistro(String nombreEd, String nombreTipo) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed = manejador.obtenerEdicion(nombreEd);
-	return ed.existeTipoDeRegistro(nombreTipo);
+		Edicion edicion = manejador.obtenerEdicion(nombreEd);
+	return edicion.existeTipoDeRegistro(nombreTipo);
 	}
 
 	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
@@ -49,44 +49,44 @@ public class ControladorRegistro implements IControladorRegistro {
 		}
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed =manejador.obtenerEdicion(nombreEd);
-		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo, descripcion, costo, cupo, ed);
-		ed.agregarTipoDeRegistro(tipo, nombreTipo);
+		Edicion edicion =manejador.obtenerEdicion(nombreEd);
+		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo, descripcion, costo, cupo, edicion);
+		edicion.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
 
 	public Set<String> listarTipoRegistro(String nombreEd)
 			throws EdicionNoExisteException{
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed = manejador.obtenerEdicion(nombreEd);
+		Edicion edicion = manejador.obtenerEdicion(nombreEd);
 
-		if (ed == null) {
+		if (edicion == null) {
 			throw new EdicionNoExisteException(nombreEd);
 		}
 
-		return ed.getNombresTiposDeRegistro();
+		return edicion.getNombresTiposDeRegistro();
 	}
 
 	public DTTipoDeRegistro consultaTipoDeRegistro(String nombreEd, String nombreReg) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed = manejador.obtenerEdicion(nombreEd);
-		TipoDeRegistro reg = ed.getTipoDeRegistro(nombreReg);
+		Edicion edicion = manejador.obtenerEdicion(nombreEd);
+		TipoDeRegistro reg = edicion.getTipoDeRegistro(nombreReg);
 		return reg.getDTTipoDeRegistro();
 	}
 
 
 	public Set<String> obtenerNomsTipoRegistro(String nickusuario) {
-	    ManejadorUsuario mu = ManejadorUsuario.getinstance();
-	    Usuario u = mu.obtenerUsuario(nickusuario);
+	    ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+	    Usuario usr = manUs.obtenerUsuario(nickusuario);
 
 	    // Caso 1: no existe
-	    if (u == null) {
+	    if (usr == null) {
 	        return null; // o Collections.emptySet() si preferís no usar null
 	    }
 
 	    // Caso 2: si es Asistente, casteamos y devolvemos sus tipos
-	    if (u instanceof Asistente) {
-	        Asistente a = (Asistente) u;
-	        return a.getNomsTipo();
+	    if (usr instanceof Asistente) {
+	        Asistente asist = (Asistente) usr;
+	        return asist.getNomsTipo();
 	    }
 
 	    // Caso 3: existe pero no es Asistente
@@ -94,10 +94,10 @@ public class ControladorRegistro implements IControladorRegistro {
 	}
 
 	public boolean estaRegistrado(String nomEdicion, String nickAsistente) throws UsuarioNoExisteException {
-		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Usuario us = mu.obtenerUsuario(nickAsistente);
-		if (us instanceof Asistente as) {
-			for (Registro reg: as.getRegistros()) {
+		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+		Usuario usr = manUs.obtenerUsuario(nickAsistente);
+		if (usr instanceof Asistente asist) {
+			for (Registro reg: asist.getRegistros()) {
 				if (reg.getTipoDeRegistro().getNombreEdicion().equals(nomEdicion)) {
 					return true;
 				}
@@ -110,9 +110,9 @@ public class ControladorRegistro implements IControladorRegistro {
 
 	public boolean alcanzoCupo(String nomEdicion, String nomTipoRegistro) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed = manejador.obtenerEdicion(nomEdicion);
-		TipoDeRegistro tp = ed.getTipoDeRegistro(nomTipoRegistro);
-		return tp.alcanzoCupo();
+		Edicion edicion = manejador.obtenerEdicion(nomEdicion);
+		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
+		return tipo.alcanzoCupo();
 	}
 
 	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo)
@@ -124,36 +124,36 @@ public class ControladorRegistro implements IControladorRegistro {
 		}
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
-		Edicion ed = manejador.obtenerEdicion(nomEdicion);
-		TipoDeRegistro tp = ed.getTipoDeRegistro(nomTipoRegistro);
-		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Usuario us = mu.obtenerUsuario(nickAsistente);
-		Asistente as = (Asistente) us;
-		Registro reg = tp.altaRegistro(fechaRegistro, costo, nickAsistente);
-		as.agregarRegistro(reg);
+		Edicion edicion = manejador.obtenerEdicion(nomEdicion);
+		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
+		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
+		Asistente asist = (Asistente) usuario;
+		Registro reg = tipo.altaRegistro(fechaRegistro, costo, nickAsistente);
+		asist.agregarRegistro(reg);
 
 	}
 
 	public DTRegistro getRegistro(String nombreUsuario, String nombreTipoRegistro) {
 
-	    Usuario u = ManejadorUsuario.getinstance().obtenerUsuario(nombreUsuario);
-	    if (u == null) {
+	    Usuario usu = ManejadorUsuario.getinstance().obtenerUsuario(nombreUsuario);
+	    if (usu == null) {
 	        throw new IllegalArgumentException("No existe el usuario: " + nombreUsuario);
 	    }
 
 
-	    if (!(u instanceof Asistente)) {
+	    if (!(usu instanceof Asistente)) {
 	        throw new IllegalArgumentException("El usuario " + nombreUsuario + " no es un asistente.");
 	    }
 
-	    Asistente as = (Asistente) u;
+	    Asistente asist = (Asistente) usu;
 
 
-	    for (String tr : as.getNomsTipo()) {
+	    for (String tr : asist.getNomsTipo()) {
 
 	        if (tr != null && tr.equals(nombreTipoRegistro)) {
-	            String asistente = as.getNickname();
-	            DTRegistro dreg = as.getRegistro(nombreTipoRegistro);
+	            String asistente = asist.getNickname();
+	            DTRegistro dreg = asist.getRegistro(nombreTipoRegistro);
 
 	            String edicion = dreg.getnomEdicion();
 
@@ -171,12 +171,12 @@ public class ControladorRegistro implements IControladorRegistro {
 
 	@Override
 	public Set<DTRegistro> listarRegistrosPorAsistente(String nickAsistente) throws UsuarioNoExisteException {
-	    ManejadorUsuario mu = ManejadorUsuario.getinstance();
-	    Usuario us = mu.obtenerUsuario(nickAsistente);
+	    ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+	    Usuario usu = manUs.obtenerUsuario(nickAsistente);
 
-	    if (us instanceof Asistente as) {
+	    if (usu instanceof Asistente asist) {
 	        Set<DTRegistro> registros = new HashSet<>();
-	        for (Registro reg : as.getRegistros()) {
+	        for (Registro reg : asist.getRegistros()) {
 	            DTRegistro dtRegistro = new DTRegistro(
 	                nickAsistente,
 	                reg.getTipoDeRegistro().getNombre(),

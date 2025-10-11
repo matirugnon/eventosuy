@@ -9,12 +9,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.Controladores.IControladorEvento;
-import logica.Controladores.IControladorUsuario;
-import logica.Controladores.IControladorRegistro;
-import logica.DatatypesYEnum.DTEdicion;
-import logica.DatatypesYEnum.DTEvento;
-import logica.DatatypesYEnum.DTUsuario;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
+import logica.datatypesyenum.DTEdicion;
+import logica.datatypesyenum.DTEvento;
+import logica.datatypesyenum.DTUsuario;
 import logica.Usuario;
 import utils.Utils;
 
@@ -42,7 +42,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 Utils.cargarDatos(
                     ctrlUsuario,
                     ctrl,
-                    logica.Controladores.IControladorRegistro.getInstance()
+                    logica.controladores.IControladorRegistro.getInstance()
                 );
             }
 
