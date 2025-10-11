@@ -37,8 +37,8 @@ public abstract class Usuario {
 
 
 
-    public void setNombre(String n) {
-        nombre = n;
+    public void setNombre(String nom) {
+        nombre = nom;
     }
 
     public void setPassword(String password) {

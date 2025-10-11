@@ -31,19 +31,19 @@ public class Edicion{
 	private String imagen;
 
 	// Constructor sin imagen (mantiene compatibilidad)
-	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento) {
-		this(nom, s, ciu, p, ini, fin, alta, org, evento, null);
+	public Edicion(String nom, String sigl, String ciu, String pai, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento) {
+		this(nom, sigl, ciu, pai, ini, fin, alta, org, evento, null);
 	}
 
 	// Constructor con imagen (opcional)
-	public Edicion(String nom, String s, String ciu, String p, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento, String imagen) {
+	public Edicion(String nom, String sigl, String ciu, String pai, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento, String imagen) {
 		nombre = nom;
 		fechaInicioDtFecha = ini;
 		fechafinDtFecha = fin;
 		ciudad = ciu;
-		pais = p;
+		pais = pai;
 
-		sigla = s;
+		sigla = sigl;
 
 		organizador = org;
 
@@ -73,8 +73,8 @@ public class Edicion{
     
     public void setImagen(String imagen) { this.imagen = imagen; }
 
-    public void setOrganizador(Organizador o) {
-        organizador = o;
+    public void setOrganizador(Organizador org) {
+        organizador = org;
     }
 
 	public boolean existeTipoDeRegistro(String nombreTipo) {

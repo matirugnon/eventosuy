@@ -48,8 +48,8 @@ public class Evento {
     
     public void setImagen(String imagen) { this.imagen = imagen; }
    
-    public void agregarEdicion(Edicion ed) {
-        ediciones.put(ed.getNombre(), ed);
+    public void agregarEdicion(Edicion edicion) {
+        ediciones.put(edicion.getNombre(), edicion);
     }
     public Set<String> obtenerEdicionesPorEstado(EstadoEdicion estado) {
     	 Set<String> res = new HashSet<>();

@@ -6,11 +6,11 @@ public class CantidadTipoDeRegistro{
 	private TipoDeRegistro tipo;
 	private Patrocinio patrocinio;
 	
-	public CantidadTipoDeRegistro(int cant, TipoDeRegistro t, Patrocinio pat) {
+	public CantidadTipoDeRegistro(int cant, TipoDeRegistro tipoReg, Patrocinio pat) {
 		cantRegistros = cant;
-		tipo = t;
+		tipo = tipoReg;
 		patrocinio = pat;
-		t.asociarcantidadDeTipoRegistro(this);
+		tipoReg.asociarcantidadDeTipoRegistro(this);
 	}
 	
 	public int getCantRegistros() {

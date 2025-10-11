@@ -80,9 +80,9 @@ public class Asistente extends Usuario {
 	            String asistente = this.getNombre();
 	            DTFecha fecha = r.getFechaRegistro();
 	            Double costo = r.getCosto();
-	            String ed = r.getNomEdicion();
+	            String edicion = r.getNomEdicion();
 
-	            return new DTRegistro(asistente, nombreTR, fecha, costo, ed);
+	            return new DTRegistro(asistente, nombreTR, fecha, costo, edicion);
 	        }
 	    }
 

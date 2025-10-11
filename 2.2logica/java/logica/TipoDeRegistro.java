@@ -17,13 +17,13 @@ public class TipoDeRegistro{
 	private CantidadTipoDeRegistro cantidadTipo;
 	private Set<Registro> registros;
 
-	public TipoDeRegistro(String nom, String desc, double cost, int c, Edicion ed) {
+	public TipoDeRegistro(String nom, String desc, double cost, int cup, Edicion edi) {
 
 		nombre = nom;
 		descripcion = desc;
 		costo = cost;
-		cupo = c;
-		edicion = ed;
+		cupo = cup;
+		edicion = edi;
 		cantidadTipo = null;
 		registros = new HashSet<>();
 
