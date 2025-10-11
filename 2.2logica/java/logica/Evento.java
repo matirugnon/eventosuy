@@ -14,7 +14,7 @@ public class Evento {
     private String descripcion;
     private DTFecha fechaEvento;
     private Set<String> categorias;
-    private Map<String,Edicion> ediciones;
+    private Map<String, Edicion> ediciones;
     private String imagen;
 
     // Constructor sin imagen (mantiene compatibilidad)
@@ -49,7 +49,7 @@ public class Evento {
     public void setImagen(String imagen) { this.imagen = imagen; }
    
     public void agregarEdicion(Edicion ed) {
-        ediciones.put(ed.getNombre(),ed);
+        ediciones.put(ed.getNombre(), ed);
     }
     public Set<String> obtenerEdicionesPorEstado(EstadoEdicion estado) {
     	 Set<String> res = new HashSet<>();
@@ -67,11 +67,11 @@ public class Evento {
         return nombre;
     }
 
-    public Edicion NuevaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin, DTFecha alta, Organizador org) {
+    public Edicion nuevaEdicion(String nombre, String sigla, String ciudad, String pais, DTFecha inicio, DTFecha fin, DTFecha alta, Organizador org) {
 
     	Edicion edicion = new Edicion(nombre, sigla, ciudad, pais, inicio, fin, alta, org, this);
 
-    	ediciones.put(edicion.getNombre(),edicion);
+    	ediciones.put(edicion.getNombre(), edicion);
 
 		return edicion;
     }

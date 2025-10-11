@@ -37,9 +37,9 @@ public interface IControladorUsuario {
         throws UsuarioRepetidoException, CorreoInvalidoException;
 
 
-    public boolean ExisteNickname(String nick);
+    public boolean existeNickname(String nick);
 
-    public boolean ExisteCorreo(String correo);
+    public boolean existeCorreo(String correo);
 
     public Set<DTUsuario> listarUsuariosDT();
     public Set<String> listarEdicionesOrganizador(String nombreOrganizador);
@@ -48,7 +48,7 @@ public interface IControladorUsuario {
     //public List<Usuario> listarUsuarios();
 
 
-    public void AsociarInstitucion(String nick, String nombreInstitucion);
+    public void asociarInstitucion(String nick, String nombreInstitucion);
 
     public Set<String> listarOrganizadores();
 
@@ -76,7 +76,7 @@ public interface IControladorUsuario {
 
 
     public void modificarUsuario(String nick, DTUsuario datosUsuario)
-    		throws UsuarioNoExisteException,FechaInvalidaException;
+    		throws UsuarioNoExisteException, FechaInvalidaException;
 
 
 	public boolean esFechaValida(int dia, int mes, int anio);

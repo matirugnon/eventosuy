@@ -25,7 +25,7 @@ public class Edicion{
 	private Evento evento; // Referencia al objeto Evento
 
 	private Map<String, TipoDeRegistro> tiposDeRegistro;
-	private Map<String,Patrocinio> patrocinios;
+	private Map<String, Patrocinio> patrocinios;
 
 	private EstadoEdicion estado; // Nuevo atributo
 	private String imagen;
@@ -68,7 +68,7 @@ public class Edicion{
     public String getCiudad()       { return ciudad; }
     public String getPais()         { return pais; }
 
-    public String getSigla()        { return sigla;}
+    public String getSigla()        { return sigla; }
     public String getImagen()       { return imagen; }
     
     public void setImagen(String imagen) { this.imagen = imagen; }
@@ -163,7 +163,7 @@ public class Edicion{
 
 
 	public Patrocinio altaPatrocinio(Institucion ins, NivelPatrocinio nivel, double aporte,
-		TipoDeRegistro tipo, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta) {
+		TipoDeRegistro tipo, int cantRegistrosGratuitos, String codigo, DTFecha fechaAlta) {
 		Patrocinio pat = new Patrocinio(fechaAlta, aporte, codigo, nivel, this, ins, cantRegistrosGratuitos, tipo);
 		this.patrocinios.put(codigo, pat);
 		return pat;

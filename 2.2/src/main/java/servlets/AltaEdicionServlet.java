@@ -124,7 +124,7 @@ public class AltaEdicionServlet extends HttpServlet {
             DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
 
             // Crear edición (el método original no soporta imagen, se omite por ahora)
-            ctrlEvento.AltaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
+            ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
 
             // Redirigir con mensaje de éxito
             response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edicion creada exitosamente");

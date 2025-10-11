@@ -9,11 +9,11 @@ import logica.DatatypesYEnum.DTUsuario;
  */
 public abstract class Usuario {
 
-	 protected String nickname;
-	 protected String nombre;
-	 protected String correo;
-     protected String password;
-     protected String avatar; // Nuevo atributo
+	 private String nickname;
+	 private String nombre;
+	 private String correo;
+     private String password;
+     private String avatar; // Nuevo atributo
 
     public Usuario(String nick, String nombre, String correo, String password, String avatar) {
         this.nickname = nick;
@@ -49,7 +49,7 @@ public abstract class Usuario {
     }
 
     public DTUsuario getDTUsuario() {
-    	return new DTUsuario(nickname,nombre,correo,password,avatar); // Incluir avatar
+    	return new DTUsuario(nickname, nombre, correo, password, avatar); // Incluir avatar
     }
 
 

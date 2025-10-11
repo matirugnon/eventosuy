@@ -6,7 +6,10 @@ import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import logica.DatatypesYEnum.*;
+import logica.DatatypesYEnum.DTFecha;
+import logica.DatatypesYEnum.DTRegistro;
+import logica.DatatypesYEnum.DTTipoDeRegistro;
+
 
 public interface IControladorRegistro {
 
@@ -15,9 +18,9 @@ public interface IControladorRegistro {
 	}
 
 
-	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo);
+	public boolean existeTipoDeRegistro(String nombreEd, String nombreTipo);
 
-	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo)
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
 			throws NombreTipoRegistroDuplicadoException;
 
 	public Set<String> listarTipoRegistro(String nombreEd)
@@ -30,7 +33,7 @@ public interface IControladorRegistro {
 
 	public boolean alcanzoCupo(String nomEdicion, String nomTipoRegistro);
 
-	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo)
+	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo)
 			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
 
 	public Set<String> obtenerNomsTipoRegistro(String nickusuario);

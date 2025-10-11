@@ -36,13 +36,13 @@ public class ControladorRegistro implements IControladorRegistro {
 
 
 //Alta de Tipo de Registro
-	public boolean existeTipoDeRegistro(String nombreEd,String nombreTipo) {
+	public boolean existeTipoDeRegistro(String nombreEd, String nombreTipo) {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed = manejador.obtenerEdicion(nombreEd);
 	return ed.existeTipoDeRegistro(nombreTipo);
 	}
 
-	public void altaTipoDeRegistro(String nombreEd, String nombreTipo,String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
 
 		if (existeTipoDeRegistro(nombreEd, nombreTipo)) {
 			 throw new NombreTipoRegistroDuplicadoException(nombreEd);
@@ -50,7 +50,7 @@ public class ControladorRegistro implements IControladorRegistro {
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion ed =manejador.obtenerEdicion(nombreEd);
-		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo,descripcion,costo,cupo, ed);
+		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo, descripcion, costo, cupo, ed);
 		ed.agregarTipoDeRegistro(tipo, nombreTipo);
 	}
 
@@ -98,13 +98,12 @@ public class ControladorRegistro implements IControladorRegistro {
 		Usuario us = mu.obtenerUsuario(nickAsistente);
 		if (us instanceof Asistente as) {
 			for (Registro reg: as.getRegistros()) {
-				if(reg.getTipoDeRegistro().getNombreEdicion().equals(nomEdicion)) {
+				if (reg.getTipoDeRegistro().getNombreEdicion().equals(nomEdicion)) {
 					return true;
 				}
 			}
 			return false;
-		}
-		else {
+		} else {
 			 throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
 		}
 	}
@@ -116,11 +115,11 @@ public class ControladorRegistro implements IControladorRegistro {
 		return tp.alcanzoCupo();
 	}
 
-	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro,DTFecha fechaRegistro, double costo)
+	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo)
 			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
 
 
-		if(estaRegistrado(nomEdicion, nickAsistente)) {
+		if (estaRegistrado(nomEdicion, nickAsistente)) {
 			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
 		}
 

@@ -63,13 +63,13 @@ public class ControladorEvento implements IControladorEvento {
 
 	// Método sin imagen (mantiene compatibilidad)
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
-	        throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException {
+	        throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException {
 		darAltaEvento(nomEvento, desc, fechaAlta, sigla, nomcategorias, null);
 	}
 
 	// Método con imagen (opcional)
 	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias, String imagen)
-	        throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException {
+	        throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException {
 
 	    // Verificamos si ya existe un evento con ese nombre
 	    if (existeEvento(nomEvento)) {
@@ -163,7 +163,7 @@ public class ControladorEvento implements IControladorEvento {
 		return manejador.existeCategoria(cat);
 	}
 
-	public void altaCategoria (String cat){
+	public void altaCategoria(String cat){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Categoria nueva = new Categoria(cat);
 		manejador.addCategoria(nueva);
@@ -178,13 +178,13 @@ public class ControladorEvento implements IControladorEvento {
 
 
 	// Método sin imagen (mantiene compatibilidad)
-	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
+	public void altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
 			throws EdicionExistenteException, FechasIncompatiblesException{
-		AltaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, null);
+		altaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, null);
 	}
 
 	// Método con imagen (opcional)
-	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)
+	public void altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)
 			throws EdicionExistenteException, FechasIncompatiblesException{
 
 	        ManejadorEventos me = ManejadorEventos.getInstance();
@@ -283,7 +283,7 @@ public class ControladorEvento implements IControladorEvento {
 
 	    }
 
-	 public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat) {
+	 public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion, String nomTipoRegistro, double monto, int cantRegGrat) {
 		 ManejadorEventos manejadorE = ManejadorEventos.getInstance();
 		 Edicion ed = manejadorE.obtenerEdicion(nomEdicion);
 		 TipoDeRegistro tr = ed.getTipoDeRegistro(nomTipoRegistro);
@@ -292,7 +292,7 @@ public class ControladorEvento implements IControladorEvento {
 	 }
 
 
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta)
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, String nomTipoRegistro, int cantRegistrosGratuitos, String codigo, DTFecha fechaAlta)
 			 throws PatrocinioDuplicadoException {
 
 
@@ -335,7 +335,7 @@ public Set<DTEvento> obtenerDTEventos(){
 		 return ed.getCodigosPatrocinios();
 	 }
 
-	public DTEvento obtenerEventoPorEdicion(String nomEdicion) {
+	public DTEvento obtenerEventoPorEdicion(String nomEdicion){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Set<DTEvento> eventos = manejador.getDTEventos();
 		
@@ -346,8 +346,8 @@ public Set<DTEvento> obtenerDTEventos(){
 				if (seleccion.getEdiciones().contains(nomEdicion)) {
 					return evento;
 				}
-			} catch (Exception e) {
-				// Continuar con el siguiente evento
+			} catch (EventoNoExisteException e) {
+				throw new IllegalStateException("No existe evento asociado a la edicion: " + nomEdicion, e);
 			}
 		}
 		return null;
@@ -357,7 +357,7 @@ public Set<DTEvento> obtenerDTEventos(){
 
 		 Edicion e = manejadorE.obtenerEdicion(edicion);
 
-		 for(String c : e.getCodigosPatrocinios()) {
+		 for (String c : e.getCodigosPatrocinios()) {
 			 if (c.contentEquals(codigo)) {
 				return true;
 			}
@@ -424,7 +424,7 @@ public Set<DTEvento> obtenerDTEventos(){
 		return resultado;
 	}
 	
-	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento,EstadoEdicion estado){
+	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado){
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Evento ev = manejador.obtenerEvento(nomEvento);
 		return ev.obtenerEdicionesPorEstado(estado);

@@ -4,9 +4,9 @@ import logica.DatatypesYEnum.DTFecha;
 
 public class Registro{
 
-	DTFecha fechaRegistro;
-	double costoRegistro;
-	TipoDeRegistro tipo;
+	private DTFecha fechaRegistro;
+	private double costoRegistro;
+	private TipoDeRegistro tipo;
 
 	private String asistente;
 

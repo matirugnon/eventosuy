@@ -67,7 +67,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             }
 
             // Verificar que el usuario existe
-            if (!ctrlUsuario.ExisteNickname(nickname)) {
+            if (!ctrlUsuario.existeNickname(nickname)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
                 return;
             }

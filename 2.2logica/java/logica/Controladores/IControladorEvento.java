@@ -98,7 +98,7 @@ public interface IControladorEvento {
 
 
 
-			throws EventoRepetidoException,CategoriaNoSeleccionadaException,FechaInvalidaException;
+			throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 
 
@@ -126,7 +126,7 @@ public interface IControladorEvento {
 
 
 
-	public void altaCategoria (String cat);
+	public void altaCategoria(String cat);
 
 
 
@@ -134,7 +134,7 @@ public interface IControladorEvento {
 
 
 
-	public void AltaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
+	public void altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla, String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta)
 
 
 
@@ -154,7 +154,7 @@ public interface IControladorEvento {
 
 
 
-			throws EdicionNoExisteException,EdicionSinPatrociniosException, PatrocinioNoEncontradoException;
+			throws EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException;
 
 
 
@@ -162,11 +162,11 @@ public interface IControladorEvento {
 
 
 
-	public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion,String nomTipoRegistro, double monto, int cantRegGrat);
+	public boolean costoSuperaAporte(String nomEdicion, String nomInstitucion, String nomTipoRegistro, double monto, int cantRegGrat);
 
 
 
-	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,  String nomTipoRegistro, int cantRegistrosGratuitos,String codigo, DTFecha fechaAlta)
+	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte,  String nomTipoRegistro, int cantRegistrosGratuitos, String codigo, DTFecha fechaAlta)
 
 
 
@@ -210,7 +210,7 @@ public interface IControladorEvento {
 
 
 
-	public void AltaEdicion(String string, String string2, String string3, String string4, String string5,
+	public void altaEdicion(String string, String string2, String string3, String string4, String string5,
 			String string6, DTFecha dtFecha, DTFecha dtFecha2, DTFecha dtFecha3, String string7) throws EdicionExistenteException, FechasIncompatiblesException;
 
 
@@ -222,7 +222,7 @@ public interface IControladorEvento {
 			String string4) throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 	
-	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento,EstadoEdicion estado);
+	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado);
 
 
 }

@@ -13,7 +13,7 @@ public class DTPatrocinio{
     private String tipoDeRegistro;
 
 
-    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv,String ed, String ins, int cantGratis,String tipoDeRegistro) {
+    public DTPatrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv, String ed, String ins, int cantGratis, String tipoDeRegistro) {
 
         fechaAlta = alta;
         monto = m;

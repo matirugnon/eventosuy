@@ -13,7 +13,7 @@ public class Patrocinio{
 	private Edicion edicion;
 	private Institucion institucion;
 
-	public Patrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv,Edicion ed,Institucion ins, int cantGrat, TipoDeRegistro tipo) {
+	public Patrocinio(DTFecha alta, double m, String cod, NivelPatrocinio niv, Edicion ed, Institucion ins, int cantGrat, TipoDeRegistro tipo) {
 
 		fechaAlta = alta;
 		monto = m;
@@ -21,7 +21,7 @@ public class Patrocinio{
 		nivel = niv;
 		edicion = ed;
 		institucion = ins;
-		cantTipo = new CantidadTipoDeRegistro(cantGrat,tipo, this);
+		cantTipo = new CantidadTipoDeRegistro(cantGrat, tipo, this);
 
 	}
 

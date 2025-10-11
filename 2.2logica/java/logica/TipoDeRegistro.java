@@ -55,7 +55,7 @@ public class TipoDeRegistro{
 	}
 
 	public DTTipoDeRegistro getDTTipoDeRegistro() {
-		return new DTTipoDeRegistro(this.nombre, this.descripcion, this.costo,this.cupo);
+		return new DTTipoDeRegistro(this.nombre, this.descripcion, this.costo, this.cupo);
 	}
 	
 	public String getNombreEdicion() {

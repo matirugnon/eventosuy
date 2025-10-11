@@ -65,7 +65,7 @@ public class Asistente extends Usuario {
 	}
 
 	public DTUsuario getDTAsistente() {
-		return new DTAsistente(nickname, nombre,correo,password, apellido, fechaNacimiento, institucion, avatar); // Incluir avatar
+		return new DTAsistente(getNickname(), getNombre(), getCorreo(), getPassword(), getApellido(), getFechaNacimiento(), getInstitucion(), getAvatar()); // Incluir avatar
 	}
 
 	public DTRegistro getRegistro(String nomTipoReg) {
@@ -94,7 +94,7 @@ public class Asistente extends Usuario {
 
 		Set<Registro> resultado = new HashSet<>();
 
-		for(Registro r: registros) {
+		for (Registro r: registros) {
 
 			resultado.add(r);
 

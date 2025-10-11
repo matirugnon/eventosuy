@@ -44,6 +44,6 @@ public class DTEvento {
     public String getSigla() { return sigla; }
     public String getDescripcion() { return descripcion; }
     public DTFecha getFechaEvento() { return fechaEvento; }
-    public Set<String> getCategorias() {return categorias;}
+    public Set<String> getCategorias() {return categorias; }
     public String getImagen() { return imagen; }
 }

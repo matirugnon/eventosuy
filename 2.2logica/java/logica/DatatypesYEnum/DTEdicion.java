@@ -65,11 +65,11 @@ public class DTEdicion {
     public DTFecha getAltaEdicion() { return altaEdicion; }
     public String getCiudad() { return ciudad; }
     public String getPais() { return pais; }
-	public String getSigla() {return sigla;}
-	public String getOrganizador() {return organizador;}
-	public Set<String> getPatrocinios() {return patrocinios;}
-	public Set<String> getTiposDeRegistro(){return tiposDeRegistro;}
-	public Set<Map.Entry<String, String>> getRegistros(){return registros;}
+	public String getSigla() {return sigla; }
+	public String getOrganizador() {return organizador; }
+	public Set<String> getPatrocinios() {return patrocinios; }
+	public Set<String> getTiposDeRegistro(){return tiposDeRegistro; }
+	public Set<Map.Entry<String, String>> getRegistros(){return registros; }
 	public EstadoEdicion getEstado() { return estado; } // Nuevo getter
 	public String getImagen() { return imagen; } // Getter para imagen
 

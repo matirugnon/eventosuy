@@ -51,11 +51,11 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new CorreoInvalidoException(correo);
         }
 
-        if (ExisteNickname(nick)) {
+        if (existeNickname(nick)) {
             throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
         }
 
-        if (ExisteCorreo(correo)) {
+        if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
@@ -87,11 +87,11 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new CorreoInvalidoException(correo);
         }
 
-        if (ExisteNickname(nick)) {
+        if (existeNickname(nick)) {
             throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
         }
 
-        if (ExisteCorreo(correo)) {
+        if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
@@ -121,11 +121,11 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new CorreoInvalidoException(correo);
         }
 
-        if (ExisteNickname(nick)) {
+        if (existeNickname(nick)) {
             throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
         }
 
-        if (ExisteCorreo(correo)) {
+        if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
@@ -143,11 +143,11 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new CorreoInvalidoException(correo);
         }
 
-        if (ExisteNickname(nick)) {
+        if (existeNickname(nick)) {
             throw new UsuarioRepetidoException("El usuario " + nick + " ya está registrado");
         }
 
-        if (ExisteCorreo(correo)) {
+        if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
 
@@ -160,21 +160,21 @@ public class ControladorUsuario implements IControladorUsuario {
     //-------------------------NUEVOS METODOS DEL CONTROLADOR---------------------------------------------------------------
 
 
-    public boolean ExisteNickname(String nick) {
+    public boolean existeNickname(String nick) {
 
     	 ManejadorUsuario mu = ManejadorUsuario.getinstance();
          Usuario u = mu.obtenerUsuario(nick); // Ya soporta nickname o correo
 
-         if (u != null) {return true;}
+         if (u != null) {return true; }
 
 		return false;
     }
 
-    public boolean ExisteCorreo(String correo) {
+    public boolean existeCorreo(String correo) {
 
     	Set<String> usuarios = listarUsuarios();
 
-    	for(String nick : usuarios) {
+    	for (String nick : usuarios) {
 
     		Usuario u = manejador.obtenerUsuario(nick);
     		if (u.getCorreo().equals(correo)) {
@@ -187,7 +187,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
    }
 
-    public void AsociarInstitucion(String nick, String nombreInstitucion) {
+    public void asociarInstitucion(String nick, String nombreInstitucion) {
 
     }
 
@@ -231,7 +231,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     public void altaInstitucion(String nombreInstitucion, String descripcion, String web) throws ExisteInstitucionException {
-    	Institucion ins = new Institucion(nombreInstitucion,descripcion,web);
+    	Institucion ins = new Institucion(nombreInstitucion, descripcion, web);
 
     	if (existeInstitucion(nombreInstitucion)) {
             throw new ExisteInstitucionException();
@@ -328,13 +328,12 @@ public class ControladorUsuario implements IControladorUsuario {
 
 	        a.setApellido(dtA.getApellido());
 
-	        if(!esFechaValida(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio())) {
+	        if (!esFechaValida(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio())) {
 	        	throw new FechaInvalidaException(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio());
 	        }
 
 	        a.setFechaNacimiento(dtA.getFechaNacimiento());
-	    }
-	    else if (usuario instanceof Organizador && datosUsuario instanceof DTOrganizador) {
+	    }else if (usuario instanceof Organizador && datosUsuario instanceof DTOrganizador) {
 	        Organizador o = (Organizador) usuario;
 	        DTOrganizador dtO = (DTOrganizador) datosUsuario;
 	        o.setDescripcion(dtO.getDescripcion());

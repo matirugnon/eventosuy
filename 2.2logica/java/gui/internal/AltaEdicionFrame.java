@@ -229,7 +229,7 @@ public class AltaEdicionFrame extends JInternalFrame {
 
         ControladorEvento ctrlEvento = ControladorEvento.getInstance();
         try {
-            ctrlEvento.AltaEdicion(
+            ctrlEvento.altaEdicion(
                 evento,
                 organizador,
                 nombre, sigla, ciudad, pais,

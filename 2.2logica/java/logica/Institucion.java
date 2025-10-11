@@ -10,7 +10,7 @@ public class Institucion{
 	private String sitioweb;
 	private String logo; // Nuevo campo para imagen del logo
 	
-	private Map<String,Patrocinio> patrocinios;
+	private Map<String, Patrocinio> patrocinios;
 
 	public Institucion(String nom, String desc, String web) {
 		this.nombre = nom;
@@ -30,7 +30,7 @@ public class Institucion{
 	}
 
 	public String getNombre() {
-		return nombre;}
+		return nombre; }
 
 	public String getDescripcion() {
 		return this.descripcion;
