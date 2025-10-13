@@ -28,12 +28,14 @@ import logica.datatypesyenum.DTAsistente;
 import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTInstitucion;
 import logica.datatypesyenum.DTOrganizador;
 import logica.datatypesyenum.DTPatrocinio;
 import logica.datatypesyenum.DTRegistro;
 import logica.datatypesyenum.DTSeleccionEvento;
 import logica.datatypesyenum.DTTipoDeRegistro;
 import logica.datatypesyenum.DTUsuario;
+import logica.datatypesyenum.EstadoEdicion;
 import logica.datatypesyenum.NivelPatrocinio;
 import utils.Utils;
 class prueba1 {
@@ -87,7 +89,7 @@ class prueba1 {
 		esperado.clear();
 		esperado.add( "Montevideo Rock 2025");esperado.add("Maratón de Montevideo 2025");esperado.add("Maratón de Montevideo 2024");esperado.add("Maratón de Montevideo 2022");
 		esperado.add("Montevideo Comics 2024");esperado.add("Montevideo Comics 2025");esperado.add("Expointer Uruguay 2025");esperado.add("Tecnología Punta del Este 2026");
-		esperado.add("Mobile World Congress 2025");esperado.add("Web Summit 2026");
+		esperado.add("Mobile World Congress 2025");esperado.add("Web Summit 2026");esperado.add("Montevideo Fashion Week 2026");
 		assertEquals(o,esperado);
 
 		o = contE.listarEventos();
@@ -124,11 +126,12 @@ class prueba1 {
 
 		DTUsuario DTPruebaus = contrU.getDTUsuario("atorres");
 		DTAsistente DTAsis = (DTAsistente) DTPruebaus;
-		DTAsistente DTAsisesp = new DTAsistente("atorres", "Ana","atorres@gmail.com","Torres", null, new DTFecha(12,5,1990), "Facultad de Ingeniería", null);
+		DTAsistente DTAsisesp = new DTAsistente("atorres", "Ana","atorres@gmail.com","123.torres","Torres", new DTFecha(12,5,1990), "Facultad de Ingeniería", null);
 		assertEquals(DTAsis.getApellido(),DTAsisesp.getApellido());
 		assertEquals(DTAsis.getNombre(),DTAsisesp.getNombre());
 		assertEquals(DTAsis.getCorreo(),DTAsisesp.getCorreo());
 		assertEquals(DTAsis.getInstitucion(),DTAsisesp.getInstitucion());
+		assertEquals(DTAsis.getPassword(),DTAsisesp.getPassword());
 
 
 		DTPatrocinio DTPat = contE.consultarTipoPatrocinioEdicion("Tecnología Punta del Este 2026", "TECHFING");
@@ -202,7 +205,7 @@ class prueba1 {
 		Set<Map.Entry<String, String>> regEsperados = new HashSet<>();
 		regEsperados.add(new AbstractMap.SimpleImmutableEntry<>("andrearod", "Estudiante"));
 		tiporeg.add("Full");tiporeg.add("General");tiporeg.add("Estudiante");
-		DTEdicion DTedEsp = new DTEdicion("Web Summit 2026", "WS26", null, new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025),  "Lisboa", "Portugal", "techcorp", tiporeg, regEsperados,patro, null);
+		DTEdicion DTedEsp = new DTEdicion("Conferencia de Tecnología","Web Summit 2026", "WS26", new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025),  "Lisboa", "Portugal", "techcorp", tiporeg, regEsperados,patro,EstadoEdicion.ACEPTADA);
 		assertEquals(DTed.getCiudad(),DTedEsp.getCiudad());
 		assertEquals(DTed.getNombre(),DTedEsp.getNombre());
 		assertEquals(DTed.getOrganizador(),DTedEsp.getOrganizador());
@@ -213,7 +216,7 @@ class prueba1 {
 		assertEquals(DTed.getTiposDeRegistro(),DTedEsp.getTiposDeRegistro());
 
 
-		DTOrganizador orgMod = new DTOrganizador("udelar","hola","hola@gmail.com","hola, buenas tarde","hola.edu.uy", null, null);
+		DTOrganizador orgMod = new DTOrganizador("udelar","hola","hola@gmail.com","contrasenia","hola, buenas tarde","hola.edu.uy", null);
 		contrU.modificarUsuario("udelar", orgMod);
 		DTOrganizador obt = (DTOrganizador) contrU.getDTUsuario("udelar");
 		assertEquals(obt.getNombre(),"hola");
@@ -221,13 +224,100 @@ class prueba1 {
 		assertEquals(obt.getLink(),"hola.edu.uy");
 
 
-		DTAsistente asMod = new DTAsistente("atorres", "chau",  "chau@gmail.com", "chaucha", null, new DTFecha(28,9,1891), "Facultad de Ingeniería", null);
+		DTAsistente asMod = new DTAsistente("atorres", "chau",  "chau@gmail.com","contrasenia", "chaucha", new DTFecha(28,9,1891), "Facultad de Ingeniería", null);
 		contrU.modificarUsuario("atorres", asMod);
 		DTAsistente asObt = (DTAsistente) contrU.getDTUsuario("atorres");
 		assertEquals(asObt.getNombre(),"chau");
 		assertEquals(asObt.getApellido(),"chaucha");
 
-
-	}
-
+		Set<DTEvento> dtEventos = contE.obtenerDTEventos();
+		 DTEvento dtEvento = dtEventos.stream()
+			        .filter(e -> e.getNombre().equals("Montevideo Rock"))
+			        .findFirst()
+			        .orElse(null);
+		 assertNotNull(dtEvento, "Debe existir el evento Montevideo Rock");
+		    assertEquals("MONROCK", dtEvento.getSigla());
+		    assertEquals("Festival de rock con artistas nacionales e internacionales", dtEvento.getDescripcion());
+		 
+		    dtEvento = contE.obtenerEventoPorEdicion("Montevideo Rock 2025");
+		    assertEquals("Montevideo Rock", dtEvento.getNombre());
+		 
+		    Set<String> categoriasObt = contE.listarCategorias();
+		    Set<String> categoriasEsp = Set.of(
+		    		"Tecnología", "Innovación", "Literatura", "Cultura", "Música",
+		    	    "Deporte", "Salud", "Entretenimiento", "Agro", "Negocios",
+		    	    "Moda", "Investigación"
+		    	);
+		    assertEquals(categoriasObt,categoriasEsp);
+		    
+		    o = contE.listarEdicionesPorEstado(EstadoEdicion.RECHAZADA);
+		    esperado = Set.of("Maratón de Montevideo 2022");
+		    assertEquals(o,esperado);
+		    
+		    contrU.altaAsistente("prueba1", "prueba", "prueba@gmail.com", "prueba", new DTFecha(28,9,1891), "Facultad de Ingeniería", "contrasenia");
+		    asObt = (DTAsistente) contrU.getDTUsuario("prueba1");
+		    assertEquals(asObt.getNombre(),"prueba");
+		    
+		    contrU.altaOrganizador("prueba2", "prueba", "prueba2@gmail.com", "prueba", "hola.com.uy", "contrasenia");
+		    obt = (DTOrganizador) contrU.getDTUsuario("prueba2");
+		    assertEquals(asObt.getNombre(),"prueba");
+		    
+		    DTInstitucion dtInst = contrU.getInstitucion("Facultad de Ingeniería");
+		    DTInstitucion dtInstEsp= new DTInstitucion(
+		        "Facultad de Ingeniería", 
+		        "Facultad de Ingeniería de la Universidad de la República",
+		        "https://www.fing.edu.uy"
+		    );
+		    assertEquals(dtInstEsp.getNombre(), dtInst.getNombre());
+		    assertEquals(dtInstEsp.getDescripcion(), dtInst.getDescripcion());
+		    assertEquals(dtInstEsp.getSitioWeb(), dtInst.getSitioWeb());
+		    
+		    
+		    
+		    contrU.altaInstitucion("pruebaInst", "prueba", "hola.com.es");
+		    dtInst = contrU.getInstitucion("pruebaInst");
+		   dtInstEsp= new DTInstitucion(
+				   "pruebaInst", 
+				   "prueba",
+				   "hola.com.es"
+			    );
+			    assertEquals(dtInstEsp.getNombre(), dtInst.getNombre());
+			    
+			    Set<DTEdicion> dtEd = contE.listarEdicionesOrganizadasPorEstado("miseventos", EstadoEdicion.INGRESADA);    
+			    Set<String> nombresEsperados = Set.of("Expointer Uruguay 2025");
+			    Set<String> nombresObtenidos = new HashSet<>();
+			    for (DTEdicion ed : dtEd) {
+			        nombresObtenidos.add(ed.getNombre());
+			    }
+			    assertEquals(nombresEsperados, nombresObtenidos);
+    
+			    o = contE.listarEdicionesPorEstadoDeEvento("Expointer Uruguay", EstadoEdicion.INGRESADA);
+			    esperado = Set.of("Expointer Uruguay 2025");
+			    assertEquals(o,esperado);
+    
+			    
+			    Set<DTUsuario> dtUsuarios = contrU.listarUsuariosDT();
+    
+			    Set<String> nickEsperados = Set.of(
+			    		"vale23", "prueba1", "JaviL", "prueba2", "imm", "mec", "atorres",
+			    	    "SofiM", "AnaG", "sofirod", "MariR", "udelar", "msilva",
+			    	    "andrearod", "miseventos", "techcorp", "luciag"
+			        );
+			    Set<String> nickObtenidos = new HashSet<>();
+			    for (DTUsuario dt : dtUsuarios) {
+			        nickObtenidos.add(dt.getNickname());
+			    }
+			    assertEquals(nickEsperados, nickObtenidos);
+			    
+			   
+			  
+			    Set<DTRegistro> registrosObtenidos = contR.listarRegistrosPorAsistente("SofiM");
+			    Set<String> tiposEsperados = Set.of("General");
+			    Set<String> tiposObt = new HashSet<>();
+			    for (DTRegistro dt : registrosObtenidos) {
+			        tiposObt.add(dt.getTipoDeRegistro());
+			    }
+			    assertEquals(tiposEsperados, tiposObt);
+			   
+    }
 }
