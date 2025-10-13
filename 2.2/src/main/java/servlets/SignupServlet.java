@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,33 +19,19 @@ import logica.datatypesyenum.DTFecha;
 import excepciones.UsuarioRepetidoException;
 import excepciones.CorreoInvalidoException;
 import excepciones.FechaInvalidaException;
+import utils.Utils;
 
 @WebServlet("/signup")
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imágenes
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
 public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
-    public void init() throws ServletException {
-        super.init();
-        // Cargar datos si es necesario
-        try {
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            // Verificar si hay datos cargados
-            if (ctrlUsuario.listarUsuarios().isEmpty()) {
-                utils.Utils.cargarDatos(
-                    ctrlUsuario,
-                    logica.controladores.IControladorEvento.getInstance(),
-                    logica.controladores.IControladorRegistro.getInstance()
-                );
-            }
-        } catch (Exception e) {
-            throw new ServletException("Error cargando datos iniciales", e);
-        }
-    }
-    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        if (!Utils.asegurarDatosCargados(request, response)) {
+            return;
+        }
+
         try {
             // Obtener lista de instituciones para el dropdown
             IControladorUsuario ctrl = IControladorUsuario.getInstance();
@@ -63,8 +49,12 @@ public class SignupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        if (!Utils.asegurarDatosCargados(request, response)) {
+            return;
+        }
+
         try {
-            // Obtener parámetros del formulario
+            // Obtener parÃ¡metros del formulario
             String rol = request.getParameter("rol");
             String nickname = request.getParameter("nickname");
             String nombre = request.getParameter("nombre");
@@ -72,7 +62,7 @@ public class SignupServlet extends HttpServlet {
             String password = request.getParameter("password");
             String confirm = request.getParameter("confirm");
             
-            // Validaciones básicas
+            // Validaciones bÃ¡sicas
             String error = validarDatosBasicos(nickname, nombre, email, password, confirm);
             if (error != null) {
                 mostrarFormularioConError(request, response, error);
@@ -81,25 +71,25 @@ public class SignupServlet extends HttpServlet {
             
             IControladorUsuario ctrl = IControladorUsuario.getInstance();
             
-            // Procesar según el rol
+            // Procesar segÃºn el rol
             if ("asistente".equals(rol)) {
                 crearAsistente(request, ctrl, nickname, nombre, email, password);
             } else if ("organizador".equals(rol)) {
                 crearOrganizador(request, ctrl, nickname, nombre, email, password);
             } else {
-                mostrarFormularioConError(request, response, "Rol no válido");
+                mostrarFormularioConError(request, response, "Rol no vÃ¡lido");
                 return;
             }
             
-            // Éxito - redirigir al inicio
+            // Ã‰xito - redirigir al inicio
             response.sendRedirect(request.getContextPath() + "/inicio?mensaje=Usuario creado exitosamente");
             
         } catch (UsuarioRepetidoException e) {
-            mostrarFormularioConError(request, response, "El nickname o email ya está en uso");
+            mostrarFormularioConError(request, response, "El nickname o email ya estÃ¡ en uso");
         } catch (CorreoInvalidoException e) {
-            mostrarFormularioConError(request, response, "El correo electrónico no es válido");
+            mostrarFormularioConError(request, response, "El correo electrÃ³nico no es vÃ¡lido");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha de nacimiento no es válida");
+            mostrarFormularioConError(request, response, "La fecha de nacimiento no es vÃ¡lida");
         } catch (IllegalArgumentException e) {
             mostrarFormularioConError(request, response, e.getMessage());
         } catch (Exception e) {
@@ -131,14 +121,14 @@ public class SignupServlet extends HttpServlet {
         
         // Crear asistente
         if (rutaImagen != null) {
-            // Si hay imagen, usar el método con avatar
+            // Si hay imagen, usar el mÃ©todo con avatar
             if (institucion != null && !institucion.trim().isEmpty()) {
                 ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password, rutaImagen);
             } else {
                 ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, "", password, rutaImagen);
             }
         } else {
-            // Si no hay imagen, usar el método original
+            // Si no hay imagen, usar el mÃ©todo original
             if (institucion != null && !institucion.trim().isEmpty()) {
                 ctrl.altaAsistente(nickname, nombre, email, apellido, fechaNac, institucion, password);
             } else {
@@ -159,10 +149,10 @@ public class SignupServlet extends HttpServlet {
         
         // Crear organizador
         if (rutaImagen != null) {
-            // Si hay imagen, usar el método con avatar
+            // Si hay imagen, usar el mÃ©todo con avatar
             ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password, rutaImagen);
         } else {
-            // Si no hay imagen, usar el método original
+            // Si no hay imagen, usar el mÃ©todo original
             ctrl.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password);
         }
     }
@@ -172,7 +162,7 @@ public class SignupServlet extends HttpServlet {
             LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ISO_LOCAL_DATE);
             return new DTFecha(fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear());
         } catch (DateTimeParseException e) {
-            throw new FechaInvalidaException("Formato de fecha inválido");
+            throw new FechaInvalidaException("Formato de fecha invÃ¡lido");
         }
     }
     
@@ -181,7 +171,7 @@ public class SignupServlet extends HttpServlet {
         if (imagenPart != null && imagenPart.getSize() > 0) {
             String contentType = imagenPart.getContentType();
             if (contentType != null && contentType.startsWith("image/")) {
-                // Generar nombre único para la imagen
+                // Generar nombre Ãºnico para la imagen
                 String extension = "";
                 if (contentType.equals("image/jpeg") || contentType.equals("image/jpg")) {
                     extension = ".jpg";
@@ -209,7 +199,7 @@ public class SignupServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/usuarios/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen válida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
             }
         }
         return null;
@@ -222,26 +212,26 @@ public class SignupServlet extends HttpServlet {
             return "El nickname es requerido";
         }
         if (nickname.length() > 30) {
-            return "El nickname no puede tener más de 30 caracteres";
+            return "El nickname no puede tener mÃ¡s de 30 caracteres";
         }
         
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre es requerido";
         }
         if (nombre.length() > 60) {
-            return "El nombre no puede tener más de 60 caracteres";
+            return "El nombre no puede tener mÃ¡s de 60 caracteres";
         }
         
         if (email == null || email.trim().isEmpty()) {
-            return "El correo electrónico es requerido";
+            return "El correo electrÃ³nico es requerido";
         }
         
         if (password == null || password.length() < 6) {
-            return "La contraseña debe tener al menos 6 caracteres";
+            return "La contraseÃ±a debe tener al menos 6 caracteres";
         }
         
         if (!password.equals(confirm)) {
-            return "Las contraseñas no coinciden";
+            return "Las contraseÃ±as no coinciden";
         }
         
         return null; // Sin errores

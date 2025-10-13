@@ -1,4 +1,4 @@
-
+﻿
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
@@ -32,8 +32,8 @@
 		<h1>
 			<a href="<%=request.getContextPath()%>/inicio">eventos.uy</a>
 		</h1>
-		<div class="header-right">
-			<c:choose>
+	<div class="header-right" style="display: flex; align-items: center; gap: 1rem;">
+		<c:choose>
 				<c:when test="${not empty role}">
 					<div class="user-badge"
 						style="display: flex; align-items: center; gap: 0.5rem;">
@@ -59,10 +59,33 @@
 					</nav>
 				</c:otherwise>
 			</c:choose>
+		<c:if test="${not datosCargados}">
+			<form action="${pageContext.request.contextPath}/cargarDatos" method="post" style="margin: 0;">
+				<button type="submit" style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background-color: #14a37f; color: white; font-weight: 600; cursor: pointer;">Cargar datos</button>
+			</form>
+		</c:if>
+		<c:if test="${datosCargados}">
+			<span style="padding: 0.35rem 0.75rem; border-radius: 999px; background-color: rgba(20, 163, 127, 0.15); color: #0d5c49; font-weight: 600;">Datos cargados</span>
+		</c:if>
 		</div>
 	</header>
 
 	<!-- Contenido principal -->
+	<c:if test="${not empty datosMensaje}">
+		<c:set var="alertBg" value="#e7f6f2" />
+		<c:set var="alertColor" value="#0d5c49" />
+		<c:if test="${datosMensajeTipo == 'error'}">
+			<c:set var="alertBg" value="#fdecea" />
+			<c:set var="alertColor" value="#c0392b" />
+		</c:if>
+		<c:if test="${datosMensajeTipo == 'info'}">
+			<c:set var="alertBg" value="#edf2ff" />
+			<c:set var="alertColor" value="#1f3f72" />
+		</c:if>
+		<div style="max-width: 960px; margin: 1rem auto; padding: 0.75rem 1rem; border-radius: 6px; background-color: ${alertBg}; color: ${alertColor}; font-weight: 600; text-align: center;">
+			${datosMensaje}
+		</div>
+	</c:if>
 	<div class="content">
 		<aside class="sidebar">
 			<c:choose>
@@ -92,7 +115,7 @@
 				</c:when>
 			</c:choose>
 
-			<!-- Categorías -->
+			<!-- CategorÃ­as -->
 			<div class="panel sidebar" style="margin-top: 1rem;">
 				<div class="panel-header">Categorías</div>
 				<ul class="menu-list">
@@ -118,7 +141,7 @@
 				</ul>
 			</div>
 
-			<!-- Botón "Ver listado de Usuarios" -->
+			<!-- BotÃ³n "Ver listado de Usuarios" -->
 			<div
 				style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
 				<a href="${pageContext.request.contextPath}/listarUsuarios"
@@ -129,7 +152,7 @@
 
 		<!-- Main: eventos -->
 		<main>
-			<!-- Barra de búsqueda -->
+			<!-- Barra de bÃºsqueda -->
 			<form action="${pageContext.request.contextPath}/inicio" method="get"
 				style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
 				<input type="hidden" name="categoria"
@@ -166,7 +189,7 @@
 								<div class="event-content"
 									style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
 									<h3 style="margin: 0 0 0.5rem 0;">${e.nombre}</h3>
-									<p style="margin: 0;">${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
+									<p style="margin: 0;">${empty e.descripcion ? 'Sin descripciÃ³n' : e.descripcion}</p>
 								</div>
 							</a>
 						</div>
@@ -175,7 +198,7 @@
 			</c:choose>
 			<div style="margin-top: 1rem; text-align: center;">
 				<c:if test="${totalPages > 1}">
-					<!-- Construimos la URL base incluyendo posibles parámetros de búsqueda y categoría -->
+					<!-- Construimos la URL base incluyendo posibles parÃ¡metros de bÃºsqueda y categorÃ­a -->
 					<c:set var="baseUrl"
 						value="${pageContext.request.contextPath}/inicio" />
 

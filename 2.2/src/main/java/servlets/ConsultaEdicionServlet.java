@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
 import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTUsuario;
@@ -36,14 +35,8 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 return;
             }
 
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrl,
-                    logica.controladores.IControladorRegistro.getInstance()
-                );
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
             }
 
             // Obtener información de la edición específica

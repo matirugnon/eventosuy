@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
 import logica.datatypesyenum.DTPatrocinio;
 import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTInstitucion;
@@ -40,19 +39,13 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             codigo = codigo.trim();
             edicion = edicion.trim();
 
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
+            }
+
             // Obtener controladores
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrlEvento,
-                    IControladorRegistro.getInstance()
-                );
-            }
 
             // Obtener información del patrocinio
             DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigo);

@@ -1,6 +1,11 @@
 package utils;
 
+import java.io.IOException;
 import java.util.Set;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
@@ -257,6 +262,30 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
 	}
 
+	public static boolean datosPrecargados(ServletContext context) {
+		return context != null && Boolean.TRUE.equals(context.getAttribute("datosPrecargados"));
+	}
 
+	public static void marcarDatosCargados(ServletContext context) {
+		if (context != null) {
+			context.setAttribute("datosPrecargados", Boolean.TRUE);
+		}
+	}
+
+	public static boolean asegurarDatosCargados(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		if (request != null && datosPrecargados(request.getServletContext())) {
+			return true;
+		}
+		if (request != null) {
+			request.getSession().setAttribute("datosMensaje",
+					"Debe cargar los datos de ejemplo desde la pantalla de inicio.");
+			request.getSession().setAttribute("datosMensajeTipo", "info");
+		}
+		if (response != null && request != null) {
+			response.sendRedirect(request.getContextPath() + "/inicio");
+		}
+		return false;
+	}
 
 }

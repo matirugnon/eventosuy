@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
 import logica.datatypesyenum.DTTipoDeRegistro;
 import logica.datatypesyenum.DTEdicion;
@@ -22,7 +21,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, EdicionNoExisteException {
         try {
             // Obtener parámetros
             String tipoRegistro = request.getParameter("tipo");
@@ -38,20 +37,13 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             tipoRegistro = tipoRegistro.trim();
             edicion = edicion.trim();
 
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
+            }
+
             // Obtener controladores
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrlEvento,
-                    ctrlRegistro
-                );
-            }
 
             // Obtener información del tipo de registro
             DTTipoDeRegistro tipoInfo = ctrlRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
@@ -96,8 +88,6 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
 
             request.getRequestDispatcher("/WEB-INF/views/consultaTipoRegistro.jsp").forward(request, response);
 
-        } catch (EdicionNoExisteException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Edición no encontrada: " + e.getMessage());
         } catch (Exception e) {
             throw new ServletException("Error obteniendo información del tipo de registro", e);
         }

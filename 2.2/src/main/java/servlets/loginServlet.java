@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.util.Set;
@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
 import logica.Usuario;
 import logica.datatypesyenum.DTUsuario;
 import logica.manejadores.ManejadorUsuario; // Importar ManejadorUsuario
@@ -25,40 +23,34 @@ public class loginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response); // Reutilizar lógica común
+        processRequest(request, response); // Reutilizar lÃ³gica comÃºn
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response); // Reutilizar lógica común
+        processRequest(request, response); // Reutilizar lÃ³gica comÃºn
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             ManejadorUsuario manejador = ManejadorUsuario.getinstance();
 
             String usuario = request.getParameter("usuario");
             String password = request.getParameter("password");
 
-            // Validación de parámetros
+            // ValidaciÃ³n de parÃ¡metros
             if (usuario == null || usuario.isEmpty() || password == null || password.isEmpty()) {
-                request.setAttribute("error", "Usuario y contraseña son obligatorios.");
+                request.setAttribute("error", "Usuario y contraseÃ±a son obligatorios.");
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
-            if (ctrlUsuario.listarUsuarios() == null || ctrlUsuario.listarUsuarios().isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrlEvento,
-                    IControladorRegistro.getInstance()
-                );
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
             }
-
             Set<String> usuarios = ctrlUsuario.listarUsuarios();
             request.setAttribute("usuarios", usuarios);
 
@@ -68,14 +60,14 @@ public class loginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", dtUsuario.getNickname());
                 session.setAttribute("avatar", dtUsuario.getAvatar()); // Agregado el atributo avatar
-                session.setAttribute("role", user.getTipo()); // Guardar el rol en la sesión
-                response.sendRedirect(request.getContextPath() + "/inicio"); // Redirigir a la página de inicio
+                session.setAttribute("role", user.getTipo()); // Guardar el rol en la sesiÃ³n
+                response.sendRedirect(request.getContextPath() + "/inicio"); // Redirigir a la pÃ¡gina de inicio
                 return;
             } else {
-                request.setAttribute("error", "Usuario o contraseña incorrectos.");
+                request.setAttribute("error", "Usuario o contraseÃ±a incorrectos.");
             }
 
-            // Recargar la página de login con el mensaje de error
+            // Recargar la pÃ¡gina de login con el mensaje de error
             request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 
         } catch (Exception e) {

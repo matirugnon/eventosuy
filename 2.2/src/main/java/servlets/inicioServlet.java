@@ -1,7 +1,8 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
@@ -30,25 +32,34 @@ public class inicioServlet extends HttpServlet {
         try {
             IControladorEvento ctrl = IControladorEvento.getInstance();
 
-            // Carga inicial de datos si hace falta
-            Set<DTEvento> eventos = ctrl.obtenerDTEventos();
-            if (eventos == null || eventos.isEmpty()) {
-                Utils.cargarDatos(
-                        IControladorUsuario.getInstance(),
-                        ctrl,
-                        IControladorRegistro.getInstance()
-                );
-                eventos = ctrl.obtenerDTEventos();
+            // Datos precargados solo cuando el usuario lo solicita
+            boolean datosCargados = Utils.datosPrecargados(getServletContext());
+            request.setAttribute("datosCargados", datosCargados);
+
+            HttpSession session = request.getSession();
+            Object mensaje = session.getAttribute("datosMensaje");
+            if (mensaje != null) {
+                request.setAttribute("datosMensaje", mensaje);
+                Object tipo = session.getAttribute("datosMensajeTipo");
+                if (tipo != null) {
+                    request.setAttribute("datosMensajeTipo", tipo);
+                }
+                session.removeAttribute("datosMensaje");
+                session.removeAttribute("datosMensajeTipo");
             }
 
-            // Categorías para el sidebar
-            Set<String> categorias = ctrl.listarCategorias();
+            Set<DTEvento> eventos = datosCargados ? ctrl.obtenerDTEventos() : Collections.emptySet();
+            if (eventos == null) {
+                eventos = Collections.emptySet();
+            }
 
-            // Parámetros del filtro
+            // Categorias para el sidebar
+            Set<String> categorias = datosCargados ? ctrl.listarCategorias() : Collections.emptySet();
+            // ParÃ¡metros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
             String busqueda = request.getParameter("busqueda");
 
-            // FILTRO POR CATEGORÍA
+            // FILTRO POR CATEGORÃA
             if (categoriaSeleccionada != null && !categoriaSeleccionada.isBlank()
                     && !"todas".equalsIgnoreCase(categoriaSeleccionada)) {
 
@@ -85,7 +96,7 @@ public class inicioServlet extends HttpServlet {
             int totalEventos = eventos.size();
             int totalPages = (int) Math.ceil((double) totalEventos / pageSize);
             
-            // Si no hay eventos, establecer página 1 y páginas totales en 1
+            // Si no hay eventos, establecer pÃ¡gina 1 y pÃ¡ginas totales en 1
             if (totalEventos == 0) {
                 totalPages = 1;
                 page = 1;

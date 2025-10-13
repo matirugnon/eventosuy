@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.util.Set;
@@ -14,22 +14,20 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
 import logica.datatypesyenum.DTFecha;
 import excepciones.EdicionExistenteException;
 import excepciones.FechasIncompatiblesException;
 import utils.Utils;
 
 @WebServlet("/altaEdicion")
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imágenes
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
 public class AltaEdicionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Verificar que el usuario esté logueado y sea organizador
+            // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -45,18 +43,14 @@ public class AltaEdicionServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            // Obtener los controladores
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
             }
+            // Obtener parametros del formulario
 
-            // Obtener eventos disponibles y categorías
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+
+            // Obtener eventos disponibles y categorias
             Set<String> eventos = ctrlEvento.listarEventos();
             Set<String> categorias = ctrlEvento.listarCategorias();
 
@@ -70,7 +64,7 @@ public class AltaEdicionServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error al cargar formulario de alta de edición: " + e.getMessage(), e);
+            throw new ServletException("Error al cargar formulario de alta de ediciÃ³n: " + e.getMessage(), e);
         }
     }
 
@@ -78,7 +72,7 @@ public class AltaEdicionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Verificar que el usuario esté logueado y sea organizador
+            // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -93,7 +87,10 @@ public class AltaEdicionServlet extends HttpServlet {
 
             String nickOrganizador = (String) session.getAttribute("usuario");
 
-            // Obtener parámetros del formulario
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
+            }
+
             String evento = request.getParameter("evento");
             String nombre = request.getParameter("nombre");
             String sigla = request.getParameter("sigla");
@@ -102,7 +99,7 @@ public class AltaEdicionServlet extends HttpServlet {
             String fechaInicioStr = request.getParameter("fechaInicio");
             String fechaFinStr = request.getParameter("fechaFin");
 
-            // Validaciones básicas
+            // Validaciones bÃ¡sicas
             String error = validarDatos(evento, nombre, sigla, ciudad, pais, fechaInicioStr, fechaFinStr);
             if (error != null) {
                 mostrarFormularioConError(request, response, error);
@@ -123,18 +120,18 @@ public class AltaEdicionServlet extends HttpServlet {
             LocalDate hoy = LocalDate.now();
             DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
 
-            // Crear edición (el método original no soporta imagen, se omite por ahora)
+            // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
 
-            // Redirigir con mensaje de éxito
+            // Redirigir con mensaje de Ã©xito
             response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edicion creada exitosamente");
 
         } catch (EdicionExistenteException e) {
-            mostrarFormularioConError(request, response, "Ya existe una edición con ese nombre");
+            mostrarFormularioConError(request, response, "Ya existe una ediciÃ³n con ese nombre");
         } catch (FechasIncompatiblesException e) {
             mostrarFormularioConError(request, response, "Las fechas de inicio y fin no son compatibles");
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al crear edición: " + e.getMessage());
+            mostrarFormularioConError(request, response, "Error al crear ediciÃ³n: " + e.getMessage());
         }
     }
 
@@ -148,10 +145,10 @@ public class AltaEdicionServlet extends HttpServlet {
                 int dia = Integer.parseInt(partes[2]);
                 return new DTFecha(dia, mes, anio);
             } else {
-                throw new IllegalArgumentException("Formato de fecha inválido");
+                throw new IllegalArgumentException("Formato de fecha invÃ¡lido");
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Formato de fecha inválido");
+            throw new IllegalArgumentException("Formato de fecha invÃ¡lido");
         }
     }
 
@@ -160,7 +157,7 @@ public class AltaEdicionServlet extends HttpServlet {
         if (imagenPart != null && imagenPart.getSize() > 0) {
             String contentType = imagenPart.getContentType();
             if (contentType != null && contentType.startsWith("image/")) {
-                // Generar nombre único para la imagen
+                // Generar nombre Ãºnico para la imagen
                 String extension = "";
                 if (contentType.equals("image/jpeg") || contentType.equals("image/jpg")) {
                     extension = ".jpg";
@@ -188,7 +185,7 @@ public class AltaEdicionServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/ediciones/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen válida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
             }
         }
         return null; // Sin imagen
@@ -200,31 +197,31 @@ public class AltaEdicionServlet extends HttpServlet {
         }
         
         if (nombre == null || nombre.trim().isEmpty()) {
-            return "El nombre de la edición es requerido";
+            return "El nombre de la ediciÃ³n es requerido";
         }
         if (nombre.length() > 140) {
-            return "El nombre no puede tener más de 140 caracteres";
+            return "El nombre no puede tener mÃ¡s de 140 caracteres";
         }
         
         if (sigla == null || sigla.trim().isEmpty()) {
-            return "La sigla de la edición es requerida";
+            return "La sigla de la ediciÃ³n es requerida";
         }
         if (sigla.length() > 20) {
-            return "La sigla no puede tener más de 20 caracteres";
+            return "La sigla no puede tener mÃ¡s de 20 caracteres";
         }
         
         if (ciudad == null || ciudad.trim().isEmpty()) {
             return "La ciudad es requerida";
         }
         if (ciudad.length() > 60) {
-            return "La ciudad no puede tener más de 60 caracteres";
+            return "La ciudad no puede tener mÃ¡s de 60 caracteres";
         }
         
         if (pais == null || pais.trim().isEmpty()) {
-            return "El país es requerido";
+            return "El paÃ­s es requerido";
         }
         if (pais.length() > 60) {
-            return "El país no puede tener más de 60 caracteres";
+            return "El paÃ­s no puede tener mÃ¡s de 60 caracteres";
         }
         
         if (fechaInicio == null || fechaInicio.trim().isEmpty()) {
@@ -244,7 +241,7 @@ public class AltaEdicionServlet extends HttpServlet {
                 return "La fecha de fin debe ser posterior a la fecha de inicio";
             }
         } catch (Exception e) {
-            return "Formato de fecha inválido";
+            return "Formato de fecha invÃ¡lido";
         }
         
         return null; // Sin errores

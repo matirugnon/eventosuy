@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.util.Set;
@@ -37,14 +37,14 @@ public class PerfilUsuarioServlet extends HttpServlet {
             String requestPath = request.getServletPath();
             
             if ("/miPerfil".equals(requestPath)) {
-                // Para /miPerfil, verificar que el usuario esté logueado y usar su nickname
+                // Para /miPerfil, verificar que el usuario estÃ© logueado y usar su nickname
                 if (request.getSession(false) == null || request.getSession(false).getAttribute("usuario") == null) {
                     response.sendRedirect(request.getContextPath() + "/login");
                     return;
                 }
                 nickname = (String) request.getSession().getAttribute("usuario");
             } else {
-                // Para /perfilUsuario, obtener el nickname del parámetro
+                // Para /perfilUsuario, obtener el nickname del parÃ¡metro
                 nickname = request.getParameter("nickname");
                 if (nickname == null || nickname.trim().isEmpty()) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nickname de usuario requerido");
@@ -56,14 +56,8 @@ public class PerfilUsuarioServlet extends HttpServlet {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrlEvento,
-                    IControladorRegistro.getInstance()
-                );
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
             }
 
             // Verificar que el usuario existe
@@ -72,15 +66,15 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener el DTUsuario específico
+            // Obtener el DTUsuario especÃ­fico
             DTUsuario usuario = ctrlUsuario.getDTUsuario(nickname);
             
             if (usuario == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "No se pudo obtener la información del usuario");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "No se pudo obtener la informaciÃ³n del usuario");
                 return;
             }
 
-            // Determinar el tipo de usuario y obtener información específica
+            // Determinar el tipo de usuario y obtener informaciÃ³n especÃ­fica
             String tipoUsuario;
             DTAsistente asistente = null;
             DTOrganizador organizador = null;
@@ -95,21 +89,21 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 tipoUsuario = "Usuario";
             }
 
-            // Obtener categorías para el sidebar
+            // Obtener categorÃ­as para el sidebar
             Set<String> categorias = ctrlEvento.listarCategorias();
 
-            // Manejar parámetros de navegación de regreso
+            // Manejar parÃ¡metros de navegaciÃ³n de regreso
             String from = request.getParameter("from");
             String edicionOrigen = request.getParameter("edicion");
             
-            // Configurar información de regreso
+            // Configurar informaciÃ³n de regreso
             if ("edicion".equals(from) && edicionOrigen != null && !edicionOrigen.trim().isEmpty()) {
                 request.setAttribute("backTo", "edicion");
-                request.setAttribute("backLabel", "← Volver a la edición " + edicionOrigen);
+                request.setAttribute("backLabel", "â† Volver a la ediciÃ³n " + edicionOrigen);
                 request.setAttribute("backUrl", request.getContextPath() + "/consultaEdicion?edicion=" + edicionOrigen);
             } else {
                 request.setAttribute("backTo", "listado");
-                request.setAttribute("backLabel", "← Volver al listado");
+                request.setAttribute("backLabel", "â† Volver al listado");
                 request.setAttribute("backUrl", request.getContextPath() + "/listarUsuarios");
             }
 
@@ -120,7 +114,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             request.setAttribute("organizador", organizador);
             request.setAttribute("categorias", categorias);
 
-            // Pasar datos de sesión (nickname, avatar, nombre, role)
+            // Pasar datos de sesiÃ³n (nickname, avatar, nombre, role)
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
             request.setAttribute("role", request.getSession().getAttribute("role"));
@@ -130,7 +124,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             Set<DTEdicion> edicionesAceptadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
             request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
-            // Si el organizador es quien inició sesión
+            // Si el organizador es quien iniciÃ³ sesiÃ³n
             String sessionNickname = (String) request.getSession().getAttribute("usuario");
             if (sessionNickname != null && sessionNickname.equals(nickname)) {
                 Set<DTEdicion> edicionesIngresadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(sessionNickname, EstadoEdicion.INGRESADA);
@@ -139,7 +133,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 request.setAttribute("edicionesRechazadas", edicionesRechazadas);
             }
 
-            // Verificar si el usuario logueado es un asistente y está consultando su propio perfil
+            // Verificar si el usuario logueado es un asistente y estÃ¡ consultando su propio perfil
             if (tipoUsuario.equals("Asistente") && sessionNickname != null && sessionNickname.equals(nickname)) {
                 IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
                 
@@ -156,7 +150,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 }
                 request.setAttribute("registros", registros);
                 
-                // También preparar los datos para perfilUsuario.jsp
+                // TambiÃ©n preparar los datos para perfilUsuario.jsp
                 Set<Map<String, String>> registrosAsistente = new HashSet<>();
                 for (DTRegistro registro : registros) {
                     String nomEdicion = registro.getnomEdicion();
@@ -196,7 +190,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 request.setAttribute("registrosAsistente", registrosAsistente);
             }
             
-            // Determinar qué registros puede consultar el usuario logueado
+            // Determinar quÃ© registros puede consultar el usuario logueado
             Set<String> registrosConsultables = new HashSet<>();
             String sessionRole = (String) request.getSession().getAttribute("role");
             
@@ -212,7 +206,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                     if (nickname.equals(sessionNickname) && "asistente".equals(sessionRole)) {
                         puedeConsultar = true;
                     }
-                    // Caso 2: Es el organizador específico de esta edición
+                    // Caso 2: Es el organizador especÃ­fico de esta ediciÃ³n
                     else if ("organizador".equals(sessionRole)) {
                         try {
                             DTEdicion edicion = ctrlEvento.consultarEdicion(registro.getnomEdicion());
@@ -225,7 +219,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                     }
                     
                     if (puedeConsultar) {
-                        // Crear una clave única para identificar el registro
+                        // Crear una clave Ãºnica para identificar el registro
                         String claveRegistro = nickname + "|" + registro.getnomEdicion() + "|" + registro.getTipoDeRegistro();
                         registrosConsultables.add(claveRegistro);
                     }
@@ -244,7 +238,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 request.setAttribute("edicionesOrganizadas", edicionesOrganizadas);
             }
 
-            // Redirigir al JSP correspondiente según la ruta
+            // Redirigir al JSP correspondiente segÃºn la ruta
             if ("/miPerfil".equals(requestPath)) {
                 request.getRequestDispatcher("/WEB-INF/views/miPerfil.jsp").forward(request, response);
             } else {

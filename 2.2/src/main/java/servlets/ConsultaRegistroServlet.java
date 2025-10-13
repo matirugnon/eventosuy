@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
-import logica.controladores.IControladorUsuario;
 import logica.datatypesyenum.DTRegistro;
 import logica.datatypesyenum.DTEdicion;
 import excepciones.UsuarioNoExisteException;
@@ -35,6 +34,13 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 return;
             }
 
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
+            }
+
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+
             // Verificar que el usuario tenga permisos para ver este registro
             String usuarioSesion = (String) request.getSession().getAttribute("usuario");
             String rolSesion = (String) request.getSession().getAttribute("role");
@@ -50,7 +56,6 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 // Caso 2: Es el organizador específico de esta edición
                 else if ("organizador".equals(rolSesion)) {
                     try {
-                        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
                         DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
                         // Solo permitir si el usuario logueado es exactamente el organizador de esta edición
                         if (edicionInfo != null && usuarioSesion.equals(edicionInfo.getOrganizador())) {
@@ -67,21 +72,6 @@ public class ConsultaRegistroServlet extends HttpServlet {
             if (!tienePermisos) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para ver este registro");
                 return;
-            }
-
-            // Obtener controladores
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(
-                    ctrlUsuario,
-                    ctrlEvento,
-                    ctrlRegistro
-                );
             }
 
             // Obtener el registro específico

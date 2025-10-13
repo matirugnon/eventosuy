@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,14 +23,14 @@ import excepciones.FechaInvalidaException;
 import utils.Utils;
 
 @WebServlet("/modificarUsuario")
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imágenes
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
 public class ModificarUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Verificar que el usuario esté logueado
+            // Verificar que el usuario estÃ© logueado
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -43,13 +43,14 @@ public class ModificarUsuarioServlet extends HttpServlet {
 
             // Obtener los controladores
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
+            }
+
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                Utils.cargarDatos(ctrlUsuario, ctrlEvento, 
-                    logica.controladores.IControladorRegistro.getInstance());
+            if (!Utils.asegurarDatosCargados(request, response)) {
+                return;
             }
 
             // Verificar que el usuario existe
@@ -58,11 +59,11 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener el DTUsuario específico
+            // Obtener el DTUsuario especÃ­fico
             DTUsuario usuario = ctrlUsuario.getDTUsuario(nickname);
             
             if (usuario == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "No se pudo obtener la información del usuario");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "No se pudo obtener la informaciÃ³n del usuario");
                 return;
             }
 
@@ -87,7 +88,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 instituciones = ctrlUsuario.listarInstituciones();
             }
 
-            // Obtener categorías para el sidebar
+            // Obtener categorÃ­as para el sidebar
             Set<String> categorias = ctrlEvento.listarCategorias();
 
             // Pasar los datos como atributos a la JSP
@@ -98,7 +99,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             request.setAttribute("instituciones", instituciones);
             request.setAttribute("categorias", categorias);
 
-            // Pasar datos de sesión
+            // Pasar datos de sesiÃ³n
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", avatar);
             request.setAttribute("role", role);
@@ -107,7 +108,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/modificarUsuario.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error al cargar formulario de modificación: " + e.getMessage(), e);
+            throw new ServletException("Error al cargar formulario de modificaciÃ³n: " + e.getMessage(), e);
         }
     }
 
@@ -115,7 +116,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Verificar que el usuario esté logueado
+            // Verificar que el usuario estÃ© logueado
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -130,7 +131,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             String password = request.getParameter("password");
             String confirm = request.getParameter("confirm");
 
-            // Validaciones básicas
+            // Validaciones bÃ¡sicas
             String error = validarDatosBasicos(nombre, password, confirm);
             if (error != null) {
                 mostrarFormularioConError(request, response, error);
@@ -150,11 +151,11 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 rutaImagen = usuarioActual.getAvatar(); // Mantener avatar actual si no se sube uno nuevo
             }
 
-            // Crear DTUsuario actualizado según el tipo
+            // Crear DTUsuario actualizado segÃºn el tipo
             DTUsuario usuarioModificado = null;
             
             if (usuarioActual instanceof DTAsistente) {
-                // Procesar datos específicos de asistente
+                // Procesar datos especÃ­ficos de asistente
                 String apellido = request.getParameter("apellido");
                 String fechaNacStr = request.getParameter("fechaNac");
                 String institucion = request.getParameter("institucion");
@@ -182,7 +183,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 );
                 
             } else if (usuarioActual instanceof DTOrganizador) {
-                // Procesar datos específicos de organizador
+                // Procesar datos especÃ­ficos de organizador
                 String descripcion = request.getParameter("descripcion");
                 String sitioWeb = request.getParameter("web");
                 
@@ -206,16 +207,16 @@ public class ModificarUsuarioServlet extends HttpServlet {
             // Modificar usuario en el sistema
             ctrlUsuario.modificarUsuario(nickname, usuarioModificado);
 
-            // Actualizar datos en la sesión
+            // Actualizar datos en la sesiÃ³n
             session.setAttribute("avatar", rutaImagen);
 
-            // Redirigir al perfil con mensaje de éxito
+            // Redirigir al perfil con mensaje de Ã©xito
             response.sendRedirect(request.getContextPath() + "/miPerfil?mensaje=Usuario modificado exitosamente");
 
         } catch (UsuarioNoExisteException e) {
             mostrarFormularioConError(request, response, "Usuario no encontrado");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha de nacimiento no es válida");
+            mostrarFormularioConError(request, response, "La fecha de nacimiento no es vÃ¡lida");
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "Error al modificar usuario: " + e.getMessage());
         }
@@ -231,10 +232,10 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 int anio = Integer.parseInt(partes[2]);
                 return new DTFecha(dia, mes, anio);
             } else {
-                throw new FechaInvalidaException("Formato de fecha inválido. Use DD/MM/YYYY");
+                throw new FechaInvalidaException("Formato de fecha invÃ¡lido. Use DD/MM/YYYY");
             }
         } catch (NumberFormatException e) {
-            throw new FechaInvalidaException("Formato de fecha inválido");
+            throw new FechaInvalidaException("Formato de fecha invÃ¡lido");
         }
     }
 
@@ -243,7 +244,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
         if (imagenPart != null && imagenPart.getSize() > 0) {
             String contentType = imagenPart.getContentType();
             if (contentType != null && contentType.startsWith("image/")) {
-                // Generar nombre único para la imagen
+                // Generar nombre Ãºnico para la imagen
                 String extension = "";
                 if (contentType.equals("image/jpeg") || contentType.equals("image/jpg")) {
                     extension = ".jpg";
@@ -271,7 +272,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/usuarios/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen válida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
             }
         }
         return null;
@@ -282,17 +283,17 @@ public class ModificarUsuarioServlet extends HttpServlet {
             return "El nombre es requerido";
         }
         if (nombre.length() > 60) {
-            return "El nombre no puede tener más de 60 caracteres";
+            return "El nombre no puede tener mÃ¡s de 60 caracteres";
         }
         
-        // Solo validar contraseña si se está intentando cambiar
+        // Solo validar contraseÃ±a si se estÃ¡ intentando cambiar
         if (password != null && !password.trim().isEmpty()) {
             if (password.length() < 6) {
-                return "La contraseña debe tener al menos 6 caracteres";
+                return "La contraseÃ±a debe tener al menos 6 caracteres";
             }
             
             if (!password.equals(confirm)) {
-                return "Las contraseñas no coinciden";
+                return "Las contraseÃ±as no coinciden";
             }
         }
         
