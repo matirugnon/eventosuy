@@ -20,8 +20,12 @@
                 <c:choose>
                     <c:when test="${not empty role}">
                         <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-                            <img class="avatar" src="${avatar}" alt="Avatar de usuario" />
-                            <span class="nickname">${nickname}</span>
+                            <a href="${pageContext.request.contextPath}/miPerfil" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
+                                <img class="avatar" 
+                                     src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" 
+                                     alt="Avatar de usuario" />
+                                <span class="nickname">${nickname}</span>
+                            </a>
                             <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
                         </div>
                     </c:when>
@@ -125,45 +129,7 @@
                     </div>
                 </section>
 
-                <!-- Botón de registro para asistentes -->
-                <c:if test="${esAsistente and not yaRegistrado}">
-                    <section class="panel" style="margin-top: 1rem;">
-                        <div class="panel-body">
-                            <h3 style="margin: 0 0 1rem 0;">Registro</h3>
-                            <form action="${pageContext.request.contextPath}/registrarAsistente" method="post">
-                                <input type="hidden" name="edicion" value="${edicionInfo.nombre}">
-                                <input type="hidden" name="tipoRegistro" value="${tipoRegistro.nombre}">
-                                <button type="submit" class="register-button">Registrarse a edición</button>
-                            </form>
-                        </div>
-                    </section>
-                </c:if>
                 
-                <c:if test="${esAsistente and yaRegistrado}">
-                    <section class="panel" style="margin-top: 1rem;">
-                        <div class="panel-body">
-                            <p class="already-registered">Ya estás registrado en esta edición</p>
-                        </div>
-                    </section>
-                </c:if>
-                
-                <c:if test="${not esAsistente and not empty role}">
-                    <section class="panel" style="margin-top: 1rem;">
-                        <div class="panel-body">
-                            <p class="not-assistant">Solo los asistentes pueden registrarse en las ediciones</p>
-                        </div>
-                    </section>
-                </c:if>
-                
-                <c:if test="${empty role}">
-                    <section class="panel" style="margin-top: 1rem;">
-                        <div class="panel-body">
-                            <p class="login-required">
-                                <a href="${pageContext.request.contextPath}/login">Inicia sesión</a> como asistente para registrarte
-                            </p>
-                        </div>
-                    </section>
-                </c:if>
             </main>
         </div>
     </div>

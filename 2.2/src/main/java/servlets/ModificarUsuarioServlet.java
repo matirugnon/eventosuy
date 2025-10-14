@@ -108,7 +108,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/modificarUsuario.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error al cargar formulario de modificaciÃ³n: " + e.getMessage(), e);
+            throw new ServletException("Error al cargar formulario de modificación: " + e.getMessage(), e);
         }
     }
 
@@ -216,7 +216,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
         } catch (UsuarioNoExisteException e) {
             mostrarFormularioConError(request, response, "Usuario no encontrado");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha de nacimiento no es vÃ¡lida");
+            mostrarFormularioConError(request, response, "La fecha de nacimiento no es valida");
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "Error al modificar usuario: " + e.getMessage());
         }

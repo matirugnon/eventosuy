@@ -248,7 +248,7 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                                 } else {
                                                     // Verificar que a├║n quedan usos disponibles
                                                     if (patrocinio.getCantidadGratis() <= 0) {
-                                                        mensaje = "Ya se alcanz├│ la cantidad de usos para este c├│digo de patrocinio.";
+                                                        mensaje = "Ya se alcanzo la cantidad de usos para este c├│digo de patrocinio.";
                                                     } else {
                                                         // TODO: Verificar instituci├│n del usuario si es necesario
                                                         costoFinal = 0.0; // Registro gratuito con patrocinio

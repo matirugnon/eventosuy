@@ -99,11 +99,11 @@ public class PerfilUsuarioServlet extends HttpServlet {
             // Configurar informaciÃ³n de regreso
             if ("edicion".equals(from) && edicionOrigen != null && !edicionOrigen.trim().isEmpty()) {
                 request.setAttribute("backTo", "edicion");
-                request.setAttribute("backLabel", "â† Volver a la ediciÃ³n " + edicionOrigen);
+                request.setAttribute("backLabel", "Volver a la edición " + edicionOrigen);
                 request.setAttribute("backUrl", request.getContextPath() + "/consultaEdicion?edicion=" + edicionOrigen);
             } else {
                 request.setAttribute("backTo", "listado");
-                request.setAttribute("backLabel", "â† Volver al listado");
+                request.setAttribute("backLabel", "Volver al listado");
                 request.setAttribute("backUrl", request.getContextPath() + "/listarUsuarios");
             }
 

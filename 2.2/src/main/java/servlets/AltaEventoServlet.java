@@ -123,9 +123,9 @@ public class AltaEventoServlet extends HttpServlet {
         } catch (EventoRepetidoException e) {
             mostrarFormularioConError(request, response, "Ya existe un evento con ese nombre");
         } catch (CategoriaNoSeleccionadaException e) {
-            mostrarFormularioConError(request, response, "Debe seleccionar al menos una categorÃ­a");
+            mostrarFormularioConError(request, response, "Debe seleccionar al menos una categoria");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha del evento no es vÃ¡lida");
+            mostrarFormularioConError(request, response, "La fecha del evento no es valida");
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "Error al crear evento: " + e.getMessage());
         }
@@ -164,7 +164,7 @@ public class AltaEventoServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/eventos/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen valida");
             }
         }
         return null; // Sin imagen
@@ -175,7 +175,7 @@ public class AltaEventoServlet extends HttpServlet {
             return "El nombre del evento es requerido";
         }
         if (nombre.length() > 120) {
-            return "El nombre no puede tener mÃ¡s de 120 caracteres";
+            return "El nombre no puede tener más de 120 caracteres";
         }
         
         if (sigla == null || sigla.trim().isEmpty()) {
@@ -186,14 +186,14 @@ public class AltaEventoServlet extends HttpServlet {
         }
         
         if (descripcion == null || descripcion.trim().isEmpty()) {
-            return "La descripciÃ³n del evento es requerida";
+            return "La descripción del evento es requerida";
         }
         if (descripcion.length() > 800) {
-            return "La descripciÃ³n no puede tener mÃ¡s de 800 caracteres";
+            return "La descripción no puede tener mÃ¡s de 800 caracteres";
         }
         
         if (categorias == null || categorias.length == 0) {
-            return "Debe seleccionar al menos una categorÃ­a";
+            return "Debe seleccionar al menos una categori­a";
         }
         
         return null; // Sin errores

@@ -21,7 +21,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, EdicionNoExisteException {
+            throws ServletException, IOException {
         try {
             // Obtener parámetros
             String tipoRegistro = request.getParameter("tipo");

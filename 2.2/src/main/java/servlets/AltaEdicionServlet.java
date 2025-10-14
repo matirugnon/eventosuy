@@ -64,7 +64,7 @@ public class AltaEdicionServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error al cargar formulario de alta de ediciÃ³n: " + e.getMessage(), e);
+            throw new ServletException("Error al cargar formulario de alta de edición: " + e.getMessage(), e);
         }
     }
 
@@ -123,15 +123,15 @@ public class AltaEdicionServlet extends HttpServlet {
             // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
 
-            // Redirigir con mensaje de Ã©xito
+            // Redirigir con mensaje de exito
             response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edicion creada exitosamente");
 
         } catch (EdicionExistenteException e) {
-            mostrarFormularioConError(request, response, "Ya existe una ediciÃ³n con ese nombre");
+            mostrarFormularioConError(request, response, "Ya existe una edición con ese nombre");
         } catch (FechasIncompatiblesException e) {
             mostrarFormularioConError(request, response, "Las fechas de inicio y fin no son compatibles");
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al crear ediciÃ³n: " + e.getMessage());
+            mostrarFormularioConError(request, response, "Error al crear edición: " + e.getMessage());
         }
     }
 
@@ -145,10 +145,10 @@ public class AltaEdicionServlet extends HttpServlet {
                 int dia = Integer.parseInt(partes[2]);
                 return new DTFecha(dia, mes, anio);
             } else {
-                throw new IllegalArgumentException("Formato de fecha invÃ¡lido");
+                throw new IllegalArgumentException("Formato de fecha invalido");
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Formato de fecha invÃ¡lido");
+            throw new IllegalArgumentException("Formato de fecha invalido");
         }
     }
 
@@ -185,7 +185,7 @@ public class AltaEdicionServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/ediciones/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen valida");
             }
         }
         return null; // Sin imagen
@@ -197,31 +197,31 @@ public class AltaEdicionServlet extends HttpServlet {
         }
         
         if (nombre == null || nombre.trim().isEmpty()) {
-            return "El nombre de la ediciÃ³n es requerido";
+            return "El nombre de la edición es requerido";
         }
         if (nombre.length() > 140) {
-            return "El nombre no puede tener mÃ¡s de 140 caracteres";
+            return "El nombre no puede tener más de 140 caracteres";
         }
         
         if (sigla == null || sigla.trim().isEmpty()) {
-            return "La sigla de la ediciÃ³n es requerida";
+            return "La sigla de la edición es requerida";
         }
         if (sigla.length() > 20) {
-            return "La sigla no puede tener mÃ¡s de 20 caracteres";
+            return "La sigla no puede tener más de 20 caracteres";
         }
         
         if (ciudad == null || ciudad.trim().isEmpty()) {
             return "La ciudad es requerida";
         }
         if (ciudad.length() > 60) {
-            return "La ciudad no puede tener mÃ¡s de 60 caracteres";
+            return "La ciudad no puede tener más de 60 caracteres";
         }
         
         if (pais == null || pais.trim().isEmpty()) {
             return "El paÃ­s es requerido";
         }
         if (pais.length() > 60) {
-            return "El paÃ­s no puede tener mÃ¡s de 60 caracteres";
+            return "El paí­s no puede tener más de 60 caracteres";
         }
         
         if (fechaInicio == null || fechaInicio.trim().isEmpty()) {
@@ -241,7 +241,7 @@ public class AltaEdicionServlet extends HttpServlet {
                 return "La fecha de fin debe ser posterior a la fecha de inicio";
             }
         } catch (Exception e) {
-            return "Formato de fecha invÃ¡lido";
+            return "Formato de fecha invalido";
         }
         
         return null; // Sin errores
