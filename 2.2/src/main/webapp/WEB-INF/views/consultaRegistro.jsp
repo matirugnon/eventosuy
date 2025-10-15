@@ -56,7 +56,7 @@
                     <div class="panel sidebar">
                         <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
                         <ul class="menu-list">
-                            <li><a href="${pageContext.request.contextPath}/registroAEdicion" style="white-space: nowrap;">Registro a Edición</a></li>
+                            <li><a href="${pageContext.request.contextPath}/registroAedicion" style="white-space: nowrap;">Registro a Edición</a></li>
                             <li><a href="${pageContext.request.contextPath}/misRegistros" style="white-space: nowrap;">Mis Registros</a></li>
                         </ul>
                     </div>
@@ -69,7 +69,10 @@
                     <ul class="menu-list">
                         <c:forEach var="categoria" items="${categorias}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/consultaCategoria?categoria=${categoria}">
+                                <c:url var="catUrl" value="/inicio">
+                                    <c:param name="categoria" value="${categoria}"/>
+                                </c:url>
+                                <a href="${catUrl}">
                                     ${categoria}
                                 </a>
                             </li>
