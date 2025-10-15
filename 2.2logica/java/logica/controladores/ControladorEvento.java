@@ -1,5 +1,6 @@
 package logica.controladores;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
@@ -236,6 +237,40 @@ public class ControladorEvento implements IControladorEvento {
 	    if (eds != null) {
 	        for (String ed : eds) {
 	            if (ed != null) nombres.add(ed);
+	        }
+	    }
+	    return nombres;
+	}
+
+	public Set<String> listarEdicionesActivas(String nomEvento)
+			throws EventoNoExisteException{
+
+	    ManejadorEventos manEv = ManejadorEventos.getInstance();
+	    Evento event = manEv.obtenerEvento(nomEvento);
+
+	    if (event == null) {
+	        throw new EventoNoExisteException(nomEvento);
+	    }
+
+	    Set<String> eds = event.getEdiciones();
+	    Set<String> nombres = new java.util.HashSet<>();
+	    LocalDate fechaActual = LocalDate.of(2025, 10, 16);
+	    
+	    if (eds != null) {
+	        for (String ed : eds) {
+	            if (ed != null) {
+	                // Verificar que la edición no haya finalizado
+	                Edicion edicion = manejadorE.obtenerEdicion(ed);
+	                if (edicion != null) {
+	                    DTFecha fechaFin = edicion.getFechaFin();
+	                    LocalDate fechaFinEdicion = LocalDate.of(fechaFin.getAnio(), fechaFin.getMes(), fechaFin.getDia());
+	                    
+	                    // Solo agregar la edición si no ha finalizado
+	                    if (!fechaFinEdicion.isBefore(fechaActual)) {
+	                        nombres.add(ed);
+	                    }
+	                }
+	            }
 	        }
 	    }
 	    return nombres;

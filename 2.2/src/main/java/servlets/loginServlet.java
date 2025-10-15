@@ -43,7 +43,7 @@ public class loginServlet extends HttpServlet {
 
             // ValidaciÃ³n de parÃ¡metros
             if (usuario == null || usuario.isEmpty() || password == null || password.isEmpty()) {
-                request.setAttribute("error", "Usuario y contraseÃ±a son obligatorios.");
+                request.setAttribute("error", "Usuario y contraseña son obligatorios.");
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }

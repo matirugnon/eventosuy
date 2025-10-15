@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.controladores.IControladorEvento;
+import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTSeleccionEvento;
 import logica.datatypesyenum.EstadoEdicion;
 
@@ -33,8 +34,17 @@ public class ConsultaEventoServlet extends HttpServlet {
             // Obtener información del evento específico
             DTSeleccionEvento eventoSeleccionado = ctrl.seleccionarEvento(nombreEvento);
 
-            // Obtener solo las ediciones aceptadas del evento
-            Set<String> edicionesAceptadas = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
+            // Obtener solo las ediciones aceptadas del evento (objetos completos)
+            Set<String> nombresEdicionesAceptadas = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
+            
+            // Obtener los objetos DTEdicion completos para acceder a las imágenes
+            java.util.Set<DTEdicion> edicionesAceptadas = new java.util.HashSet<>();
+            for (String nombreEdicion : nombresEdicionesAceptadas) {
+                DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
+                if (edicion != null) {
+                    edicionesAceptadas.add(edicion);
+                }
+            }
             request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
             // Obtener todas las categorías para el sidebar

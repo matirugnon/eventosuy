@@ -23,10 +23,6 @@
             <div class="header-right">
                 <c:choose>
                     <c:when test="${not empty role}">
-                        <!-- Debug temporal -->
-                        <div style="background: yellow; padding: 5px; font-size: 12px;">
-                            DEBUG - role: "${role}", nickname: "${nickname}", avatar: "${avatar}"
-                        </div>
                         <div class="user-badge">
                             <a href="${pageContext.request.contextPath}/perfilUsuario?nickname=${nickname}" style="display:flex;align-items:center;gap:.5rem;text-decoration:none;color:inherit;">
                                 <img src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" alt="${nickname}" class="avatar">
@@ -90,12 +86,9 @@
                         color: #182080;
                         font-weight: 600;
                         text-decoration: none;
-                        padding: 0.75rem;
-                        border-radius: 6px;
-                        transition: background-color 0.2s;
-                        background-color: rgba(24, 32, 128, 0.05);
+                        font-size: 0.9rem;
                     ">
-                        Ver listado de usuarios
+                        👥 Ver listado de Usuarios
                     </a>
                 </div>
             </aside>

@@ -69,13 +69,13 @@ public class RegistroAEdicionServlet extends HttpServlet {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
 
-            // Obtener todos los eventos con sus ediciones
+            // Obtener todos los eventos con sus ediciones activas
             Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
             Set<String> categorias = ctrlEvento.listarCategorias();
             
-            // Para cada evento, obtener las ediciones con informaci├│n completa
+            // Para cada evento, obtener las ediciones activas con informaci├│n completa
             for (DTEvento evento : eventos) {
-                Set<String> nombresEdiciones = ctrlEvento.listarEdiciones(evento.getNombre());
+                Set<String> nombresEdiciones = ctrlEvento.listarEdicionesActivas(evento.getNombre());
                 for (String nombreEdicion : nombresEdiciones) {
                     DTEdicion edicion = ctrlEvento.consultarEdicion(nombreEdicion);
                     if (edicion != null) {
@@ -115,7 +115,7 @@ public class RegistroAEdicionServlet extends HttpServlet {
             if ("getEdiciones".equals(action)) {
                 String nombreEvento = request.getParameter("evento");
                 if (nombreEvento != null) {
-                    Set<String> ediciones = ctrlEvento.listarEdiciones(nombreEvento);
+                    Set<String> ediciones = ctrlEvento.listarEdicionesActivas(nombreEvento);
                     StringBuilder json = new StringBuilder("[");
                     boolean first = true;
                     for (String edicion : ediciones) {

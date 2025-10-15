@@ -87,7 +87,8 @@ public interface IControladorEvento {
 
 	public Set<String> listarEdiciones();
 
-
+	public Set<String> listarEdicionesActivas(String nomEvento)
+			throws EventoNoExisteException;
 
 	public DTSeleccionEvento seleccionarEvento(String nomEvento)
 
@@ -122,9 +123,6 @@ public interface IControladorEvento {
 
 
 	public Set<String> listarEdiciones(String nomEvento)
-
-
-
 			throws EventoNoExisteException;
 
 

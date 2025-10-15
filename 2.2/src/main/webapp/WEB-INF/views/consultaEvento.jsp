@@ -115,7 +115,7 @@
             <div class="event-detail">
               <article class="event-item" style="border-bottom:0;">
                 <div class="event-image" style="margin-bottom: 1rem; max-width: 250px;">
-                  <img src="${not empty eventoSeleccionado.evento.imagen ? pageContext.request.contextPath.concat(eventoSeleccionado.evento.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                  <img src="${not empty eventoSeleccionado.evento.imagen ? pageContext.request.contextPath.concat(eventoSeleccionado.evento.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}" 
                        alt="${eventoSeleccionado.evento.nombre}" 
                        style="width: 100%; height: auto; border-radius: 8px;">
                 </div>
@@ -138,14 +138,14 @@
                 <div>
                   <div class="panel-header" style="border-radius:10px 10px 0 0;">Ediciones</div>
                   <div class="panel-body event-editions">
-                    <c:forEach items="${edicionesAceptadas}" var="nombreEdicion">
+                    <c:forEach items="${edicionesAceptadas}" var="edicion">
                       <c:url var="edicionUrl" value="/consultaEdicion">
-                        <c:param name="edicion" value="${nombreEdicion}" />
+                        <c:param name="edicion" value="${edicion.nombre}" />
                       </c:url>
                       <a class="mini-card" href="${edicionUrl}">
-                        <img src="${pageContext.request.contextPath}/img/eventoSinImagen.jpeg" 
-                             alt="${nombreEdicion}" />
-                        <div class="mini-card-title">${nombreEdicion}</div>
+                        <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}" 
+                             alt="${edicion.nombre}" />
+                        <div class="mini-card-title">${edicion.nombre}</div>
                       </a>
                     </c:forEach>
                   </div>

@@ -113,7 +113,7 @@
                         <div class="event-detail" style="display: flex; gap: 2rem;">
                             <div style="flex: 1;">
                                 <div class="event-image" style="margin-bottom: 1rem; max-width: 250px;">
-                                    <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
+                                    <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}" 
                                          alt="${edicion.nombre}" 
                                          style="width: 100%; height: auto; border-radius: 8px;">
                                 </div>
