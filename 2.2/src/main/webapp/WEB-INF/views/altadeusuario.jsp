@@ -163,7 +163,7 @@
 
             <button type="submit" class="btn-primary" style="margin-top:1rem; width:100%;">Crear cuenta</button>
             <div style="text-align:center; margin-top:1.5rem;">
-              <a class="btn-outline" href="${pageContext.request.contextPath}/">Cancelar</a>
+              <a class="btn-outline" href="${pageContext.request.contextPath}/inicio">Cancelar</a>
             </div>
           </form>
         </div>
