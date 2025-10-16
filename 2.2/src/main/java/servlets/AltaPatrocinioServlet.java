@@ -47,12 +47,19 @@ public class AltaPatrocinioServlet extends HttpServlet {
             // Cargar datos para el formulario
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
             Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(edicion);
             Set<DTTipoDeRegistro> tiposRegistro = new HashSet<>();
             for (String nombreTipo : nombresTipos) {
                 tiposRegistro.add(ctrlRegistro.consultaTipoDeRegistro(edicion, nombreTipo));
             }
+            // Obtener categorías para el sidebar
+            Set<String> categorias = ctrlEvento.listarCategorias();
+            System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
+            
+     
+            request.setAttribute("categorias", categorias);
 
             request.setAttribute("tiposRegistro", tiposRegistro);
             request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
