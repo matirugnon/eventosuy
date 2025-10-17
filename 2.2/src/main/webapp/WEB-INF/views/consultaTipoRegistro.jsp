@@ -108,29 +108,35 @@
             </aside>
 
             <main>
-                <!-- Navegación de vuelta -->
-                <div style="margin-bottom: 1rem;">
-                    <a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicionInfo.nombre}" 
-                       style="color: #182080; text-decoration: none; font-weight: 600;">← Volver a ${edicionInfo.nombre}</a>
-                </div>
+    <!-- Título Tipo de Registro -->
+    <section class="panel">
+        <div class="panel-header">
+            Tipo de Registro:
+            <div style="margin-top: 0.25rem; font-weight: 600; font-size: 1.1rem;">
+                ${tipoRegistro.nombre}
+            </div>
+        </div>
 
-                <!-- Información del tipo de registro -->
-                <section class="panel">
-                    <div class="panel-body">
-                        <h2 style="margin: 0 0 1rem 0;">Tipo de Registro: ${tipoRegistro.nombre}</h2>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <p style="margin: 0;"><strong>Descripción:</strong> ${tipoRegistro.descripcion}</p>
-                            <p style="margin: 0;"><strong>Costo:</strong> $${tipoRegistro.costo}</p>
-                            <p style="margin: 0;"><strong>Cupo:</strong> ${tipoRegistro.cupo} lugares</p>
-                            <p style="margin: 0;"><strong>Edición:</strong> ${edicionInfo.nombre}</p>
-                            <p style="margin: 0;"><strong>Evento:</strong> ${edicionInfo.evento}</p>
-                        </div>
-                    </div>
-                </section>
+        <div class="panel-body" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <p><strong>Nombre:</strong> ${tipoRegistro.nombre}</p>
+            <p><strong>Descripción:</strong> ${tipoRegistro.descripcion}</p>
+            <p><strong>Costo:</strong> $${tipoRegistro.costo}</p>
+            <p><strong>Cupo:</strong> ${tipoRegistro.cupo} lugares</p>
+        </div>
+    </section>
 
-                
-            </main>
+    <!-- Botón Volver -->
+    <section class="panel" style="margin-top: 2rem;">
+        <div class="panel-header">Volver a edición</div>
+        <div class="panel-body">
+            <a href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicionInfo.nombre}" 
+               class="btn-primary">
+                ← Volver a la edición ${edicionInfo.evento} - ${edicionInfo.nombre}
+            </a>
+        </div>
+    </section>
+</main>
+
         </div>
     </div>
 </body>
