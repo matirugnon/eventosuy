@@ -30,12 +30,24 @@ public class inicioServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            IControladorEvento ctrl = IControladorEvento.getInstance();
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            // Datos precargados solo cuando el usuario lo solicita
+            // Verificar si los datos ya fueron precargados
             boolean datosCargados = Utils.datosPrecargados(getServletContext());
-            request.setAttribute("datosCargados", datosCargados);
-
+            boolean hayDatosBasicos = Utils.hayDatosBasicos();
+            
+            // Solo cargar datos si no están cargados y no hay datos básicos
+            if (!datosCargados && !hayDatosBasicos) {
+                IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+                IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+                
+                Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+                Utils.marcarDatosCargados(getServletContext());
+                
+                // Mostrar mensaje de confirmación
+                request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
+                request.setAttribute("datosMensajeTipo", "success");
+            }
             HttpSession session = request.getSession();
             Object mensaje = session.getAttribute("datosMensaje");
             if (mensaje != null) {
@@ -48,13 +60,13 @@ public class inicioServlet extends HttpServlet {
                 session.removeAttribute("datosMensajeTipo");
             }
 
-            Set<DTEvento> eventos = datosCargados ? ctrl.obtenerDTEventos() : Collections.emptySet();
+            Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
             if (eventos == null) {
                 eventos = Collections.emptySet();
             }
 
             // Categorias para el sidebar
-            Set<String> categorias = datosCargados ? ctrl.listarCategorias() : Collections.emptySet();
+            Set<String> categorias = ctrlEvento.listarCategorias();
             // ParÃ¡metros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
             String busqueda = request.getParameter("busqueda");

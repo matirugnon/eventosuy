@@ -253,6 +253,31 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
 	}
 
+	// Método para verificar si los datos ya fueron precargados
+	public static boolean datosPrecargados(jakarta.servlet.ServletContext context) {
+		Boolean datosCargados = (Boolean) context.getAttribute("datosPrecargados");
+		return datosCargados != null && datosCargados;
+	}
 
+	// Método para marcar que los datos fueron cargados
+	public static void marcarDatosCargados(jakarta.servlet.ServletContext context) {
+		context.setAttribute("datosPrecargados", true);
+	}
+
+	// Método para verificar si hay datos básicos cargados (usuarios, eventos, etc.)
+	public static boolean hayDatosBasicos() {
+		try {
+			IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+			IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+			
+			// Verificar si hay al menos un usuario y un evento
+			boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
+			boolean hayEventos = !ctrlEvento.obtenerDTEventos().isEmpty();
+			
+			return hayUsuarios && hayEventos;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }

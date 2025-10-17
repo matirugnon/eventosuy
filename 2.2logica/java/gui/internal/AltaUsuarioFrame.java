@@ -5,7 +5,6 @@ import javax.swing.*;
 import excepciones.CorreoInvalidoException;
 import excepciones.UsuarioRepetidoException;
 import logica.controladores.ControladorUsuario;
-import logica.controladores.IControladorUsuario;
 import logica.datatypesyenum.DTFecha;
 
 import java.awt.*;
@@ -15,10 +14,10 @@ public class AltaUsuarioFrame extends JInternalFrame {
     private static final long serialVersionUID = 1L;
 
     // Campos comunes
-    private JTextField txtNickname, txtNombre, txtCorreo, txtPassword;
+    private JTextField txtNickname, txtNombre, txtCorreo, txtApellido;
+    private JPasswordField txtPassword, txtConfirmPassword;
 
     // Campos asistente
-    private JTextField txtApellido;
     private JComboBox<String> comboInstitucion;
     private JSpinner spinnerDia, spinnerMes, spinnerAnio;
 
@@ -31,39 +30,28 @@ public class AltaUsuarioFrame extends JInternalFrame {
     // Panel del formulario
     private JPanel form;
 
-
     public AltaUsuarioFrame() {
         super("Alta de Usuario", true, true, true, true);
-        setSize(600, 400);
+        setSize(600, 450);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
 
         // Crear panel del formulario
         form = new JPanel(new GridLayout(0, 2, 5, 5));
         form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // ---- Campos comunes ----
-        form.add(new JLabel("Nickname:"));
-        txtNickname = new JTextField();
-        form.add(txtNickname);
-
-        form.add(new JLabel("Nombre:"));
-        txtNombre = new JTextField();
-        form.add(txtNombre);
-
-        form.add(new JLabel("Correo:"));
-        txtCorreo = new JTextField();
-        form.add(txtCorreo);
-        
-        form.add(new JLabel("Contraseña:"));
-        txtPassword = new JTextField();
-        form.add(txtPassword);
-
+        // ---- Combo tipo usuario ----
         form.add(new JLabel("Tipo Usuario:"));
         comboTipoUsuario = new JComboBox<>(new String[]{"Asistente", "Organizador"});
         comboTipoUsuario.addActionListener(e -> cambiarTipo());
         form.add(comboTipoUsuario);
+
+        // ---- Campos comunes ----
+        form.add(new JLabel("Nickname:")); txtNickname = new JTextField(); form.add(txtNickname);
+        form.add(new JLabel("Nombre:")); txtNombre = new JTextField(); form.add(txtNombre);
+        form.add(new JLabel("Correo:")); txtCorreo = new JTextField(); form.add(txtCorreo);
+        form.add(new JLabel("Contraseña:")); txtPassword = new JPasswordField(); form.add(txtPassword);
+        form.add(new JLabel("Confirmar Contraseña:")); txtConfirmPassword = new JPasswordField(); form.add(txtConfirmPassword);
 
         // ---- Agregar campos específicos (inicialmente vacíos) ----
         agregarCamposPorDefecto();
@@ -75,9 +63,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
         JButton btnAceptar = new JButton("Aceptar");
         JButton btnCancelar = new JButton("Cancelar");
 
-        btnAceptar.addActionListener(e -> {
-			guardar();
-		});
+        btnAceptar.addActionListener(e -> guardar());
         btnCancelar.addActionListener(e -> dispose());
 
         botones.add(btnAceptar);
@@ -89,88 +75,72 @@ public class AltaUsuarioFrame extends JInternalFrame {
     }
 
     private void agregarCamposPorDefecto() {
-        // Campos para Asistente
+        // Campos Asistente
         txtApellido = new JTextField();
         comboInstitucion = new JComboBox<>();
-        comboInstitucion.setEnabled(false); // Inicialmente deshabilitado
+        comboInstitucion.setEnabled(false);
 
-        // Spinner para fecha de nacimiento
-     // Spinner para fecha de nacimiento - todos editables y sin comas
         spinnerDia = new JSpinner(new SpinnerNumberModel(1, 1, 31, 1));
         spinnerMes = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
-        spinnerAnio = new JSpinner(new SpinnerNumberModel(2000, 1900, 2100, 1)); // Rango ampliado
+        spinnerAnio = new JSpinner(new SpinnerNumberModel(2000, 1900, 2100, 1));
 
-        // Configurar editores personalizados para los tres
         configurarSpinnerEditable(spinnerDia);
         configurarSpinnerEditable(spinnerMes);
         configurarSpinnerEditable(spinnerAnio);
 
-        // Campos para Organizador
+        // Campos Organizador
         txtDescripcion = new JTextField();
         txtLink = new JTextField();
 
-        // Deshabilitar todos los campos específicos al inicio
+        // Deshabilitar al inicio
         deshabilitarCamposAsistente();
         deshabilitarCamposOrganizador();
     }
 
     private void cambiarTipo() {
-        // Limpiar el panel
         form.removeAll();
-
-        // Reagregar los campos comunes
-        form.add(new JLabel("Nickname:")); form.add(txtNickname);
-        form.add(new JLabel("Nombre:")); form.add(txtNombre);
-        form.add(new JLabel("Correo:")); form.add(txtCorreo);
-        form.add(new JLabel("Tipo Usuario:")); form.add(comboTipoUsuario);
 
         String tipo = (String) comboTipoUsuario.getSelectedItem();
 
-        if ("Asistente".equals(tipo)) {
-            // Apellido
-            form.add(new JLabel("Apellido:")); form.add(txtApellido);
+        // ---- Tipo Usuario primero ----
+        form.add(new JLabel("Tipo Usuario:")); form.add(comboTipoUsuario);
 
-            // Fecha de nacimiento con spinners
+        // ---- Campos comunes ----
+        form.add(new JLabel("Nickname:")); form.add(txtNickname);
+        form.add(new JLabel("Nombre:")); form.add(txtNombre);
+        if ("Asistente".equals(tipo)) {
+            form.add(new JLabel("Apellido:")); form.add(txtApellido);
+        }
+        form.add(new JLabel("Correo:")); form.add(txtCorreo);
+        form.add(new JLabel("Contraseña:")); form.add(txtPassword);
+        form.add(new JLabel("Confirmar Contraseña:")); form.add(txtConfirmPassword);
+
+        // ---- Campos específicos ----
+        if ("Asistente".equals(tipo)) {
+            // Fecha
             form.add(new JLabel("Fecha Nacimiento:"));
             JPanel panelFecha = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            panelFecha.add(new JLabel("Día:"));
-            panelFecha.add(spinnerDia);
-            panelFecha.add(new JLabel("Mes:"));
-            panelFecha.add(spinnerMes);
-            panelFecha.add(new JLabel("Año:"));
-            panelFecha.add(spinnerAnio);
+            panelFecha.add(new JLabel("Día:")); panelFecha.add(spinnerDia);
+            panelFecha.add(new JLabel("Mes:")); panelFecha.add(spinnerMes);
+            panelFecha.add(new JLabel("Año:")); panelFecha.add(spinnerAnio);
             form.add(panelFecha);
 
             // Institución
-
             ControladorUsuario contrU = ControladorUsuario.getInstance();
-
             Set<String> instituciones = contrU.listarInstituciones();
-
-            comboInstitucion.removeAllItems(); // Evita duplicados
+            comboInstitucion.removeAllItems();
             comboInstitucion.addItem("Sin institución");
-
-             for(String i: instituciones) {
-            	 comboInstitucion.addItem(i);
-             }
-
-             comboInstitucion.setSelectedIndex(0);
-
-
+            for(String i: instituciones) comboInstitucion.addItem(i);
+            comboInstitucion.setSelectedIndex(0);
             form.add(new JLabel("Institución:")); form.add(comboInstitucion);
 
-            // Habilitar campos de asistente
             habilitarCamposAsistente();
             deshabilitarCamposOrganizador();
-
-        } else if ("Organizador".equals(tipo)) {
-            // Descripción
+        } else {
+            // Organizador
             form.add(new JLabel("Descripción:")); form.add(txtDescripcion);
-
-            // Sitio web
             form.add(new JLabel("Sitio Web:")); form.add(txtLink);
 
-            // Habilitar campos de organizador
             habilitarCamposOrganizador();
             deshabilitarCamposAsistente();
         }
@@ -180,7 +150,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
     }
 
     private void configurarSpinnerEditable(JSpinner spinner) {
-        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#"); // Sin comas
+        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#");
         spinner.setEditor(editor);
         JFormattedTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
         textField.setEditable(true);
@@ -214,30 +184,45 @@ public class AltaUsuarioFrame extends JInternalFrame {
     }
 
     private void guardar() {
+        String tipo = (String) comboTipoUsuario.getSelectedItem();
         String nickname = txtNickname.getText().trim();
         String nombre = txtNombre.getText().trim();
         String correo = txtCorreo.getText().trim();
-        String tipo = (String) comboTipoUsuario.getSelectedItem();
+        String password = new String(txtPassword.getPassword()).trim();
+        String confirmPassword = new String(txtConfirmPassword.getPassword()).trim();
 
-        // Validaciones básicas (sin duplicados ni @)
         if (nickname.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nickname, Nombre y Correo son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Campos específicos
-        String apellido = txtApellido.getText().trim();
-        String ins = (String) comboInstitucion.getSelectedItem();
+        if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        if ("Sin institución".equals(ins)) {
-            ins = "";
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 6 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         DTFecha fechanac = new DTFecha(
-            (int) spinnerDia.getValue(),
-            (int) spinnerMes.getValue(),
-            (int) spinnerAnio.getValue()
+                (int) spinnerDia.getValue(),
+                (int) spinnerMes.getValue(),
+                (int) spinnerAnio.getValue()
         );
+
+        String apellido = txtApellido.getText().trim();
+        String ins = (String) comboInstitucion.getSelectedItem();
+        if ("Sin institución".equals(ins)) ins = "";
+
+        String descr = txtDescripcion.getText().trim();
+        String link = txtLink.getText().trim();
 
         // Validaciones por tipo
         if ("Asistente".equals(tipo)) {
@@ -245,11 +230,7 @@ public class AltaUsuarioFrame extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Debe ingresar el apellido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-
-        } else if ("Organizador".equals(tipo)) {
-            String descr = txtDescripcion.getText().trim();
-            String link = txtLink.getText().trim();
+        } else {
             if (descr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -258,37 +239,20 @@ public class AltaUsuarioFrame extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El sitio web debe ser válido (debe contener un punto).", "Error de formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            IControladorUsuario contrU = IControladorUsuario.getInstance();
-
-            if (!contrU.esFechaValida(fechanac.getDia(),fechanac.getMes(),fechanac.getAnio())) {
-            	JOptionPane.showMessageDialog(this, "Fecha Invalida, ingrese una nueva fecha", "Fecha Invalida", JOptionPane.ERROR_MESSAGE);
-                return;
-			}
-
         }
 
-        // Intentar dar de alta
         try {
-            IControladorUsuario cont = IControladorUsuario.getInstance();
-
+            ControladorUsuario cont = ControladorUsuario.getInstance();
             if ("Organizador".equals(tipo)) {
-                String descr = txtDescripcion.getText().trim();
-                String link = txtLink.getText().trim();
-                String password = txtPassword.getText().trim();
                 cont.altaOrganizador(nickname, nombre, correo, descr, link, password);
             } else {
-            	String password = txtPassword.getText().trim();
                 cont.altaAsistente(nickname, nombre, correo, apellido, fechanac, ins, password);
             }
 
             JOptionPane.showMessageDialog(this, "Usuario dado de alta correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             limpiarFormulario();
             dispose();
-
-        } catch (UsuarioRepetidoException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-        } catch (CorreoInvalidoException e) {
+        } catch (UsuarioRepetidoException | CorreoInvalidoException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -299,19 +263,18 @@ public class AltaUsuarioFrame extends JInternalFrame {
     private void limpiarFormulario() {
         txtNickname.setText("");
         txtNombre.setText("");
-        txtCorreo.setText("");
         txtApellido.setText("");
+        txtCorreo.setText("");
+        txtPassword.setText("");
+        txtConfirmPassword.setText("");
         txtDescripcion.setText("");
         txtLink.setText("");
         comboInstitucion.setSelectedIndex(0);
 
-        // Resetear spinners
         spinnerDia.setValue(1);
         spinnerMes.setValue(1);
         spinnerAnio.setValue(2000);
 
-        // Volver a cargar el tipo (y actualiza los campos)
         cambiarTipo();
     }
-
 }
