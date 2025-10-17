@@ -81,81 +81,90 @@ public class AltaPatrocinioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            // Validar sesión y rol
-            HttpSession session = request.getSession(false);
-            if (session == null || session.getAttribute("usuario") == null) {
-                response.sendRedirect(request.getContextPath() + "/login");
-                return;
-            }
-            String role = (String) session.getAttribute("role");
-            if (!"organizador".equals(role)) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN,
-                        "Solo los organizadores pueden dar de alta patrocinios");
-                return;
-            }
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        String role = (String) session.getAttribute("role");
+        if (!"organizador".equals(role)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Solo los organizadores pueden dar de alta patrocinios");
+            return;
+        }
 
-            // Parámetros del formulario
-            String edicion = request.getParameter("edicion");
-            String tipoRegistro = request.getParameter("tipoRegistro");
-            String institucion = request.getParameter("institucion");
-            String nivelPatrocinioStr = request.getParameter("nivelPatrocinio");
-            String aporteStr = request.getParameter("aporteEconomico");
-            String registrosGratuitosStr = request.getParameter("registrosGratuitos");
-            String codigo = request.getParameter("codigoPatrocinio");
+        String edicion = request.getParameter("edicion");
+        String tipoRegistro = request.getParameter("tipoRegistro");
+        String institucion = request.getParameter("institucion");
+        String nivelPatrocinioStr = request.getParameter("nivelPatrocinio");
+        String aporteStr = request.getParameter("aporteEconomico");
+        String registrosGratuitosStr = request.getParameter("registrosGratuitos");
+        String codigo = request.getParameter("codigoPatrocinio");
 
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+        IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+        IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 
-            // Validaciones básicas
-            if (edicion == null || tipoRegistro == null || institucion == null || nivelPatrocinioStr == null ||
+        // Validaciones básicas
+        if (edicion == null || tipoRegistro == null || institucion == null || nivelPatrocinioStr == null ||
                 aporteStr == null || registrosGratuitosStr == null || codigo == null ||
                 edicion.isEmpty() || tipoRegistro.isEmpty() || institucion.isEmpty() ||
                 nivelPatrocinioStr.isEmpty() || aporteStr.isEmpty() || registrosGratuitosStr.isEmpty() || codigo.isEmpty()) {
 
-                request.setAttribute("msg", "⚠️ Todos los campos son obligatorios.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-                return;
-            }
-
-            try {
-                double aporte = Double.parseDouble(aporteStr);
-                int registrosGratuitos = Integer.parseInt(registrosGratuitosStr);
-                NivelPatrocinio nivel = NivelPatrocinio.valueOf(nivelPatrocinioStr);
-
-                LocalDate hoy = LocalDate.now();
-                DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
-
-                ctrlEvento.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
-
-                // Redirect a listado
-                response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("msg", "⚠️ Formato inválido en números.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-
-            } catch (IllegalArgumentException e) {
-                request.setAttribute("msg", "⚠️ Nivel de patrocinio no reconocido.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-
-            } catch (PatrocinioDuplicadoException e) {
-                request.setAttribute("msg", "⚠️ Ya existe un patrocinio de esta institución en esta edición.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-            }
-
-        } catch (Exception e) {
-            throw new ServletException("❌ Error inesperado en alta patrocinio", e);
+            request.setAttribute("msg", "⚠️ Todos los campos son obligatorios.");
+            setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
+            // Recargar datos necesarios para la JSP
+            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            cargarSesionYCategorias(request, session);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+            return;
         }
+
+        try {
+            double aporte = Double.parseDouble(aporteStr);
+            int registrosGratuitos = Integer.parseInt(registrosGratuitosStr);
+            NivelPatrocinio nivel = NivelPatrocinio.valueOf(nivelPatrocinioStr);
+
+            LocalDate hoy = LocalDate.now();
+            DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
+
+            ctrlEvento.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
+
+            response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("msg", "⚠️ Formato inválido en números.");
+            setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
+            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            cargarSesionYCategorias(request, session);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("msg", "⚠️ Nivel de patrocinio no reconocido.");
+            setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
+            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            cargarSesionYCategorias(request, session);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+
+        } catch (PatrocinioDuplicadoException e) {
+            request.setAttribute("msg", "⚠️ Ya existe un patrocinio de esta institución en esta edición.");
+            setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
+            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            cargarSesionYCategorias(request, session);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+        }
+    }
+
+    // Método para recargar categorías y datos de sesión
+    private void cargarSesionYCategorias(HttpServletRequest request, HttpSession session) {
+        try {
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            request.setAttribute("categorias", ctrlEvento.listarCategorias());
+            request.setAttribute("nickname", session.getAttribute("usuario"));
+            request.setAttribute("avatar", session.getAttribute("avatar"));
+            request.setAttribute("role", session.getAttribute("role"));
+            request.setAttribute("nombre", session.getAttribute("nombre"));
+        } catch (Exception ignored) {}
     }
 
     private void recargarFormulario(HttpServletRequest request,
