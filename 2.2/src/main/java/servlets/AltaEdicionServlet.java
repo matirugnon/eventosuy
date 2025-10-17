@@ -1,6 +1,8 @@
 ﻿package servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.time.LocalDate;
 
@@ -98,6 +100,13 @@ public class AltaEdicionServlet extends HttpServlet {
                 mostrarFormularioConError(request, response, error);
                 return;
             }
+            
+            
+            //verificar si existe
+            
+            if () {
+            	
+            }
 
             // Procesar imagen si existe
             String rutaImagen = procesarImagen(request);
@@ -115,9 +124,11 @@ public class AltaEdicionServlet extends HttpServlet {
 
             // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
+            
+            String edicionEncoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
+            String mensajeEncoded = URLEncoder.encode("Evento creado exitosamente", StandardCharsets.UTF_8);
 
-            // Redirigir con mensaje de exito
-            response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + nombre + "&mensaje=Edicion creada exitosamente");
+            response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + edicionEncoded + "&mensaje=" + mensajeEncoded);
 
         } catch (EdicionExistenteException e) {
             mostrarFormularioConError(request, response, "Ya existe una edición con ese nombre");

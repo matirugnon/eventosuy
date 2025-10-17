@@ -217,7 +217,7 @@
                             </div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/altaEvento" method="post" enctype="multipart/form-data" id="formEvento">
+                        <form action="${pageContext.request.contextPath}/altaEvento" method="post" enctype="multipart/form-data" id="formEvento"  accept-charset="UTF-8">
                             <!-- Campos básicos -->
                             <div class="form-grid">
                                 <div class="form-group">
