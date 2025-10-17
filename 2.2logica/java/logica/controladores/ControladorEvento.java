@@ -196,7 +196,7 @@ public class ControladorEvento implements IControladorEvento {
 
 	        if (existeEdicion(nomEdicion)) {
 	            throw new EdicionExistenteException("Ya existe una edición con el nombre: " + nomEdicion);
-		}
+	        }
 
 	        if (fechaFin.compareTo(fechaIni) < 0) { //error de fecha
 	            throw new FechasIncompatiblesException();

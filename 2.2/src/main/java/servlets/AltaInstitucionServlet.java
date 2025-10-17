@@ -35,6 +35,7 @@ public class AltaInstitucionServlet extends HttpServlet {
         // Cargar categorías para el sidebar
         Set<String> categorias = controladorEvento.listarCategorias();
         request.setAttribute("categorias", categorias);
+        request.setAttribute("nickname", request.getParameter("nickname"));
         
         // Mostrar el formulario de alta
         request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
@@ -108,6 +109,7 @@ public class AltaInstitucionServlet extends HttpServlet {
             request.setAttribute("categorias", categorias);
             request.setAttribute("error", "Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
             request.setAttribute("nombre", request.getParameter("nombre"));
+            request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
             request.setAttribute("sitioWeb", request.getParameter("sitioWeb"));
             request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
@@ -119,6 +121,7 @@ public class AltaInstitucionServlet extends HttpServlet {
             request.setAttribute("categorias", categorias);
             request.setAttribute("error", e.getMessage());
             request.setAttribute("nombre", request.getParameter("nombre"));
+            request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
             request.setAttribute("sitioWeb", request.getParameter("sitioWeb"));
             request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
@@ -130,6 +133,7 @@ public class AltaInstitucionServlet extends HttpServlet {
             request.setAttribute("categorias", categorias);
             request.setAttribute("error", "Ocurrió un error inesperado: " + e.getMessage());
             request.setAttribute("nombre", request.getParameter("nombre"));
+            request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
             request.setAttribute("sitioWeb", request.getParameter("sitioWeb"));
             request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")

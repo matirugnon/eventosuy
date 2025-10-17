@@ -105,7 +105,7 @@
                             <img src="${pageContext.request.contextPath}/${sessionScope.avatar}" alt="Usuario" class="avatar">
                         </c:when>
                         <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/img/default-avatar.png" alt="Usuario" class="avatar">
+                            <img src="${pageContext.request.contextPath}/img/usSinFoto.webp" alt="Usuario" class="avatar">
                         </c:otherwise>
                     </c:choose>
                     <span class="nickname">${sessionScope.usuario}</span>
