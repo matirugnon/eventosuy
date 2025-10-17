@@ -45,11 +45,11 @@
                     <div class="panel sidebar">
                         <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
                         <ul class="menu-list">
-                            <li><a href="${pageContext.request.contextPath}/altaEvento" style="white-space: nowrap;">Crear Evento</a></li>
-                            <li><a href="${pageContext.request.contextPath}/altaEdicion" style="white-space: nowrap;">Crear Edición</a></li>
-                            <li><a href="${pageContext.request.contextPath}/altaPatrocinio" style="white-space: nowrap;">Crear Patrocinio</a></li>
-                            <li><a href="${pageContext.request.contextPath}/altaTipoDeRegistro" style="white-space: nowrap;">Crear Tipo de Registro</a></li>
-                        </ul>
+                    		<li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
+                    		<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
+                    		<li><a href="altaInstitucion">Alta Institución</a></li>
+                    		<li><a href="${pageContext.request.contextPath}/edicionesOrganizadas">Ediciones Organizadas</a></li>
+                		</ul>
                     </div>
                   </c:when>
                   <c:when test="${role == 'asistente'}">

@@ -56,7 +56,7 @@
                       <div class="panel-header">Mi perfil</div>
                       <ul class="menu-list">
                         <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
-                        <li><a href="${pageContext.request.contextPath}/misRegistros" style="font-weight: bold; color: #182080;">Mis Registros</a></li>
+                        <li><a href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a></li>
                       </ul>
                     </div>
                   </c:when>
