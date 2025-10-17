@@ -33,10 +33,19 @@ public class AltaInstitucionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        
+        String nickname = (String) session.getAttribute("usuario");
+        request.setAttribute("nickname", nickname);
+        
         // Cargar categorías para el sidebar
         Set<String> categorias = controladorEvento.listarCategorias();
         request.setAttribute("categorias", categorias);
-        request.setAttribute("nickname", request.getParameter("nickname"));
         
         // Mostrar el formulario de alta
         request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
@@ -80,6 +89,7 @@ public class AltaInstitucionServlet extends HttpServlet {
                 request.setAttribute("categorias", categorias);
                 request.setAttribute("error", "El sitio web debe comenzar con http:// o https://");
                 request.setAttribute("nombre", nombre);
+                request.setAttribute("nickname", nickname);
                 request.setAttribute("descripcion", descripcion);
                 request.setAttribute("sitioWeb", sitioWeb);
                 request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
