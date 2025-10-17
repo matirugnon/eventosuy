@@ -28,6 +28,10 @@ public class AltaPatrocinioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar sesión y rol
             HttpSession session = request.getSession(false);
@@ -105,6 +109,10 @@ public class AltaPatrocinioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -135,51 +143,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 edicion.isEmpty() || tipoRegistro.isEmpty() || institucion.isEmpty() ||
                 nivelPatrocinioStr.isEmpty() || aporteStr.isEmpty() || registrosGratuitosStr.isEmpty() || codigo.isEmpty()) {
 
-<<<<<<< HEAD
-                request.setAttribute("msg", "⚠️ Todos los campos son obligatorios.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-                return;
-            }
 
-            try {
-                double aporte = Double.parseDouble(aporteStr);
-                int registrosGratuitos = Integer.parseInt(registrosGratuitosStr);
-                NivelPatrocinio nivel = NivelPatrocinio.valueOf(nivelPatrocinioStr);
-
-                LocalDate hoy = LocalDate.now();
-                DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
-
-                ctrlEvento.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
-
-                // Redirigir con mensaje de éxito
-                session.setAttribute("datosMensaje", "El patrocinio de '" + institucion + "' para la edición '" + edicion + "' fue creado exitosamente");
-                session.setAttribute("datosMensajeTipo", "info");
-                response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("msg", "❌ Formato inválido en números.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-
-            } catch (IllegalArgumentException e) {
-                request.setAttribute("msg", "❌ Nivel de patrocinio no reconocido.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-
-            } catch (PatrocinioDuplicadoException e) {
-                request.setAttribute("msg", "❌ Ya existe un patrocinio de esta institución en esta edición.");
-                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-                recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
-                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-            }
-
-        } catch (Exception e) {
-            throw new ServletException("❌ Error inesperado en alta patrocinio", e);
-=======
             request.setAttribute("msg", "⚠️ Todos los campos son obligatorios.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
             // Recargar datos necesarios para la JSP
@@ -187,7 +151,6 @@ public class AltaPatrocinioServlet extends HttpServlet {
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
             return;
->>>>>>> 68af7a028bb5e2cc511dc9d0f1717cff17ffccda
         }
 
         try {

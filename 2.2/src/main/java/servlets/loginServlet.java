@@ -23,17 +23,29 @@ public class loginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         processRequest(request, response); // Reutilizar lÃ³gica comÃºn
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         processRequest(request, response); // Reutilizar lÃ³gica comÃºn
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         try {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             ManejadorUsuario manejador = ManejadorUsuario.getinstance();
@@ -61,7 +73,7 @@ public class loginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/inicio"); // Redirigir a la pÃ¡gina de inicio
                 return;
             } else {
-                request.setAttribute("error", "Usuario o contraseÃ±a incorrectos.");
+                request.setAttribute("error", "Usuario o contraseña incorrectos.");
             }
 
             // Recargar la pÃ¡gina de login con el mensaje de error

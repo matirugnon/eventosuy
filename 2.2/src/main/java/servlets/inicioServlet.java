@@ -29,6 +29,10 @@ public class inicioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 

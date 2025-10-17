@@ -15,6 +15,10 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         // Invalidar la sesión actual
         HttpSession session = request.getSession(false); // Obtener la sesión actual si existe
         if (session != null) {

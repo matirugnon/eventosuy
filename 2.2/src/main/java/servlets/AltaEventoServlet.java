@@ -75,6 +75,10 @@ public class AltaEventoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
@@ -119,7 +123,7 @@ public class AltaEventoServlet extends HttpServlet {
             }
 
             // Crear evento (el mÃ©todo original no soporta imagen, se omite por ahora)
-            ctrlEvento.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasSet);
+            ctrlEvento.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasSet, rutaImagen);
 
             // Redirigir con mensaje de éxito usando sesión
             session.setAttribute("datosMensaje", "El evento '" + nombre + "' fue creado exitosamente");
