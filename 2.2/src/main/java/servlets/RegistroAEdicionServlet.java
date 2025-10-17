@@ -2,6 +2,9 @@
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -62,7 +65,9 @@ public class RegistroAEdicionServlet extends HttpServlet {
 
             // Obtener todos los eventos con sus ediciones activas
             Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             // Para cada evento, obtener las ediciones activas con informaci├│n completa
             for (DTEvento evento : eventos) {
@@ -189,66 +194,72 @@ public class RegistroAEdicionServlet extends HttpServlet {
             String tipoMensaje = "error";
             
             if (edicion == null || edicion.trim().isEmpty()) {
-                mensaje = "Debe seleccionar una edici├│n.";
+                mensaje = "❌ Debe seleccionar una edición.";
             } else if (tipoRegistro == null || tipoRegistro.trim().isEmpty()) {
-                mensaje = "Debe seleccionar un tipo de registro.";
+                mensaje = "❌ Debe seleccionar un tipo de registro.";
             } else {
                 edicion = edicion.trim();
                 tipoRegistro = tipoRegistro.trim();
                 
                 try {
-                    // Verificar que la edici├│n existe
+                    // Verificar que la edición existe
                     DTEdicion dtEdicion = ctrlEvento.consultarEdicion(edicion);
                     if (dtEdicion == null) {
-                        mensaje = "La edici├│n seleccionada no existe.";
+                        mensaje = "❌ La edición seleccionada no existe.";
                     } else {
-                        // Verificar que el usuario no est├⌐ ya registrado
+                        // Verificar que el usuario no esté ya registrado
                         boolean yaRegistrado = ctrlRegistro.estaRegistrado(edicion, usuario);
                         if (yaRegistrado) {
-                            mensaje = "Ya est├ís registrado en esta edici├│n.";
+                            mensaje = "❌ Ya estás registrado en esta edición.";
                         } else {
                             // Verificar que el tipo de registro existe
                             DTTipoDeRegistro dtTipoRegistro = ctrlRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
                             if (dtTipoRegistro == null) {
-                                mensaje = "El tipo de registro seleccionado no existe.";
+                                mensaje = "❌ El tipo de registro seleccionado no existe.";
                             } else {
                                 // Verificar cupo disponible
                                 boolean cupoDisponible = !ctrlRegistro.alcanzoCupo(edicion, tipoRegistro);
                                 if (!cupoDisponible) {
-                                    mensaje = "Ya se alcanz├│ el cupo para este tipo de registro.";
+                                    mensaje = "❌ Ya se alcanzó el cupo para este tipo de registro.";
                                 } else {
                                     double costoFinal = dtTipoRegistro.getCosto();
                                     
-                                    // Procesar c├│digo de patrocinio si se proporcion├│
+                                    // Procesar código de patrocinio si se proporcionó
                                     if (codigoPatrocinio != null && !codigoPatrocinio.trim().isEmpty()) {
                                         codigoPatrocinio = codigoPatrocinio.trim();
                                         
                                         try {
-                                            // Verificar que el c├│digo existe en la edici├│n
+                                            // Verificar que el código existe en la edición
                                             boolean existeCodigo = ctrlEvento.existeCodigoPatrocinioEnEdicion(edicion, codigoPatrocinio);
                                             if (!existeCodigo) {
-                                                mensaje = "El c├│digo de patrocinio no es v├ílido para esta edici├│n.";
+                                                mensaje = "❌ El código de patrocinio no es válido para esta edición.";
                                             } else {
-                                                // Obtener informaci├│n del patrocinio
+                                                // Obtener información del patrocinio
                                                 DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigoPatrocinio);
                                                 
-                                                // Verificar que el patrocinio aplica al tipo de registro
-                                                if (!patrocinio.getTipoDeRegistro().equals(tipoRegistro)) {
-                                                    mensaje = "El c├│digo de patrocinio no es v├ílido para este tipo de registro.";
+                                                if (patrocinio == null) {
+                                                    mensaje = "❌ El código de patrocinio ingresado no es válido.";
                                                 } else {
-                                                    // Verificar que a├║n quedan usos disponibles
-                                                    if (patrocinio.getCantidadGratis() <= 0) {
-                                                        mensaje = "Ya se alcanzo la cantidad de usos para este c├│digo de patrocinio.";
+                                                    // Verificar que el patrocinio aplica al tipo de registro
+                                                    if (!patrocinio.getTipoDeRegistro().equals(tipoRegistro)) {
+                                                        mensaje = "❌ El código de patrocinio no es válido para este tipo de registro.";
                                                     } else {
-                                                        // TODO: Verificar instituci├│n del usuario si es necesario
-                                                        costoFinal = 0.0; // Registro gratuito con patrocinio
+                                                        // Verificar que aún quedan usos disponibles
+                                                        if (patrocinio.getCantidadGratis() <= 0) {
+                                                            mensaje = "❌ Ya se alcanzó la cantidad de usos para este código de patrocinio.";
+                                                        } else {
+                                                            // TODO: Verificar institución del usuario si es necesario
+                                                            costoFinal = 0.0; // Registro gratuito con patrocinio
+                                                        }
                                                     }
                                                 }
                                             }
                                         } catch (EdicionSinPatrociniosException e) {
-                                            mensaje = "Esta edici├│n no tiene patrocinios disponibles.";
+                                            mensaje = "❌ Esta edición no tiene patrocinios disponibles.";
                                         } catch (PatrocinioNoEncontradoException e) {
-                                            mensaje = "El c├│digo de patrocinio no es v├ílido.";
+                                            mensaje = "❌ El código de patrocinio ingresado no es válido.";
+                                        } catch (Exception e) {
+                                            mensaje = "❌ Error al validar el código de patrocinio: " + e.getMessage();
                                         }
                                     }
                                     
@@ -263,40 +274,37 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                         
                                         ctrlRegistro.altaRegistro(edicion, usuario, tipoRegistro, fechaRegistro, costoFinal);
                                         
-                                        mensaje = "Γ£à Registro exitoso. Fecha: " + fechaRegistro.toString() + " | Costo: $" + String.format("%.0f", costoFinal);
-                                        tipoMensaje = "success";
+                                        session.setAttribute("datosMensaje", "Registro exitoso a la edición '" + edicion + "'. Fecha: " + fechaRegistro.toString() + " | Costo: $" + String.format("%.0f", costoFinal));
+                                        session.setAttribute("datosMensajeTipo", "info");
+                                        response.sendRedirect(request.getContextPath() + "/inicio");
+                                        return;
                                     }
                                 }
                             }
                         }
                     }
-                } catch (EdicionNoExisteException e) {
-                    mensaje = "La edici├│n seleccionada no existe.";
-                } catch (UsuarioNoExisteException e) {
-                    mensaje = "Error: usuario no encontrado.";
-                } catch (UsuarioYaRegistradoEnEdicionException e) {
-                    mensaje = "Ya est├ís registrado en esta edici├│n.";
                 } catch (Exception e) {
-                    mensaje = "Error inesperado: " + e.getMessage();
+                    mensaje = "❌ Error al procesar el registro: " + e.getMessage();
                 }
             }
             
-            // Recargar datos para mostrar el formulario con el mensaje
-            Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
-            Set<String> categorias = ctrlEvento.listarCategorias();
-            
-            request.setAttribute("eventos", eventos);
-            request.setAttribute("categorias", categorias);
-            request.setAttribute("role", role);
-            request.setAttribute("nickname", usuario);
-            request.setAttribute("avatar", session.getAttribute("avatar"));
-            request.setAttribute("mensaje", mensaje);
-            request.setAttribute("tipoMensaje", tipoMensaje);
-            
-            request.getRequestDispatcher("/WEB-INF/views/registroAedicion.jsp").forward(request, response);
+            // Si llegamos aquí es porque hubo un error
+            System.out.println("DEBUG - mensaje: '" + mensaje + "'");
+            System.out.println("DEBUG - mensaje.isEmpty(): " + mensaje.isEmpty());
+            if (!mensaje.isEmpty()) {
+                System.out.println("DEBUG - Guardando mensaje en sesión: " + mensaje);
+                session.setAttribute("datosMensaje", mensaje);
+                session.setAttribute("datosMensajeTipo", "error");
+                response.sendRedirect(request.getContextPath() + "/registroAedicion");
+                return;
+            } else {
+                System.out.println("DEBUG - mensaje está vacío, no se redirige con error");
+            }
             
         } catch (Exception e) {
-            throw new ServletException("Error procesando registro", e);
+            session.setAttribute("datosMensaje", "❌ Error procesando registro: " + e.getMessage());
+            session.setAttribute("datosMensajeTipo", "error");
+            response.sendRedirect(request.getContextPath() + "/registroAedicion");
         }
     }
 }

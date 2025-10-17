@@ -1,6 +1,9 @@
 ﻿package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,8 +92,10 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 tipoUsuario = "Usuario";
             }
 
-            // Obtener categorÃ­as para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Manejar parÃ¡metros de navegaciÃ³n de regreso
             String from = request.getParameter("from");

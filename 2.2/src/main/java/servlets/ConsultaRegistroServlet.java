@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -95,8 +98,10 @@ public class ConsultaRegistroServlet extends HttpServlet {
             // Obtener información de la edición
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
             
-            // Obtener todas las categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Pasar los datos a la JSP
             request.setAttribute("registro", registro);

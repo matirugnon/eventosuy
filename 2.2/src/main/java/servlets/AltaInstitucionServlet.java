@@ -100,14 +100,17 @@ public class AltaInstitucionServlet extends HttpServlet {
                 controladorUsuario.altaInstitucion(nombre, descripcion, sitioWeb);
             }
             
-            // Redirigir a página de éxito
-            response.sendRedirect("inicio?mensaje=Institucion creada exitosamente");
+            // Redirigir con mensaje de éxito usando sesión
+            HttpSession session = request.getSession();
+            session.setAttribute("datosMensaje", "La institución '" + nombre + "' fue creada exitosamente");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/inicio");
             
         } catch (ExisteInstitucionException e) {
             // La institución ya existe
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
-            request.setAttribute("error", "Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
+            request.setAttribute("error", "❌ Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
             request.setAttribute("nombre", request.getParameter("nombre"));
             request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
@@ -131,7 +134,7 @@ public class AltaInstitucionServlet extends HttpServlet {
             // Error inesperado
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
-            request.setAttribute("error", "Ocurrió un error inesperado: " + e.getMessage());
+            request.setAttribute("error", "❌ Ocurrió un error inesperado: " + e.getMessage());
             request.setAttribute("nombre", request.getParameter("nombre"));
             request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));

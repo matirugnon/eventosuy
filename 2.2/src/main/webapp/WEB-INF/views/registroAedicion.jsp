@@ -1,5 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%
+    // Leer mensajes de sesión si existen
+    String datosMensaje = (String) session.getAttribute("datosMensaje");
+    String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
+    if (datosMensaje != null) {
+        request.setAttribute("mensaje", datosMensaje);
+        request.setAttribute("tipoMensaje", datosMensajeTipo != null && datosMensajeTipo.equals("info") ? "success" : "error");
+        session.removeAttribute("datosMensaje");
+        session.removeAttribute("datosMensajeTipo");
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>

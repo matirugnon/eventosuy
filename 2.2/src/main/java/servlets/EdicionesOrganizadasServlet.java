@@ -12,6 +12,12 @@ import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @WebServlet("/edicionesOrganizadas")
@@ -57,10 +63,32 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             // Obtener ediciones aceptadas organizadas por este usuario
             Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
             
-            // Obtener categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Verificar cuáles ediciones ya finalizaron
+            LocalDate hoy = LocalDate.now();
+            Map<String, Boolean> edicionesPasadas = new HashMap<>();
+            
+            for (DTEdicion edicion : edicionesOrganizadas) {
+                if (edicion.getFechaFin() != null) {
+                    LocalDate fechaFin = LocalDate.of(
+                        edicion.getFechaFin().getAnio(),
+                        edicion.getFechaFin().getMes(),
+                        edicion.getFechaFin().getDia()
+                    );
+                    // La edición está finalizada si la fecha de fin es anterior a hoy
+                    boolean esPasada = fechaFin.isBefore(hoy);
+                    edicionesPasadas.put(edicion.getNombre(), esPasada);
+                } else {
+                    edicionesPasadas.put(edicion.getNombre(), false);
+                }
+            }
+            
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             request.setAttribute("edicionesOrganizadas", edicionesOrganizadas);
+            request.setAttribute("edicionesPasadas", edicionesPasadas);
             request.setAttribute("categorias", categorias);
             
             request.getRequestDispatcher("/WEB-INF/views/edicionesOrganizadas.jsp").forward(request, response);

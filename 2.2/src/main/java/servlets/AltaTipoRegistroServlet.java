@@ -13,6 +13,10 @@ import logica.datatypesyenum.EstadoEdicion;
 import excepciones.NombreTipoRegistroDuplicadoException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @WebServlet("/altaTipoRegistro")
@@ -81,8 +85,27 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 return;
             }
             
-            // Obtener categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Verificar que la edición no haya finalizado
+            if (edicion.getFechaFin() != null) {
+                LocalDate hoy = LocalDate.now();
+                LocalDate fechaFin = LocalDate.of(
+                    edicion.getFechaFin().getAnio(),
+                    edicion.getFechaFin().getMes(),
+                    edicion.getFechaFin().getDia()
+                );
+                
+                if (fechaFin.isBefore(hoy)) {
+                    session.setAttribute("datosMensaje", "❌ No se puede dar de alta tipos de registro para una edición que ya finalizó");
+                    session.setAttribute("datosMensajeTipo", "error");
+                    response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
+                    return;
+                }
+            }
+            
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
             
             request.setAttribute("edicion", edicion);
@@ -186,17 +209,17 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             ctrlRegistro.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
             System.out.println("DEBUG: Tipo de registro creado exitosamente");
             
-            request.setAttribute("success", "Tipo de registro '" + nombre.trim() + "' creado exitosamente");
-            request.setAttribute("nombreTipoRegistro", nombre.trim());
-            
-            doGet(request, response);
+            // Redirigir con mensaje de éxito
+            session.setAttribute("datosMensaje", "El tipo de registro '" + nombre.trim() + "' fue creado exitosamente para la edición '" + edicionNombre + "'");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
             
         } catch (NombreTipoRegistroDuplicadoException e) {
-            request.setAttribute("error", "Ya existe un tipo de registro con ese nombre para esta edición. Por favor, elige otro nombre.");
+            request.setAttribute("error", "❌ Ya existe un tipo de registro con ese nombre para esta edición. Por favor, elige otro nombre.");
             doGet(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error al crear el tipo de registro: " + e.getMessage());
+            request.setAttribute("error", "❌ Error al crear el tipo de registro: " + e.getMessage());
             doGet(request, response);
         }
     }
