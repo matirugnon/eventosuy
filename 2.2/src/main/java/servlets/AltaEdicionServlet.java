@@ -104,9 +104,7 @@ public class AltaEdicionServlet extends HttpServlet {
             
             //verificar si existe
             
-            if () {
-            	
-            }
+
 
             // Procesar imagen si existe
             String rutaImagen = procesarImagen(request);

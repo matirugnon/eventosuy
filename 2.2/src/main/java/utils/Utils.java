@@ -272,6 +272,22 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		}
 	}
 
+	// Método para verificar si hay datos básicos cargados (usuarios, eventos, etc.)
+	public static boolean hayDatosBasicos() {
+		try {
+			IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+			IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+			
+			// Verificar si hay al menos un usuario y un evento
+			boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
+			boolean hayEventos = !ctrlEvento.obtenerDTEventos().isEmpty();
+			
+			return hayUsuarios && hayEventos;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	public static boolean asegurarDatosCargados(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		if (request != null && datosPrecargados(request.getServletContext())) {
