@@ -28,6 +28,10 @@ public class AltaEdicionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         try {
             // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
@@ -70,6 +74,10 @@ public class AltaEdicionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
@@ -116,7 +124,7 @@ public class AltaEdicionServlet extends HttpServlet {
             DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
 
             // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
-            ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
+            ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta, rutaImagen);
             
             String edicionEncoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
             String mensajeEncoded = URLEncoder.encode("Evento creado exitosamente", StandardCharsets.UTF_8);

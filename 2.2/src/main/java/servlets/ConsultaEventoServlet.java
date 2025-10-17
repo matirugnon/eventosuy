@@ -63,6 +63,7 @@ public class ConsultaEventoServlet extends HttpServlet {
             request.setAttribute("role", role);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
+            request.setAttribute("imagen", request.getSession().getAttribute("imagen"));
 
             request.getRequestDispatcher("/WEB-INF/views/consultaEvento.jsp").forward(request, response);
 

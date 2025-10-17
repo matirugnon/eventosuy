@@ -27,6 +27,9 @@ public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         
         try {
             // Obtener lista de instituciones para el dropdown
@@ -45,6 +48,9 @@ public class SignupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Obtener parÃ¡metros del formulario
             String rol = request.getParameter("rol");
@@ -191,7 +197,7 @@ public class SignupServlet extends HttpServlet {
                 // Retornar ruta relativa para guardar en la base de datos
                 return "/uploads/usuarios/" + nombreArchivo;
             } else {
-                throw new IllegalArgumentException("El archivo debe ser una imagen vÃ¡lida");
+                throw new IllegalArgumentException("El archivo debe ser una imagen válida");
             }
         }
         return null;
@@ -204,14 +210,14 @@ public class SignupServlet extends HttpServlet {
             return "El nickname es requerido";
         }
         if (nickname.length() > 30) {
-            return "El nickname no puede tener mÃ¡s de 30 caracteres";
+            return "El nickname no puede tener más de 30 caracteres";
         }
         
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre es requerido";
         }
         if (nombre.length() > 60) {
-            return "El nombre no puede tener mÃ¡s de 60 caracteres";
+            return "El nombre no puede tener más de 60 caracteres";
         }
         
         if (email == null || email.trim().isEmpty()) {
@@ -223,7 +229,7 @@ public class SignupServlet extends HttpServlet {
         }
         
         if (!password.equals(confirm)) {
-            return "Las contraseÃ±as no coinciden";
+            return "Las contraseñas no coinciden";
         }
         
         return null; // Sin errores

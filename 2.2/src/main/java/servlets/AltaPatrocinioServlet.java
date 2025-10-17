@@ -24,6 +24,10 @@ public class AltaPatrocinioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar sesión y rol
             HttpSession session = request.getSession(false);
@@ -81,6 +85,10 @@ public class AltaPatrocinioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Validar sesión y rol
             HttpSession session = request.getSession(false);

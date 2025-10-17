@@ -29,6 +29,10 @@ public class ModificarUsuarioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar que el usuario estÃ© logueado
             HttpSession session = request.getSession(false);
@@ -108,6 +112,10 @@ public class ModificarUsuarioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar que el usuario estÃ© logueado
             HttpSession session = request.getSession(false);
