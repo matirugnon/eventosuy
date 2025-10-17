@@ -19,6 +19,9 @@ import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.FechaInvalidaException;
 import utils.Utils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @WebServlet("/altaEvento")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
 public class AltaEventoServlet extends HttpServlet {
@@ -26,6 +29,10 @@ public class AltaEventoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    	
         try {
             // Verificar que el usuario estÃ© logueado y sea organizador
             HttpSession session = request.getSession(false);
@@ -117,8 +124,10 @@ public class AltaEventoServlet extends HttpServlet {
             // Crear evento (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasSet);
 
-            // Redirigir con mensaje de Ã©xito
-            response.sendRedirect(request.getContextPath() + "/consultaEvento?evento=" + nombre + "&mensaje=Evento creado exitosamente");
+            String eventoEncoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
+            String mensajeEncoded = URLEncoder.encode("Evento creado exitosamente", StandardCharsets.UTF_8);
+
+            response.sendRedirect(request.getContextPath() + "/consultaEvento?evento=" + eventoEncoded + "&mensaje=" + mensajeEncoded);
 
         } catch (EventoRepetidoException e) {
             mostrarFormularioConError(request, response, "Ya existe un evento con ese nombre");
