@@ -65,8 +65,11 @@ public class inicioServlet extends HttpServlet {
                 eventos = Collections.emptySet();
             }
 
-            // Categorias para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Categorias para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
+            
             // ParÃ¡metros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
             String busqueda = request.getParameter("busqueda");

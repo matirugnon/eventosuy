@@ -1,6 +1,9 @@
 ﻿package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -52,7 +55,9 @@ public class AltaEventoServlet extends HttpServlet {
 
             // Obtener los controladores
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Pasar datos a la JSP
             request.setAttribute("categorias", categorias);
@@ -116,19 +121,19 @@ public class AltaEventoServlet extends HttpServlet {
             // Crear evento (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasSet);
 
-            String eventoEncoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
-            String mensajeEncoded = URLEncoder.encode("Evento creado exitosamente", StandardCharsets.UTF_8);
-
-            response.sendRedirect(request.getContextPath() + "/consultaEvento?evento=" + eventoEncoded + "&mensaje=" + mensajeEncoded);
+            // Redirigir con mensaje de éxito usando sesión
+            session.setAttribute("datosMensaje", "El evento '" + nombre + "' fue creado exitosamente");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/inicio");
 
         } catch (EventoRepetidoException e) {
-            mostrarFormularioConError(request, response, "Ya existe un evento con ese nombre");
+            mostrarFormularioConError(request, response, "❌ Ya existe un evento con ese nombre");
         } catch (CategoriaNoSeleccionadaException e) {
-            mostrarFormularioConError(request, response, "Debe seleccionar al menos una categoria");
+            mostrarFormularioConError(request, response, "❌ Debe seleccionar al menos una categoria");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha del evento no es valida");
+            mostrarFormularioConError(request, response, "❌ La fecha del evento no es valida");
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al crear evento: " + e.getMessage());
+            mostrarFormularioConError(request, response, "❌ Error al crear evento: " + e.getMessage());
         }
     }
 
@@ -206,7 +211,9 @@ public class AltaEventoServlet extends HttpServlet {
         try {
             // Recargar datos necesarios
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));

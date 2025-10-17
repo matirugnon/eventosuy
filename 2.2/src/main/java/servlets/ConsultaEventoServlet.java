@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import excepciones.EventoNoExisteException;
@@ -51,8 +54,10 @@ public class ConsultaEventoServlet extends HttpServlet {
             }
             request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
-            // Obtener todas las categorías para el sidebar
-            Set<String> categorias = ctrl.listarCategorias();
+            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrl.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Pasar los datos a la JSP
             request.setAttribute("eventoSeleccionado", eventoSeleccionado);

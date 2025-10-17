@@ -3,6 +3,9 @@
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
 
@@ -51,7 +54,9 @@ public class AltaEdicionServlet extends HttpServlet {
 
             // Obtener eventos disponibles y categorias
             Set<String> eventos = ctrlEvento.listarEventos();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Pasar datos a la JSP
             request.setAttribute("eventos", eventos);
@@ -123,17 +128,17 @@ public class AltaEdicionServlet extends HttpServlet {
             // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
             ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta);
             
-            String edicionEncoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
-            String mensajeEncoded = URLEncoder.encode("Evento creado exitosamente", StandardCharsets.UTF_8);
-
-            response.sendRedirect(request.getContextPath() + "/consultaEdicion?edicion=" + edicionEncoded + "&mensaje=" + mensajeEncoded);
+            // Redirigir con mensaje de éxito usando sesión
+            session.setAttribute("datosMensaje", "La edición '" + nombre + "' fue creada exitosamente");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/inicio");
 
         } catch (EdicionExistenteException e) {
-            mostrarFormularioConError(request, response, "Ya existe una edición con ese nombre");
+            mostrarFormularioConError(request, response, "❌ Ya existe una edición con ese nombre");
         } catch (FechasIncompatiblesException e) {
-            mostrarFormularioConError(request, response, "Las fechas de inicio y fin no son compatibles");
+            mostrarFormularioConError(request, response, "❌ Las fechas de inicio y fin no son compatibles");
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al crear edición: " + e.getMessage());
+            mostrarFormularioConError(request, response, "❌ Error al crear edición: " + e.getMessage());
         }
     }
 
@@ -256,7 +261,9 @@ public class AltaEdicionServlet extends HttpServlet {
             // Recargar datos necesarios
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             Set<String> eventos = ctrlEvento.listarEventos();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             request.setAttribute("eventos", eventos);
             request.setAttribute("categorias", categorias);

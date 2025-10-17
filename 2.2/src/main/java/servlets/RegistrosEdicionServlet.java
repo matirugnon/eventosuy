@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -54,8 +57,10 @@ public class RegistrosEdicionServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             request.setAttribute("edicion", dt);
             request.setAttribute("categorias", categorias);

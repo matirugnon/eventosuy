@@ -73,19 +73,22 @@ public class SignupServlet extends HttpServlet {
                 return;
             }
             
-            // Ã‰xito - redirigir al inicio
-            response.sendRedirect(request.getContextPath() + "/inicio?mensaje=Usuario creado exitosamente");
+            // Éxito - redirigir al inicio
+            HttpSession session = request.getSession();
+            session.setAttribute("datosMensaje", "El usuario '" + nickname + "' fue creado exitosamente");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/inicio");
             
         } catch (UsuarioRepetidoException e) {
-            mostrarFormularioConError(request, response, "El nickname o email ya estÃ¡ en uso");
+            mostrarFormularioConError(request, response, "❌ El nickname o email ya está en uso");
         } catch (CorreoInvalidoException e) {
-            mostrarFormularioConError(request, response, "El correo electrÃ³nico no es vÃ¡lido");
+            mostrarFormularioConError(request, response, "❌ El correo electrónico no es válido");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha de nacimiento no es vÃ¡lida");
+            mostrarFormularioConError(request, response, "❌ La fecha de nacimiento no es válida");
         } catch (IllegalArgumentException e) {
-            mostrarFormularioConError(request, response, e.getMessage());
+            mostrarFormularioConError(request, response, "❌ " + e.getMessage());
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al crear usuario: " + e.getMessage());
+            mostrarFormularioConError(request, response, "❌ Error al crear usuario: " + e.getMessage());
         }
     }
     

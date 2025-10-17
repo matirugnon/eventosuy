@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -55,8 +56,10 @@ public class ListarUsuariosServlet extends HttpServlet {
             } else {
                 System.out.println("DEBUG: usuarios DTUsuario está vacío o es null");
             }
-            System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             // --- PAGINACION ---
             int pageSize = 5; // 5 usuarios por página

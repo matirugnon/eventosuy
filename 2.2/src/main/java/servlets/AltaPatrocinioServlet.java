@@ -5,12 +5,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTTipoDeRegistro;
 import logica.datatypesyenum.NivelPatrocinio;
@@ -48,14 +52,34 @@ public class AltaPatrocinioServlet extends HttpServlet {
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            
+            // Verificar que la edición no haya finalizado
+            DTEdicion dtEdicion = ctrlEvento.consultarEdicion(edicion);
+            if (dtEdicion != null && dtEdicion.getFechaFin() != null) {
+                LocalDate hoy = LocalDate.now();
+                LocalDate fechaFin = LocalDate.of(
+                    dtEdicion.getFechaFin().getAnio(),
+                    dtEdicion.getFechaFin().getMes(),
+                    dtEdicion.getFechaFin().getDia()
+                );
+                
+                if (fechaFin.isBefore(hoy)) {
+                    session.setAttribute("datosMensaje", "❌ No se puede dar de alta patrocinios para una edición que ya finalizó");
+                    session.setAttribute("datosMensajeTipo", "error");
+                    response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
+                    return;
+                }
+            }
 
             Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(edicion);
             Set<DTTipoDeRegistro> tiposRegistro = new HashSet<>();
             for (String nombreTipo : nombresTipos) {
                 tiposRegistro.add(ctrlRegistro.consultaTipoDeRegistro(edicion, nombreTipo));
             }
-            // Obtener categorías para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
             
      
@@ -131,23 +155,25 @@ public class AltaPatrocinioServlet extends HttpServlet {
 
                 ctrlEvento.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
 
-                // Redirect a listado
+                // Redirigir con mensaje de éxito
+                session.setAttribute("datosMensaje", "El patrocinio de '" + institucion + "' para la edición '" + edicion + "' fue creado exitosamente");
+                session.setAttribute("datosMensajeTipo", "info");
                 response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
 
             } catch (NumberFormatException e) {
-                request.setAttribute("msg", "⚠️ Formato inválido en números.");
+                request.setAttribute("msg", "❌ Formato inválido en números.");
                 setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
                 recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
                 request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
             } catch (IllegalArgumentException e) {
-                request.setAttribute("msg", "⚠️ Nivel de patrocinio no reconocido.");
+                request.setAttribute("msg", "❌ Nivel de patrocinio no reconocido.");
                 setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
                 recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
                 request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
             } catch (PatrocinioDuplicadoException e) {
-                request.setAttribute("msg", "⚠️ Ya existe un patrocinio de esta institución en esta edición.");
+                request.setAttribute("msg", "❌ Ya existe un patrocinio de esta institución en esta edición.");
                 setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
                 recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
                 request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);

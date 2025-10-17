@@ -1,6 +1,9 @@
 ﻿package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.servlet.ServletException;
@@ -81,8 +84,10 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 instituciones = ctrlUsuario.listarInstituciones();
             }
 
-            // Obtener categorÃ­as para el sidebar
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabéticamente)
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
 
             // Pasar los datos como atributos a la JSP
             request.setAttribute("usuario", usuario);
@@ -200,18 +205,20 @@ public class ModificarUsuarioServlet extends HttpServlet {
             // Modificar usuario en el sistema
             ctrlUsuario.modificarUsuario(nickname, usuarioModificado);
 
-            // Actualizar datos en la sesiÃ³n
+            // Actualizar datos en la sesión
             session.setAttribute("avatar", rutaImagen);
 
-            // Redirigir al perfil con mensaje de Ã©xito
-            response.sendRedirect(request.getContextPath() + "/miPerfil?mensaje=Usuario modificado exitosamente");
+            // Redirigir al perfil con mensaje de éxito
+            session.setAttribute("datosMensaje", "El perfil del usuario '" + nickname + "' fue modificado exitosamente");
+            session.setAttribute("datosMensajeTipo", "info");
+            response.sendRedirect(request.getContextPath() + "/miPerfil");
 
         } catch (UsuarioNoExisteException e) {
-            mostrarFormularioConError(request, response, "Usuario no encontrado");
+            mostrarFormularioConError(request, response, "❌ Usuario no encontrado");
         } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "La fecha de nacimiento no es valida");
+            mostrarFormularioConError(request, response, "❌ La fecha de nacimiento no es válida");
         } catch (Exception e) {
-            mostrarFormularioConError(request, response, "Error al modificar usuario: " + e.getMessage());
+            mostrarFormularioConError(request, response, "❌ Error al modificar usuario: " + e.getMessage());
         }
     }
 
@@ -304,7 +311,9 @@ public class ModificarUsuarioServlet extends HttpServlet {
             
             DTUsuario usuario = ctrlUsuario.getDTUsuario(nickname);
             Set<String> instituciones = ctrlUsuario.listarInstituciones();
-            Set<String> categorias = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet);
+            Collections.sort(categorias);
             
             request.setAttribute("usuario", usuario);
             request.setAttribute("instituciones", instituciones);

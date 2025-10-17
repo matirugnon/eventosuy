@@ -177,7 +177,12 @@
                                         <img src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.jpeg')}" 
                                              alt="${edicion.nombre}" class="edicion-image" />
                                         <div class="edicion-details">
-                                            <h3 class="edicion-title">${edicion.evento} - ${edicion.nombre}</h3>
+                                            <h3 class="edicion-title">
+                                                ${edicion.evento} - ${edicion.nombre}
+                                                <c:if test="${edicionesPasadas[edicion.nombre]}">
+                                                    <span style="color: #888; font-size: 0.9rem; font-weight: normal;"> (Finalizada)</span>
+                                                </c:if>
+                                            </h3>
                                             <p class="edicion-info">
                                                 <strong>Sigla:</strong> ${edicion.sigla}<br>
                                                 <strong>Ubicación:</strong> ${edicion.ciudad}, ${edicion.pais}<br>
@@ -186,8 +191,10 @@
                                             </p>
                                         </div>
                                         <div class="edicion-actions">
-                                            <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.nombre}">Alta Tipo Registro</a>
-                                            <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.nombre}">Alta Patrocinio</a>
+                                            <c:if test="${!edicionesPasadas[edicion.nombre]}">
+                                                <a class="btn-edicion" href="altaTipoRegistro?edicion=${edicion.nombre}">Alta Tipo Registro</a>
+                                                <a class="btn-edicion" href="altaPatrocinio?edicion=${edicion.nombre}">Alta Patrocinio</a>
+                                            </c:if>
                                             <a class="btn-edicion" href="registrosEdicion?edicion=${edicion.nombre}">Consultar registros</a>
                                         </div>
                                     </div>
