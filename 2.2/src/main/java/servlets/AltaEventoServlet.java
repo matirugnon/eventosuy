@@ -43,10 +43,6 @@ public class AltaEventoServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             // Obtener los controladores
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             Set<String> categorias = ctrlEvento.listarCategorias();
@@ -78,10 +74,6 @@ public class AltaEventoServlet extends HttpServlet {
             String role = (String) session.getAttribute("role");
             if (!"organizador".equals(role)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Solo los organizadores pueden crear eventos");
-                return;
-            }
-
-            if (!Utils.asegurarDatosCargados(request, response)) {
                 return;
             }
 

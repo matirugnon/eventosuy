@@ -47,18 +47,6 @@ public class RegistroAEdicionServlet extends HttpServlet {
         String ajaxHeader = request.getHeader("X-Requested-With");
         boolean esAjax = "XMLHttpRequest".equals(ajaxHeader) || request.getParameter("action") != null;
 
-        if (!Utils.datosPrecargados(getServletContext())) {
-            if (esAjax) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.setContentType("application/json");
-                response.getWriter().write("{\"error\":\"Debe cargar los datos de ejemplo desde la pantalla de inicio.\"}");
-                return;
-            }
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-        }
-
         if (esAjax) {
             handleAjaxRequest(request, response);
             return;
@@ -181,10 +169,6 @@ public class RegistroAEdicionServlet extends HttpServlet {
             return;
         }
         
-        if (!Utils.asegurarDatosCargados(request, response)) {
-            return;
-        }
-
         try {
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();

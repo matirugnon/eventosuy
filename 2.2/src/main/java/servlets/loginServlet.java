@@ -48,9 +48,6 @@ public class loginServlet extends HttpServlet {
                 return;
             }
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
             Set<String> usuarios = ctrlUsuario.listarUsuarios();
             request.setAttribute("usuarios", usuarios);
 

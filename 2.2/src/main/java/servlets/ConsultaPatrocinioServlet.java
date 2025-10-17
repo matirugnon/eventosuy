@@ -39,10 +39,6 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             codigo = codigo.trim();
             edicion = edicion.trim();
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             // Obtener controladores
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();

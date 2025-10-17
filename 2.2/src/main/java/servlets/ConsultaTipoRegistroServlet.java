@@ -37,10 +37,6 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             tipoRegistro = tipoRegistro.trim();
             edicion = edicion.trim();
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             // Obtener controladores
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();

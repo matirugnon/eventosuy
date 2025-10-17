@@ -35,10 +35,6 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 return;
             }
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             // Obtener información de la edición específica
             DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
             

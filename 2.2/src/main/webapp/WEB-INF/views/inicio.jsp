@@ -59,14 +59,7 @@
 					</nav>
 				</c:otherwise>
 			</c:choose>
-		<c:if test="${not datosCargados}">
-			<form action="${pageContext.request.contextPath}/cargarDatos" method="post" style="margin: 0;">
-				<button type="submit" style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background-color: #14a37f; color: white; font-weight: 600; cursor: pointer;">Cargar datos</button>
-			</form>
-		</c:if>
-		<c:if test="${datosCargados}">
-			<span style="padding: 0.35rem 0.75rem; border-radius: 999px; background-color: rgba(20, 163, 127, 0.15); color: #0d5c49; font-weight: 600;">Datos cargados</span>
-		</c:if>
+		   <!-- Botón para cargar datos eliminado -->
 		</div>
 	</header>
 

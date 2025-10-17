@@ -79,6 +79,51 @@
                      value="${param.nombre}" />
             </label>
 
+              <!--                Específico Asistente (mover aquí)                 -->
+              <div id="bloqueAsistente" style="margin-top:1rem;">
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:.5rem;">
+                  <label class="input-group">
+                    <span class="label-text">Apellido *</span>
+                    <input name="apellido" maxlength="60" placeholder="Apellido" 
+                           value="${param.apellido}" />
+                  </label>
+                  <label class="input-group">
+                    <span class="label-text">Fecha de nacimiento *</span>
+                    <input name="fechaNacimiento" type="date" 
+                           value="${param.fechaNacimiento}" />
+                  </label>
+                </div>
+                <div style="margin-top:.5rem;">
+          <div style="display: flex; align-items: center; white-space: nowrap;">
+                      <label for="perteneceInstitucion" style="margin-right: 0;">Pertenezco a una institución
+                        <input type="checkbox" name="perteneceInstitucion" id="perteneceInstitucion" style="margin-left:4px;vertical-align:middle;" ${not empty param.institucion ? 'checked' : ''} />
+                      </label>
+          </div>
+                </div>
+                <div id="bloqueInstitucion" style="display:${not empty param.institucion ? 'block' : 'none'}; margin-top: 0;">
+                  <label class="input-group">
+                    <span class="label-text">Institución</span>
+                    <select name="institucion">
+                      <option value="">Seleccionar…</option>
+                      <c:choose>
+                        <c:when test="${not empty instituciones}">
+                          <c:forEach var="inst" items="${instituciones}">
+                            <option value="${inst}" ${param.institucion == inst ? 'selected' : ''}>${inst}</option>
+                          </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                          <!-- Fallback en caso de que no se carguen desde el servidor -->
+                          <option value="Udelar" ${param.institucion == 'Udelar' ? 'selected' : ''}>Udelar</option>
+                          <option value="ORT" ${param.institucion == 'ORT' ? 'selected' : ''}>Universidad ORT</option>
+                          <option value="UM" ${param.institucion == 'UM' ? 'selected' : ''}>Universidad de Montevideo</option>
+                        </c:otherwise>
+                      </c:choose>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
             <label class="input-group">
               <span class="label-text">Correo electrónico *</span>
               <input name="email" type="email" required placeholder="name@example.com" 
@@ -101,52 +146,9 @@
               <input name="imagen" type="file" accept="image/*" />
             </label>
 
-            <!--                Específico Asistente                 -->
-            <div id="bloqueAsistente" style="margin-top:1rem;">
-              <h3 style="color:#182080; font-size:1rem;">Datos de asistente</h3>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:.5rem;">
-                <label class="input-group">
-                  <span class="label-text">Apellido *</span>
-                  <input name="apellido" maxlength="60" placeholder="Apellido" 
-                         value="${param.apellido}" />
-                </label>
-                <label class="input-group">
-                  <span class="label-text">Fecha de nacimiento *</span>
-                  <input name="fechaNacimiento" type="date" 
-                         value="${param.fechaNacimiento}" />
-                </label>
-              </div>
-              <label class="input-group">
-                <input type="checkbox" id="chkInstitucion" 
-                       ${not empty param.institucion ? 'checked' : ''} />
-                <span style="margin-left:.35rem;">Pertenezco a una institución</span>
-              </label>
-              <div id="bloqueInstitucion" style="display:${not empty param.institucion ? 'block' : 'none'}; margin-top:.5rem;">
-                <label class="input-group">
-                  <span class="label-text">Institución</span>
-                  <select name="institucion">
-                    <option value="">Seleccionar…</option>
-                    <c:choose>
-                      <c:when test="${not empty instituciones}">
-                        <c:forEach var="inst" items="${instituciones}">
-                          <option value="${inst}" ${param.institucion == inst ? 'selected' : ''}>${inst}</option>
-                        </c:forEach>
-                      </c:when>
-                      <c:otherwise>
-                        <!-- Fallback en caso de que no se carguen desde el servidor -->
-                        <option value="Udelar" ${param.institucion == 'Udelar' ? 'selected' : ''}>Udelar</option>
-                        <option value="ORT" ${param.institucion == 'ORT' ? 'selected' : ''}>Universidad ORT</option>
-                        <option value="UM" ${param.institucion == 'UM' ? 'selected' : ''}>Universidad de Montevideo</option>
-                      </c:otherwise>
-                    </c:choose>
-                  </select>
-                </label>
-              </div>
-            </div>
             
             <!--                   Específico Organizador                 -->
             <div id="bloqueOrganizador" style="display:none; margin-top:1rem;">
-              <h3 style="color:#182080; font-size:1rem;">Datos de organizador</h3>
               <label class="input-group" style="margin-top:.5rem;">
                 <span class="label-text">Descripción (opcional)</span>
                 <textarea name="descripcion" rows="3" maxlength="500"
@@ -240,7 +242,7 @@
         if (!form.reportValidity()) return false;
         // contraseñas
         if (!validarPasswords()) { 
-          msg.textContent = 'Las contraseñas no coinciden o son muy cortas (mínimo 6).'; 
+          msg.textContent = 'Las contraseñas no coinciden.';
           return false; 
         }
         return true;

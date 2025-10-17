@@ -30,29 +30,8 @@ public class ListarUsuariosServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Obtener los controladores
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-
-            // Carga inicial de datos si hace falta
-            Set<String> usuariosExistentes = ctrlUsuario.listarUsuarios();
-            System.out.println("DEBUG: Usuarios existentes: " + (usuariosExistentes != null ? usuariosExistentes.size() + " - " + usuariosExistentes : "null"));
-         
-            if (usuariosExistentes == null || usuariosExistentes.isEmpty()) {
-                System.out.println("DEBUG: Cargando datos...");
-                try {
-                    Utils.cargarDatos(
-                        ctrlUsuario,
-                        ctrlEvento,
-                        IControladorRegistro.getInstance()
-                    );
-                    System.out.println("DEBUG: Datos cargados exitosamente.");
-                } catch (Exception e) {
-                    System.out.println("ERROR: Error al cargar datos: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
             // Obtener los nicks de los usuarios registrados
             Set<String> nicksUsuarios = ctrlUsuario.listarUsuarios();
             System.out.println("DEBUG: Nicks después de carga: " + (nicksUsuarios != null ? nicksUsuarios.size() + " - " + nicksUsuarios : "null"));
@@ -90,11 +69,20 @@ public class ListarUsuariosServlet extends HttpServlet {
 
             int totalUsuarios = usuariosOrdenados.size();
             int totalPages = (int) Math.ceil((double) totalUsuarios / pageSize);
-            if (page > totalPages) page = totalPages;
+            if (totalPages == 0) {
+                page = 1;
+            } else if (page > totalPages) {
+                page = totalPages;
+            }
 
-            int fromIndex = (page - 1) * pageSize;
-            int toIndex = Math.min(fromIndex + pageSize, totalUsuarios);
-            List<DTUsuario> usuariosPagina = usuariosOrdenados.subList(fromIndex, toIndex);
+            List<DTUsuario> usuariosPagina;
+            if (totalUsuarios == 0) {
+                usuariosPagina = new ArrayList<>();
+            } else {
+                int fromIndex = Math.max(0, (page - 1) * pageSize);
+                int toIndex = Math.min(fromIndex + pageSize, totalUsuarios);
+                usuariosPagina = usuariosOrdenados.subList(fromIndex, toIndex);
+            }
 
 
             // Pasar los datos como atributos a la JSP

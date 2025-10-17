@@ -43,9 +43,6 @@ public class AltaEdicionServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
             // Obtener parametros del formulario
 
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
@@ -86,10 +83,6 @@ public class AltaEdicionServlet extends HttpServlet {
             }
 
             String nickOrganizador = (String) session.getAttribute("usuario");
-
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
 
             String evento = request.getParameter("evento");
             String nombre = request.getParameter("nombre");

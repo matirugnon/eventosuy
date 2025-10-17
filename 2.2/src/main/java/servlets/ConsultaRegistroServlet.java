@@ -34,10 +34,6 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 return;
             }
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
 

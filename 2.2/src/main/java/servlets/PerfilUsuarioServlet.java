@@ -56,10 +56,6 @@ public class PerfilUsuarioServlet extends HttpServlet {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
-
             // Verificar que el usuario existe
             if (!ctrlUsuario.existeNickname(nickname)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");

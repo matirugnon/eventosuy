@@ -28,10 +28,6 @@ public class SignupServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        if (!Utils.asegurarDatosCargados(request, response)) {
-            return;
-        }
-
         try {
             // Obtener lista de instituciones para el dropdown
             IControladorUsuario ctrl = IControladorUsuario.getInstance();
@@ -49,10 +45,6 @@ public class SignupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        if (!Utils.asegurarDatosCargados(request, response)) {
-            return;
-        }
-
         try {
             // Obtener parÃ¡metros del formulario
             String rol = request.getParameter("rol");

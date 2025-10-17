@@ -43,15 +43,8 @@ public class ModificarUsuarioServlet extends HttpServlet {
 
             // Obtener los controladores
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
 
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-
-            if (!Utils.asegurarDatosCargados(request, response)) {
-                return;
-            }
 
             // Verificar que el usuario existe
             if (!ctrlUsuario.existeNickname(nickname)) {
