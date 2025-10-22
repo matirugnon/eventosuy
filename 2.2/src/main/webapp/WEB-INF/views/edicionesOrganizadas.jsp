@@ -95,25 +95,8 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1><a href="inicio">eventos.uy</a></h1>
-        <div class="header-right">
-            <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="miPerfil" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.avatar}">
-                            <img src="${pageContext.request.contextPath}/${sessionScope.avatar}" alt="Usuario" class="avatar">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/img/usSinFoto.webp" alt="Usuario" class="avatar">
-                        </c:otherwise>
-                    </c:choose>
-                    <span class="nickname">${sessionScope.usuario}</span>
-                </a>
-                <a href="logout" class="btn-primary">Cerrar sesión</a>
-            </div>
-        </div>
-    </header>
+    <!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+	<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
     <div class="content">
         <aside class="sidebar">

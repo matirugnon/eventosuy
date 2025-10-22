@@ -13,26 +13,8 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="nav-brand">
-                <h1>eventos.uy</h1>
-            </div>
-            <div class="nav-links">
-                <c:choose>
-                    <c:when test="${sessionScope.usuario != null}">
-                        <span class="nav-user">Hola, ${sessionScope.usuario}</span>
-                        <a href="${pageContext.request.contextPath}/inicio" class="nav-link">Inicio</a>
-                        <a href="${pageContext.request.contextPath}/miPerfil" class="nav-link">Mi Perfil</a>
-                        <a href="${pageContext.request.contextPath}/logout" class="nav-link">Cerrar Sesión</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/inicio" class="nav-link">Inicio</a>
-                        <a href="${pageContext.request.contextPath}/login" class="nav-link">Iniciar Sesión</a>
-                        <a href="${pageContext.request.contextPath}/altaUsuario" class="nav-link">Registrarse</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </header>
+        <!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
         <main class="content">
             <div class="auth-container">

@@ -14,25 +14,8 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1><a href="${pageContext.request.contextPath}/inicio">eventos.uy</a></h1>
-        <div class="header-right">
-            <c:choose>
-                <c:when test="${not empty role}">
-                    <div class="user-badge">
-                        <a href="${pageContext.request.contextPath}/miPerfil" style="display:flex;align-items:center;gap:.5rem;text-decoration:none;color:inherit;">
-                            <img src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}" alt="${nickname}" class="avatar">
-                            <span class="nickname">${nickname}</span>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/logout" class="btn-primary">Cerrar sesión</a>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login" class="btn-primary">Iniciar sesión</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </header>
+    <!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+	<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
     <div class="content">
         <aside class="sidebar">
