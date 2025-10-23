@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <header class="header">
 	<h1>
@@ -17,8 +17,76 @@
 						src="${not empty avatar ? pageContext.request.contextPath.concat(avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}"
 						alt="Avatar de usuario" /> <span class="nickname">${nickname}</span>
 					</a> <a href="${pageContext.request.contextPath}/logout"
-						class="btn-primary">Cerrar sesión</a>
+						class="btn-primary logout">Cerrar sesión</a>
 				</div>
+				<div class="responsiveHeaderButton">
+					<button id="openModalBtn">| | |</button>
+				</div>
+				<div id="modal" class="modal">
+					<div class="modal-content">
+						<button id="closeModalBtn" class="close">&times;</button>
+						<h2>Cerrar Sesion</h2>
+						<hr>
+						<c:choose>
+							<c:when test="${role == 'organizador'}">
+								<div>
+									<ul class="menu-list-responsive">
+										<li><a
+											href="${pageContext.request.contextPath}/altaEvento">Alta
+												Evento</a></li>
+										<li><a
+											href="${pageContext.request.contextPath}/altaEdicion">Alta
+												Edición</a></li>
+										<li><a href="altaInstitucion">Alta Institución</a></li>
+										<li><a href="edicionesOrganizadas">Ediciones
+												Organizadas</a></li>
+									</ul>
+								</div>
+							</c:when>
+							<c:when test="${role == 'asistente'}">
+								<div>
+									<ul class="menu-list-responsive">
+										<li><a
+											href="${pageContext.request.contextPath}/registroAedicion">Registro
+												a Edición</a></li>
+										<li><a
+											href="${pageContext.request.contextPath}/misRegistros">Mis
+												Registros</a></li>
+									</ul>
+								</div>
+							</c:when>
+						</c:choose>
+						<hr>
+						<ul class="menu-list-responsive">
+							<c:choose>
+								<c:when test="${empty categorias}">
+									<li><span class="muted">No hay categorías
+											disponibles.</span></li>
+								</c:when>
+								<c:otherwise>
+									<li><c:url var="urlTodas" value="/inicio" /> <a
+										href="${urlTodas}"
+										class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
+									</li>
+									<c:forEach var="cat" items="${categorias}">
+										<li><c:url var="catUrl" value="/inicio">
+												<c:param name="categoria" value="${cat}" />
+											</c:url> <a href="${catUrl}"
+											class="${cat eq categoriaSeleccionada ? 'active' : ''}">${cat}</a>
+										</li>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</ul>
+						<hr>
+						<div style="margin-top: 2rem; padding-top: 1rem;">
+							<a href="${pageContext.request.contextPath}/listarUsuarios"
+								style="color: white;display: flex; align-items: center; gap: 0.5rem;font-weight: 600; text-decoration: none; padding: 0.75rem; border-radius: 6px; transition: background-color 0.2s; background-color: rgba(24, 32, 128, 0.05);">
+								Ver listado de Usuarios </a>
+						</div>
+					</div>
+				</div>
+
 			</c:when>
 			<c:otherwise>
 				<nav class="nav-links">
@@ -36,3 +104,21 @@
 		<!-- Botón para cargar datos eliminado -->
 	</div>
 </header>
+<script>
+  const modal = document.getElementById('modal');
+  const openBtn = document.getElementById('openModalBtn');
+  const closeBtn = document.getElementById('closeModalBtn');
+
+  openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+</script>
