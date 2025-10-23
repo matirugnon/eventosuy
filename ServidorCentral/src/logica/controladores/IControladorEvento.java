@@ -73,7 +73,7 @@ public interface IControladorEvento {
 
 
 
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
+	public boolean darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
 
 
 
@@ -192,7 +192,7 @@ public interface IControladorEvento {
 
 
 
-	public void darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> nomCategorias,
+	public boolean darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> nomCategorias,
 			String string4) throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 

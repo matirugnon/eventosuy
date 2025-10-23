@@ -12,6 +12,8 @@ import java.io.Serializable;
 public class DTFecha implements Comparable<DTFecha>, Serializable {
     private int dia, mes, anio;
 
+    public DTFecha() {}
+
     public DTFecha(int dia, int mes, int anio) {
         this.dia = dia;
         this.mes = mes;

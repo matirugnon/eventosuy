@@ -63,34 +63,44 @@ public class ControladorEvento implements IControladorEvento {
 	//altaEvento con excepcion
 
 	// Método sin imagen (mantiene compatibilidad)
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
-	        throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException {
-		darAltaEvento(nomEvento, desc, fechaAlta, sigla, nomcategorias, null);
-	}
+	public boolean darAltaEvento(
+		    String nomEvento,
+		    String desc,
+		    DTFecha fechaAlta,
+		    String sigla,
+		    Set<String> nomcategorias
+		) {
+		    return darAltaEvento(nomEvento, desc, fechaAlta, sigla, nomcategorias, null);
+		}
 
 	// Método con imagen (opcional)
-	public void darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias, String imagen)
-	        throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException {
+	public boolean darAltaEvento(
+		    String nomEvento,
+		    String desc,
+		    DTFecha fechaAlta,
+		    String sigla,
+		    Set<String> nomcategorias,
+		    String imagen
+		) {
+		    try {
+		        if (existeEvento(nomEvento)) {
+		            return false; // Ya existe
+		        }
+		        if (nomcategorias == null || nomcategorias.isEmpty()) {
+		            return false; // Sin categorías
+		        }
+		        if (!esFechaValida(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio())) {
+		            return false; // Fecha inválida
+		        }
 
-	    // Verificamos si ya existe un evento con ese nombre
-	    if (existeEvento(nomEvento)) {
-	        throw new EventoRepetidoException(nomEvento);
-	    }
-
-	    if (nomcategorias == null || nomcategorias.isEmpty()) {
-	        throw new CategoriaNoSeleccionadaException();
-	    }
-
-	    if (!esFechaValida(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio())) {
-            throw new FechaInvalidaException(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
-        }
-
-
-	    // Si no existe, creamos el evento
-	    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
-	    Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
-	    manejadorE.addEvento(eve);
-	}
+		        Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
+		        Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
+		        manejadorE.addEvento(eve);
+		        return true;
+		    } catch (Exception e) {
+		        return false;
+		    }
+		}
 
 	//listar
 	public Set<String> listarEventos() {

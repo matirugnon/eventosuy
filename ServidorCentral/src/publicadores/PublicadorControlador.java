@@ -1,6 +1,7 @@
 package publicadores;
 
 import jakarta.jws.WebMethod;
+
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
@@ -11,6 +12,10 @@ import logica.datatypesyenum.DTFecha;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 @WebService
 @SOAPBinding(style = Style.RPC)
@@ -70,6 +75,26 @@ public class PublicadorControlador {
 		);
     }
 
+    @WebMethod
+    public boolean darAltaEvento(
+        String nombreEvento,
+        String descripcion,
+        DTFecha fechaAlta,
+        String sigla,
+        String[] categorias
+    ) {
+
+    	Set<String> categoriasSet;
+        if (categorias == null || categorias.length == 0) {
+            categoriasSet = new HashSet<>();
+        } else {
+            categoriasSet = new HashSet<>(Arrays.asList(categorias));
+
+        }
+
+        return ctrl.darAltaEvento(nombreEvento, descripcion, fechaAlta, sigla, categoriasSet);
+    }
 
 
 }
+
