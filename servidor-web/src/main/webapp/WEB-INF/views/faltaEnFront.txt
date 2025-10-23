@@ -1,0 +1,1 @@
+en alta intitucion las categorias no se despliegan en orden, probablemente en el servlet no se llama la funcion correcta
