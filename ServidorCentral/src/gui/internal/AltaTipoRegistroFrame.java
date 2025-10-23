@@ -1,0 +1,178 @@
+package gui.internal;
+
+import javax.swing.*;
+
+import excepciones.EventoNoExisteException;
+import excepciones.NombreTipoRegistroDuplicadoException;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorRegistro;
+
+import java.awt.*;
+import java.util.Set;
+
+@SuppressWarnings("serial")
+public class AltaTipoRegistroFrame extends JInternalFrame {
+    private JComboBox<String> comboEventos;
+    private JComboBox<String> comboEdiciones;
+    private JTextField txtNombre, txtDescripcion, txtCosto, txtCupo;
+
+
+    private IControladorEvento ctrlEventos = IControladorEvento.getInstance();
+    private IControladorRegistro ctrlRegistros = IControladorRegistro.getInstance();
+
+    public AltaTipoRegistroFrame() {
+        super("Alta de Tipo de Registro", true, true, true, true);
+        setSize(600, 400);
+        setLayout(new BorderLayout());
+
+
+        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+
+        JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
+        form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        comboEventos = new JComboBox<>();
+        // Cargar eventos desde el controlador
+        Set<String> eventos = ctrlEvento.listarEventos();
+        for (String evento : eventos) {
+            comboEventos.addItem(evento);
+        }
+
+        form.add(new JLabel("Evento:"));
+        form.add(comboEventos);
+
+        // Combo de ediciones (se llena según el evento elegido)
+        comboEdiciones = new JComboBox<>();
+        try {
+			actualizarEdiciones();
+		} catch (EventoNoExisteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        form.add(new JLabel("Edición:"));
+        form.add(comboEdiciones);
+
+        // Campos de datos
+        txtNombre = new JTextField();
+        txtDescripcion = new JTextField();
+        txtCosto = new JTextField();
+        txtCupo = new JTextField();
+
+        form.add(new JLabel("Nombre:"));
+        form.add(txtNombre);
+
+        form.add(new JLabel("Descripción:"));
+        form.add(txtDescripcion);
+
+        form.add(new JLabel("Costo:"));
+        form.add(txtCosto);
+
+        form.add(new JLabel("Cupo:"));
+        form.add(txtCupo);
+
+        add(form, BorderLayout.CENTER);
+
+        // Botones
+        JPanel buttons = new JPanel();
+        JButton btnConfirmar = new JButton("Confirmar");
+        JButton btnCancelar = new JButton("Cancelar");
+        buttons.add(btnConfirmar);
+        buttons.add(btnCancelar);
+        add(buttons, BorderLayout.SOUTH);
+
+        // Listeners
+        comboEventos.addActionListener(e -> {
+			try {
+				actualizarEdiciones();
+			} catch (EventoNoExisteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+        btnConfirmar.addActionListener(e -> {
+			try {
+				confirmarAlta();
+			} catch (NombreTipoRegistroDuplicadoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+        btnCancelar.addActionListener(e -> dispose());
+    }
+
+    private void actualizarEdiciones() throws EventoNoExisteException {
+        comboEdiciones.removeAllItems();
+
+        String evento = (String) comboEventos.getSelectedItem();
+        if (evento == null) return;
+        else {
+        	Set<String> ediciones = ctrlEventos.listarEdiciones(evento);
+        	for (String edicion : ediciones) {
+        		comboEdiciones.addItem(edicion);
+        	}
+        }
+    }
+
+    private void confirmarAlta() throws NombreTipoRegistroDuplicadoException {
+        String evento = (String) comboEventos.getSelectedItem();
+        String edicion = (String) comboEdiciones.getSelectedItem();
+        String nombre = txtNombre.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+        String costoStr = txtCosto.getText().trim();
+        String cupoStr = txtCupo.getText().trim();
+
+        if (evento == null || edicion == null || nombre.isEmpty() || costoStr.isEmpty() || cupoStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos los campos obligatorios.",
+                    "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            double costo = Double.parseDouble(costoStr);
+            int cupo = Integer.parseInt(cupoStr);
+
+              if (costo < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "El costo no puede ser negativo.",
+                        "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (cupo < 0) { 
+                JOptionPane.showMessageDialog(this,
+                        "El cupo no puede ser negativo.",
+                        "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            //validacion nombre duplicado
+
+            if (ctrlRegistros.existeTipoDeRegistro(edicion, nombre)) {
+                int opt = JOptionPane.showConfirmDialog(this,
+                        "El nombre de tipo de registro ya existe en esta edición.\n¿Desea modificarlo?",
+                        "Nombre duplicado", JOptionPane.YES_NO_OPTION);
+                if (opt == JOptionPane.NO_OPTION) {
+                    dispose(); // cancelar caso de uso
+                }
+                return;
+            }
+
+            //mostrar datos de alta
+            JOptionPane.showMessageDialog(this,
+                    "Tipo de registro creado:\n" +
+                            "Evento: " + evento + "\n" +
+                            "Edición: " + edicion + "\n" +
+                            "Nombre: " + nombre + "\n" +
+                            "Descripción: " + descripcion + "\n" +
+                            "Costo: " + costo + "\n" +
+                            "Cupo: " + cupo,
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            ctrlRegistros.altaTipoDeRegistro(edicion, nombre, descripcion, costo, cupo);
+
+            dispose();
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Costo y cupo deben ser valores numéricos.",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
