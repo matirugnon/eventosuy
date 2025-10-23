@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%
     // Leer mensajes de sesión si existen
     String datosMensaje = (String) session.getAttribute("datosMensaje");
@@ -14,163 +14,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro a Edición · eventos.uy</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro a Edición · eventos.uy</title>
+<link rel="icon" type="image/png"
+	href="${pageContext.request.contextPath}/img/favicon.png">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+	rel="stylesheet">
 </head>
 <body>
-    <div>
-        <!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+	<div>
+		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
-        <div class="content">
-            <aside class="sidebar">
-                <c:if test="${role == 'asistente'}">
-                    <div class="panel sidebar">
-                        <div class="panel-header">Mi perfil</div>
-                        <ul class="menu-list">
-                            <li><a href="${pageContext.request.contextPath}/registroAedicion">Registro a Edición</a></li>
-                            <li><a href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a></li>
-                        </ul>
-                    </div>
-                </c:if>
+		<div class="content">
+			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
-                <!-- Categorías -->
-                <div class="panel sidebar" style="margin-top: 1rem;">
-                    <div class="panel-header">Categorías</div>
-                    <ul class="menu-list">
-                        <c:choose>
-                            <c:when test="${empty categorias}">
-                                <li><span class="muted">No hay categorías disponibles.</span></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li>
-                                    <c:url var="urlTodas" value="/inicio"/>
-                                    <a href="${urlTodas}">Todas</a>
-                                </li>
-                                <c:forEach items="${categorias}" var="categoria">
-                                    <li>
-                                        <c:url var="catUrl" value="/inicio">
-                                            <c:param name="categoria" value="${categoria}"/>
-                                        </c:url>
-                                        <a href="${catUrl}">${categoria}</a>
-                                    </li>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </ul>
-                </div>
+			<main>
+				<section class="panel" style="max-width: 700px; margin: 0 auto;">
+					<div class="panel-header">Registro a Edición de Evento</div>
+					<div class="panel-body">
+						<form method="post"
+							action="${pageContext.request.contextPath}/registroAedicion">
+							<!-- Paso 1: Selección de evento -->
+							<div class="consulta-registro-form-row">
+								<label class="form-group" style="margin-bottom: 0;"> <span
+									class="label-text">Seleccioná un evento</span>
+								</label> <select id="eventoSelect" required>
+									<option value="">Seleccionar…</option>
+									<c:forEach items="${eventos}" var="evento">
+										<option value="${evento.nombre}">${evento.nombre}</option>
+									</c:forEach>
+								</select>
+							</div>
 
-                <!-- Botón "Ver listado de Usuarios" -->
-                <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-                    <a href="${pageContext.request.contextPath}/listarUsuarios" style="
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        color: #182080;
-                        font-weight: 600;
-                        text-decoration: none;
-                        padding: 0.75rem;
-                        border-radius: 6px;
-                        transition: background-color 0.2s;
-                        background-color: rgba(24, 32, 128, 0.05);
-                    ">Ver listado de usuarios</a>
-                </div>
-            </aside>
+							<!-- Paso 2: Selección de edición -->
+							<div class="consulta-registro-form-row" id="step-edicion"
+								style="display: none;">
+								<label class="form-group" style="margin-bottom: 0;"> <span
+									class="label-text">Seleccioná una edición</span>
+								</label> <select id="edicionSelect" name="edicion" required>
+									<option value="">Seleccionar…</option>
+								</select>
+							</div>
 
-            <main>
-                <section class="panel" style="max-width: 700px; margin: 0 auto;">
-                    <div class="panel-header">Registro a Edición de Evento</div>
-                    <div class="panel-body">
-                        <form method="post" action="${pageContext.request.contextPath}/registroAedicion">
-                            <!-- Paso 1: Selección de evento -->
-                            <div class="consulta-registro-form-row">
-                                <label class="form-group" style="margin-bottom: 0;">
-                                    <span class="label-text">Seleccioná un evento</span>
-                                </label>
-                                <select id="eventoSelect" required>
-                                    <option value="">Seleccionar…</option>
-                                    <c:forEach items="${eventos}" var="evento">
-                                        <option value="${evento.nombre}">${evento.nombre}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
+							<!-- Paso 3: Detalle de edición y tipos de registro -->
+							<div id="step-detalle" style="display: none;">
+								<div class="panel" style="background: #f8f9ff;">
+									<div class="panel-header" style="color: #182080;">Detalle
+										de la edición</div>
+									<div class="panel-body">
+										<p>
+											<strong>Nombre:</strong> <span id="edicionNombre"></span>
+										</p>
+										<p>
+											<strong>Fechas:</strong> <span id="edicionFechas"></span>
+										</p>
+										<p>
+											<strong>Ciudad:</strong> <span id="edicionCiudad"></span>
+										</p>
+										<p>
+											<strong>País:</strong> <span id="edicionPais"></span>
+										</p>
+										<p>
+											<strong>Tipos de registro:</strong>
+										</p>
+										<div id="tiposRegistro"></div>
+									</div>
+								</div>
+							</div>
 
-                            <!-- Paso 2: Selección de edición -->
-                            <div class="consulta-registro-form-row" id="step-edicion" style="display: none;">
-                                <label class="form-group" style="margin-bottom: 0;">
-                                    <span class="label-text">Seleccioná una edición</span>
-                                </label>
-                                <select id="edicionSelect" name="edicion" required>
-                                    <option value="">Seleccionar…</option>
-                                </select>
-                            </div>
+							<!-- Paso 4: Registro -->
+							<div id="formRegistro" style="display: none; margin-top: 1.5rem;">
+								<div class="consulta-registro-form-row">
+									<label class="form-group" style="margin-bottom: 0;"> <span
+										class="label-text">Tipo de registro</span>
+									</label> <select id="tipoRegistroSelect" name="tipoRegistro" required></select>
+								</div>
+								<div class="consulta-registro-form-row">
+									<label class="form-group" style="margin-bottom: 0;"> <span
+										class="label-text">¿Usar código de patrocinio?</span>
+									</label> <input type="text" id="codigoPatrocinio"
+										name="codigoPatrocinio"
+										placeholder="Ingresá el código (opcional)"
+										style="min-width: 220px; max-width: 340px; width: 100%;" />
+								</div>
 
-                            <!-- Paso 3: Detalle de edición y tipos de registro -->
-                            <div id="step-detalle" style="display: none;">
-                                <div class="panel" style="background: #f8f9ff;">
-                                    <div class="panel-header" style="color: #182080;">Detalle de la edición</div>
-                                    <div class="panel-body">
-                                        <p><strong>Nombre:</strong> <span id="edicionNombre"></span></p>
-                                        <p><strong>Fechas:</strong> <span id="edicionFechas"></span></p>
-                                        <p><strong>Ciudad:</strong> <span id="edicionCiudad"></span></p>
-                                        <p><strong>País:</strong> <span id="edicionPais"></span></p>
-                                        <p><strong>Tipos de registro:</strong></p>
-                                        <div id="tiposRegistro"></div>
-                                    </div>
-                                </div>
-                            </div>
+								<c:if test="${not empty mensaje}">
+									<c:choose>
+										<c:when test="${tipoMensaje == 'success'}">
+											<div id="msg"
+												style="margin-top: 0.5rem; min-height: 1.25rem; font-weight: 600; color: #2a7f2e;">
+												${mensaje}</div>
+										</c:when>
+										<c:otherwise>
+											<div id="msg"
+												style="margin-top: 0.5rem; min-height: 1.25rem; font-weight: 600; color: #c00;">
+												${mensaje}</div>
+										</c:otherwise>
+									</c:choose>
+								</c:if>
 
-                            <!-- Paso 4: Registro -->
-                            <div id="formRegistro" style="display: none; margin-top: 1.5rem;">
-                                <div class="consulta-registro-form-row">
-                                    <label class="form-group" style="margin-bottom: 0;">
-                                        <span class="label-text">Tipo de registro</span>
-                                    </label>
-                                    <select id="tipoRegistroSelect" name="tipoRegistro" required></select>
-                                </div>
-                                <div class="consulta-registro-form-row">
-                                    <label class="form-group" style="margin-bottom: 0;">
-                                        <span class="label-text">¿Usar código de patrocinio?</span>
-                                    </label>
-                                    <input type="text" id="codigoPatrocinio" name="codigoPatrocinio" 
-                                           placeholder="Ingresá el código (opcional)" 
-                                           style="min-width: 220px; max-width: 340px; width: 100%;" />
-                                </div>
+								<div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+									<button type="submit" class="btn-primary" id="submitBtn">Registrarme</button>
+									<a class="btn-outline"
+										href="${pageContext.request.contextPath}/inicio">Cancelar</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
 
-                                <c:if test="${not empty mensaje}">
-                                    <c:choose>
-                                        <c:when test="${tipoMensaje == 'success'}">
-                                            <div id="msg" style="margin-top: 0.5rem; min-height: 1.25rem; font-weight: 600; color: #2a7f2e;">
-                                                ${mensaje}
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div id="msg" style="margin-top: 0.5rem; min-height: 1.25rem; font-weight: 600; color: #c00;">
-                                                ${mensaje}
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:if>
-
-                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                                    <button type="submit" class="btn-primary" id="submitBtn">Registrarme</button>
-                                    <a class="btn-outline" href="${pageContext.request.contextPath}/inicio">Cancelar</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-            </main>
-        </div>
-    </div>
-
-    <script>
+	<script>
         const eventoSelect = document.getElementById('eventoSelect');
         const edicionSelect = document.getElementById('edicionSelect');
         const stepEdicion = document.getElementById('step-edicion');

@@ -1,111 +1,85 @@
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Registro · eventos.uy</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <style>
-        .table { width:100%; border-collapse: collapse; margin-top:1rem; }
-        .table th, .table td { padding:.6rem; border-bottom:1px solid #e5e5e5; text-align:left; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulta de Registro · eventos.uy</title>
+<link rel="icon" type="image/png"
+	href="${pageContext.request.contextPath}/img/favicon.png">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+	rel="stylesheet">
+<style>
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1rem;
+}
+
+.table th, .table td {
+	padding: .6rem;
+	border-bottom: 1px solid #e5e5e5;
+	text-align: left;
+}
+</style>
 </head>
 <body>
-    <div>
-        <!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+	<div>
+		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
-        <div class="content">
-            <aside class="sidebar">
-                <c:choose>
-                  <c:when test="${role == 'organizador'}">
-                    <div class="panel sidebar">
-                        <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
-                        <ul class="menu-list">
-                    		<li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
-                    		<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
-                    		<li><a href="altaInstitucion">Alta Institución</a></li>
-                    		<li><a href="${pageContext.request.contextPath}/edicionesOrganizadas">Ediciones Organizadas</a></li>
-                		</ul>
-                    </div>
-                  </c:when>
-                  <c:when test="${role == 'asistente'}">
-                    <div class="panel sidebar">
-                        <div class="panel-header" style="white-space: nowrap;">Mi perfil</div>
-                        <ul class="menu-list">
-                            <li><a href="${pageContext.request.contextPath}/registroAedicion" style="white-space: nowrap;">Registro a Edición</a></li>
-                            <li><a href="${pageContext.request.contextPath}/misRegistros" style="white-space: nowrap;">Mis Registros</a></li>
-                        </ul>
-                    </div>
-                  </c:when>
-                </c:choose>
+		<div class="content">
+			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
-                <!-- Categorías -->
-                <div class="panel sidebar" style="margin-top: 1rem;">
-                    <div class="panel-header">Categorías</div>
-                    <ul class="menu-list">
-                        <c:forEach var="categoria" items="${categorias}">
-                            <li>
-                                <c:url var="catUrl" value="/inicio">
-                                    <c:param name="categoria" value="${categoria}"/>
-                                </c:url>
-                                <a href="${catUrl}">
-                                    ${categoria}
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
+			<main>
+				<section class="panel">
+					<div class="panel-header">Consulta de Registro</div>
+					<div class="panel-body">
+						<!-- Datos básicos del registro -->
+						<p>
+							<strong>Asistente:</strong> ${registro.asistente}
+						</p>
+						<p>
+							<strong>Evento:</strong> ${edicionInfo.evento}
+						</p>
+						<p>
+							<strong>Edición:</strong> ${registro.nomEdicion}
+						</p>
+						<p>
+							<strong>Tipo de Registro:</strong> ${registro.tipoDeRegistro}
+						</p>
+						<p>
+							<strong>Fecha de Registro:</strong> ${registro.fechaRegistro}
+						</p>
+						<p>
+							<strong>Costo:</strong> $ ${registro.costo}
+						</p>
 
-                <!-- Botón "Ver listado de Usuarios" -->
-                <div style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-                    <a href="${pageContext.request.contextPath}/listarUsuarios" style="
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        color: #182080;
-                        font-weight: 600;
-                        text-decoration: none;
-                        font-size: 0.9rem;
-                    ">
-                        👥 Ver listado de Usuarios
-                    </a>
-                </div>
-            </aside>
-
-            <main>
-                <section class="panel">
-                    <div class="panel-header">Consulta de Registro</div>
-                    <div class="panel-body">
-                        <!-- Datos básicos del registro -->
-                        <p><strong>Asistente:</strong> ${registro.asistente}</p>
-                        <p><strong>Evento:</strong> ${edicionInfo.evento}</p>
-                        <p><strong>Edición:</strong> ${registro.nomEdicion}</p>
-                        <p><strong>Tipo de Registro:</strong> ${registro.tipoDeRegistro}</p>
-                        <p><strong>Fecha de Registro:</strong> ${registro.fechaRegistro}</p>
-                        <p><strong>Costo:</strong> $ ${registro.costo}</p>
-
-                        <!-- Enlaces relacionados -->
-                        <div style="margin-top:1.5rem; display:flex; gap:.75rem;">
-                            <c:choose>
-                                <c:when test="${param.from == 'misRegistros'}">
-                                    <a class="btn-outline" href="${pageContext.request.contextPath}/misRegistros">Volver a Mis Registros</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="btn-outline" href="${pageContext.request.contextPath}/perfilUsuario?nickname=${registro.asistente}">Volver al perfil de usuario</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-    </div>
+						<!-- Enlaces relacionados -->
+						<div style="margin-top: 1.5rem; display: flex; gap: .75rem;">
+							<c:choose>
+								<c:when test="${param.from == 'misRegistros'}">
+									<a class="btn-outline"
+										href="${pageContext.request.contextPath}/misRegistros">Volver
+										a Mis Registros</a>
+								</c:when>
+								<c:otherwise>
+									<a class="btn-outline"
+										href="${pageContext.request.contextPath}/perfilUsuario?nickname=${registro.asistente}">Volver
+										al perfil de usuario</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
 </body>
 </html>

@@ -9,7 +9,8 @@
 <title>eventos.uy</title>
 <link rel="icon" type="image/png"
 	href="${pageContext.request.contextPath}/img/favicon.png">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/styles.css">
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,86 +31,8 @@
 	<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 	<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
-
-	<!-- Contenido principal -->
-	<c:if test="${not empty datosMensaje}">
-		<c:set var="alertBg" value="#e7f6f2" />
-		<c:set var="alertColor" value="#0d5c49" />
-		<c:if test="${datosMensajeTipo == 'error'}">
-			<c:set var="alertBg" value="#fdecea" />
-			<c:set var="alertColor" value="#c0392b" />
-		</c:if>
-		<c:if test="${datosMensajeTipo == 'info'}">
-			<c:set var="alertBg" value="#edf2ff" />
-			<c:set var="alertColor" value="#1f3f72" />
-		</c:if>
-		<div style="max-width: 960px; margin: 1rem auto; padding: 0.75rem 1rem; border-radius: 6px; background-color: ${alertBg}; color: ${alertColor}; font-weight: 600; text-align: center;">
-			${datosMensaje}
-		</div>
-	</c:if>
 	<div class="content">
-		<aside class="sidebar">
-			<c:choose>
-				<c:when test="${role == 'organizador'}">
-					<div class="panel sidebar">
-						<div class="panel-header">Mi perfil</div>
-						<ul class="menu-list">
-							<li><a href="${pageContext.request.contextPath}/altaEvento">Alta Evento</a></li>
-							<li><a href="${pageContext.request.contextPath}/altaEdicion">Alta Edición</a></li>
-							<li><a href="altaInstitucion">Alta Institución</a></li>
-							<li><a href="edicionesOrganizadas">Ediciones Organizadas</a></li>
-						</ul>
-					</div>
-				</c:when>
-				<c:when test="${role == 'asistente'}">
-					<div class="panel sidebar">
-						<div class="panel-header">Mi perfil</div>
-						<ul class="menu-list">
-							<li><a
-								href="${pageContext.request.contextPath}/registroAedicion">Registro
-									a Edición</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/misRegistros">Mis
-									Registros</a></li>
-						</ul>
-					</div>
-				</c:when>
-			</c:choose>
-
-			<!-- CategorÃ­as -->
-			<div class="panel sidebar" style="margin-top: 1rem;">
-				<div class="panel-header">Categorías</div>
-				<ul class="menu-list">
-					<c:choose>
-						<c:when test="${empty categorias}">
-							<li><span class="muted">No hay categorías
-									disponibles.</span></li>
-						</c:when>
-						<c:otherwise>
-							<li><c:url var="urlTodas" value="/inicio" /> <a
-								href="${urlTodas}"
-								class="${categoriaSeleccionada == 'todas' ? 'active' : ''}">Todas</a>
-							</li>
-							<c:forEach var="cat" items="${categorias}">
-								<li><c:url var="catUrl" value="/inicio">
-										<c:param name="categoria" value="${cat}" />
-									</c:url> <a href="${catUrl}"
-									class="${cat eq categoriaSeleccionada ? 'active' : ''}">${cat}</a>
-								</li>
-							</c:forEach>
-						</c:otherwise>
-					</c:choose>
-				</ul>
-			</div>
-
-			<!-- BotÃ³n "Ver listado de Usuarios" -->
-			<div
-				style="margin-top: 2rem; border-top: 1px solid #e0e0e0; padding-top: 1rem;">
-				<a href="${pageContext.request.contextPath}/listarUsuarios"
-					style="display: flex; align-items: center; gap: 0.5rem; color: #182080; font-weight: 600; text-decoration: none; padding: 0.75rem; border-radius: 6px; transition: background-color 0.2s; background-color: rgba(24, 32, 128, 0.05);">
-					Ver listado de Usuarios </a>
-			</div>
-		</aside>
+		<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
 		<!-- Main: eventos -->
 		<main>
@@ -140,8 +63,7 @@
 							</c:url>
 							<a href="${eventoUrl}"
 								style="text-decoration: none; color: inherit; display: flex; gap: 1rem; width: 100%;">
-								<div class="event-image"
-									style="flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden;">
+								<div class="event-image" style="flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden;">
 									<img
 										src="${not empty e.imagen ? pageContext.request.contextPath.concat(e.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
 										alt="${e.nombre}"

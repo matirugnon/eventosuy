@@ -1,208 +1,226 @@
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alta de usuario · eventos.uy</title>
-  <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon.png">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-    rel="stylesheet" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Alta de usuario · eventos.uy</title>
+<link rel="icon" type="image/png"
+	href="${pageContext.request.contextPath}/img/favicon.png">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/styles.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+	rel="stylesheet" />
 </head>
 
 <body>
-  <div>
-    <header class="header">
-      <h1><a href="${pageContext.request.contextPath}/inicio" style="color: inherit; text-decoration: none;">eventos.uy</a></h1>
-  
-      <div>
-        <a href="${pageContext.request.contextPath}/login" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Iniciar sesión</a>
-        <a href="${pageContext.request.contextPath}/signup" style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">Registrarse</a>
-      </div>
-    </header>
+	<div>
+		<header class="header">
+			<h1>
+				<a href="${pageContext.request.contextPath}/inicio"
+					style="color: inherit; text-decoration: none;">eventos.uy</a>
+			</h1>
 
-    <div class="content single">
-      <main>
-        <section class="auth-container">
-          <div class="auth-card">
-            <h2>Alta de usuario</h2>
-            
-            <!-- Mostrar mensaje de error si existe -->
-            <c:if test="${not empty error}">
-              <div id="msg" style="color:#c00; margin-bottom:1rem; padding:0.5rem; background:#ffe6e6; border-radius:4px;">
-                ${error}
-              </div>
-            </c:if>
-            
-            <!-- Mostrar mensaje de éxito si existe -->
-            <c:if test="${not empty mensaje}">
-              <div id="msg" style="color:#2a7f2e; margin-bottom:1rem; padding:0.5rem; background:#e6ffe6; border-radius:4px;">
-                ${mensaje}
-              </div>
-            </c:if>
+			<div>
+				<a href="${pageContext.request.contextPath}/login"
+					style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;"
+					onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+					onmouseout="this.style.backgroundColor='transparent'">Iniciar
+					sesión</a> <a href="${pageContext.request.contextPath}/signup"
+					style="color: white; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.2s;"
+					onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+					onmouseout="this.style.backgroundColor='transparent'">Registrarse</a>
+			</div>
+		</header>
 
-            <!-- Formulario que se envía al servlet -->
-            <form id="formAlta" action="${pageContext.request.contextPath}/signup" method="post" 
-                  class="auth-form" autocomplete="on" novalidate enctype="multipart/form-data">
-              
-              <!-- Rol -->
-              <div class="form-group">
-                <span class="label-text">Rol</span>
-                <div style="display:flex; gap:1rem;">
-                  <label class="row">
-                    <input type="radio" name="rol" value="asistente" 
-                           ${param.rol == 'organizador' ? '' : 'checked'}> Asistente
-                  </label>
-                  <label class="row">
-                    <input type="radio" name="rol" value="organizador" 
-                           ${param.rol == 'organizador' ? 'checked' : ''}> Organizador
-                  </label>
-                </div>
-              </div>
+		<div class="content single">
+			<main>
+				<section class="auth-container">
+					<div class="auth-card">
+						<h2>Alta de usuario</h2>
 
-            <label class="input-group">
-              <span class="label-text">Nickname *</span>
-              <input name="nickname" required maxlength="30" placeholder="nickname" 
-                     value="${param.nickname}" />
-            </label>
+						<!-- Mostrar mensaje de error si existe -->
+						<c:if test="${not empty error}">
+							<div id="msg"
+								style="color: #c00; margin-bottom: 1rem; padding: 0.5rem; background: #ffe6e6; border-radius: 4px;">
+								${error}</div>
+						</c:if>
 
-            <label class="input-group">
-              <span class="label-text">Nombre *</span>
-              <input name="nombre" required maxlength="60" placeholder="Nombre" 
-                     value="${param.nombre}" />
-            </label>
+						<!-- Mostrar mensaje de éxito si existe -->
+						<c:if test="${not empty mensaje}">
+							<div id="msg"
+								style="color: #2a7f2e; margin-bottom: 1rem; padding: 0.5rem; background: #e6ffe6; border-radius: 4px;">
+								${mensaje}</div>
+						</c:if>
 
-              <!--                Específico Asistente (mover aquí)                 -->
-              <div id="bloqueAsistente" style="margin-top:1rem;">
+						<!-- Formulario que se envía al servlet -->
+						<form id="formAlta"
+							action="${pageContext.request.contextPath}/signup" method="post"
+							class="auth-form" autocomplete="on" novalidate
+							enctype="multipart/form-data">
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:.5rem;">
-                  <label class="input-group">
-                    <span class="label-text">Apellido *</span>
-                    <input name="apellido" maxlength="60" placeholder="Apellido" 
-                           value="${param.apellido}" />
-                  </label>
-                  <label class="input-group">
-                    <span class="label-text">Fecha de nacimiento *</span>
-                    <input name="fechaNacimiento" type="date" 
-                           value="${param.fechaNacimiento}" />
-                  </label>
-                </div>
-                <div style="margin-top:.5rem;">
-          <div style="display: flex; align-items: center; white-space: nowrap;">
-                      <label for="perteneceInstitucion" style="margin-right: 0;">Pertenezco a una institución
-                        <input type="checkbox" name="perteneceInstitucion" id="perteneceInstitucion" style="margin-left:4px;vertical-align:middle;" ${not empty param.institucion ? 'checked' : ''} />
-                      </label>
-          </div>
-                </div>
-                <div id="bloqueInstitucion" style="display:${not empty param.institucion ? 'block' : 'none'}; margin-top: 0;">
-                  <label class="input-group">
-                    <span class="label-text">Institución</span>
-                    <select name="institucion">
-                      <option value="">Seleccionar…</option>
-                      <c:choose>
-                        <c:when test="${not empty instituciones}">
-                          <c:forEach var="inst" items="${instituciones}">
-                            <option value="${inst}" ${param.institucion == inst ? 'selected' : ''}>${inst}</option>
-                          </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                          <!-- Fallback en caso de que no se carguen desde el servidor -->
-                          <option value="Udelar" ${param.institucion == 'Udelar' ? 'selected' : ''}>Udelar</option>
-                          <option value="ORT" ${param.institucion == 'ORT' ? 'selected' : ''}>Universidad ORT</option>
-                          <option value="UM" ${param.institucion == 'UM' ? 'selected' : ''}>Universidad de Montevideo</option>
-                        </c:otherwise>
-                      </c:choose>
-                    </select>
-                  </label>
-                </div>
-              </div>
+							<!-- Rol -->
+							<div class="form-group">
+								<span class="label-text">Rol</span>
+								<div style="display: flex; gap: 1rem;">
+									<label class="row"> <input type="radio" name="rol"
+										value="asistente"
+										${param.rol == 'organizador' ? '' : 'checked'}>
+										Asistente
+									</label> <label class="row"> <input type="radio" name="rol"
+										value="organizador"
+										${param.rol == 'organizador' ? 'checked' : ''}>
+										Organizador
+									</label>
+								</div>
+							</div>
 
-            <label class="input-group">
-              <span class="label-text">Correo electrónico *</span>
-              <input name="email" type="email" required placeholder="name@example.com" 
-                     value="${param.email}" />
-            </label>
+							<label class="input-group"> <span class="label-text">Nickname
+									*</span> <input name="nickname" required maxlength="30"
+								placeholder="nickname" value="${param.nickname}" />
+							</label> <label class="input-group"> <span class="label-text">Nombre
+									*</span> <input name="nombre" required maxlength="60"
+								placeholder="Nombre" value="${param.nombre}" />
+							</label>
 
-            <div class="grid-2">
-              <label class="input-group">
-                <span class="label-text">Contraseña *</span>
-                <input name="password" type="password" required minlength="6" autocomplete="new-password" />
-              </label>
-              <label class="input-group">
-                <span class="label-text">Confirmar contraseña *</span>
-                <input name="confirm" type="password" required minlength="6" autocomplete="new-password" />
-              </label>
-            </div>
+							<!--                Específico Asistente (mover aquí)                 -->
+							<div id="bloqueAsistente" style="margin-top: 1rem;">
 
-            <label class="input-group">
-              <span class="label-text">Imagen (opcional)</span>
-              <input name="imagen" type="file" accept="image/*" />
-            </label>
+								<div
+									style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .5rem;">
+									<label class="input-group"> <span class="label-text">Apellido
+											*</span> <input name="apellido" maxlength="60"
+										placeholder="Apellido" value="${param.apellido}" />
+									</label> <label class="input-group"> <span class="label-text">Fecha
+											de nacimiento *</span> <input name="fechaNacimiento" type="date"
+										value="${param.fechaNacimiento}" />
+									</label>
+								</div>
+								<div style="margin-top: .5rem;">
+									<div
+										style="display: flex; align-items: center; white-space: nowrap;">
+										<label for="perteneceInstitucion" style="margin-right: 0;">Pertenezco
+											a una institución <input type="checkbox"
+											name="perteneceInstitucion" id="perteneceInstitucion"
+											style="margin-left: 4px; vertical-align: middle;"
+											${not empty param.institucion ? 'checked' : ''} />
+										</label>
+									</div>
+								</div>
+								<div id="bloqueInstitucion"
+									style="display:${not empty param.institucion ? 'block' : 'none'}; margin-top: 0;">
+									<label class="input-group"> <span class="label-text">Institución</span>
+										<select name="institucion">
+											<option value="">Seleccionar…</option>
+											<c:choose>
+												<c:when test="${not empty instituciones}">
+													<c:forEach var="inst" items="${instituciones}">
+														<option value="${inst}"
+															${param.institucion == inst ? 'selected' : ''}>${inst}</option>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+													<!-- Fallback en caso de que no se carguen desde el servidor -->
+													<option value="Udelar"
+														${param.institucion == 'Udelar' ? 'selected' : ''}>Udelar</option>
+													<option value="ORT"
+														${param.institucion == 'ORT' ? 'selected' : ''}>Universidad
+														ORT</option>
+													<option value="UM"
+														${param.institucion == 'UM' ? 'selected' : ''}>Universidad
+														de Montevideo</option>
+												</c:otherwise>
+											</c:choose>
+									</select>
+									</label>
+								</div>
+							</div>
 
-            
-            <!--                   Específico Organizador                 -->
-            <div id="bloqueOrganizador" style="display:none; margin-top:1rem;">
-              <label class="input-group" style="margin-top:.5rem;">
-                <span class="label-text">Descripción (opcional)</span>
-                <textarea name="descripcion" rows="3" maxlength="500"
-                  placeholder="Somos una organización de…">${param.descripcion}</textarea>
-              </label>
-              <label class="input-group">
-                <span class="label-text">Sitio web (opcional)</span>
-                <input name="web" type="url" placeholder="https://mi-sitio.org" 
-                       value="${param.web}" />
-              </label>
-            </div>
+							<label class="input-group"> <span class="label-text">Correo
+									electrónico *</span> <input name="email" type="email" required
+								placeholder="name@example.com" value="${param.email}" />
+							</label>
 
-            <div id="msg" style="color:#c00; margin-top:.4rem; min-height:1.25rem;"></div>
+							<div class="grid-2">
+								<label class="input-group"> <span class="label-text">Contraseña
+										*</span> <input name="password" type="password" required
+									minlength="6" autocomplete="new-password" />
+								</label> <label class="input-group"> <span class="label-text">Confirmar
+										contraseña *</span> <input name="confirm" type="password" required
+									minlength="6" autocomplete="new-password" />
+								</label>
+							</div>
 
-            <button type="submit" class="btn-primary" style="margin-top:1rem; width:100%;">Crear cuenta</button>
-            <div style="text-align:center; margin-top:1.5rem;">
-              <a class="btn-outline" href="${pageContext.request.contextPath}/inicio">Cancelar</a>
-            </div>
-          </form>
-        </div>
-      </section>
-    </main>
-  </div>
+							<label class="input-group"> <span class="label-text">Imagen
+									(opcional)</span> <input name="imagen" type="file" accept="image/*" />
+							</label>
 
-  <footer></footer>
-  <style>
-    .auth-card { 
-      width: 760px; 
-      max-width: 95%; 
-      margin: 0 auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(24, 32, 128, 0.08);
-    }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+							<!--                   Específico Organizador                 -->
+							<div id="bloqueOrganizador"
+								style="display: none; margin-top: 1rem;">
+								<label class="input-group" style="margin-top: .5rem;"> <span
+									class="label-text">Descripción (opcional)</span> <textarea
+										name="descripcion" rows="3" maxlength="500"
+										placeholder="Somos una organización de…">${param.descripcion}</textarea>
+								</label> <label class="input-group"> <span class="label-text">Sitio
+										web (opcional)</span> <input name="web" type="url"
+									placeholder="https://mi-sitio.org" value="${param.web}" />
+								</label>
+							</div>
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-  </style>
-  <script>
+							<div id="msg"
+								style="color: #c00; margin-top: .4rem; min-height: 1.25rem;"></div>
+
+							<button type="submit" class="btn-primary"
+								style="margin-top: 1rem; width: 100%;">Crear cuenta</button>
+							<div style="text-align: center; margin-top: 1.5rem;">
+								<a class="btn-outline"
+									href="${pageContext.request.contextPath}/inicio">Cancelar</a>
+							</div>
+						</form>
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<footer></footer>
+		<style>
+.auth-card {
+	width: 760px;
+	max-width: 95%;
+	margin: 0 auto;
+	background: #fff;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(24, 32, 128, 0.08);
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.input-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.75rem;
+}
+</style>
+		<script>
     (function () {
       const $ = s => document.querySelector(s);
       const $$ = s => document.querySelectorAll(s);
