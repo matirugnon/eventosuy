@@ -72,7 +72,7 @@
 								<div class="event-content"
 									style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
 									<h3 style="margin: 0 0 0.5rem 0;">${e.nombre}</h3>
-									<p style="margin: 0;">${empty e.descripcion ? 'Sin descripciÃ³n' : e.descripcion}</p>
+									<p style="margin: 0;">${empty e.descripcion ? 'Sin descripción' : e.descripcion}</p>
 								</div>
 							</a>
 						</div>

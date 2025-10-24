@@ -22,7 +22,7 @@
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
 		<div class="content">
-			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />F
+			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 			<main>
 				<!-- Título Tipo de Registro -->
 				<section class="panel">

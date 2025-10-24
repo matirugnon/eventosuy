@@ -1037,6 +1037,12 @@ textarea {
 	font-size: 2rem;
 	cursor: pointer;
 }
+.row {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
 
 /* estilos pars celulares */
 @media screen and (max-width: 768px) {
@@ -1076,5 +1082,25 @@ textarea {
 	}
 	.edicion-item {
 		flex-direction: column;
+	}
+	.auth-container {
+		padding: 0;
+	}
+	.consulta-registro-form-row {
+		flex-direction: column;
+	}
+	.event-detail {
+		flex-direction: column;
+	}
+	.bloqueAsistente {
+		display: flex;
+		flex-direction: column;
+	}
+	.apellidoYNacimiento {
+		display: flex !important;
+		flex-direction: column !important;
+	}
+	#perteneceInstitucion {
+		width: auto;
 	}
 }
