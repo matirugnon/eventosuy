@@ -50,7 +50,7 @@ public class ConsultaEventoServlet extends HttpServlet {
             EventoDetalleDTO eventoDetalle = new EventoDetalleDTO(detalleEventoSoap);
 
             // Obtener las ediciones aceptadas vía SOAP
-            StringArray nombresEdicionesArray = publicador.listarEdicionesDeEvento(nombreEvento);
+            StringArray nombresEdicionesArray = publicador.listarEdicionesAceptadasDeEvento(nombreEvento);
             List<EdicionDTO> edicionesAceptadas = new ArrayList<>();
             
             if (nombresEdicionesArray != null && nombresEdicionesArray.getItem() != null) {
