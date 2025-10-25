@@ -25,7 +25,7 @@ import utils.SoapClientHelper;
 import java.util.HashSet;
 
 @WebServlet("/altaEdicion")
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imágenes
 public class AltaEdicionServlet extends HttpServlet {
 
     @Override
@@ -63,17 +63,8 @@ public class AltaEdicionServlet extends HttpServlet {
                 Collections.sort(eventos);
             }
 
-            List<String> categorias = new ArrayList<>();
-            categorias.add("Deportes");
-            categorias.add("Cultura");
-            categorias.add("Tecnología");
-            categorias.add("Música");
-            categorias.add("Arte");
-            Collections.sort(categorias);
 
-            // Pasar datos a la JSP
             request.setAttribute("eventos", eventos);
-            request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", avatar);
             request.setAttribute("role", role);
@@ -124,7 +115,7 @@ public class AltaEdicionServlet extends HttpServlet {
             }
 
             // Procesar imagen si existe (por ahora no se envía via SOAP, pendiente de implementar)
-            // String rutaImagen = procesarImagen(request);
+            String rutaImagen = procesarImagen(request);
 
             // Usar el PublicadorControlador via SOAP
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
@@ -141,7 +132,7 @@ public class AltaEdicionServlet extends HttpServlet {
             fechaAlta.setAnio(hoy.getYear());
 
             // Crear edición vía SOAP
-            boolean resultado = publicador.altaEdicionDeEvento(
+            String resultado = publicador.altaEdicionDeEvento(
                 nickOrganizador,
                 evento,
                 nombre,
@@ -150,11 +141,12 @@ public class AltaEdicionServlet extends HttpServlet {
                 pais,
                 fechaInicio,
                 fechaFin,
-                fechaAlta
+                fechaAlta,
+                rutaImagen
             );
-            
-            if (!resultado) {
-                mostrarFormularioConError(request, response, "❌ No se pudo crear la edición");
+
+            if (!resultado.equals("OK")) {
+                mostrarFormularioConError(request, response, "❌ No se pudo crear la edición: " + resultado);
                 return;
             }
             

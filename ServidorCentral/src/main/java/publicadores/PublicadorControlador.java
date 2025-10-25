@@ -11,6 +11,7 @@ import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
 import utils.Utils;
+import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
 
 import java.io.FileInputStream;
@@ -55,7 +56,7 @@ public class PublicadorControlador {
     }
 
     @WebMethod
-    public boolean altaEdicionDeEvento(
+    public String altaEdicionDeEvento(
         String nickOrganizador,
         String nombreEvento,
         String nombreEdicion,
@@ -64,19 +65,32 @@ public class PublicadorControlador {
         String pais,
         DTFecha fechaInicio,
         DTFecha fechaFin,
-        DTFecha fechaAlta
+        DTFecha fechaAlta, 
+        String rutaImagen
+
     ) {
-        return ctrl.altaEdicion(
-			nickOrganizador,
-			nombreEvento,
-			nombreEdicion,
-			sigla,
-			ciudad,
-			pais,
-			fechaInicio,
-			fechaFin,
-			fechaAlta
-		);
+
+        String imagenFinal = (rutaImagen == null || rutaImagen.trim().isEmpty()) ? null : rutaImagen;
+
+        try {
+            ctrl.altaEdicion(
+                nickOrganizador,
+                nombreEvento,
+                nombreEdicion,
+                sigla,
+                ciudad,
+                pais,
+                fechaInicio,
+                fechaFin,
+                fechaAlta,
+                imagenFinal
+            );
+            return "OK"; // Éxito
+
+        } catch (Exception e) {
+            // Manejar excepción si es necesario
+            return e.getMessage();
+        }
     }
 
     @WebMethod
@@ -179,6 +193,7 @@ public class PublicadorControlador {
             return new String[0];
         }
     }
+
 
     /**
      * Carga datos de prueba en los controladores del servidor (vía Publicador).

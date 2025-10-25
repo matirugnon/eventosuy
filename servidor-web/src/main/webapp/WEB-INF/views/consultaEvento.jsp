@@ -33,29 +33,29 @@
 								<div class="event-image"
 									style="margin-bottom: 1rem; max-width: 250px;">
 									<img
-										src="${not empty eventoSeleccionado.evento.imagen ? pageContext.request.contextPath.concat(eventoSeleccionado.evento.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
-										alt="${eventoSeleccionado.evento.nombre}"
+										src="${not empty eventoDetalle.imagen ? pageContext.request.contextPath.concat(eventoDetalle.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
+										alt="${eventoDetalle.nombre}"
 										style="width: 100%; height: auto; border-radius: 8px;">
 								</div>
 								<div>
-									<h3 style="margin: 0 0 0.25rem 0;">${eventoSeleccionado.evento.nombre}</h3>
+									<h3 style="margin: 0 0 0.25rem 0;">${eventoDetalle.nombre}</h3>
 									<p style="margin: 0.25rem 0;">
 										<strong>Descripción:</strong>
-										${eventoSeleccionado.evento.descripcion}
+										${eventoDetalle.descripcion}
 									</p>
 									<p style="margin: 0.25rem 0;">
-										<strong>Sigla:</strong> ${eventoSeleccionado.evento.sigla}
+										<strong>Sigla:</strong> ${eventoDetalle.sigla}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Categorías:</strong>
-										<c:forEach items="${eventoSeleccionado.evento.categorias}"
+										<c:forEach items="${eventoDetalle.categorias}"
 											var="categoria" varStatus="status">
                       ${categoria}<c:if test="${!status.last}">, </c:if>
 										</c:forEach>
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Alta:</strong>
-										${eventoSeleccionado.evento.fechaEvento.dia}/${eventoSeleccionado.evento.fechaEvento.mes}/${eventoSeleccionado.evento.fechaEvento.anio}
+										${eventoDetalle.dia}/${eventoDetalle.mes}/${eventoDetalle.anio}
 									</p>
 								</div>
 							</article>

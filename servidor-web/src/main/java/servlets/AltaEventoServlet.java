@@ -19,7 +19,6 @@ import soap.DTFecha;
 import soap.StringArray;
 // Bridge temporal: sincronizar con lógica local hasta migrar listados a SOAP
 
-import logica.controladores.IControladorEvento;
 import java.util.HashSet;
 import java.util.Arrays;
 import utils.SoapClientHelper;
@@ -54,30 +53,20 @@ public class AltaEventoServlet extends HttpServlet {
 
             // Obtener categorías desde el Servidor Central vía SOAP
             List<String> categorias = new ArrayList<>();
-            try {
-                PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
-                StringArray categoriasWs = publicador.listarCategorias();
-                if (categoriasWs != null && categoriasWs.getItem() != null) {
+
+
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+            StringArray categoriasWs = publicador.listarCategorias();
+            if (categoriasWs != null && categoriasWs.getItem() != null) {
                     categorias.addAll(categoriasWs.getItem());
                     Collections.sort(categorias);
-                }
-            } catch (Exception ex) {
-                // Si falla el servidor central, mostramos el formulario igual sin categorías
-                // y dejamos un mensaje informativo en el request.
-                request.setAttribute("warning", "No se pudieron cargar las categorías desde el Servidor Central");
             }
+
+            
 
             // Fallback: si no hay categorías en el servidor central (lista vacía),
             // mostramos un set mínimo para que el formulario sea usable y avisamos.
-            if (categorias.isEmpty()) {
-                categorias.add("Tecnología");
-                categorias.add("Innovación");
-                categorias.add("Cultura");
-                categorias.add("Deporte");
-                categorias.add("Música");
-                Collections.sort(categorias);
-                request.setAttribute("warning", "No hay categorías cargadas en el Servidor Central. Se muestran categorías por defecto");
-            }
+           
 
             // Pasar datos a la JSP
             request.setAttribute("categorias", categorias);
@@ -160,17 +149,7 @@ public class AltaEventoServlet extends HttpServlet {
 
             // Bridge temporal: reflejar el evento en la lógica local para que el listado actual lo vea
             // (hasta migrar inicioServlet y consultas a SOAP)
-            try {
-                IControladorEvento ctrlLocal = IControladorEvento.getInstance();
-                logica.datatypesyenum.DTFecha fechaLocal = new logica.datatypesyenum.DTFecha(
-                        fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
-                // Convertir cadena vacía a null para el bridge local
-                String rutaImagenLocal = rutaImagen.isEmpty() ? null : rutaImagen;
-                ctrlLocal.darAltaEvento(nombre, descripcion, fechaLocal, sigla,
-                        new HashSet<>(Arrays.asList(categoriasSeleccionadas)), rutaImagenLocal);
-            } catch (Exception ignore) {
-                // Si falla por duplicado u otra razón, no bloqueamos el flujo.
-            }
+            
 
             // Redirigir con mensaje de éxito usando sesión
             session.setAttribute("datosMensaje", "El evento '" + nombre + "' fue creado exitosamente");
@@ -257,13 +236,24 @@ public class AltaEventoServlet extends HttpServlet {
         try {
             // TODO: Obtener categorías via SOAP cuando el cliente esté regenerado
             List<String> categorias = new ArrayList<>();
-            categorias.add("Deportes");
-            categorias.add("Cultura");
-            categorias.add("Tecnología");
-            categorias.add("Música");
-            categorias.add("Arte");
-            Collections.sort(categorias);
-            
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+            StringArray categoriasWs = publicador.listarCategorias();
+            categorias = new ArrayList<>();
+            if (categoriasWs != null && categoriasWs.getItem() != null) {
+                categorias.addAll(categoriasWs.getItem());
+                Collections.sort(categorias);
+            }
+            //muestro las categorias seleccionadas anteriormente
+            String[] categoriasSeleccionadas = (String[]) request.getSession().getAttribute("categoriasSeleccionadas");
+            if (categoriasSeleccionadas != null) {
+                for (String categoria : categoriasSeleccionadas) {
+                    if (!categorias.contains(categoria)) {
+                        categorias.add(categoria);
+                    }
+                }
+                Collections.sort(categorias);
+            }
+
             request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
