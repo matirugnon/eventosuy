@@ -13,6 +13,7 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
+import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
@@ -170,6 +171,7 @@ public class MainFrame extends JFrame {
 			} catch (UsuarioRepetidoException | EdicionNoExisteException |
 					CorreoInvalidoException |
 					EventoRepetidoException |
+					SiglaRepetidaException |
 					FechaInvalidaException |
 					ExisteInstitucionException |
 					EdicionExistenteException |

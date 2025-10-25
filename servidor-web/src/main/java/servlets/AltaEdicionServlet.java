@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
+import java.util.Arrays;
+import soap.StringArray;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -16,9 +18,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
+
 import soap.PublicadorControlador;
 import soap.DTFecha;
 import utils.SoapClientHelper;
+import java.util.HashSet;
 
 @WebServlet("/altaEdicion")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
@@ -48,12 +52,17 @@ public class AltaEdicionServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            // TODO: Obtener eventos y categorías via SOAP cuando el cliente esté regenerado
-            // Por ahora usamos listas temporales
-            Set<String> eventos = new java.util.HashSet<>();
-            eventos.add("Evento Demo 1");
-            eventos.add("Evento Demo 2");
+            // Obtener eventos via SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+            StringArray eventosWs = publicador.listarEventos();
             
+            // Convertir StringArray a List para el JSP
+            List<String> eventos = new ArrayList<>();
+            if (eventosWs != null && eventosWs.getItem() != null) {
+                eventos.addAll(eventosWs.getItem());
+                Collections.sort(eventos);
+            }
+
             List<String> categorias = new ArrayList<>();
             categorias.add("Deportes");
             categorias.add("Cultura");

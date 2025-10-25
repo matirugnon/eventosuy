@@ -18,6 +18,7 @@ import soap.PublicadorControlador;
 import soap.DTFecha;
 import soap.StringArray;
 // Bridge temporal: sincronizar con lógica local hasta migrar listados a SOAP
+
 import logica.controladores.IControladorEvento;
 import java.util.HashSet;
 import java.util.Arrays;
@@ -99,7 +100,7 @@ public class AltaEventoServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Verificar que el usuario estÃ© logueado y sea organizador
+            // Verificar que el usuario esta logueado y sea organizador
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -126,7 +127,11 @@ public class AltaEventoServlet extends HttpServlet {
             }
 
             // Procesar imagen si existe (por ahora no se envía via SOAP, pendiente de implementar)
-            // String rutaImagen = procesarImagen(request);
+            String rutaImagen = procesarImagen(request);
+            // JAX-WS no acepta null en parámetros, usar cadena vacía si no hay imagen
+            if (rutaImagen == null) {
+                rutaImagen = "";
+            }
 
             // Usar el PublicadorControlador via SOAP
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
@@ -145,10 +150,11 @@ public class AltaEventoServlet extends HttpServlet {
             }
 
             // Crear evento vía SOAP (Servidor Central)
-            boolean resultado = publicador.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasArray);
+            String resultado = publicador.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasArray, rutaImagen);
             
-            if (!resultado) {
-                mostrarFormularioConError(request, response, "❌ No se pudo crear el evento");
+            // Si no retorna "OK", es un mensaje de error específico
+            if (!"OK".equals(resultado)) {
+                mostrarFormularioConError(request, response, "❌ " + resultado);
                 return;
             }
 
@@ -158,8 +164,10 @@ public class AltaEventoServlet extends HttpServlet {
                 IControladorEvento ctrlLocal = IControladorEvento.getInstance();
                 logica.datatypesyenum.DTFecha fechaLocal = new logica.datatypesyenum.DTFecha(
                         fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
+                // Convertir cadena vacía a null para el bridge local
+                String rutaImagenLocal = rutaImagen.isEmpty() ? null : rutaImagen;
                 ctrlLocal.darAltaEvento(nombre, descripcion, fechaLocal, sigla,
-                        new HashSet<>(Arrays.asList(categoriasSeleccionadas)));
+                        new HashSet<>(Arrays.asList(categoriasSeleccionadas)), rutaImagenLocal);
             } catch (Exception ignore) {
                 // Si falla por duplicado u otra razón, no bloqueamos el flujo.
             }

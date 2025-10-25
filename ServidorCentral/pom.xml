@@ -102,30 +102,49 @@
                 </executions>
             </plugin>
 
-            <!-- Plugin para generar cliente SOAP -->
-        <plugin>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-maven-plugin</artifactId>
-            <version>4.0.2</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>wsimport</goal>
-                    </goals>
-                    <configuration>
-                        <wsdlUrls>
-                            <wsdlUrl>http://localhost:9128/publicador?wsdl</wsdlUrl>
-                        </wsdlUrls>
-                        <packageName>soap</packageName>
-                        <keep>true</keep>
-                        <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+            <!-- Plugin para generar cliente SOAP
+                 Moved into an opt-in profile 'wsimport' to avoid attempting to fetch the WSDL
+                 while the server is not yet running. To run wsimport, build with -Dwsimport=true
+            -->
 
 
 
         </plugins>
     </build>
+        <profiles>
+            <profile>
+                <id>wsimport</id>
+                <activation>
+                    <property>
+                        <name>wsimport</name>
+                        <value>true</value>
+                    </property>
+                </activation>
+                <build>
+                    <plugins>
+                        <!-- Plugin para generar cliente SOAP (wsimport) -->
+                        <plugin>
+                            <groupId>com.sun.xml.ws</groupId>
+                            <artifactId>jaxws-maven-plugin</artifactId>
+                            <version>4.0.2</version>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>wsimport</goal>
+                                    </goals>
+                                    <configuration>
+                                        <wsdlUrls>
+                                            <wsdlUrl>http://localhost:9128/publicador?wsdl</wsdlUrl>
+                                        </wsdlUrls>
+                                        <packageName>soap</packageName>
+                                        <keep>true</keep>
+                                        <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
+        </profiles>
 </project>

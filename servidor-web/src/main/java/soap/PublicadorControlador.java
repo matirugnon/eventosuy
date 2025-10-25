@@ -36,31 +36,6 @@ public interface PublicadorControlador {
 
     /**
      * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     * @param arg4
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorControlador/darAltaEventoRequest", output = "http://publicadores/PublicadorControlador/darAltaEventoResponse")
-    public boolean darAltaEvento(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        DTFecha arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3,
-        @WebParam(name = "arg4", partName = "arg4")
-        StringArray arg4);
-
-    /**
-     * 
      * @return
      *     returns soap.StringArray
      */
@@ -91,6 +66,54 @@ public interface PublicadorControlador {
     public boolean altaCategoria(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
+     * @param arg5
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/darAltaEventoRequest", output = "http://publicadores/PublicadorControlador/darAltaEventoResponse")
+    public String darAltaEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        DTFecha arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3,
+        @WebParam(name = "arg4", partName = "arg4")
+        StringArray arg4,
+        @WebParam(name = "arg5", partName = "arg5")
+        String arg5);
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/cargarDatosPruebaRequest", output = "http://publicadores/PublicadorControlador/cargarDatosPruebaResponse")
+    public String cargarDatosPrueba();
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/holaRequest", output = "http://publicadores/PublicadorControlador/holaResponse")
+    public String hola();
 
     /**
      * 
@@ -131,12 +154,28 @@ public interface PublicadorControlador {
 
     /**
      * 
+     * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns soap.StringArray
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorControlador/holaRequest", output = "http://publicadores/PublicadorControlador/holaResponse")
-    public String hola();
+    @Action(input = "http://publicadores/PublicadorControlador/obtenerDetalleEventoRequest", output = "http://publicadores/PublicadorControlador/obtenerDetalleEventoResponse")
+    public StringArray obtenerDetalleEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/listarEdicionesDeEventoRequest", output = "http://publicadores/PublicadorControlador/listarEdicionesDeEventoResponse")
+    public StringArray listarEdicionesDeEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
 
 }

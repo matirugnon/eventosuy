@@ -122,6 +122,22 @@ public class ManejadorEventos {
 
     }
 
+    public boolean existeSigla(String sigla) {
+        // Verificar siglas en eventos
+        for (Evento e : eventos.values()) {
+            if (e.getSigla().equalsIgnoreCase(sigla)) {
+                return true;
+            }
+        }
+        // Verificar siglas en ediciones
+        for (Edicion ed : ediciones.values()) {
+            if (ed.getSigla().equalsIgnoreCase(sigla)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public boolean existeEdicion(String nomEdicion) {
         return ediciones.containsKey(nomEdicion);

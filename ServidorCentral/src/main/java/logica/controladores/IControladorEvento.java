@@ -43,6 +43,9 @@ import excepciones.PatrocinioDuplicadoException;
 
 
 import excepciones.PatrocinioNoEncontradoException;
+
+import excepciones.SiglaRepetidaException;
+
 import logica.datatypesyenum.DTEdicion;
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
@@ -74,10 +77,7 @@ public interface IControladorEvento {
 
 
 	public boolean darAltaEvento(String nomEvento, String desc, DTFecha fechaAlta, String sigla, Set<String> nomcategorias)
-
-
-
-			throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
+			throws EventoRepetidoException, SiglaRepetidaException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 
 
@@ -193,7 +193,7 @@ public interface IControladorEvento {
 
 
 	public boolean darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> nomCategorias,
-			String string4) throws EventoRepetidoException, CategoriaNoSeleccionadaException, FechaInvalidaException;
+			String string4) throws EventoRepetidoException, SiglaRepetidaException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 
 	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado);

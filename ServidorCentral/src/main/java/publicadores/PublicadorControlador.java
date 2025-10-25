@@ -7,6 +7,10 @@ import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
 import logica.controladores.ControladorEvento;
+import logica.controladores.IControladorEvento;
+import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
+import utils.Utils;
 import logica.datatypesyenum.DTFecha;
 
 import java.io.FileInputStream;
@@ -76,12 +80,13 @@ public class PublicadorControlador {
     }
 
     @WebMethod
-    public boolean darAltaEvento(
+    public String darAltaEvento(
         String nombreEvento,
         String descripcion,
         DTFecha fechaAlta,
         String sigla,
-        String[] categorias
+        String[] categorias,
+        String rutaImagen
     ) {
 
     	Set<String> categoriasSet;
@@ -89,11 +94,21 @@ public class PublicadorControlador {
             categoriasSet = new HashSet<>();
         } else {
             categoriasSet = new HashSet<>(Arrays.asList(categorias));
-
         }
 
-        return ctrl.darAltaEvento(nombreEvento, descripcion, fechaAlta, sigla, categoriasSet);
+        // Convertir cadena vacía a null para imagen opcional
+        String imagenFinal = (rutaImagen == null || rutaImagen.trim().isEmpty()) ? null : rutaImagen;
+
+        try {
+            ctrl.darAltaEvento(nombreEvento, descripcion, fechaAlta, sigla, categoriasSet, imagenFinal);
+            return "OK"; // Éxito
+        } catch (Exception e) {
+            // Retornar el mensaje de error específico
+            return e.getMessage();
+        }
     }
+
+
 
     @WebMethod
     public String[] listarEventos() {
@@ -108,6 +123,16 @@ public class PublicadorControlador {
     }
 
     @WebMethod
+    public String[] listarEdicionesDeEvento(String nombreEvento) {
+        try {
+            Set<String> ediciones = ctrl.listarEdiciones(nombreEvento);
+            return ediciones.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0]; // Retornar arreglo vacío en caso de error
+        }
+    }
+
+    @WebMethod
     public boolean altaCategoria(String nombreCategoria) {
         if (nombreCategoria == null || nombreCategoria.isBlank()) {
             return false;
@@ -116,6 +141,61 @@ public class PublicadorControlador {
             ctrl.altaCategoria(nombreCategoria);
         }
         return true;
+    }
+
+    /**
+     * Obtiene el detalle de un evento por su nombre.
+     * Formato: [nombre, sigla, descripcion, dia, mes, anio, imagen, categorias_separadas_por_coma]
+     */
+    @WebMethod
+    public String[] obtenerDetalleEvento(String nombreEvento) {
+        try {
+            Set<logica.datatypesyenum.DTEvento> eventos = ctrl.obtenerDTEventos();
+            logica.datatypesyenum.DTEvento evento = null;
+            
+            for (logica.datatypesyenum.DTEvento e : eventos) {
+                if (e.getNombre().equals(nombreEvento)) {
+                    evento = e;
+                    break;
+                }
+            }
+            
+            if (evento == null) {
+                return new String[0];
+            }
+            
+            String[] detalle = new String[8];
+            detalle[0] = evento.getNombre();
+            detalle[1] = evento.getSigla();
+            detalle[2] = evento.getDescripcion();
+            detalle[3] = String.valueOf(evento.getFechaEvento().getDia());
+            detalle[4] = String.valueOf(evento.getFechaEvento().getMes());
+            detalle[5] = String.valueOf(evento.getFechaEvento().getAnio());
+            detalle[6] = evento.getImagen() != null ? evento.getImagen() : "";
+            detalle[7] = evento.getCategorias() != null ? String.join(",", evento.getCategorias()) : "";
+            
+            return detalle;
+        } catch (Exception e) {
+            return new String[0];
+        }
+    }
+
+    /**
+     * Carga datos de prueba en los controladores del servidor (vía Publicador).
+     * Retorna "OK" si se cargaron correctamente o el mensaje de la excepción en caso contrario.
+     */
+    @WebMethod
+    public String cargarDatosPrueba() {
+        try {
+            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+
+            Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+            return "OK";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
 

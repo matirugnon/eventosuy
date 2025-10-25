@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.ServletException;
@@ -19,8 +17,12 @@ import jakarta.servlet.http.HttpSession;
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTEvento;
 import utils.Utils;
+
+import soap.PublicadorControlador;
+import soap.StringArray;
+import utils.SoapClientHelper;
+import servlets.dto.EventoDTO;
 
 @WebServlet("/inicio")
 public class inicioServlet extends HttpServlet {
@@ -33,21 +35,20 @@ public class inicioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // Obtener los controladores
+            // Obtener el publicador SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+            
+            // Verificar si los datos ya fueron precargados (solo para la primera vez)
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-
-            // Verificar si los datos ya fueron precargados
+            
             boolean datosCargados = Utils.datosPrecargados(getServletContext());
             boolean hayDatosBasicos = Utils.hayDatosBasicos(ctrlUsuario, ctrlEvento, ctrlRegistro);
 
-            // Solo cargar datos si no están cargados y no hay datos básicos
             if (!datosCargados && !hayDatosBasicos) {
                 Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
                 Utils.marcarDatosCargados(getServletContext());
-
-                // Mostrar mensaje de confirmación
                 request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
                 request.setAttribute("datosMensajeTipo", "success");
             }
@@ -64,13 +65,28 @@ public class inicioServlet extends HttpServlet {
                 session.removeAttribute("datosMensajeTipo");
             }
 
-            // Obtener eventos
-            Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
+            // Obtener eventos vía SOAP
+            StringArray nombresEventosWs = publicador.listarEventos();
+            List<EventoDTO> eventos = new ArrayList<>();
+            
+            if (nombresEventosWs != null && nombresEventosWs.getItem() != null) {
+                for (String nombreEvento : nombresEventosWs.getItem()) {
+                    StringArray detallesWs = publicador.obtenerDetalleEvento(nombreEvento);
+                    if (detallesWs != null && detallesWs.getItem() != null && detallesWs.getItem().size() > 0) {
+                        // Convertir List<String> a String[]
+                        String[] detalles = detallesWs.getItem().toArray(new String[0]);
+                        eventos.add(new EventoDTO(detalles));
+                    }
+                }
+            }
 
-            // Categorías para el sidebar (ordenadas alfabéticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
-            Collections.sort(categorias);
+            // Categorías via SOAP
+            StringArray categoriasWs = publicador.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasWs != null && categoriasWs.getItem() != null) {
+                categorias.addAll(categoriasWs.getItem());
+                Collections.sort(categorias);
+            }
 
             // Parámetros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
@@ -85,7 +101,7 @@ public class inicioServlet extends HttpServlet {
                         .filter(e -> e.getCategorias() != null &&
                                      e.getCategorias().stream()
                                        .anyMatch(c -> c.equalsIgnoreCase(cat)))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
+                        .collect(Collectors.toList());
             }
 
             // FILTRO POR BÚSQUEDA
@@ -94,12 +110,12 @@ public class inicioServlet extends HttpServlet {
                 eventos = eventos.stream()
                         .filter(e -> normalizar(e.getNombre()).contains(texto) ||
                                      normalizar(e.getDescripcion()).contains(texto))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
+                        .collect(Collectors.toList());
             }
 
             // Ordenar por nombre
-            List<DTEvento> eventosOrdenados = new ArrayList<>(eventos);
-            eventosOrdenados.sort(Comparator.comparing(DTEvento::getNombre));
+            List<EventoDTO> eventosOrdenados = new ArrayList<>(eventos);
+            eventosOrdenados.sort(Comparator.comparing(EventoDTO::getNombre));
 
             // PAGINACIÓN
             int pageSize = 3;
@@ -129,7 +145,7 @@ public class inicioServlet extends HttpServlet {
             int toIndex = Math.min(fromIndex + pageSize, totalEventos);
 
             // Solo crear sublista si hay elementos
-            List<DTEvento> eventosPagina;
+            List<EventoDTO> eventosPagina;
             if (totalEventos == 0) {
                 eventosPagina = new ArrayList<>();
             } else {
