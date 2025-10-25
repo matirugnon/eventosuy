@@ -25,7 +25,7 @@
 				<div id="modal" class="modal">
 					<div class="modal-content">
 						<button id="closeModalBtn" class="close">&times;</button>
-						<h2>Cerrar Sesion</h2>
+						<h2><a href="${pageContext.request.contextPath}/logout">Cerrar sesión</a></h2>
 						<hr>
 						<c:choose>
 							<c:when test="${role == 'organizador'}">

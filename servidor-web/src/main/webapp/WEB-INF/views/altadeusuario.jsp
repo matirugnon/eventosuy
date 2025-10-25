@@ -69,15 +69,13 @@
 							<!-- Rol -->
 							<div class="form-group">
 								<span class="label-text">Rol</span>
-								<div style="display: flex; gap: 1rem;">
-									<label class="row"> <input type="radio" name="rol"
+								<div style="display: flex; gap: 1rem; margin-top: 1rem;">
+									<label class="row"><span>Asistente</span><input type="radio" name="rol"
 										value="asistente"
 										${param.rol == 'organizador' ? '' : 'checked'}>
-										Asistente
-									</label> <label class="row"> <input type="radio" name="rol"
+									</label> <label class="row"><span>Organizador</span><input type="radio" name="rol"
 										value="organizador"
 										${param.rol == 'organizador' ? 'checked' : ''}>
-										Organizador
 									</label>
 								</div>
 							</div>
@@ -91,10 +89,9 @@
 							</label>
 
 							<!--                Específico Asistente (mover aquí)                 -->
-							<div id="bloqueAsistente" style="margin-top: 1rem;">
-
+							<div id="bloqueAsistente" class="bloqueAsistente">
 								<div
-									style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .5rem;">
+									style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;" class="apellidoYNacimiento">
 									<label class="input-group"> <span class="label-text">Apellido
 											*</span> <input name="apellido" maxlength="60"
 										placeholder="Apellido" value="${param.apellido}" />

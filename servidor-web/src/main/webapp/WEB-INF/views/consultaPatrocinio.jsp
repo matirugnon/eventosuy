@@ -28,9 +28,7 @@
 				<section class="panel">
 					<div class="panel-header">
 						Patrocinio:
-						<div
-							style="margin-top: 0.25rem; font-weight: 600; font-size: 1.1rem;">
-							${patrocinio.institucion} / ${patrocinio.edicion}</div>
+						<div style="margin-top: 0.25rem; font-weight: 600; font-size: 1.1rem; white-space: normal;">${patrocinio.institucion} / ${patrocinio.edicion}</div>
 					</div>
 
 					<div class="panel-body">
