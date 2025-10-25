@@ -32,7 +32,7 @@
 
 		<div class="content">
 			<!-- Sidebar -->
-			<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
+			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
 			<!-- Main: Listado de usuarios -->
 			<main>

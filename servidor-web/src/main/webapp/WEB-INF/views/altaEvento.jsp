@@ -179,9 +179,9 @@
 												name="categorias" value="${categoria}"
 												<c:if test="${paramValues.categorias != null}">
                                                        <c:forEach var="selected" items="${paramValues.categorias}">
-                                                           <c:if test="${selected == categoria}">checked</c:if> />
-									</c:forEach>
-									</c:if>
+                                                           <c:if test="${selected == categoria}">checked</c:if>
+													</c:forEach>
+											</c:if>
 									> <label for="cat_${categoria}">${categoria}</label>
 								</div>
 								</c:forEach>
