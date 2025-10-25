@@ -30,7 +30,7 @@ public class ConsultaRegistroServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Obtener parámetros
+            // Obtener parÃ¡metros
             String asistente = request.getParameter("asistente");
             String edicion = request.getParameter("edicion");
             String tipoRegistro = request.getParameter("tipoRegistro");
@@ -52,24 +52,24 @@ public class ConsultaRegistroServlet extends HttpServlet {
             boolean tienePermisos = false;
             
             if (usuarioSesion != null) {
-                // Caso 1: Es el mismo asistente que está registrado
+                // Caso 1: Es el mismo asistente que estÃ¡ registrado
                 if (asistente.equals(usuarioSesion) && "asistente".equals(rolSesion)) {
                     tienePermisos = true;
                 }
-                // Caso 2: Es el organizador específico de esta edición
+                // Caso 2: Es el organizador especÃ­fico de esta ediciÃ³n
                 else if ("organizador".equals(rolSesion)) {
                     try {
                         DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
-                        // Solo permitir si el usuario logueado es exactamente el organizador de esta edición
+                        // Solo permitir si el usuario logueado es exactamente el organizador de esta ediciÃ³n
                         if (edicionInfo != null && usuarioSesion.equals(edicionInfo.getOrganizador())) {
                             tienePermisos = true;
                         }
                     } catch (Exception e) {
-                        // Si hay error obteniendo la edición, no dar permisos
+                        // Si hay error obteniendo la ediciÃ³n, no dar permisos
                         tienePermisos = false;
                     }
                 }
-                // Caso 3: Ningún otro rol tiene permisos (visitantes, otros organizadores, etc.)
+                // Caso 3: NingÃºn otro rol tiene permisos (visitantes, otros organizadores, etc.)
             }
             
             if (!tienePermisos) {
@@ -77,12 +77,12 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener el registro específico
+            // Obtener el registro especÃ­fico
             // Primero obtenemos todos los registros del asistente
             Set<DTRegistro> registros = ctrlRegistro.listarRegistrosPorAsistente(asistente);
             DTRegistro registro = null;
             
-            // Buscar el registro específico por edición y tipo de registro
+            // Buscar el registro especÃ­fico por ediciÃ³n y tipo de registro
             for (DTRegistro reg : registros) {
                 if (reg.getnomEdicion().equals(edicion) && reg.getTipoDeRegistro().equals(tipoRegistro)) {
                     registro = reg;
@@ -95,10 +95,10 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener información de la edición
+            // Obtener informaciÃ³n de la ediciÃ³n
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
             
-            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -108,7 +108,7 @@ public class ConsultaRegistroServlet extends HttpServlet {
             request.setAttribute("edicionInfo", edicionInfo);
             request.setAttribute("categorias", categorias);
 
-            // Obtener el rol desde la sesión y pasarlo a la JSP
+            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
             String nickname = (String) request.getSession().getAttribute("usuario");
             String avatar = (String) request.getSession().getAttribute("avatar");
@@ -125,7 +125,8 @@ public class ConsultaRegistroServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/consultaRegistro.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo información del registro", e);
+            throw new ServletException("Error obteniendo informaciÃ³n del registro", e);
         }
     }
 }
+

@@ -1,8 +1,10 @@
 package logica.datatypesyenum;
 
+import java.io.Serializable;
 
-public class DTPatrocinio{
-
+public class DTPatrocinio implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
     private DTFecha fechaAlta;
     private double monto;
     private String codigo;
@@ -12,7 +14,8 @@ public class DTPatrocinio{
     private int cantidadGratis;
     private String tipoDeRegistro;
 
-
+    public DTPatrocinio() {}
+    
     public DTPatrocinio(DTFecha alta, double mont, String cod, NivelPatrocinio niv, String edi, String ins, int cantGratis, String tipoDeRegistro) {
 
         fechaAlta = alta;
@@ -44,6 +47,38 @@ public class DTPatrocinio{
     public String getTipoDeRegistro() {
     	return tipoDeRegistro;
     }
+
+	public void setFechaAlta(DTFecha fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public void setMonto(double monto) {
+		this.monto = monto;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setNivel(NivelPatrocinio nivel) {
+		this.nivel = nivel;
+	}
+
+	public void setEdicion(String edicion) {
+		this.edicion = edicion;
+	}
+
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
+	}
+
+	public void setCantidadGratis(int cantidadGratis) {
+		this.cantidadGratis = cantidadGratis;
+	}
+
+	public void setTipoDeRegistro(String tipoDeRegistro) {
+		this.tipoDeRegistro = tipoDeRegistro;
+	}
 
 
 

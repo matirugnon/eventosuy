@@ -33,7 +33,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Obtener parámetros
+            // Obtener parÃ¡metros
             String codigo = request.getParameter("codigo");
             String edicion = request.getParameter("edicion");
 
@@ -50,7 +50,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 
-            // Obtener información del patrocinio
+            // Obtener informaciÃ³n del patrocinio
             DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigo);
 
             if (patrocinio == null) {
@@ -58,13 +58,13 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener información de la institución (incluyendo logo)
+            // Obtener informaciÃ³n de la instituciÃ³n (incluyendo logo)
             DTInstitucion institucion = ctrlUsuario.getInstitucion(patrocinio.getInstitucion());
 
-            // Obtener información de la edición
+            // Obtener informaciÃ³n de la ediciÃ³n
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
 
-            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -75,7 +75,7 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             request.setAttribute("edicionInfo", edicionInfo);
             request.setAttribute("categorias", categorias);
 
-            // Obtener el rol desde la sesión y pasarlo a la JSP
+            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
             request.setAttribute("role", role);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
@@ -86,7 +86,8 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
         } catch (EdicionNoExisteException | EdicionSinPatrociniosException | PatrocinioNoEncontradoException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patrocinio no encontrado: " + e.getMessage());
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo información del patrocinio", e);
+            throw new ServletException("Error obteniendo informaciÃ³n del patrocinio", e);
         }
     }
 }
+

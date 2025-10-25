@@ -139,6 +139,13 @@
 							<div class="error-message">${error}</div>
 						</c:if>
 
+						<!-- Mostrar advertencia si existe -->
+						<c:if test="${not empty warning}">
+							<div class="error-message" style="background:#fff3cd;border-color:#ffeeba;color:#856404;">
+								${warning}
+							</div>
+						</c:if>
+
 						<!-- Mostrar mensaje de éxito si existe -->
 						<c:if test="${not empty mensaje}">
 							<div class="success-message">${mensaje}</div>

@@ -1,17 +1,22 @@
 package logica.datatypesyenum;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import logica.Evento;
 
-public class DTEvento {
-    private final String nombre;
-    private final String sigla;
-    private final String descripcion;
-    private final DTFecha fechaEvento;
-    private final Set<String> categorias;
-    private final String imagen;
+public class DTEvento implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+    private String nombre;
+    private String sigla;
+    private String descripcion;
+    private DTFecha fechaEvento;
+    private Set<String> categorias;
+    private String imagen;
 
+    public DTEvento() {}
+    
     public DTEvento(String nombre, String sigla, String descripcion, DTFecha fechaEvento, Set<String> categorias) {
         this.nombre = nombre;
         this.sigla = sigla;
@@ -46,4 +51,29 @@ public class DTEvento {
     public DTFecha getFechaEvento() { return fechaEvento; }
     public Set<String> getCategorias() {return categorias; }
     public String getImagen() { return imagen; }
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setFechaEvento(DTFecha fechaEvento) {
+		this.fechaEvento = fechaEvento;
+	}
+
+	public void setCategorias(Set<String> categorias) {
+		this.categorias = categorias;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+    
 }

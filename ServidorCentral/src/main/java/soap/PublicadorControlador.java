@@ -26,41 +26,6 @@ public interface PublicadorControlador {
 
     /**
      * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     * @param arg4
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorControlador/darAltaEventoRequest", output = "http://publicadores/PublicadorControlador/darAltaEventoResponse")
-    public boolean darAltaEvento(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        DTFecha arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3,
-        @WebParam(name = "arg4", partName = "arg4")
-        StringArray arg4);
-
-    /**
-     * 
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorControlador/obtenerEventosRequest", output = "http://publicadores/PublicadorControlador/obtenerEventosResponse")
-    public String obtenerEventos();
-
-    /**
-     * 
      * @return
      *     returns java.lang.String
      */
@@ -105,5 +70,40 @@ public interface PublicadorControlador {
         DTFecha arg7,
         @WebParam(name = "arg8", partName = "arg8")
         DTFecha arg8);
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/obtenerEventosRequest", output = "http://publicadores/PublicadorControlador/obtenerEventosResponse")
+    public String obtenerEventos();
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/darAltaEventoRequest", output = "http://publicadores/PublicadorControlador/darAltaEventoResponse")
+    public boolean darAltaEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        DTFecha arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3,
+        @WebParam(name = "arg4", partName = "arg4")
+        StringArray arg4);
 
 }

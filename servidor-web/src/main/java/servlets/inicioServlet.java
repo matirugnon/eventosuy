@@ -1,12 +1,10 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.ServletException;
@@ -17,11 +15,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
-import logica.datatypesyenum.DTEvento;
-import logica.datatypesyenum.DTUsuario;
+import logica.controladores.IControladorRegistro;
 import utils.Utils;
+
+import soap.PublicadorControlador;
+import soap.StringArray;
+import utils.SoapClientHelper;
+import servlets.dto.EventoDTO;
 
 @WebServlet("/inicio")
 public class inicioServlet extends HttpServlet {
@@ -29,29 +30,29 @@ public class inicioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
+
     	request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-    	
-        try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            // Verificar si los datos ya fueron precargados
-            boolean datosCargados = Utils.datosPrecargados(getServletContext());
-            boolean hayDatosBasicos = Utils.hayDatosBasicos();
+        try {
+            // Obtener el publicador SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
             
-            // Solo cargar datos si no están cargados y no hay datos básicos
+            // Verificar si los datos ya fueron precargados (solo para la primera vez)
+            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+            
+            boolean datosCargados = Utils.datosPrecargados(getServletContext());
+            boolean hayDatosBasicos = Utils.hayDatosBasicos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+
             if (!datosCargados && !hayDatosBasicos) {
-                IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-                IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-                
                 Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
                 Utils.marcarDatosCargados(getServletContext());
-                
-                // Mostrar mensaje de confirmación
                 request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
                 request.setAttribute("datosMensajeTipo", "success");
             }
+
             HttpSession session = request.getSession();
             Object mensaje = session.getAttribute("datosMensaje");
             if (mensaje != null) {
@@ -64,21 +65,34 @@ public class inicioServlet extends HttpServlet {
                 session.removeAttribute("datosMensajeTipo");
             }
 
-            Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
-            if (eventos == null) {
-                eventos = Collections.emptySet();
+            // Obtener eventos vía SOAP
+            StringArray nombresEventosWs = publicador.listarEventos();
+            List<EventoDTO> eventos = new ArrayList<>();
+            
+            if (nombresEventosWs != null && nombresEventosWs.getItem() != null) {
+                for (String nombreEvento : nombresEventosWs.getItem()) {
+                    StringArray detallesWs = publicador.obtenerDetalleEvento(nombreEvento);
+                    if (detallesWs != null && detallesWs.getItem() != null && detallesWs.getItem().size() > 0) {
+                        // Convertir List<String> a String[]
+                        String[] detalles = detallesWs.getItem().toArray(new String[0]);
+                        eventos.add(new EventoDTO(detalles));
+                    }
+                }
             }
 
-            // Categorias para el sidebar (ordenadas alfabéticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
-            Collections.sort(categorias);
-            
-            // ParÃ¡metros del filtro
+            // Categorías via SOAP
+            StringArray categoriasWs = publicador.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasWs != null && categoriasWs.getItem() != null) {
+                categorias.addAll(categoriasWs.getItem());
+                Collections.sort(categorias);
+            }
+
+            // Parámetros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
             String busqueda = request.getParameter("busqueda");
 
-            // FILTRO POR CATEGORÃA
+            // FILTRO POR CATEGORÍA
             if (categoriaSeleccionada != null && !categoriaSeleccionada.isBlank()
                     && !"todas".equalsIgnoreCase(categoriaSeleccionada)) {
 
@@ -87,35 +101,39 @@ public class inicioServlet extends HttpServlet {
                         .filter(e -> e.getCategorias() != null &&
                                      e.getCategorias().stream()
                                        .anyMatch(c -> c.equalsIgnoreCase(cat)))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
+                        .collect(Collectors.toList());
             }
 
-            // FILTRO POR BUSQUEDA
+            // FILTRO POR BÚSQUEDA
             if (busqueda != null && !busqueda.isBlank()) {
                 final String texto = normalizar(busqueda);
                 eventos = eventos.stream()
                         .filter(e -> normalizar(e.getNombre()).contains(texto) ||
                                      normalizar(e.getDescripcion()).contains(texto))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
+                        .collect(Collectors.toList());
             }
 
-            // era para ordenar por orden porque recargabas la pag y se mostraban en ordenes distnsot
-            List<DTEvento> eventosOrdenados = new ArrayList<>(eventos);
-            eventosOrdenados.sort(Comparator.comparing(DTEvento::getNombre));
+            // Ordenar por nombre
+            List<EventoDTO> eventosOrdenados = new ArrayList<>(eventos);
+            eventosOrdenados.sort(Comparator.comparing(EventoDTO::getNombre));
 
-            // PAGINACION
+            // PAGINACIÓN
             int pageSize = 3;
             int page = 1;
             String pageParam = request.getParameter("page");
             if (pageParam != null) {
-                try { page = Integer.parseInt(pageParam); if (page < 1) page = 1; } 
-                catch (NumberFormatException e) { page = 1; }
+                try {
+                    page = Integer.parseInt(pageParam);
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    page = 1;
+                }
             }
 
             int totalEventos = eventos.size();
             int totalPages = (int) Math.ceil((double) totalEventos / pageSize);
-            
-            // Si no hay eventos, establecer pÃ¡gina 1 y pÃ¡ginas totales en 1
+
+            // Si no hay eventos, establecer página 1 y páginas totales en 1
             if (totalEventos == 0) {
                 totalPages = 1;
                 page = 1;
@@ -125,9 +143,9 @@ public class inicioServlet extends HttpServlet {
 
             int fromIndex = (page - 1) * pageSize;
             int toIndex = Math.min(fromIndex + pageSize, totalEventos);
-            
+
             // Solo crear sublista si hay elementos
-            List<DTEvento> eventosPagina;
+            List<EventoDTO> eventosPagina;
             if (totalEventos == 0) {
                 eventosPagina = new ArrayList<>();
             } else {
@@ -140,7 +158,7 @@ public class inicioServlet extends HttpServlet {
             request.setAttribute("eventosOrdenados", eventosPagina);
             request.setAttribute("eventos", eventos);
             request.setAttribute("categorias", categorias);
-            request.setAttribute("categoriaSeleccionada", 
+            request.setAttribute("categoriaSeleccionada",
                     (categoriaSeleccionada == null || categoriaSeleccionada.isBlank()) ? "todas" : categoriaSeleccionada);
             request.setAttribute("busqueda", busqueda != null ? busqueda : "");
 
@@ -156,8 +174,8 @@ public class inicioServlet extends HttpServlet {
             throw new ServletException("Error obteniendo eventos", e);
         }
     }
-    
-    //funcion para dejar un texto con poca sensibilidad a las minusculas/mayusculas y tildes
+
+    // Función para normalizar texto (quitar tildes y convertir a minúsculas)
     private String normalizar(String input) {
         if (input == null) return "";
         String espaniolizado = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);

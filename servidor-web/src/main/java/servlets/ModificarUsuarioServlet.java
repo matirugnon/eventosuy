@@ -1,4 +1,4 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -337,3 +337,4 @@ public class ModificarUsuarioServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/modificarUsuario.jsp").forward(request, response);
     }
 }
+

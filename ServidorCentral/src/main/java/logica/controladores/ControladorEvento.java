@@ -15,6 +15,7 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.PatrocinioNoEncontradoException;
+import excepciones.SiglaRepetidaException;
 import logica.Categoria;
 import logica.Edicion;
 import logica.Evento;
@@ -69,7 +70,7 @@ public class ControladorEvento implements IControladorEvento {
 		    DTFecha fechaAlta,
 		    String sigla,
 		    Set<String> nomcategorias
-		) {
+		) throws EventoRepetidoException, SiglaRepetidaException, CategoriaNoSeleccionadaException, FechaInvalidaException {
 		    return darAltaEvento(nomEvento, desc, fechaAlta, sigla, nomcategorias, null);
 		}
 
@@ -81,25 +82,28 @@ public class ControladorEvento implements IControladorEvento {
 		    String sigla,
 		    Set<String> nomcategorias,
 		    String imagen
-		) {
-		    try {
-		        if (existeEvento(nomEvento)) {
-		            return false; // Ya existe
-		        }
-		        if (nomcategorias == null || nomcategorias.isEmpty()) {
-		            return false; // Sin categorías
-		        }
-		        if (!esFechaValida(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio())) {
-		            return false; // Fecha inválida
-		        }
-
-		        Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
-		        Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
-		        manejadorE.addEvento(eve);
-		        return true;
-		    } catch (Exception e) {
-		        return false;
+		) throws EventoRepetidoException, SiglaRepetidaException, CategoriaNoSeleccionadaException, FechaInvalidaException {
+		    
+		    if (existeEvento(nomEvento)) {
+		        throw new EventoRepetidoException(nomEvento);
 		    }
+		    
+		    if (manejadorE.existeSigla(sigla)) {
+		        throw new SiglaRepetidaException(sigla);
+		    }
+		    
+		    if (nomcategorias == null || nomcategorias.isEmpty()) {
+		        throw new CategoriaNoSeleccionadaException("Debe seleccionar al menos una categoría para el evento.");
+		    }
+		    
+		    if (!esFechaValida(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio())) {
+		        throw new FechaInvalidaException(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
+		    }
+
+		    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
+		    Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
+		    manejadorE.addEvento(eve);
+		    return true;
 		}
 
 	//listar

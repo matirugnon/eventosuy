@@ -1,4 +1,4 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -308,3 +308,4 @@ public class RegistroAEdicionServlet extends HttpServlet {
         }
     }
 }
+

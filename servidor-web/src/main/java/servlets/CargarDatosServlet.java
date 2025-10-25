@@ -80,3 +80,4 @@ public class CargarDatosServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/inicio");
 	}
 }
+

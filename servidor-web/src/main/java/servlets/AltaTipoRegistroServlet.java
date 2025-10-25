@@ -54,7 +54,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
         
         // Verificar que sea organizador
         if (!"organizador".equals(role)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta función");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta funciÃ³n");
             return;
         }
         
@@ -68,7 +68,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
         try {
             System.out.println("DEBUG: Iniciando doGet para usuario: " + nickname + ", edicion: " + edicionNombre);
             
-            // Verificar que el organizador tiene ediciones organizadas y que esta edición le pertenece
+            // Verificar que el organizador tiene ediciones organizadas y que esta ediciÃ³n le pertenece
             Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
             System.out.println("DEBUG: Ediciones organizadas obtenidas: " + (edicionesOrganizadas != null ? edicionesOrganizadas.size() : "null"));
             
@@ -81,11 +81,11 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             
             if (edicion == null) {
                 System.out.println("DEBUG: Edicion no encontrada o no pertenece al organizador");
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta edición: " + edicionNombre);
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta ediciÃ³n: " + edicionNombre);
                 return;
             }
             
-            // Verificar que la edición no haya finalizado
+            // Verificar que la ediciÃ³n no haya finalizado
             if (edicion.getFechaFin() != null) {
                 LocalDate hoy = LocalDate.now();
                 LocalDate fechaFin = LocalDate.of(
@@ -95,14 +95,14 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 );
                 
                 if (fechaFin.isBefore(hoy)) {
-                    session.setAttribute("datosMensaje", "❌ No se puede dar de alta tipos de registro para una edición que ya finalizó");
+                    session.setAttribute("datosMensaje", "âŒ No se puede dar de alta tipos de registro para una ediciÃ³n que ya finalizÃ³");
                     session.setAttribute("datosMensajeTipo", "error");
                     response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
                     return;
                 }
             }
             
-            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -111,7 +111,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             request.setAttribute("edicion", edicion);
             request.setAttribute("categorias", categorias);
             
-            // Pasar datos de sesión al JSP
+            // Pasar datos de sesiÃ³n al JSP
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", session.getAttribute("avatar"));
             request.setAttribute("role", session.getAttribute("role"));
@@ -123,7 +123,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
         } catch (Exception e) {
             System.err.println("ERROR en AltaTipoRegistroServlet.doGet: " + e.getMessage());
             e.printStackTrace();
-            request.setAttribute("error", "Error al cargar la información de la edición: " + e.getMessage());
+            request.setAttribute("error", "Error al cargar la informaciÃ³n de la ediciÃ³n: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
     }
@@ -157,7 +157,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             String costoStr = request.getParameter("costo");
             String cupoStr = request.getParameter("cupo");
             
-            // Validaciones básicas
+            // Validaciones bÃ¡sicas
             if (edicionNombre == null || nombre == null || descripcion == null || 
                 costoStr == null || cupoStr == null ||
                 edicionNombre.trim().isEmpty() || nombre.trim().isEmpty() || 
@@ -188,19 +188,19 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 }
                 
             } catch (NumberFormatException e) {
-                request.setAttribute("error", "Costo y cupo deben ser valores numéricos válidos");
+                request.setAttribute("error", "Costo y cupo deben ser valores numÃ©ricos vÃ¡lidos");
                 doGet(request, response);
                 return;
             }
             
-            // Verificar que el organizador puede crear tipos de registro en esta edición
+            // Verificar que el organizador puede crear tipos de registro en esta ediciÃ³n
             Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
             
             boolean esPropia = edicionesOrganizadas.stream()
                 .anyMatch(ed -> ed.getNombre().equals(edicionNombre));
             
             if (!esPropia) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta edición");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta ediciÃ³n");
                 return;
             }
             
@@ -209,18 +209,19 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             ctrlRegistro.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
             System.out.println("DEBUG: Tipo de registro creado exitosamente");
             
-            // Redirigir con mensaje de éxito
-            session.setAttribute("datosMensaje", "El tipo de registro '" + nombre.trim() + "' fue creado exitosamente para la edición '" + edicionNombre + "'");
+            // Redirigir con mensaje de Ã©xito
+            session.setAttribute("datosMensaje", "El tipo de registro '" + nombre.trim() + "' fue creado exitosamente para la ediciÃ³n '" + edicionNombre + "'");
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
             
         } catch (NombreTipoRegistroDuplicadoException e) {
-            request.setAttribute("error", "❌ Ya existe un tipo de registro con ese nombre para esta edición. Por favor, elige otro nombre.");
+            request.setAttribute("error", "âŒ Ya existe un tipo de registro con ese nombre para esta ediciÃ³n. Por favor, elige otro nombre.");
             doGet(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "❌ Error al crear el tipo de registro: " + e.getMessage());
+            request.setAttribute("error", "âŒ Error al crear el tipo de registro: " + e.getMessage());
             doGet(request, response);
         }
     }
 }
+

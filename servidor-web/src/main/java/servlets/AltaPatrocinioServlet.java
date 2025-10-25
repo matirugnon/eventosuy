@@ -33,7 +33,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Verificar sesión y rol
+            // Verificar sesiÃ³n y rol
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -57,7 +57,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
             
-            // Verificar que la edición no haya finalizado
+            // Verificar que la ediciÃ³n no haya finalizado
             DTEdicion dtEdicion = ctrlEvento.consultarEdicion(edicion);
             if (dtEdicion != null && dtEdicion.getFechaFin() != null) {
                 LocalDate hoy = LocalDate.now();
@@ -68,7 +68,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 );
                 
                 if (fechaFin.isBefore(hoy)) {
-                    session.setAttribute("datosMensaje", "❌ No se puede dar de alta patrocinios para una edición que ya finalizó");
+                    session.setAttribute("datosMensaje", "âŒ No se puede dar de alta patrocinios para una ediciÃ³n que ya finalizÃ³");
                     session.setAttribute("datosMensajeTipo", "error");
                     response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
                     return;
@@ -80,7 +80,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
             for (String nombreTipo : nombresTipos) {
                 tiposRegistro.add(ctrlRegistro.consultaTipoDeRegistro(edicion, nombreTipo));
             }
-            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -93,7 +93,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
             request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
             request.setAttribute("edicionSeleccionada", edicion);
             
-            // Pasar datos de sesión al JSP
+            // Pasar datos de sesiÃ³n al JSP
             request.setAttribute("nickname", session.getAttribute("usuario"));
             request.setAttribute("avatar", session.getAttribute("avatar"));
             request.setAttribute("role", session.getAttribute("role"));
@@ -137,14 +137,14 @@ public class AltaPatrocinioServlet extends HttpServlet {
         IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
         IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 
-        // Validaciones básicas
+        // Validaciones bÃ¡sicas
         if (edicion == null || tipoRegistro == null || institucion == null || nivelPatrocinioStr == null ||
                 aporteStr == null || registrosGratuitosStr == null || codigo == null ||
                 edicion.isEmpty() || tipoRegistro.isEmpty() || institucion.isEmpty() ||
                 nivelPatrocinioStr.isEmpty() || aporteStr.isEmpty() || registrosGratuitosStr.isEmpty() || codigo.isEmpty()) {
 
 
-            request.setAttribute("msg", "⚠️ Todos los campos son obligatorios.");
+            request.setAttribute("msg", "âš ï¸ Todos los campos son obligatorios.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
             // Recargar datos necesarios para la JSP
             recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
@@ -166,21 +166,21 @@ public class AltaPatrocinioServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
 
         } catch (NumberFormatException e) {
-            request.setAttribute("msg", "⚠️ Formato inválido en números.");
+            request.setAttribute("msg", "âš ï¸ Formato invÃ¡lido en nÃºmeros.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
             recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
         } catch (IllegalArgumentException e) {
-            request.setAttribute("msg", "⚠️ Nivel de patrocinio no reconocido.");
+            request.setAttribute("msg", "âš ï¸ Nivel de patrocinio no reconocido.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
             recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
         } catch (PatrocinioDuplicadoException e) {
-            request.setAttribute("msg", "⚠️ Ya existe un patrocinio de esta institución en esta edición.");
+            request.setAttribute("msg", "âš ï¸ Ya existe un patrocinio de esta instituciÃ³n en esta ediciÃ³n.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
             recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
             cargarSesionYCategorias(request, session);
@@ -188,7 +188,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
         }
     }
 
-    // Método para recargar categorías y datos de sesión
+    // MÃ©todo para recargar categorÃ­as y datos de sesiÃ³n
     private void cargarSesionYCategorias(HttpServletRequest request, HttpSession session) {
         try {
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
@@ -233,4 +233,5 @@ public class AltaPatrocinioServlet extends HttpServlet {
         request.setAttribute("edicionSeleccionada", edicion);
     }
 }
+
 

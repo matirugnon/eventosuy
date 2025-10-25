@@ -1,0 +1,50 @@
+package utils;
+
+import soap.PublicadorControlador;
+import soap.PublicadorControladorService;
+
+/**
+ * Helper class para obtener el cliente SOAP del PublicadorControlador
+ */
+public class SoapClientHelper {
+    
+    private static PublicadorControlador publicadorPort = null;
+    
+    /**
+     * Obtiene una instancia del puerto del PublicadorControlador
+     * Utiliza patrón Singleton para reutilizar la conexión
+     */
+    public static PublicadorControlador getPublicadorControlador() {
+        if (publicadorPort == null) {
+            try {
+                PublicadorControladorService service = new PublicadorControladorService();
+                publicadorPort = service.getPublicadorControladorPort();
+                System.out.println("✓ Conexión SOAP establecida con el PublicadorControlador");
+            } catch (Exception e) {
+                System.err.println("❌ Error al conectar con el PublicadorControlador: " + e.getMessage());
+                throw new RuntimeException("No se pudo conectar con el servidor SOAP", e);
+            }
+        }
+        return publicadorPort;
+    }
+    
+    /**
+     * Reinicia la conexión SOAP (útil si el servidor se reinicia)
+     */
+    public static void resetConnection() {
+        publicadorPort = null;
+    }
+    
+    /**
+     * Verifica si el servidor SOAP está disponible
+     */
+    public static boolean isServerAvailable() {
+        try {
+            PublicadorControlador port = getPublicadorControlador();
+            String response = port.hola();
+            return response != null && !response.isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}

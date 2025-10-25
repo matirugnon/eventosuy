@@ -12,6 +12,7 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
+import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
@@ -27,7 +28,7 @@ public class Utils {
 
 public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro  )
 		throws UsuarioRepetidoException,
-				CorreoInvalidoException, EventoRepetidoException, FechaInvalidaException,
+				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException
 
@@ -81,7 +82,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlUsuario.altaOrganizador("mec", "Ministerio de Educación y Cultura", "mec@mec.gub.uy", "Institución pública promotora de cultura.", "https://mec.gub.uy", "mec2025ok", "/img/IMG-US11.png");
 
         // Asignar avatares a usuarios específicos
-       
+
 
         // Categorias
         if (!ctrlEvento.existeCategoria("Tecnología"))
@@ -269,11 +270,11 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		try {
 			IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 			IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-			
+
 			// Verificar si hay al menos un usuario y un evento
 			boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
 			boolean hayEventos = !ctrlEvento.obtenerDTEventos().isEmpty();
-			
+
 			return hayUsuarios && hayEventos;
 		} catch (Exception e) {
 			return false;

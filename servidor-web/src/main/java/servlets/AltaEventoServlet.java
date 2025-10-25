@@ -1,10 +1,9 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -15,15 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-import logica.controladores.IControladorEvento;
-import logica.datatypesyenum.DTFecha;
-import excepciones.EventoRepetidoException;
-import excepciones.CategoriaNoSeleccionadaException;
-import excepciones.FechaInvalidaException;
-import utils.Utils;
+import soap.PublicadorControlador;
+import soap.DTFecha;
+import soap.StringArray;
+// Bridge temporal: sincronizar con lógica local hasta migrar listados a SOAP
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import logica.controladores.IControladorEvento;
+import java.util.HashSet;
+import java.util.Arrays;
+import utils.SoapClientHelper;
 
 @WebServlet("/altaEvento")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
@@ -53,11 +52,32 @@ public class AltaEventoServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            // Obtener los controladores
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
-            Collections.sort(categorias);
+            // Obtener categorías desde el Servidor Central vía SOAP
+            List<String> categorias = new ArrayList<>();
+            try {
+                PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+                StringArray categoriasWs = publicador.listarCategorias();
+                if (categoriasWs != null && categoriasWs.getItem() != null) {
+                    categorias.addAll(categoriasWs.getItem());
+                    Collections.sort(categorias);
+                }
+            } catch (Exception ex) {
+                // Si falla el servidor central, mostramos el formulario igual sin categorías
+                // y dejamos un mensaje informativo en el request.
+                request.setAttribute("warning", "No se pudieron cargar las categorías desde el Servidor Central");
+            }
+
+            // Fallback: si no hay categorías en el servidor central (lista vacía),
+            // mostramos un set mínimo para que el formulario sea usable y avisamos.
+            if (categorias.isEmpty()) {
+                categorias.add("Tecnología");
+                categorias.add("Innovación");
+                categorias.add("Cultura");
+                categorias.add("Deporte");
+                categorias.add("Música");
+                Collections.sort(categorias);
+                request.setAttribute("warning", "No hay categorías cargadas en el Servidor Central. Se muestran categorías por defecto");
+            }
 
             // Pasar datos a la JSP
             request.setAttribute("categorias", categorias);
@@ -80,7 +100,7 @@ public class AltaEventoServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Verificar que el usuario estÃ© logueado y sea organizador
+            // Verificar que el usuario esta logueado y sea organizador
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
@@ -106,37 +126,59 @@ public class AltaEventoServlet extends HttpServlet {
                 return;
             }
 
-            // Procesar imagen si existe
+            // Procesar imagen si existe (por ahora no se envía via SOAP, pendiente de implementar)
             String rutaImagen = procesarImagen(request);
+            // JAX-WS no acepta null en parámetros, usar cadena vacía si no hay imagen
+            if (rutaImagen == null) {
+                rutaImagen = "";
+            }
 
-            // Obtener controlador
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            // Usar el PublicadorControlador via SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
 
             // Crear fecha actual para el alta
             java.time.LocalDate hoy = java.time.LocalDate.now();
-            DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
+            DTFecha fechaAlta = new DTFecha();
+            fechaAlta.setDia(hoy.getDayOfMonth());
+            fechaAlta.setMes(hoy.getMonthValue());
+            fechaAlta.setAnio(hoy.getYear());
 
-            // Convertir array de categorÃ­as a Set
-            Set<String> categoriasSet = new java.util.HashSet<>();
+            // Convertir array de categorías a StringArray para SOAP
+            StringArray categoriasArray = new StringArray();
             for (String categoria : categoriasSeleccionadas) {
-                categoriasSet.add(categoria);
+                categoriasArray.getItem().add(categoria);
             }
 
-            // Crear evento (el mÃ©todo original no soporta imagen, se omite por ahora)
-            ctrlEvento.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasSet, rutaImagen);
+            // Crear evento vía SOAP (Servidor Central)
+            String resultado = publicador.darAltaEvento(nombre, descripcion, fechaAlta, sigla, categoriasArray, rutaImagen);
+            
+            // Si no retorna "OK", es un mensaje de error específico
+            if (!"OK".equals(resultado)) {
+                mostrarFormularioConError(request, response, "❌ " + resultado);
+                return;
+            }
+
+            // Bridge temporal: reflejar el evento en la lógica local para que el listado actual lo vea
+            // (hasta migrar inicioServlet y consultas a SOAP)
+            try {
+                IControladorEvento ctrlLocal = IControladorEvento.getInstance();
+                logica.datatypesyenum.DTFecha fechaLocal = new logica.datatypesyenum.DTFecha(
+                        fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
+                // Convertir cadena vacía a null para el bridge local
+                String rutaImagenLocal = rutaImagen.isEmpty() ? null : rutaImagen;
+                ctrlLocal.darAltaEvento(nombre, descripcion, fechaLocal, sigla,
+                        new HashSet<>(Arrays.asList(categoriasSeleccionadas)), rutaImagenLocal);
+            } catch (Exception ignore) {
+                // Si falla por duplicado u otra razón, no bloqueamos el flujo.
+            }
 
             // Redirigir con mensaje de éxito usando sesión
             session.setAttribute("datosMensaje", "El evento '" + nombre + "' fue creado exitosamente");
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/inicio");
 
-        } catch (EventoRepetidoException e) {
-            mostrarFormularioConError(request, response, "❌ Ya existe un evento con ese nombre");
-        } catch (CategoriaNoSeleccionadaException e) {
-            mostrarFormularioConError(request, response, "❌ Debe seleccionar al menos una categoria");
-        } catch (FechaInvalidaException e) {
-            mostrarFormularioConError(request, response, "❌ La fecha del evento no es valida");
         } catch (Exception e) {
+            e.printStackTrace();
             mostrarFormularioConError(request, response, "❌ Error al crear evento: " + e.getMessage());
         }
     }
@@ -213,10 +255,13 @@ public class AltaEventoServlet extends HttpServlet {
                                          String error) throws ServletException, IOException {
         
         try {
-            // Recargar datos necesarios
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            // TODO: Obtener categorías via SOAP cuando el cliente esté regenerado
+            List<String> categorias = new ArrayList<>();
+            categorias.add("Deportes");
+            categorias.add("Cultura");
+            categorias.add("Tecnología");
+            categorias.add("Música");
+            categorias.add("Arte");
             Collections.sort(categorias);
             
             request.setAttribute("categorias", categorias);
@@ -231,3 +276,4 @@ public class AltaEventoServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/altaEvento.jsp").forward(request, response);
     }
 }
+

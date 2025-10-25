@@ -30,6 +30,7 @@ import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.EstadoEdicion;
 import logica.datatypesyenum.NivelPatrocinio;
+import soap.PublicadorControlador;
 
 public class Utils {
 
@@ -90,7 +91,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlUsuario.altaOrganizador("mec", "Ministerio de Educación y Cultura", "mec@mec.gub.uy", "Institución pública promotora de cultura.", "https://mec.gub.uy", "mec2025ok", "/img/IMG-US11.png");
 
         // Asignar avatares a usuarios específicos
-       
+
 
         // Categorias
         if (!ctrlEvento.existeCategoria("Tecnología"))
@@ -273,15 +274,12 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 	}
 
 	// Método para verificar si hay datos básicos cargados (usuarios, eventos, etc.)
-	public static boolean hayDatosBasicos() {
+	public static boolean hayDatosBasicos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro) {
 		try {
-			IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-			IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-			
 			// Verificar si hay al menos un usuario y un evento
 			boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
 			boolean hayEventos = !ctrlEvento.obtenerDTEventos().isEmpty();
-			
+
 			return hayUsuarios && hayEventos;
 		} catch (Exception e) {
 			return false;

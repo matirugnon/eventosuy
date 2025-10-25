@@ -36,6 +36,10 @@
 
 		<!-- Main: eventos -->
 		<main>
+			<!-- Botón para cargar datos de prueba en Servidor Central -->
+			<form action="${pageContext.request.contextPath}/cargarDatosPublicador" method="post" style="margin-bottom:1rem;">
+				<button type="submit" style="padding:0.4rem 0.8rem; border-radius:6px; border:none; background:#2b6cb0; color:white; cursor:pointer;">Cargar datos (Servidor Central)</button>
+			</form>
 			<!-- Barra de bÃºsqueda -->
 			<form action="${pageContext.request.contextPath}/inicio" method="get"
 				style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">

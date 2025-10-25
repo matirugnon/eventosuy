@@ -1,13 +1,13 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
+import java.util.Arrays;
+import soap.StringArray;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -18,11 +18,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-import logica.controladores.IControladorEvento;
-import logica.datatypesyenum.DTFecha;
-import excepciones.EdicionExistenteException;
-import excepciones.FechasIncompatiblesException;
-import utils.Utils;
+
+import soap.PublicadorControlador;
+import soap.DTFecha;
+import utils.SoapClientHelper;
+import java.util.HashSet;
 
 @WebServlet("/altaEdicion")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
@@ -52,14 +52,23 @@ public class AltaEdicionServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            // Obtener parametros del formulario
+            // Obtener eventos via SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+            StringArray eventosWs = publicador.listarEventos();
+            
+            // Convertir StringArray a List para el JSP
+            List<String> eventos = new ArrayList<>();
+            if (eventosWs != null && eventosWs.getItem() != null) {
+                eventos.addAll(eventosWs.getItem());
+                Collections.sort(eventos);
+            }
 
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-
-            // Obtener eventos disponibles y categorias
-            Set<String> eventos = ctrlEvento.listarEventos();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            List<String> categorias = new ArrayList<>();
+            categorias.add("Deportes");
+            categorias.add("Cultura");
+            categorias.add("Tecnología");
+            categorias.add("Música");
+            categorias.add("Arte");
             Collections.sort(categorias);
 
             // Pasar datos a la JSP
@@ -114,33 +123,48 @@ public class AltaEdicionServlet extends HttpServlet {
                 return;
             }
 
-            // Procesar imagen si existe
-            String rutaImagen = procesarImagen(request);
+            // Procesar imagen si existe (por ahora no se envía via SOAP, pendiente de implementar)
+            // String rutaImagen = procesarImagen(request);
 
-            // Obtener controlador
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            // Usar el PublicadorControlador via SOAP
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
 
-            // Convertir fechas
+            // Convertir fechas a DTFecha de SOAP
             DTFecha fechaInicio = convertirFecha(fechaInicioStr);
             DTFecha fechaFin = convertirFecha(fechaFinStr);
             
             // Crear fecha actual para el alta
             LocalDate hoy = LocalDate.now();
-            DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
+            DTFecha fechaAlta = new DTFecha();
+            fechaAlta.setDia(hoy.getDayOfMonth());
+            fechaAlta.setMes(hoy.getMonthValue());
+            fechaAlta.setAnio(hoy.getYear());
 
-            // Crear ediciÃ³n (el mÃ©todo original no soporta imagen, se omite por ahora)
-            ctrlEvento.altaEdicion(evento, nickOrganizador, nombre, sigla, ciudad, pais, fechaInicio, fechaFin, fechaAlta, rutaImagen);
+            // Crear edición vía SOAP
+            boolean resultado = publicador.altaEdicionDeEvento(
+                nickOrganizador,
+                evento,
+                nombre,
+                sigla,
+                ciudad,
+                pais,
+                fechaInicio,
+                fechaFin,
+                fechaAlta
+            );
+            
+            if (!resultado) {
+                mostrarFormularioConError(request, response, "❌ No se pudo crear la edición");
+                return;
+            }
             
             // Redirigir con mensaje de éxito usando sesión
             session.setAttribute("datosMensaje", "La edición '" + nombre + "' fue creada exitosamente");
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/inicio");
 
-        } catch (EdicionExistenteException e) {
-            mostrarFormularioConError(request, response, "❌ Ya existe una edición con ese nombre");
-        } catch (FechasIncompatiblesException e) {
-            mostrarFormularioConError(request, response, "❌ Las fechas de inicio y fin no son compatibles");
         } catch (Exception e) {
+            e.printStackTrace();
             mostrarFormularioConError(request, response, "❌ Error al crear edición: " + e.getMessage());
         }
     }
@@ -153,7 +177,12 @@ public class AltaEdicionServlet extends HttpServlet {
                 int anio = Integer.parseInt(partes[0]);
                 int mes = Integer.parseInt(partes[1]);
                 int dia = Integer.parseInt(partes[2]);
-                return new DTFecha(dia, mes, anio);
+                
+                DTFecha fecha = new DTFecha();
+                fecha.setDia(dia);
+                fecha.setMes(mes);
+                fecha.setAnio(anio);
+                return fecha;
             } else {
                 throw new IllegalArgumentException("Formato de fecha invalido");
             }
@@ -261,11 +290,17 @@ public class AltaEdicionServlet extends HttpServlet {
                                          String error) throws ServletException, IOException {
         
         try {
-            // Recargar datos necesarios
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            Set<String> eventos = ctrlEvento.listarEventos();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            // TODO: Obtener eventos y categorías via SOAP cuando el cliente esté regenerado
+            Set<String> eventos = new java.util.HashSet<>();
+            eventos.add("Evento Demo 1");
+            eventos.add("Evento Demo 2");
+            
+            List<String> categorias = new ArrayList<>();
+            categorias.add("Deportes");
+            categorias.add("Cultura");
+            categorias.add("Tecnología");
+            categorias.add("Música");
+            categorias.add("Arte");
             Collections.sort(categorias);
             
             request.setAttribute("eventos", eventos);
@@ -281,3 +316,4 @@ public class AltaEdicionServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
     }
 }
+

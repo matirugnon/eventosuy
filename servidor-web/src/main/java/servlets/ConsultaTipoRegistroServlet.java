@@ -30,7 +30,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            // Obtener parámetros
+            // Obtener parÃ¡metros
             String tipoRegistro = request.getParameter("tipo");
             String edicion = request.getParameter("edicion");
             
@@ -48,7 +48,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-            // Obtener información del tipo de registro
+            // Obtener informaciÃ³n del tipo de registro
             DTTipoDeRegistro tipoInfo = ctrlRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
             
             if (tipoInfo == null) {
@@ -56,10 +56,10 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener información de la edición
+            // Obtener informaciÃ³n de la ediciÃ³n
             DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
             
-            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -74,7 +74,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
                 try {
                     yaRegistrado = ctrlRegistro.estaRegistrado(edicion, nickname);
                 } catch (Exception e) {
-                    // Si hay error verificando, asumimos que no está registrado
+                    // Si hay error verificando, asumimos que no estÃ¡ registrado
                     yaRegistrado = false;
                 }
             }
@@ -86,7 +86,7 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             request.setAttribute("esAsistente", esAsistente);
             request.setAttribute("yaRegistrado", yaRegistrado);
 
-            // Obtener el rol desde la sesión y pasarlo a la JSP
+            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
             request.setAttribute("role", role);
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
@@ -94,7 +94,8 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/consultaTipoRegistro.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo información del tipo de registro", e);
+            throw new ServletException("Error obteniendo informaciÃ³n del tipo de registro", e);
         }
     }
 }
+
