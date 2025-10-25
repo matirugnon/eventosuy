@@ -36,4 +36,9 @@ public class DTFecha implements Comparable<DTFecha>, Serializable {
     public String toString() {
         return String.format("%02d/%02d/%04d", dia, mes, anio);
     }
+    
+    //setters
+    public void setDia(int dia) { this.dia = dia; }
+    public void setMes(int mes) { this.mes = mes; }
+    public void setAnio(int anio) { this.anio = anio; }
 }

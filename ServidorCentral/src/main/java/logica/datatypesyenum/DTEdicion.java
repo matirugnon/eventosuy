@@ -1,12 +1,15 @@
 package logica.datatypesyenum;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 
-public class DTEdicion {
-    private String evento; // Nueva propiedad
+public class DTEdicion implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	private String evento; // Nueva propiedad
     private  String nombre;
     private  DTFecha fechaInicio;
     private  DTFecha fechaFin;
@@ -20,6 +23,67 @@ public class DTEdicion {
     private Set<Map.Entry<String, String>> registros;
     private EstadoEdicion estado; // Nuevo atributo
     private String imagen; // Imagen de la edición
+    
+    public DTEdicion() {}
+    
+    
+    
+	
+    public void setEvento(String evento) {
+		this.evento = evento;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setFechaInicio(DTFecha fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public void setFechaFin(DTFecha fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	public void setAltaEdicion(DTFecha altaEdicion) {
+		this.altaEdicion = altaEdicion;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+	public void setOrganizador(String organizador) {
+		this.organizador = organizador;
+	}
+
+	public void setPatrocinios(Set<String> patrocinios) {
+		this.patrocinios = patrocinios;
+	}
+
+	public void setTiposDeRegistro(Set<String> tiposDeRegistro) {
+		this.tiposDeRegistro = tiposDeRegistro;
+	}
+
+	public void setRegistros(Set<Map.Entry<String, String>> registros) {
+		this.registros = registros;
+	}
+
+	public void setEstado(EstadoEdicion estado) {
+		this.estado = estado;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 
     public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado) {
         this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, null);
