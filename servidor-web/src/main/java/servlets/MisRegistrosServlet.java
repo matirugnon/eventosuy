@@ -53,7 +53,7 @@ public class MisRegistrosServlet extends HttpServlet {
         
         // Verificar que sea asistente
         if (!"asistente".equals(role)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo asistentes pueden acceder a esta función");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo asistentes pueden acceder a esta funciÃ³n");
             return;
         }
         
@@ -61,12 +61,12 @@ public class MisRegistrosServlet extends HttpServlet {
             // Obtener todos los registros del asistente
             Set<DTRegistro> misRegistros = ctrlRegistro.listarRegistrosPorAsistente(nickname);
             
-            // Agrupar por edición para mostrar una lista limpia
+            // Agrupar por ediciÃ³n para mostrar una lista limpia
             Set<String> edicionesRegistradas = misRegistros.stream()
                 .map(DTRegistro::getnomEdicion)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             
-            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -75,7 +75,7 @@ public class MisRegistrosServlet extends HttpServlet {
             request.setAttribute("misRegistros", misRegistros);
             request.setAttribute("categorias", categorias);
             
-            // Pasar información de la sesión al JSP
+            // Pasar informaciÃ³n de la sesiÃ³n al JSP
             request.setAttribute("nickname", nickname);
             request.setAttribute("role", role);
             request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
@@ -89,3 +89,4 @@ public class MisRegistrosServlet extends HttpServlet {
         }
     }
 }
+

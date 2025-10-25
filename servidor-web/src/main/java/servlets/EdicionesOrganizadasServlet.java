@@ -55,7 +55,7 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
         
         // Verificar que sea organizador
         if (!"organizador".equals(role)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta función");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta funciÃ³n");
             return;
         }
         
@@ -63,7 +63,7 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             // Obtener ediciones aceptadas organizadas por este usuario
             Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
             
-            // Verificar cuáles ediciones ya finalizaron
+            // Verificar cuÃ¡les ediciones ya finalizaron
             LocalDate hoy = LocalDate.now();
             Map<String, Boolean> edicionesPasadas = new HashMap<>();
             
@@ -74,7 +74,7 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
                         edicion.getFechaFin().getMes(),
                         edicion.getFechaFin().getDia()
                     );
-                    // La edición está finalizada si la fecha de fin es anterior a hoy
+                    // La ediciÃ³n estÃ¡ finalizada si la fecha de fin es anterior a hoy
                     boolean esPasada = fechaFin.isBefore(hoy);
                     edicionesPasadas.put(edicion.getNombre(), esPasada);
                 } else {
@@ -82,7 +82,7 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
                 }
             }
             
-            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -100,3 +100,4 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
         }
     }
 }
+

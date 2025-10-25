@@ -1,4 +1,4 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,10 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
+import logica.controladores.IControladorRegistro;
 import logica.datatypesyenum.DTEvento;
-import logica.datatypesyenum.DTUsuario;
 import utils.Utils;
 
 @WebServlet("/inicio")
@@ -29,29 +28,30 @@ public class inicioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
+
     	request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-    	
+
         try {
+            // Obtener los controladores
             IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
 
             // Verificar si los datos ya fueron precargados
             boolean datosCargados = Utils.datosPrecargados(getServletContext());
-            boolean hayDatosBasicos = Utils.hayDatosBasicos();
-            
+            boolean hayDatosBasicos = Utils.hayDatosBasicos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+
             // Solo cargar datos si no están cargados y no hay datos básicos
             if (!datosCargados && !hayDatosBasicos) {
-                IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-                IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-                
                 Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
                 Utils.marcarDatosCargados(getServletContext());
-                
+
                 // Mostrar mensaje de confirmación
                 request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
                 request.setAttribute("datosMensajeTipo", "success");
             }
+
             HttpSession session = request.getSession();
             Object mensaje = session.getAttribute("datosMensaje");
             if (mensaje != null) {
@@ -64,21 +64,19 @@ public class inicioServlet extends HttpServlet {
                 session.removeAttribute("datosMensajeTipo");
             }
 
+            // Obtener eventos
             Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
-            if (eventos == null) {
-                eventos = Collections.emptySet();
-            }
 
-            // Categorias para el sidebar (ordenadas alfabéticamente)
+            // Categorías para el sidebar (ordenadas alfabéticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
-            
-            // ParÃ¡metros del filtro
+
+            // Parámetros del filtro
             String categoriaSeleccionada = request.getParameter("categoria");
             String busqueda = request.getParameter("busqueda");
 
-            // FILTRO POR CATEGORÃA
+            // FILTRO POR CATEGORÍA
             if (categoriaSeleccionada != null && !categoriaSeleccionada.isBlank()
                     && !"todas".equalsIgnoreCase(categoriaSeleccionada)) {
 
@@ -90,7 +88,7 @@ public class inicioServlet extends HttpServlet {
                         .collect(Collectors.toCollection(LinkedHashSet::new));
             }
 
-            // FILTRO POR BUSQUEDA
+            // FILTRO POR BÚSQUEDA
             if (busqueda != null && !busqueda.isBlank()) {
                 final String texto = normalizar(busqueda);
                 eventos = eventos.stream()
@@ -99,23 +97,27 @@ public class inicioServlet extends HttpServlet {
                         .collect(Collectors.toCollection(LinkedHashSet::new));
             }
 
-            // era para ordenar por orden porque recargabas la pag y se mostraban en ordenes distnsot
+            // Ordenar por nombre
             List<DTEvento> eventosOrdenados = new ArrayList<>(eventos);
             eventosOrdenados.sort(Comparator.comparing(DTEvento::getNombre));
 
-            // PAGINACION
+            // PAGINACIÓN
             int pageSize = 3;
             int page = 1;
             String pageParam = request.getParameter("page");
             if (pageParam != null) {
-                try { page = Integer.parseInt(pageParam); if (page < 1) page = 1; } 
-                catch (NumberFormatException e) { page = 1; }
+                try {
+                    page = Integer.parseInt(pageParam);
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    page = 1;
+                }
             }
 
             int totalEventos = eventos.size();
             int totalPages = (int) Math.ceil((double) totalEventos / pageSize);
-            
-            // Si no hay eventos, establecer pÃ¡gina 1 y pÃ¡ginas totales en 1
+
+            // Si no hay eventos, establecer página 1 y páginas totales en 1
             if (totalEventos == 0) {
                 totalPages = 1;
                 page = 1;
@@ -125,7 +127,7 @@ public class inicioServlet extends HttpServlet {
 
             int fromIndex = (page - 1) * pageSize;
             int toIndex = Math.min(fromIndex + pageSize, totalEventos);
-            
+
             // Solo crear sublista si hay elementos
             List<DTEvento> eventosPagina;
             if (totalEventos == 0) {
@@ -140,7 +142,7 @@ public class inicioServlet extends HttpServlet {
             request.setAttribute("eventosOrdenados", eventosPagina);
             request.setAttribute("eventos", eventos);
             request.setAttribute("categorias", categorias);
-            request.setAttribute("categoriaSeleccionada", 
+            request.setAttribute("categoriaSeleccionada",
                     (categoriaSeleccionada == null || categoriaSeleccionada.isBlank()) ? "todas" : categoriaSeleccionada);
             request.setAttribute("busqueda", busqueda != null ? busqueda : "");
 
@@ -156,8 +158,8 @@ public class inicioServlet extends HttpServlet {
             throw new ServletException("Error obteniendo eventos", e);
         }
     }
-    
-    //funcion para dejar un texto con poca sensibilidad a las minusculas/mayusculas y tildes
+
+    // Función para normalizar texto (quitar tildes y convertir a minúsculas)
     private String normalizar(String input) {
         if (input == null) return "";
         String espaniolizado = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);

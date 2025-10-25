@@ -51,17 +51,17 @@ public class RegistrosEdicionServlet extends HttpServlet {
             DTEdicion dt = ctrlEvento.consultarEdicion(edicion);
 
             if (dt == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Edición no encontrada");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "EdiciÃ³n no encontrada");
                 return;
             }
 
-            // Verificar que el organizador de la edición coincide con el usuario en sesión
+            // Verificar que el organizador de la ediciÃ³n coincide con el usuario en sesiÃ³n
             if (dt.getOrganizador() == null || !dt.getOrganizador().equals(nickname)) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: No sos el organizador de esta edición");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: No sos el organizador de esta ediciÃ³n");
                 return;
             }
 
-            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrlEvento.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -69,7 +69,7 @@ public class RegistrosEdicionServlet extends HttpServlet {
             request.setAttribute("edicion", dt);
             request.setAttribute("categorias", categorias);
             
-            // Pasar datos de sesión al JSP
+            // Pasar datos de sesiÃ³n al JSP
             request.setAttribute("nickname", nickname);
             request.setAttribute("role", role);
             request.setAttribute("avatar", session.getAttribute("avatar"));
@@ -78,7 +78,8 @@ public class RegistrosEdicionServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/registrosEdicion.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error cargando registros de la edición", e);
+            throw new ServletException("Error cargando registros de la ediciÃ³n", e);
         }
     }
 }
+

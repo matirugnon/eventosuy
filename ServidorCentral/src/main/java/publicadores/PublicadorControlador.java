@@ -95,6 +95,28 @@ public class PublicadorControlador {
         return ctrl.darAltaEvento(nombreEvento, descripcion, fechaAlta, sigla, categoriasSet);
     }
 
+    @WebMethod
+    public String[] listarEventos() {
+        Set<String> eventos = ctrl.listarEventos();
+        return eventos.toArray(new String[0]);
+    }
+
+    @WebMethod
+    public String[] listarCategorias() {
+        Set<String> categorias = ctrl.listarCategorias();
+        return categorias.toArray(new String[0]);
+    }
+
+    @WebMethod
+    public boolean altaCategoria(String nombreCategoria) {
+        if (nombreCategoria == null || nombreCategoria.isBlank()) {
+            return false;
+        }
+        if (!ctrl.existeCategoria(nombreCategoria)) {
+            ctrl.altaCategoria(nombreCategoria);
+        }
+        return true;
+    }
+
 
 }
-

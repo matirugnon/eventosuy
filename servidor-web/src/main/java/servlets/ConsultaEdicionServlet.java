@@ -34,7 +34,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
             IControladorEvento ctrl = IControladorEvento.getInstance();
             IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
 
-            // Obtener el nombre de la edición desde el parámetro
+            // Obtener el nombre de la ediciÃ³n desde el parÃ¡metro
             String nombreEdicion = request.getParameter("edicion");
             
             if (nombreEdicion == null || nombreEdicion.trim().isEmpty()) {
@@ -42,7 +42,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener información de la edición específica
+            // Obtener informaciÃ³n de la ediciÃ³n especÃ­fica
             DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
             
             if (edicion == null) {
@@ -50,10 +50,10 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 return;
             }
             
-            // Obtener información del evento padre
+            // Obtener informaciÃ³n del evento padre
             DTEvento eventoPadre = ctrl.obtenerEventoPorEdicion(nombreEdicion);
             
-            // Obtener información del organizador
+            // Obtener informaciÃ³n del organizador
             String nicknameOrganizador = edicion.getOrganizador();
             DTUsuario organizador = null;
             String avatarOrganizador = "/img/avatar-default.png"; // Avatar por defecto
@@ -69,11 +69,11 @@ public class ConsultaEdicionServlet extends HttpServlet {
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("Error obteniendo información del organizador: " + e.getMessage());
+                    System.out.println("Error obteniendo informaciÃ³n del organizador: " + e.getMessage());
                 }
             }
             
-            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrl.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -85,7 +85,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
             request.setAttribute("avatarOrganizador", avatarOrganizador);
             request.setAttribute("categorias", categorias);
 
-            // Obtener el rol desde la sesión y pasarlo a la JSP
+            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
             request.setAttribute("role", role);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
@@ -94,7 +94,8 @@ public class ConsultaEdicionServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/consultaEdicion.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo información de la edición", e);
+            throw new ServletException("Error obteniendo informaciÃ³n de la ediciÃ³n", e);
         }
     }
 }
+

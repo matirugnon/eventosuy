@@ -19,13 +19,14 @@ public class LogoutServlet extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
     	
-        // Invalidar la sesión actual
-        HttpSession session = request.getSession(false); // Obtener la sesión actual si existe
+        // Invalidar la sesiÃ³n actual
+        HttpSession session = request.getSession(false); // Obtener la sesiÃ³n actual si existe
         if (session != null) {
-            session.invalidate(); // Invalidar la sesión
+            session.invalidate(); // Invalidar la sesiÃ³n
         }
 
-        // Redirigir al inicio (inicio.jsp) sin sesión
+        // Redirigir al inicio (inicio.jsp) sin sesiÃ³n
         response.sendRedirect(request.getContextPath() + "/inicio");
     }
 }
+

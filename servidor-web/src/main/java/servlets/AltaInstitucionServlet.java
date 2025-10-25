@@ -43,7 +43,7 @@ public class AltaInstitucionServlet extends HttpServlet {
         String nickname = (String) session.getAttribute("usuario");
         request.setAttribute("nickname", nickname);
         
-        // Cargar categorías para el sidebar
+        // Cargar categorÃ­as para el sidebar
         Set<String> categorias = controladorEvento.listarCategorias();
         request.setAttribute("categorias", categorias);
         
@@ -60,12 +60,12 @@ public class AltaInstitucionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            // Obtener parámetros del formulario
+            // Obtener parÃ¡metros del formulario
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
             String sitioWeb = request.getParameter("sitioWeb");
             
-            // Validar parámetros obligatorios
+            // Validar parÃ¡metros obligatorios
             if (nombre == null || nombre.trim().isEmpty() ||
                 descripcion == null || descripcion.trim().isEmpty() ||
                 sitioWeb == null || sitioWeb.trim().isEmpty()) {
@@ -85,11 +85,13 @@ public class AltaInstitucionServlet extends HttpServlet {
             
             // Validar formato de URL
             if (!sitioWeb.matches("^https?://.*")) {
+                HttpSession sesionActual = request.getSession(false);
+                String nicknameActual = (String) sesionActual.getAttribute("usuario");
                 Set<String> categorias = controladorEvento.listarCategorias();
                 request.setAttribute("categorias", categorias);
                 request.setAttribute("error", "El sitio web debe comenzar con http:// o https://");
                 request.setAttribute("nombre", nombre);
-                request.setAttribute("nickname", nickname);
+                request.setAttribute("nickname", nicknameActual);
                 request.setAttribute("descripcion", descripcion);
                 request.setAttribute("sitioWeb", sitioWeb);
                 request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp")
@@ -97,31 +99,31 @@ public class AltaInstitucionServlet extends HttpServlet {
                 return;
             }
             
-            // Procesar logo si se subió (opcional)
+            // Procesar logo si se subiÃ³ (opcional)
             Part filePart = request.getPart("logo");
             String logoPath = null;
             if (filePart != null && filePart.getSize() > 0) {
                 logoPath = procesarLogo(filePart);
             }
             
-            // Crear la institución
+            // Crear la instituciÃ³n
             if (logoPath != null) {
                 controladorUsuario.altaInstitucion(nombre, descripcion, sitioWeb, logoPath);
             } else {
                 controladorUsuario.altaInstitucion(nombre, descripcion, sitioWeb);
             }
             
-            // Redirigir con mensaje de éxito usando sesión
+            // Redirigir con mensaje de Ã©xito usando sesiÃ³n
             HttpSession session = request.getSession();
-            session.setAttribute("datosMensaje", "La institución '" + nombre + "' fue creada exitosamente");
+            session.setAttribute("datosMensaje", "La instituciÃ³n '" + nombre + "' fue creada exitosamente");
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/inicio");
             
         } catch (ExisteInstitucionException e) {
-            // La institución ya existe
+            // La instituciÃ³n ya existe
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
-            request.setAttribute("error", "❌ Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
+            request.setAttribute("error", "âŒ Ya existe una institucion con ese nombre. Por favor ingrese uno diferente.");
             request.setAttribute("nombre", request.getParameter("nombre"));
             request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
@@ -130,7 +132,7 @@ public class AltaInstitucionServlet extends HttpServlet {
                     .forward(request, response);
             
         } catch (IllegalArgumentException e) {
-            // Error de validación (ej: tipo de archivo inválido)
+            // Error de validaciÃ³n (ej: tipo de archivo invÃ¡lido)
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
             request.setAttribute("error", e.getMessage());
@@ -145,7 +147,7 @@ public class AltaInstitucionServlet extends HttpServlet {
             // Error inesperado
             Set<String> categorias = controladorEvento.listarCategorias();
             request.setAttribute("categorias", categorias);
-            request.setAttribute("error", "❌ Ocurrió un error inesperado: " + e.getMessage());
+            request.setAttribute("error", "âŒ OcurriÃ³ un error inesperado: " + e.getMessage());
             request.setAttribute("nombre", request.getParameter("nombre"));
             request.setAttribute("nickname", request.getParameter("nickname"));
             request.setAttribute("descripcion", request.getParameter("descripcion"));
@@ -155,7 +157,7 @@ public class AltaInstitucionServlet extends HttpServlet {
         }
     }
     
-    // Método auxiliar para procesar el logo
+    // MÃ©todo auxiliar para procesar el logo
     private String procesarLogo(Part filePart) throws IOException {
         String fileName = getSubmittedFileName(filePart);
         if (fileName != null && !fileName.isEmpty()) {
@@ -171,7 +173,7 @@ public class AltaInstitucionServlet extends HttpServlet {
                 uploadsDirectory.mkdirs();
             }
             
-            // Generar nombre único para evitar conflictos
+            // Generar nombre Ãºnico para evitar conflictos
             String extension = "";
             int dotIndex = fileName.lastIndexOf('.');
             if (dotIndex > 0) {
@@ -194,3 +196,4 @@ public class AltaInstitucionServlet extends HttpServlet {
         return null;
     }
 }
+

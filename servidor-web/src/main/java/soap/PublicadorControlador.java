@@ -26,6 +26,16 @@ public interface PublicadorControlador {
 
     /**
      * 
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/listarCategoriasRequest", output = "http://publicadores/PublicadorControlador/listarCategoriasResponse")
+    public StringArray listarCategorias();
+
+    /**
+     * 
      * @param arg0
      * @param arg1
      * @param arg2
@@ -52,6 +62,16 @@ public interface PublicadorControlador {
     /**
      * 
      * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/listarEventosRequest", output = "http://publicadores/PublicadorControlador/listarEventosResponse")
+    public StringArray listarEventos();
+
+    /**
+     * 
+     * @return
      *     returns java.lang.String
      */
     @WebMethod
@@ -61,13 +81,16 @@ public interface PublicadorControlador {
 
     /**
      * 
+     * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns boolean
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorControlador/holaRequest", output = "http://publicadores/PublicadorControlador/holaResponse")
-    public String hola();
+    @Action(input = "http://publicadores/PublicadorControlador/altaCategoriaRequest", output = "http://publicadores/PublicadorControlador/altaCategoriaResponse")
+    public boolean altaCategoria(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
 
     /**
      * 
@@ -105,5 +128,15 @@ public interface PublicadorControlador {
         DTFecha arg7,
         @WebParam(name = "arg8", partName = "arg8")
         DTFecha arg8);
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorControlador/holaRequest", output = "http://publicadores/PublicadorControlador/holaResponse")
+    public String hola();
 
 }

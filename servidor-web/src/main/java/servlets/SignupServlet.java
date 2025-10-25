@@ -1,4 +1,4 @@
-﻿package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -255,3 +255,4 @@ public class SignupServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/altadeusuario.jsp").forward(request, response);
     }
 }
+

@@ -30,7 +30,7 @@ public class ConsultaEventoServlet extends HttpServlet {
         try {
             IControladorEvento ctrl = IControladorEvento.getInstance();
 
-            // Obtener el nombre del evento desde el parámetro
+            // Obtener el nombre del evento desde el parÃ¡metro
             String nombreEvento = request.getParameter("evento");
 
             if (nombreEvento == null || nombreEvento.trim().isEmpty()) {
@@ -38,13 +38,13 @@ public class ConsultaEventoServlet extends HttpServlet {
                 return;
             }
 
-            // Obtener información del evento específico
+            // Obtener informaciÃ³n del evento especÃ­fico
             DTSeleccionEvento eventoSeleccionado = ctrl.seleccionarEvento(nombreEvento);
 
             // Obtener solo las ediciones aceptadas del evento (objetos completos)
             Set<String> nombresEdicionesAceptadas = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
             
-            // Obtener los objetos DTEdicion completos para acceder a las imágenes
+            // Obtener los objetos DTEdicion completos para acceder a las imÃ¡genes
             java.util.Set<DTEdicion> edicionesAceptadas = new java.util.HashSet<>();
             for (String nombreEdicion : nombresEdicionesAceptadas) {
                 DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
@@ -54,7 +54,7 @@ public class ConsultaEventoServlet extends HttpServlet {
             }
             request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
-            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = ctrl.listarCategorias();
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
@@ -63,7 +63,7 @@ public class ConsultaEventoServlet extends HttpServlet {
             request.setAttribute("eventoSeleccionado", eventoSeleccionado);
             request.setAttribute("categorias", categorias);
 
-            // Obtener el rol desde la sesión y pasarlo a la JSP
+            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
             request.setAttribute("role", role);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
@@ -76,7 +76,8 @@ public class ConsultaEventoServlet extends HttpServlet {
             // Si el evento no existe, redirigir al inicio
             response.sendRedirect(request.getContextPath() + "/inicio");
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo información del evento", e);
+            throw new ServletException("Error obteniendo informaciÃ³n del evento", e);
         }
     }
 }
+
