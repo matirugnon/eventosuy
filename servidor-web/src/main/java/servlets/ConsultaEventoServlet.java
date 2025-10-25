@@ -11,9 +11,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+//nuevos imports (copiar este bloque)
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
+
+
 import servlets.dto.EventoDetalleDTO;
 import servlets.dto.EdicionDTO;
 
@@ -81,7 +85,7 @@ public class ConsultaEventoServlet extends HttpServlet {
 
             // Pasar los datos a la JSP
             request.setAttribute("eventoDetalle", eventoDetalle); // DTO desde SOAP
-            request.setAttribute("eventoSeleccionado", nombreEvento); // TODO: migrar a SOAP
+            request.setAttribute("eventoSeleccionado", nombreEvento);
             request.setAttribute("categorias", categoriasList);
 
             // Obtener el rol desde la sesión y pasarlo a la JSP

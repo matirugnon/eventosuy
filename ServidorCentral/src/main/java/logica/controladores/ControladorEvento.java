@@ -258,6 +258,18 @@ public class ControladorEvento implements IControladorEvento {
 	    return nombres;
 	}
 
+	public String obtenerEventoDeEdicion(String nombreEdicion) throws EdicionNoExisteException {
+	    ManejadorEventos manEv = ManejadorEventos.getInstance();
+	    Edicion edicion = manEv.obtenerEdicion(nombreEdicion);
+	    
+	    if (edicion == null) {
+	        throw new EdicionNoExisteException(nombreEdicion);
+	    }
+	    
+	    Evento evento = edicion.getEvento();
+	    return evento != null ? evento.getNombre() : null;
+	}
+
 	public Set<String> listarEdicionesActivas(String nomEvento)
 			throws EventoNoExisteException{
 

@@ -52,18 +52,19 @@
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Inicio:</strong>
-										${edicion.fechaInicio.dia}/${edicion.fechaInicio.mes}/${edicion.fechaInicio.anio}
+										${edicion.fechaInicioDia}/${edicion.fechaInicioMes}/${edicion.fechaInicioAnio}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Fin:</strong>
-										${edicion.fechaFin.dia}/${edicion.fechaFin.mes}/${edicion.fechaFin.anio}
+										${edicion.fechaFinDia}/${edicion.fechaFinMes}/${edicion.fechaFinAnio}
 									</p>
 									<p style="margin: 0.25rem 0;">
-										<strong>Fecha Alta:</strong>
-										${edicion.altaEdicion.dia}/${edicion.altaEdicion.mes}/${edicion.altaEdicion.anio}
+										<strong>Estado:</strong>
+										${edicion.estado}
 									</p>
 								</div>
 
+								<%-- TODO: Implementar tipos de registro
 								<c:if test="${not empty edicion.tiposDeRegistro}">
 									<div class="panel" style="margin-top: 1rem; max-width: 200px;">
 										<div class="panel-header">Tipos de registro</div>
@@ -82,6 +83,7 @@
 										</div>
 									</div>
 								</c:if>
+								--%>
 							</div>
 
 							<div
@@ -93,11 +95,11 @@
 											<h4
 												style="margin: 0; font-size: 1.1rem; color: #333; font-family: 'Inter', sans-serif;">
 												<c:url var="eventoUrl" value="/consultaEvento">
-													<c:param name="evento" value="${eventoPadre.nombre}" />
+													<c:param name="evento" value="${eventoPadre}" />
 												</c:url>
 												<a href="${eventoUrl}"
 													style="color: inherit; text-decoration: none;">
-													${eventoPadre.nombre} </a>
+													${eventoPadre} </a>
 											</h4>
 										</div>
 									</div>

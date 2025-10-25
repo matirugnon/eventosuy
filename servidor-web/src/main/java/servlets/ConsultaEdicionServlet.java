@@ -20,6 +20,15 @@ import logica.datatypesyenum.DTUsuario;
 import logica.Usuario;
 import utils.Utils;
 
+//nuevos imports (copiar este bloque)
+import soap.PublicadorControlador;
+import soap.StringArray;
+import utils.SoapClientHelper;
+
+import servlets.dto.EdicionDetalleDTO;
+import servlets.dto.EventoDetalleDTO;
+
+
 @WebServlet("/consultaEdicion")
 public class ConsultaEdicionServlet extends HttpServlet {
 
@@ -31,36 +40,44 @@ public class ConsultaEdicionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            IControladorEvento ctrl = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
 
             // Obtener el nombre de la ediciÃ³n desde el parÃ¡metro
             String nombreEdicion = request.getParameter("edicion");
+
             
             if (nombreEdicion == null || nombreEdicion.trim().isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
             }
 
-            // Obtener informaciÃ³n de la ediciÃ³n especÃ­fica
-            DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
-            
+            // Obtener información de la edición específica
+            StringArray detalleEdicionArray = publicador.obtenerDetalleCompletoEdicion(nombreEdicion);
+            EdicionDetalleDTO edicion = new EdicionDetalleDTO(detalleEdicionArray);
+
             if (edicion == null) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
             }
             
             // Obtener informaciÃ³n del evento padre
-            DTEvento eventoPadre = ctrl.obtenerEventoPorEdicion(nombreEdicion);
+            String nombreEventoPadre = publicador.obtenerEventoDeEdicion(nombreEdicion);
+            StringArray detalleEventoPadreArray = publicador.obtenerDetalleEvento(nombreEventoPadre);
+
+            EventoDetalleDTO eventoDetalle = new EventoDetalleDTO(detalleEventoPadreArray);
             
             // Obtener informaciÃ³n del organizador
             String nicknameOrganizador = edicion.getOrganizador();
-            DTUsuario organizador = null;
+            
+            DTUsuario organizador = null; //TODO migrar a SOAP
+
             String avatarOrganizador = "/img/avatar-default.png"; // Avatar por defecto
             
+            /** 
             if (nicknameOrganizador != null && !nicknameOrganizador.trim().isEmpty()) {
                 try {
-                    organizador = ctrlUsuario.getDTUsuario(nicknameOrganizador);
+                    organizador = publicador.obtenerUsuario(nicknameOrganizador);
                     if (organizador != null) {
                         // Obtener el avatar del organizador
                         Usuario usuarioOrganizador = ctrlUsuario.obtenerUsuario(nicknameOrganizador);
@@ -73,14 +90,16 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 }
             }
             
-            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrl.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            */
+
+            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            StringArray categoriasSet = publicador.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet.getItem());
             Collections.sort(categorias);
 
             // Pasar los datos a la JSP
             request.setAttribute("edicion", edicion);
-            request.setAttribute("eventoPadre", eventoPadre);
+            request.setAttribute("eventoPadre", nombreEventoPadre);
             request.setAttribute("organizador", organizador);
             request.setAttribute("avatarOrganizador", avatarOrganizador);
             request.setAttribute("categorias", categorias);

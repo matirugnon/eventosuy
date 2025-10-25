@@ -179,6 +179,42 @@ public class PublicadorControlador {
         }
     }
 
+    /**
+     * Obtiene el detalle completo de una edición para la página de consulta.
+     * Retorna un array con: [0] nombre, [1] sigla, [2] ciudad, [3] pais, 
+     * [4] fechaInicioDia, [5] fechaInicioMes, [6] fechaInicioAnio,
+     * [7] fechaFinDia, [8] fechaFinMes, [9] fechaFinAnio,
+     * [10] organizador, [11] imagen (o cadena vacía si no tiene), [12] estado
+     */
+    @WebMethod
+    public String[] obtenerDetalleCompletoEdicion(String nombreEdicion) {
+        try {
+            logica.datatypesyenum.DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
+            if (edicion == null) {
+                return new String[0];
+            }
+            
+            String[] detalle = new String[13];
+            detalle[0] = edicion.getNombre();
+            detalle[1] = edicion.getSigla();
+            detalle[2] = edicion.getCiudad();
+            detalle[3] = edicion.getPais();
+            detalle[4] = String.valueOf(edicion.getFechaInicio().getDia());
+            detalle[5] = String.valueOf(edicion.getFechaInicio().getMes());
+            detalle[6] = String.valueOf(edicion.getFechaInicio().getAnio());
+            detalle[7] = String.valueOf(edicion.getFechaFin().getDia());
+            detalle[8] = String.valueOf(edicion.getFechaFin().getMes());
+            detalle[9] = String.valueOf(edicion.getFechaFin().getAnio());
+            detalle[10] = edicion.getOrganizador();
+            detalle[11] = edicion.getImagen() != null ? edicion.getImagen() : "";
+            detalle[12] = edicion.getEstado() != null ? edicion.getEstado().toString() : "";
+            
+            return detalle;
+        } catch (Exception e) {
+            return new String[0];
+        }
+    }
+
     @WebMethod
     public boolean altaCategoria(String nombreCategoria) {
         if (nombreCategoria == null || nombreCategoria.isBlank()) {
@@ -226,6 +262,17 @@ public class PublicadorControlador {
             return new String[0];
         }
     }
+
+     @WebMethod
+    public String obtenerEventoDeEdicion(String nombreEdicion) {
+        try {
+            String nombreEvento = ctrl.obtenerEventoDeEdicion(nombreEdicion);
+            return nombreEvento;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
 
 
     /**
