@@ -10,12 +10,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.datatypesyenum.DTEdicion;
 
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
 import servlets.dto.EventoDetalleDTO;
+import servlets.dto.EdicionDTO;
 
 @WebServlet("/consultaEvento")
 public class ConsultaEventoServlet extends HttpServlet {
@@ -49,9 +49,26 @@ public class ConsultaEventoServlet extends HttpServlet {
             
             EventoDetalleDTO eventoDetalle = new EventoDetalleDTO(detalleEventoSoap);
 
-            // TODO: Obtener ediciones y otros datos vía SOAP cuando estén disponibles
-            // Por ahora, crear conjuntos vacíos para evitar errores en el JSP
-            java.util.Set<DTEdicion> edicionesAceptadas = new java.util.HashSet<>();
+            // Obtener las ediciones aceptadas vía SOAP
+            StringArray nombresEdicionesArray = publicador.listarEdicionesDeEvento(nombreEvento);
+            List<EdicionDTO> edicionesAceptadas = new ArrayList<>();
+            
+            if (nombresEdicionesArray != null && nombresEdicionesArray.getItem() != null) {
+                for (String nombreEdicion : nombresEdicionesArray.getItem()) {
+                    try {
+                        StringArray detalleEdicionArray = publicador.obtenerDetalleEdicion(nombreEdicion);
+                        if (detalleEdicionArray != null && detalleEdicionArray.getItem() != null 
+                            && detalleEdicionArray.getItem().size() >= 2) {
+                            EdicionDTO edicionDTO = new EdicionDTO(detalleEdicionArray);
+                            edicionesAceptadas.add(edicionDTO);
+                        }
+                    } catch (Exception e) {
+                        // Si hay error con una edición, continuar con las demás
+                        System.err.println("Error obteniendo detalle de edición " + nombreEdicion + ": " + e.getMessage());
+                    }
+                }
+            }
+            
             request.setAttribute("edicionesAceptadas", edicionesAceptadas);
 
             // Obtener todas las categorías vía SOAP
@@ -64,7 +81,7 @@ public class ConsultaEventoServlet extends HttpServlet {
 
             // Pasar los datos a la JSP
             request.setAttribute("eventoDetalle", eventoDetalle); // DTO desde SOAP
-            request.setAttribute("eventoSeleccionado", null); // TODO: migrar a SOAP
+            request.setAttribute("eventoSeleccionado", nombreEvento); // TODO: migrar a SOAP
             request.setAttribute("categorias", categoriasList);
 
             // Obtener el rol desde la sesión y pasarlo a la JSP
@@ -81,4 +98,3 @@ public class ConsultaEventoServlet extends HttpServlet {
         }
     }
 }
-

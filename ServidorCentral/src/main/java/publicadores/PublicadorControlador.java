@@ -13,6 +13,7 @@ import logica.controladores.IControladorRegistro;
 import utils.Utils;
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -74,8 +75,8 @@ public class PublicadorControlador {
 
         try {
             ctrl.altaEdicion(
-                nickOrganizador,
                 nombreEvento,
+                nickOrganizador,
                 nombreEdicion,
                 sigla,
                 ciudad,
@@ -143,6 +144,38 @@ public class PublicadorControlador {
             return ediciones.toArray(new String[0]);
         } catch (Exception e) {
             return new String[0]; // Retornar arreglo vacío en caso de error
+        }
+    }
+
+    @WebMethod
+    public String[] listarEdicionesAceptadasDeEvento(String nombreEvento) {
+        try {
+            Set<String> ediciones = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
+            return ediciones.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0]; // Retornar arreglo vacío en caso de error
+        }
+    }
+
+    /**
+     * Obtiene los detalles de una edición específica.
+     * Retorna un array con: [0] nombre, [1] imagen (o cadena vacía si no tiene)
+     */
+    @WebMethod
+    public String[] obtenerDetalleEdicion(String nombreEdicion) {
+        try {
+            logica.datatypesyenum.DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
+            if (edicion == null) {
+                return new String[0];
+            }
+            
+            String[] detalle = new String[2];
+            detalle[0] = edicion.getNombre();
+            detalle[1] = edicion.getImagen() != null ? edicion.getImagen() : "";
+            
+            return detalle;
+        } catch (Exception e) {
+            return new String[0];
         }
     }
 

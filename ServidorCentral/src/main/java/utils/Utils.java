@@ -181,7 +181,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlEvento.actualizarEstadoEdicion("Tecnología Punta del Este 2026", EstadoEdicion.ACEPTADA);
         ctrlEvento.actualizarEstadoEdicion("Mobile World Congress 2025", EstadoEdicion.ACEPTADA);
 		ctrlEvento.actualizarEstadoEdicion("Web Summit 2026", EstadoEdicion.ACEPTADA);
-        ctrlEvento.actualizarEstadoEdicion("Montevideo Fashion Week 2026", EstadoEdicion.INGRESADA);
+        ctrlEvento.actualizarEstadoEdicion("Montevideo Fashion Week 2026", EstadoEdicion.ACEPTADA);
 
 		// TipoRegistro
 
