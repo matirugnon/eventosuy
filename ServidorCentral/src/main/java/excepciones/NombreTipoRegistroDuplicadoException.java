@@ -1,5 +1,8 @@
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
+@WebFault(name = "NombreTipoRegistroDuplicadoFault")
 public class NombreTipoRegistroDuplicadoException extends Exception {
     private static final long serialVersionUID = 1L;
 

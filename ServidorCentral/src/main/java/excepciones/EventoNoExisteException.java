@@ -2,9 +2,12 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando se intenta acceder a un evento que no existe.
  */
+@WebFault(name = "EventoNoExisteFault")
 public class EventoNoExisteException extends Exception {
 
 

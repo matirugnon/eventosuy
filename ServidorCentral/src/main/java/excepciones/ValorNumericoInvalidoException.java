@@ -2,10 +2,13 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando se ingresa un valor no numérico en un campo que debe ser número.
  * Por ejemplo: ingresar "abc" en los campos de costo o cupo.
  */
+@WebFault(name = "ValorNumericoInvalidoFault")
 public class ValorNumericoInvalidoException extends Exception {
 
     public ValorNumericoInvalidoException(String nombreCampo, String valorIngresado) {

@@ -1,5 +1,8 @@
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
+@WebFault(name = "UsuarioYaRegistradoEnEdicionFault")
 public class UsuarioYaRegistradoEnEdicionException extends Exception {
     private static final long serialVersionUID = 1L;
 
