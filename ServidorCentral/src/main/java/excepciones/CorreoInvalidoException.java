@@ -1,8 +1,11 @@
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando un correo electrónico no contiene el símbolo '@'.
  */
+@WebFault(name = "CorreoInvalidoFault")
 public class CorreoInvalidoException extends Exception {
 
     public CorreoInvalidoException(String correo) {

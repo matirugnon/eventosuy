@@ -2,9 +2,12 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando no se encuentra un patrocinio con el código especificado en una edición.
  */
+@WebFault(name = "PatrocinioNoEncontradoFault")
 public class PatrocinioNoEncontradoException extends Exception {
 
     /**

@@ -2,9 +2,12 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando se intenta registrar un evento o edición con una sigla que ya existe.
  */
+@WebFault(name = "SiglaRepetidaFault")
 public class SiglaRepetidaException extends Exception {
 
     public SiglaRepetidaException(String sigla) {

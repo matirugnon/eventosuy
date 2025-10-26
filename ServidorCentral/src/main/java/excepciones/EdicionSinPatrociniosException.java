@@ -2,9 +2,12 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando una edición no tiene patrocinios registrados.
  */
+@WebFault(name = "EdicionSinPatrociniosFault")
 public class EdicionSinPatrociniosException extends Exception {
 
     /**

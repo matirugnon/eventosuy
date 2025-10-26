@@ -2,9 +2,12 @@
 
 package excepciones;
 
+import jakarta.xml.ws.WebFault;
+
 /**
  * Excepción lanzada cuando se proporciona una fecha inválida (ej. 30 de febrero).
  */
+@WebFault(name = "FechaInvalidaFault")
 public class FechaInvalidaException extends Exception {
 
     public FechaInvalidaException(int dia, int mes, int anio) {
