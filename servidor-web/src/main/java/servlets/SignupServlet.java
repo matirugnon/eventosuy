@@ -119,15 +119,12 @@ public class SignupServlet extends HttpServlet {
 
         String rutaImagen = procesarImagen(request);
 
-        // Llamada SOAP para crear asistente
+        // Llamada SOAP para crear asistente - usar "" si no hay imagen
         try {
-            if (rutaImagen != null) {
-                publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
-                        institucion != null ? institucion : "", password, rutaImagen);
-            } else {
-                publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
-                        institucion != null ? institucion : "", password, null);
-            }
+            publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
+                    institucion != null ? institucion : "", 
+                    password, 
+                    rutaImagen != null ? rutaImagen : "");
         } catch (soap.UsuarioRepetidoException_Exception e) {
             throw new UsuarioRepetidoException(e.getMessage());
         } catch (soap.CorreoInvalidoException_Exception e) {
