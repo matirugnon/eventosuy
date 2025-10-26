@@ -53,6 +53,7 @@ public class SoapClientHelper {
      */
     public static void resetConnection() {
         publicadorPort = null;
+        publicadorUsuarioPort = null;
     }
     
     /**

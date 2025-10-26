@@ -17,5 +17,6 @@
 	<classpathentry kind="src" path="/ServidorCentral"/>
 	<classpathentry kind="lib" path="C:/Users/Mati/eclipse-workspace/jaxws-ri/lib/jakarta.xml.ws-api.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mati/eclipse-workspace/jaxws-ri/lib/jakarta.xml.bind-api.jar"/>
+	<classpathentry kind="src" path="ServidorCentral/src/main"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,4 +1,5 @@
 package publicadores;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.ws.Endpoint;
 
 
@@ -31,6 +32,7 @@ import utils.Utils;
 
 
 @WebService
+@XmlSeeAlso({DTAsistente.class, DTOrganizador.class})
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
 public class PublicadorUsuario {
     private final IControladorUsuario ctrlUs = IControladorUsuario.getInstance();
@@ -48,12 +50,23 @@ public class PublicadorUsuario {
             System.err.println("   Usando valores por defecto.");
         }
 
-        String url = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
+        String url = props.getProperty("servidor.usuario.url", "http://localhost:9129/publicadorUsuario");
         System.out.println("Publicando PublicadorUsuario en: " + url);
         Endpoint.publish(url, new PublicadorUsuario());
     }
 
-    // ------------------- Métodos de alta -------------------
+    
+    
+    @WebMethod
+    public boolean altaAsistenteSinAvatar(String nick, String nombre, String correo, String apellido,
+                                 int diaNac, int mesNac, int anioNac, String institucion, String password)
+    	throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
+            DTFecha fechanac = new DTFecha(diaNac, mesNac, anioNac);
+            ctrlUs.altaAsistente(nick, nombre, correo, apellido, fechanac, institucion, password);
+            return true;
+    }
+    
+    
     @WebMethod
     public boolean altaAsistente(String nick, String nombre, String correo, String apellido,
                                  int diaNac, int mesNac, int anioNac, 
@@ -66,6 +79,16 @@ public class PublicadorUsuario {
         return true;
     }
 
+    
+    @WebMethod
+    public boolean altaOrganizadorSinAvatar(String nick, String nombre, String correo, String descripcion,
+                                   String link, String password)
+            throws UsuarioRepetidoException, CorreoInvalidoException {
+        ctrlUs.altaOrganizador(nick, nombre, correo, descripcion, link, password);
+        return true;
+    }
+
+    
     @WebMethod
     public boolean altaOrganizador(String nick, String nombre, String correo, String descripcion,
                                    String link, String password, String avatar)

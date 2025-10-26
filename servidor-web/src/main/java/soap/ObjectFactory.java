@@ -29,6 +29,9 @@ public class ObjectFactory {
     private static final QName _FechaInvalidaFault_QNAME = new QName("http://publicadores/", "FechaInvalidaFault");
     private static final QName _UsuarioNoExisteFault_QNAME = new QName("http://publicadores/", "UsuarioNoExisteFault");
     private static final QName _UsuarioRepetidoFault_QNAME = new QName("http://publicadores/", "UsuarioRepetidoFault");
+    private static final QName _DtAsistente_QNAME = new QName("http://publicadores/", "dtAsistente");
+    private static final QName _DtOrganizador_QNAME = new QName("http://publicadores/", "dtOrganizador");
+    private static final QName _DtUsuario_QNAME = new QName("http://publicadores/", "dtUsuario");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soap
@@ -88,6 +91,26 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DtAsistente }
+     * 
+     * @return
+     *     the new instance of {@link DtAsistente }
+     */
+    public DtAsistente createDtAsistente() {
+        return new DtAsistente();
+    }
+
+    /**
+     * Create an instance of {@link DtOrganizador }
+     * 
+     * @return
+     *     the new instance of {@link DtOrganizador }
+     */
+    public DtOrganizador createDtOrganizador() {
+        return new DtOrganizador();
+    }
+
+    /**
      * Create an instance of {@link DtUsuario }
      * 
      * @return
@@ -95,6 +118,16 @@ public class ObjectFactory {
      */
     public DtUsuario createDtUsuario() {
         return new DtUsuario();
+    }
+
+    /**
+     * Create an instance of {@link DTFecha }
+     * 
+     * @return
+     *     the new instance of {@link DTFecha }
+     */
+    public DTFecha createDTFecha() {
+        return new DTFecha();
     }
 
     /**
@@ -190,6 +223,45 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "UsuarioRepetidoFault")
     public JAXBElement<UsuarioRepetidoException> createUsuarioRepetidoFault(UsuarioRepetidoException value) {
         return new JAXBElement<>(_UsuarioRepetidoFault_QNAME, UsuarioRepetidoException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtAsistente }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtAsistente }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtAsistente")
+    public JAXBElement<DtAsistente> createDtAsistente(DtAsistente value) {
+        return new JAXBElement<>(_DtAsistente_QNAME, DtAsistente.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtOrganizador }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtOrganizador }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtOrganizador")
+    public JAXBElement<DtOrganizador> createDtOrganizador(DtOrganizador value) {
+        return new JAXBElement<>(_DtOrganizador_QNAME, DtOrganizador.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtUsuario }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtUsuario }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtUsuario")
+    public JAXBElement<DtUsuario> createDtUsuario(DtUsuario value) {
+        return new JAXBElement<>(_DtUsuario_QNAME, DtUsuario.class, null, value);
     }
 
 }
