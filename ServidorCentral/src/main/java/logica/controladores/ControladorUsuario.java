@@ -409,4 +409,24 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
+
+	public boolean validarCredenciales(String identificador, String password) {
+		if (identificador == null || identificador.isEmpty() || password == null || password.isEmpty()) {
+			return false;
+		}
+		Usuario usuario = manejador.obtenerUsuario(identificador);
+		if (usuario == null) {
+			return false;
+		}
+		return usuario.getPassword().equals(password);
+	}
+
+	public String obtenerAvatar(String identificador) throws UsuarioNoExisteException {
+		Usuario usuario = manejador.obtenerUsuario(identificador);
+		if (usuario == null) {
+			throw new UsuarioNoExisteException(identificador);
+		}
+		return usuario.getAvatar();
+	}
 }
+

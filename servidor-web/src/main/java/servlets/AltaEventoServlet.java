@@ -17,7 +17,6 @@ import jakarta.servlet.http.Part;
 import soap.PublicadorControlador;
 import soap.DTFecha;
 import soap.StringArray;
-// Bridge temporal: sincronizar con lógica local hasta migrar listados a SOAP
 
 import java.util.HashSet;
 import java.util.Arrays;

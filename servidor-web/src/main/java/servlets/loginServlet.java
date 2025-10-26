@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,12 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import logica.controladores.IControladorUsuario;
-import logica.Usuario;
-import logica.datatypesyenum.DTUsuario;
-import logica.manejadores.ManejadorUsuario; // Importar ManejadorUsuario
-import utils.Utils;
-
+import soap.PublicadorUsuario;
+import utils.SoapClientHelper;
 
 @WebServlet("/login")
 public class loginServlet extends HttpServlet {
@@ -27,7 +22,8 @@ public class loginServlet extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         
-        processRequest(request, response); // Reutilizar lÃ³gica comÃºn
+        // Simplemente mostrar la página de login
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
@@ -37,7 +33,7 @@ public class loginServlet extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         
-        processRequest(request, response); // Reutilizar lÃ³gica comÃºn
+        processRequest(request, response);
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -47,41 +43,49 @@ public class loginServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            ManejadorUsuario manejador = ManejadorUsuario.getinstance();
-
             String usuario = request.getParameter("usuario");
             String password = request.getParameter("password");
 
-            // ValidaciÃ³n de parÃ¡metros
+            // Validación de parámetros
             if (usuario == null || usuario.isEmpty() || password == null || password.isEmpty()) {
                 request.setAttribute("error", "Usuario y contraseña son obligatorios.");
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
-            Set<String> usuarios = ctrlUsuario.listarUsuarios();
-            request.setAttribute("usuarios", usuarios);
-
-            Usuario user = manejador.obtenerUsuario(usuario);
-            if (user != null && user.getPassword().equals(password)) {
-                DTUsuario dtUsuario = ctrlUsuario.getDTUsuario(usuario);
+            // Obtener cliente SOAP
+            PublicadorUsuario publicador = SoapClientHelper.getPublicadorUsuario();
+            
+            // Validar credenciales via SOAP
+            boolean credencialesValidas = publicador.validarCredenciales(usuario, password);
+            
+            if (credencialesValidas) {
+                // Obtener tipo de usuario via SOAP
+                String tipoUsuario = publicador.obtenerTipoUsuario(usuario);
+                
+                // Obtener avatar del usuario via SOAP
+                String avatar = publicador.obtenerAvatar(usuario);
+                
+                // Crear sesión
                 HttpSession session = request.getSession();
-                session.setAttribute("usuario", dtUsuario.getNickname());
-                session.setAttribute("avatar", dtUsuario.getAvatar()); // Agregado el atributo avatar
-                session.setAttribute("role", user.getTipo()); // Guardar el rol en la sesiÃ³n
-                response.sendRedirect(request.getContextPath() + "/inicio"); // Redirigir a la pÃ¡gina de inicio
+                session.setAttribute("usuario", usuario);
+                session.setAttribute("avatar", avatar);
+                session.setAttribute("role", tipoUsuario);
+                
+                response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
             } else {
                 request.setAttribute("error", "Usuario o contraseña incorrectos.");
             }
 
-            // Recargar la pÃ¡gina de login con el mensaje de error
+            // Recargar la página de login con el mensaje de error
             request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error procesando el login: " + e.getMessage(), e);
+            System.err.println("[loginServlet] Error: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Error al procesar el login: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
     }
 }
-

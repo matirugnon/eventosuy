@@ -94,6 +94,20 @@
                             <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>wsimport-publicador-usuario</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>http://localhost:9128/publicadorUsuario?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <packageName>soap</packageName>
+                            <keep>true</keep>
+                            <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+                        </configuration>
+                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>

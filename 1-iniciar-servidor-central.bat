@@ -27,8 +27,11 @@ echo ========================================
 echo  Iniciando Servidor Central...
 echo ========================================
 echo.
-echo Servidor disponible en: http://localhost:9128/publicador
-echo WSDL disponible en: http://localhost:9128/publicador?wsdl
+echo PublicadorControlador: http://localhost:9128/publicador
+echo PublicadorUsuario: http://localhost:9128/publicadorUsuario
+echo.
+echo WSDL PublicadorControlador: http://localhost:9128/publicador?wsdl
+echo WSDL PublicadorUsuario: http://localhost:9128/publicadorUsuario?wsdl
 echo.
 echo Presiona Ctrl+C para detener el servidor
 echo.

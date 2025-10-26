@@ -2,6 +2,8 @@ package utils;
 
 import soap.PublicadorControlador;
 import soap.PublicadorControladorService;
+import soap.PublicadorUsuario;
+import soap.PublicadorUsuarioService;
 
 /**
  * Helper class para obtener el cliente SOAP del PublicadorControlador
@@ -9,6 +11,7 @@ import soap.PublicadorControladorService;
 public class SoapClientHelper {
     
     private static PublicadorControlador publicadorPort = null;
+    private static PublicadorUsuario publicadorUsuarioPort = null;
     
     /**
      * Obtiene una instancia del puerto del PublicadorControlador
@@ -26,6 +29,23 @@ public class SoapClientHelper {
             }
         }
         return publicadorPort;
+    }
+
+    /**
+     * Obtiene una instancia del puerto del PublicadorUsuario (SOAP client)
+     */
+    public static PublicadorUsuario getPublicadorUsuario() {
+        if (publicadorUsuarioPort == null) {
+            try {
+                PublicadorUsuarioService service = new PublicadorUsuarioService();
+                publicadorUsuarioPort = service.getPublicadorUsuarioPort();
+                System.out.println("✓ Conexión SOAP establecida con el PublicadorUsuario");
+            } catch (Exception e) {
+                System.err.println("❌ Error al conectar con el PublicadorUsuario: " + e.getMessage());
+                throw new RuntimeException("No se pudo conectar con el servidor SOAP (usuario)", e);
+            }
+        }
+        return publicadorUsuarioPort;
     }
     
     /**

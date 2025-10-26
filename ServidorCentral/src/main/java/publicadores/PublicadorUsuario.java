@@ -22,8 +22,10 @@ import jakarta.xml.ws.Endpoint;
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
+import logica.datatypesyenum.DTAsistente;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTInstitucion;
+import logica.datatypesyenum.DTOrganizador;
 import logica.datatypesyenum.DTUsuario;
 import utils.Utils;
 
@@ -52,8 +54,10 @@ public class PublicadorUsuario {
     // ------------------- Métodos de alta -------------------
     @WebMethod
     public boolean altaAsistente(String nick, String nombre, String correo, String apellido,
-                                 DTFecha fechanac, String institucion, String password, String avatar)
+                                 int diaNac, int mesNac, int anioNac, 
+                                 String institucion, String password, String avatar)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
+        DTFecha fechanac = new DTFecha(diaNac, mesNac, anioNac);
         ctrlUs.altaAsistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
         return true;
     }
@@ -138,5 +142,26 @@ public class PublicadorUsuario {
     	} catch (Exception e) {
     		return e.getMessage();
     	}
+    }
+
+    @WebMethod
+    public boolean validarCredenciales(String identificador, String password) {
+        return ctrlUs.validarCredenciales(identificador, password);
+    }
+
+    @WebMethod
+    public String obtenerTipoUsuario(String identificador) throws UsuarioNoExisteException {
+        DTUsuario dtUsuario = ctrlUs.getDTUsuario(identificador);
+        if (dtUsuario instanceof DTAsistente) {
+            return "asistente";
+        } else if (dtUsuario instanceof DTOrganizador) {
+            return "organizador";
+        }
+        return "desconocido";
+    }
+
+    @WebMethod
+    public String obtenerAvatar(String identificador) throws UsuarioNoExisteException {
+        return ctrlUs.obtenerAvatar(identificador);
     }
 }

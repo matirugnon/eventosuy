@@ -83,4 +83,9 @@ public interface IControladorUsuario {
 	
 	public Usuario obtenerUsuario(String identificador);
 	
+
+	public boolean validarCredenciales(String identificador, String password);
+
+	public String obtenerAvatar(String identificador) throws UsuarioNoExisteException;
 }
+

@@ -82,7 +82,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>publicadores.PublicadorControlador</mainClass>
+                            <mainClass>ServidorCentralMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

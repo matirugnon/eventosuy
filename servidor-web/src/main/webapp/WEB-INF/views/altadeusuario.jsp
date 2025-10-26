@@ -103,9 +103,9 @@
 								<div style="margin-top: .5rem;">
 									<div
 										style="display: flex; align-items: center; white-space: nowrap;">
-										<label for="perteneceInstitucion" style="margin-right: 0;">Pertenezco
+										<label for="chkInstitucion" style="margin-right: 0;">Pertenezco
 											a una institución <input type="checkbox"
-											name="perteneceInstitucion" id="perteneceInstitucion"
+											name="perteneceInstitucion" id="chkInstitucion"
 											style="margin-left: 4px; vertical-align: middle;"
 											${not empty param.institucion ? 'checked' : ''} />
 										</label>
