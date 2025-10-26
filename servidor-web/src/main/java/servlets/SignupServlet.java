@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Set;
+
+
+
 import java.util.HashSet;
 
 import jakarta.servlet.ServletException;
@@ -15,13 +18,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-
-import excepciones.UsuarioRepetidoException;
-import excepciones.CorreoInvalidoException;
-import excepciones.FechaInvalidaException;
-
+import soap.CorreoInvalidoException_Exception;
+import soap.FechaInvalidaException_Exception;
 import soap.PublicadorUsuario;
 import soap.StringArray;
+import soap.UsuarioRepetidoException_Exception;
 import utils.SoapClientHelper;
 
 @WebServlet("/signup")
@@ -72,9 +73,9 @@ public class SignupServlet extends HttpServlet {
             PublicadorUsuario publicador = SoapClientHelper.getPublicadorUsuario();
 
             if ("asistente".equals(rol)) {
-                crearAsistente(request, publicador, nickname, nombre, email, password);
+                crearAsistente(request, response, publicador, nickname, nombre, email, password);
             } else if ("organizador".equals(rol)) {
-                crearOrganizador(request, publicador, nickname, nombre, email, password);
+                crearOrganizador(request, response, publicador, nickname, nombre, email, password);
             } else {
                 mostrarFormularioConError(request, response, "Rol no válido");
                 return;
@@ -85,34 +86,44 @@ public class SignupServlet extends HttpServlet {
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/inicio");
 
-        } catch (UsuarioRepetidoException e) {
+        } catch (UsuarioRepetidoException_Exception e) {
             mostrarFormularioConError(request, response, "❌ El nickname o email ya está en uso");
-        } catch (CorreoInvalidoException e) {
+        } catch (CorreoInvalidoException_Exception e) {
             mostrarFormularioConError(request, response, "❌ El correo electrónico no es válido");
-        } catch (FechaInvalidaException e) {
+        } catch (FechaInvalidaException_Exception e) {
             mostrarFormularioConError(request, response, "❌ La fecha de nacimiento no es válida");
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "❌ Error al crear usuario: " + e.getMessage());
         }
     }
 
-    private void crearAsistente(HttpServletRequest request, PublicadorUsuario publicador,
-            String nickname, String nombre, String email, String password) throws Exception {
+    private void crearAsistente(HttpServletRequest request, HttpServletResponse response, PublicadorUsuario publicador,
+            		String nickname, String nombre, String email, String password) 
+            throws soap.UsuarioRepetidoException_Exception,CorreoInvalidoException_Exception,FechaInvalidaException_Exception,
+            	IOException, ServletException {
 
         String apellido = request.getParameter("apellido");
         String fechaNacStr = request.getParameter("fechaNacimiento");
         String institucion = request.getParameter("institucion");
 
         if (apellido == null || apellido.trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido es requerido para asistentes");
+            mostrarFormularioConError(request, response, "El apellido es requerido para asistentes");
+            return;
         }
 
         if (fechaNacStr == null || fechaNacStr.trim().isEmpty()) {
-            throw new IllegalArgumentException("La fecha de nacimiento es requerida para asistentes");
+            mostrarFormularioConError(request, response, "La fecha de nacimiento es requerida para asistentes");
+            return;
         }
 
         // Parsear fecha
-        LocalDate fecha = parseFecha(fechaNacStr);
+        LocalDate fecha;
+        try{
+        	fecha = parseFecha(fechaNacStr);
+        } catch (soap.FechaInvalidaException_Exception e) {
+            mostrarFormularioConError(request, response, "❌ La fecha de nacimiento no es válida");
+            return;
+        }
         int dia = fecha.getDayOfMonth();
         int mes = fecha.getMonthValue();
         int anio = fecha.getYear();
@@ -125,20 +136,20 @@ public class SignupServlet extends HttpServlet {
                 publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
                         institucion != null ? institucion : "", password, rutaImagen);
             } else {
-                publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
-                        institucion != null ? institucion : "", password, null);
+                publicador.altaAsistenteSinAvatar(nickname, nombre, email, apellido, dia, mes, anio,
+                        institucion != null ? institucion : "", password);
             }
         } catch (soap.UsuarioRepetidoException_Exception e) {
-            throw new UsuarioRepetidoException(e.getMessage());
+            mostrarFormularioConError(request, response, "⚠️ " + e.getMessage());
         } catch (soap.CorreoInvalidoException_Exception e) {
-            throw new CorreoInvalidoException(e.getMessage());
+            mostrarFormularioConError(request, response, "⚠️ " + e.getMessage());
         } catch (soap.FechaInvalidaException_Exception e) {
-            throw new FechaInvalidaException(e.getMessage());
+            mostrarFormularioConError(request, response, "⚠️ " + e.getMessage());
         }
     }
 
-    private void crearOrganizador(HttpServletRequest request, PublicadorUsuario publicador,
-            String nickname, String nombre, String email, String password) throws Exception {
+    private void crearOrganizador(HttpServletRequest request, HttpServletResponse response, PublicadorUsuario publicador,
+            String nickname, String nombre, String email, String password) throws UsuarioRepetidoException_Exception,CorreoInvalidoException_Exception, IOException, ServletException {
 
         String descripcion = request.getParameter("descripcion");
         String sitioWeb = request.getParameter("web");
@@ -149,20 +160,20 @@ public class SignupServlet extends HttpServlet {
             if (rutaImagen != null) {
                 publicador.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password, rutaImagen);
             } else {
-                publicador.altaOrganizador(nickname, nombre, email, descripcion, sitioWeb, password, null);
+                publicador.altaOrganizadorSinAvatar(nickname, nombre, email, descripcion, sitioWeb, password);
             }
-        } catch (soap.UsuarioRepetidoException_Exception e) {
-            throw new UsuarioRepetidoException(e.getMessage());
-        } catch (soap.CorreoInvalidoException_Exception e) {
-            throw new CorreoInvalidoException(e.getMessage());
+        } catch (UsuarioRepetidoException_Exception e) {
+        	 mostrarFormularioConError(request, response, e.getMessage());
+        } catch (CorreoInvalidoException_Exception e) {
+        	 mostrarFormularioConError(request, response, e.getMessage());
         }
     }
 
-    private LocalDate parseFecha(String fechaStr) throws FechaInvalidaException {
+    private LocalDate parseFecha(String fechaStr) throws FechaInvalidaException_Exception {
         try {
             return LocalDate.parse(fechaStr, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException e) {
-            throw new FechaInvalidaException("Formato de fecha inválido");
+            throw new FechaInvalidaException_Exception("Formato de fecha inválido",null);
         }
     }
 

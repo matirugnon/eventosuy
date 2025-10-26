@@ -51,7 +51,18 @@ public class PublicadorUsuario {
         Endpoint.publish(url, new PublicadorUsuario());
     }
 
-    // ------------------- Métodos de alta -------------------
+    
+    
+    @WebMethod
+    public boolean altaAsistenteSinAvatar(String nick, String nombre, String correo, String apellido,
+                                 int diaNac, int mesNac, int anioNac, String institucion, String password)
+    	throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
+            DTFecha fechanac = new DTFecha(diaNac, mesNac, anioNac);
+            ctrlUs.altaAsistente(nick, nombre, correo, apellido, fechanac, institucion, password);
+            return true;
+    }
+    
+    
     @WebMethod
     public boolean altaAsistente(String nick, String nombre, String correo, String apellido,
                                  int diaNac, int mesNac, int anioNac, 
@@ -62,6 +73,16 @@ public class PublicadorUsuario {
         return true;
     }
 
+    
+    @WebMethod
+    public boolean altaOrganizadorSinAvatar(String nick, String nombre, String correo, String descripcion,
+                                   String link, String password)
+            throws UsuarioRepetidoException, CorreoInvalidoException {
+        ctrlUs.altaOrganizador(nick, nombre, correo, descripcion, link, password);
+        return true;
+    }
+
+    
     @WebMethod
     public boolean altaOrganizador(String nick, String nombre, String correo, String descripcion,
                                    String link, String password, String avatar)
