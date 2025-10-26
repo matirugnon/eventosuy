@@ -8,9 +8,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para dtUsuario complex type.
+ * <p>Java class for dtUsuario complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>{@code
  * <complexType name="dtUsuario">
@@ -51,7 +51,7 @@ public class DtUsuario {
     protected String avatar;
 
     /**
-     * Obtiene el valor de la propiedad nickname.
+     * Gets the value of the nickname property.
      * 
      * @return
      *     possible object is
@@ -63,7 +63,7 @@ public class DtUsuario {
     }
 
     /**
-     * Define el valor de la propiedad nickname.
+     * Sets the value of the nickname property.
      * 
      * @param value
      *     allowed object is
@@ -75,7 +75,7 @@ public class DtUsuario {
     }
 
     /**
-     * Obtiene el valor de la propiedad nombre.
+     * Gets the value of the nombre property.
      * 
      * @return
      *     possible object is
@@ -87,7 +87,7 @@ public class DtUsuario {
     }
 
     /**
-     * Define el valor de la propiedad nombre.
+     * Sets the value of the nombre property.
      * 
      * @param value
      *     allowed object is
@@ -99,7 +99,7 @@ public class DtUsuario {
     }
 
     /**
-     * Obtiene el valor de la propiedad correo.
+     * Gets the value of the correo property.
      * 
      * @return
      *     possible object is
@@ -111,7 +111,7 @@ public class DtUsuario {
     }
 
     /**
-     * Define el valor de la propiedad correo.
+     * Sets the value of the correo property.
      * 
      * @param value
      *     allowed object is
@@ -123,7 +123,7 @@ public class DtUsuario {
     }
 
     /**
-     * Obtiene el valor de la propiedad password.
+     * Gets the value of the password property.
      * 
      * @return
      *     possible object is
@@ -135,7 +135,7 @@ public class DtUsuario {
     }
 
     /**
-     * Define el valor de la propiedad password.
+     * Sets the value of the password property.
      * 
      * @param value
      *     allowed object is
@@ -147,7 +147,7 @@ public class DtUsuario {
     }
 
     /**
-     * Obtiene el valor de la propiedad avatar.
+     * Gets the value of the avatar property.
      * 
      * @return
      *     possible object is
@@ -159,7 +159,7 @@ public class DtUsuario {
     }
 
     /**
-     * Define el valor de la propiedad avatar.
+     * Sets the value of the avatar property.
      * 
      * @param value
      *     allowed object is
