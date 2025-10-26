@@ -1,2 +1,5 @@
 /target/
 /build/
+
+# Clases SOAP generadas automáticamente
+src/main/java/soap/

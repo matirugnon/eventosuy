@@ -1,4 +1,4 @@
-package java.presentacion; 
+package presentacion; 
 // o el paquete que uses
 
 public class Main {

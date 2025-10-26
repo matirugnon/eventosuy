@@ -34,7 +34,7 @@ public class ServidorCentralMain {
         System.out.println("✓ PublicadorControlador iniciado correctamente");
         
         // Iniciar PublicadorUsuario
-        String urlUsuario = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
+        String urlUsuario = props.getProperty("servidor.usuario.url", "http://localhost:9129/publicadorUsuario");
         System.out.println("\n[2/2] Publicando PublicadorUsuario en: " + urlUsuario);
         Endpoint.publish(urlUsuario, new PublicadorUsuario());
         System.out.println("✓ PublicadorUsuario iniciado correctamente");
