@@ -3,6 +3,7 @@ package soap;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
 
@@ -16,11 +17,11 @@ import jakarta.xml.bind.annotation.XmlType;
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="avatar" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         <element name="correo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nickname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="correo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="avatar" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -31,67 +32,23 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtUsuario", propOrder = {
-    "avatar",
-    "correo",
     "nickname",
     "nombre",
-    "password"
+    "correo",
+    "password",
+    "avatar"
+})
+@XmlSeeAlso({
+    DtAsistente.class,
+    DtOrganizador.class
 })
 public class DtUsuario {
 
-    protected String avatar;
-    protected String correo;
     protected String nickname;
     protected String nombre;
+    protected String correo;
     protected String password;
-
-    /**
-     * Obtiene el valor de la propiedad avatar.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAvatar() {
-        return avatar;
-    }
-
-    /**
-     * Define el valor de la propiedad avatar.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAvatar(String value) {
-        this.avatar = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad correo.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCorreo() {
-        return correo;
-    }
-
-    /**
-     * Define el valor de la propiedad correo.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCorreo(String value) {
-        this.correo = value;
-    }
+    protected String avatar;
 
     /**
      * Obtiene el valor de la propiedad nickname.
@@ -142,6 +99,30 @@ public class DtUsuario {
     }
 
     /**
+     * Obtiene el valor de la propiedad correo.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCorreo() {
+        return correo;
+    }
+
+    /**
+     * Define el valor de la propiedad correo.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCorreo(String value) {
+        this.correo = value;
+    }
+
+    /**
      * Obtiene el valor de la propiedad password.
      * 
      * @return
@@ -163,6 +144,30 @@ public class DtUsuario {
      */
     public void setPassword(String value) {
         this.password = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad avatar.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAvatar() {
+        return avatar;
+    }
+
+    /**
+     * Define el valor de la propiedad avatar.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAvatar(String value) {
+        this.avatar = value;
     }
 
 }

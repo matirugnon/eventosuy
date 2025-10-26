@@ -2,6 +2,15 @@ package logica.datatypesyenum;
 
 import java.io.Serializable;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({DTAsistente.class, DTOrganizador.class})
 public class DTUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

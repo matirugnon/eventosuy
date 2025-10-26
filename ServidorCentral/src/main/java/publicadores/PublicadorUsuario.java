@@ -1,4 +1,5 @@
 package publicadores;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.ws.Endpoint;
 
 
@@ -31,6 +32,7 @@ import utils.Utils;
 
 
 @WebService
+@XmlSeeAlso({DTAsistente.class, DTOrganizador.class})
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
 public class PublicadorUsuario {
     private final IControladorUsuario ctrlUs = IControladorUsuario.getInstance();

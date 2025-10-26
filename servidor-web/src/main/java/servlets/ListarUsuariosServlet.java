@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,13 +16,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTUsuario;
-import logica.datatypesyenum.DTAsistente;
-import logica.datatypesyenum.DTOrganizador;
-import logica.Usuario;
+import soap.DtAsistente;
+import soap.DtUsuario;
+import soap.DtUsuarioArray;
+import soap.PublicadorControlador;
+import soap.PublicadorUsuario;
+import soap.StringArray;
+import utils.SoapClientHelper;
 import utils.Utils;
 
 @WebServlet("/listarUsuarios")
@@ -35,25 +36,28 @@ public class ListarUsuariosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     	
         try {
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+        	PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+        	PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
+            
             // Obtener los nicks de los usuarios registrados
-            Set<String> nicksUsuarios = ctrlUsuario.listarUsuarios();
+        	StringArray nickArr = publicadorUs.listarUsuarios();
+            Set<String> nicksUsuarios = new HashSet<>(nickArr.getItem());
             System.out.println("DEBUG: Nicks después de carga: " + (nicksUsuarios != null ? nicksUsuarios.size() + " - " + nicksUsuarios : "null"));
 
             // Usar el método más eficiente que devuelve DTUsuarios directamente
-            Set<DTUsuario> usuarios = ctrlUsuario.listarUsuariosDT();
+            DtUsuarioArray dtUsArr =  publicadorUs.listarUsuariosDT();
+            Set<DtUsuario> usuarios = new HashSet<>(dtUsArr.getItem());
             System.out.println("DEBUG: DTUsuarios obtenidos directamente:" + (usuarios != null ? usuarios.size() : "null"));
             
-            List<DTUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
+            List<DtUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
 
-            usuariosOrdenados.sort(Comparator.comparing(DTUsuario::getNickname));
+            usuariosOrdenados.sort(Comparator.comparing(DtUsuario::getNickname));
 
             Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
             
             if (usuarios != null && !usuarios.isEmpty()) {
-                for (DTUsuario dtUsuario : usuarios) {
-                    String tipo = (dtUsuario instanceof DTAsistente) ? "Asistente" : "Organizador";
+                for (DtUsuario dtUsuario : usuarios) {
+                    String tipo = (dtUsuario instanceof DtAsistente) ? "Asistente" : "Organizador";
                     tiposUsuarios.put(dtUsuario.getNickname(), tipo);
                     System.out.println("DEBUG: DTUsuario procesado: " + dtUsuario.getNickname() + " - " + dtUsuario.getNombre() + " (" + tipo + ")");
                 }
@@ -61,8 +65,8 @@ public class ListarUsuariosServlet extends HttpServlet {
                 System.out.println("DEBUG: usuarios DTUsuario está vacío o es null");
             }
             System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            StringArray catArr = publicadorEv.listarCategorias();
+            List<String> categorias = new ArrayList<>(catArr.getItem());
             Collections.sort(categorias);
             
             // --- PAGINACION ---
@@ -82,7 +86,7 @@ public class ListarUsuariosServlet extends HttpServlet {
                 page = totalPages;
             }
 
-            List<DTUsuario> usuariosPagina;
+            List<DtUsuario> usuariosPagina;
             if (totalUsuarios == 0) {
                 usuariosPagina = new ArrayList<>();
             } else {
