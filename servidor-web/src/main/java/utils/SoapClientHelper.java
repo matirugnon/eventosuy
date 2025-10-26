@@ -2,6 +2,8 @@ package utils;
 
 import soap.PublicadorControlador;
 import soap.PublicadorControladorService;
+import soap.PublicadorRegistro;
+import soap.PublicadorRegistroService;
 import soap.PublicadorUsuario;
 import soap.PublicadorUsuarioService;
 
@@ -12,6 +14,7 @@ public class SoapClientHelper {
     
     private static PublicadorControlador publicadorPort = null;
     private static PublicadorUsuario publicadorUsuarioPort = null;
+    private static PublicadorRegistro publicadorRegistroPort = null;
     
     /**
      * Obtiene una instancia del puerto del PublicadorControlador
@@ -48,12 +51,27 @@ public class SoapClientHelper {
         return publicadorUsuarioPort;
     }
     
+    public static PublicadorRegistro getPublicadorRegistro() {
+        if (publicadorRegistroPort == null) {
+            try {
+                PublicadorRegistroService service = new PublicadorRegistroService();
+                publicadorRegistroPort = service.getPublicadorRegistroPort();
+                System.out.println("✓ Conexión SOAP establecida con el PublicadorRegistro");
+            } catch (Exception e) {
+                System.err.println("❌ Error al conectar con el PublicadorRegistro: " + e.getMessage());
+                throw new RuntimeException("No se pudo conectar con el servidor SOAP (registro)", e);
+            }
+        }
+        return publicadorRegistroPort;
+    }
+    
     /**
      * Reinicia la conexión SOAP (útil si el servidor se reinicia)
      */
     public static void resetConnection() {
         publicadorPort = null;
         publicadorUsuarioPort = null;
+        publicadorRegistroPort = null;
     }
     
     /**

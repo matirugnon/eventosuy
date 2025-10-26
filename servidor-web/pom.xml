@@ -55,8 +55,6 @@
         </dependency>
         
         <!-- Dependencia del Servidor Central para acceder a la lógica -->
-        <!-- NOTA: scope=provided porque el servidor-web tiene su propia copia de las clases de lógica -->
-        <!-- Solo se usa para compilar los servlets que usan imports de logica.* -->
         <dependency>
             <groupId>uy.edu.fing.tprog</groupId>
             <artifactId>servidor-central</artifactId>
@@ -80,6 +78,7 @@
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>4.0.2</version>
                 <executions>
+                    <!-- Cliente SOAP para Publicador Principal -->
                     <execution>
                         <id>wsimport-publicador</id>
                         <goals>
@@ -94,6 +93,8 @@
                             <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
                         </configuration>
                     </execution>
+
+                    <!-- Cliente SOAP para PublicadorUsuario -->
                     <execution>
                         <id>wsimport-publicador-usuario</id>
                         <goals>
@@ -102,6 +103,22 @@
                         <configuration>
                             <wsdlUrls>
                                 <wsdlUrl>http://localhost:9129/publicadorUsuario?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <packageName>soap</packageName>
+                            <keep>true</keep>
+                            <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+                        </configuration>
+                    </execution>
+
+                    <!-- Cliente SOAP para PublicadorRegistro -->
+                    <execution>
+                        <id>wsimport-publicador-registro</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>http://localhost:9130/publicadorRegistro?wsdl</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
                             <keep>true</keep>

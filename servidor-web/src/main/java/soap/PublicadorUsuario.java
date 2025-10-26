@@ -28,85 +28,6 @@ public interface PublicadorUsuario {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns soap.DtUsuario
-     * @throws UsuarioNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/getDTUsuarioRequest", output = "http://publicadores/PublicadorUsuario/getDTUsuarioResponse", fault = {
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/getDTUsuario/Fault/UsuarioNoExisteException")
-    })
-    public DtUsuario getDTUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws UsuarioNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @return
-     *     returns boolean
-     * @throws FechaInvalidaException_Exception
-     * @throws UsuarioNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/modificarUsuarioRequest", output = "http://publicadores/PublicadorUsuario/modificarUsuarioResponse", fault = {
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/modificarUsuario/Fault/UsuarioNoExisteException"),
-        @FaultAction(className = FechaInvalidaException_Exception.class, value = "http://publicadores/PublicadorUsuario/modificarUsuario/Fault/FechaInvalidaException")
-    })
-    public boolean modificarUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        DtUsuario arg1)
-        throws FechaInvalidaException_Exception, UsuarioNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     * @throws UsuarioNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/obtenerTipoUsuarioRequest", output = "http://publicadores/PublicadorUsuario/obtenerTipoUsuarioResponse", fault = {
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/obtenerTipoUsuario/Fault/UsuarioNoExisteException")
-    })
-    public String obtenerTipoUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws UsuarioNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @return
-     *     returns soap.DtUsuarioArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/listarUsuariosDTRequest", output = "http://publicadores/PublicadorUsuario/listarUsuariosDTResponse")
-    public DtUsuarioArray listarUsuariosDT();
-
-    /**
-     * 
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/cargarDatosPruebaRequest", output = "http://publicadores/PublicadorUsuario/cargarDatosPruebaResponse")
-    public String cargarDatosPrueba();
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @param arg2
      * @param arg3
@@ -155,57 +76,6 @@ public interface PublicadorUsuario {
 
     /**
      * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     * @param arg4
-     * @param arg5
-     * @param arg6
-     * @return
-     *     returns boolean
-     * @throws CorreoInvalidoException_Exception
-     * @throws UsuarioRepetidoException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/altaOrganizadorRequest", output = "http://publicadores/PublicadorUsuario/altaOrganizadorResponse", fault = {
-        @FaultAction(className = UsuarioRepetidoException_Exception.class, value = "http://publicadores/PublicadorUsuario/altaOrganizador/Fault/UsuarioRepetidoException"),
-        @FaultAction(className = CorreoInvalidoException_Exception.class, value = "http://publicadores/PublicadorUsuario/altaOrganizador/Fault/CorreoInvalidoException")
-    })
-    public boolean altaOrganizador(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3,
-        @WebParam(name = "arg4", partName = "arg4")
-        String arg4,
-        @WebParam(name = "arg5", partName = "arg5")
-        String arg5,
-        @WebParam(name = "arg6", partName = "arg6")
-        String arg6)
-        throws CorreoInvalidoException_Exception, UsuarioRepetidoException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns soap.DtInstitucion
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/getInstitucionRequest", output = "http://publicadores/PublicadorUsuario/getInstitucionResponse")
-    public DtInstitucion getInstitucion(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
      * @return
      *     returns soap.StringArray
      */
@@ -213,6 +83,16 @@ public interface PublicadorUsuario {
     @WebResult(partName = "return")
     @Action(input = "http://publicadores/PublicadorUsuario/listarUsuariosRequest", output = "http://publicadores/PublicadorUsuario/listarUsuariosResponse")
     public StringArray listarUsuarios();
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/cargarDatosPruebaRequest", output = "http://publicadores/PublicadorUsuario/cargarDatosPruebaResponse")
+    public String cargarDatosPrueba();
 
     /**
      * 
@@ -258,6 +138,126 @@ public interface PublicadorUsuario {
 
     /**
      * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
+     * @param arg5
+     * @param arg6
+     * @return
+     *     returns boolean
+     * @throws CorreoInvalidoException_Exception
+     * @throws UsuarioRepetidoException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/altaOrganizadorRequest", output = "http://publicadores/PublicadorUsuario/altaOrganizadorResponse", fault = {
+        @FaultAction(className = UsuarioRepetidoException_Exception.class, value = "http://publicadores/PublicadorUsuario/altaOrganizador/Fault/UsuarioRepetidoException"),
+        @FaultAction(className = CorreoInvalidoException_Exception.class, value = "http://publicadores/PublicadorUsuario/altaOrganizador/Fault/CorreoInvalidoException")
+    })
+    public boolean altaOrganizador(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3,
+        @WebParam(name = "arg4", partName = "arg4")
+        String arg4,
+        @WebParam(name = "arg5", partName = "arg5")
+        String arg5,
+        @WebParam(name = "arg6", partName = "arg6")
+        String arg6)
+        throws CorreoInvalidoException_Exception, UsuarioRepetidoException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/obtenerTipoUsuarioRequest", output = "http://publicadores/PublicadorUsuario/obtenerTipoUsuarioResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/obtenerTipoUsuario/Fault/UsuarioNoExisteException")
+    })
+    public String obtenerTipoUsuario(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws UsuarioNoExisteException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.DtInstitucion
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/getInstitucionRequest", output = "http://publicadores/PublicadorUsuario/getInstitucionResponse")
+    public DtInstitucion getInstitucion(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.DtUsuario
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/getDTUsuarioRequest", output = "http://publicadores/PublicadorUsuario/getDTUsuarioResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/getDTUsuario/Fault/UsuarioNoExisteException")
+    })
+    public DtUsuario getDTUsuario(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws UsuarioNoExisteException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns boolean
+     * @throws FechaInvalidaException_Exception
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/modificarUsuarioRequest", output = "http://publicadores/PublicadorUsuario/modificarUsuarioResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorUsuario/modificarUsuario/Fault/UsuarioNoExisteException"),
+        @FaultAction(className = FechaInvalidaException_Exception.class, value = "http://publicadores/PublicadorUsuario/modificarUsuario/Fault/FechaInvalidaException")
+    })
+    public boolean modificarUsuario(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        DtUsuario arg1)
+        throws FechaInvalidaException_Exception, UsuarioNoExisteException_Exception
+    ;
+
+    /**
+     * 
+     * @return
+     *     returns soap.DtUsuarioArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/listarUsuariosDTRequest", output = "http://publicadores/PublicadorUsuario/listarUsuariosDTResponse")
+    public DtUsuarioArray listarUsuariosDT();
+
+    /**
+     * 
      * @return
      *     returns soap.StringArray
      */
@@ -278,32 +278,6 @@ public interface PublicadorUsuario {
     public StringArray obtenerRegistros(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns soap.StringArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/listarOrganizadoresRequest", output = "http://publicadores/PublicadorUsuario/listarOrganizadoresResponse")
-    public StringArray listarOrganizadores();
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/validarCredencialesRequest", output = "http://publicadores/PublicadorUsuario/validarCredencialesResponse")
-    public boolean validarCredenciales(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
 
     /**
      * 
@@ -354,29 +328,6 @@ public interface PublicadorUsuario {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns soap.StringArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/listarEdicionesOrganizadorRequest", output = "http://publicadores/PublicadorUsuario/listarEdicionesOrganizadorResponse")
-    public StringArray listarEdicionesOrganizador(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns soap.StringArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorUsuario/listarInstitucionesRequest", output = "http://publicadores/PublicadorUsuario/listarInstitucionesResponse")
-    public StringArray listarInstituciones();
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @param arg2
      * @param arg3
@@ -408,5 +359,54 @@ public interface PublicadorUsuario {
         String arg5)
         throws CorreoInvalidoException_Exception, UsuarioRepetidoException_Exception
     ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/listarEdicionesOrganizadorRequest", output = "http://publicadores/PublicadorUsuario/listarEdicionesOrganizadorResponse")
+    public StringArray listarEdicionesOrganizador(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/validarCredencialesRequest", output = "http://publicadores/PublicadorUsuario/validarCredencialesResponse")
+    public boolean validarCredenciales(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
+
+    /**
+     * 
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/listarOrganizadoresRequest", output = "http://publicadores/PublicadorUsuario/listarOrganizadoresResponse")
+    public StringArray listarOrganizadores();
+
+    /**
+     * 
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorUsuario/listarInstitucionesRequest", output = "http://publicadores/PublicadorUsuario/listarInstitucionesResponse")
+    public StringArray listarInstituciones();
 
 }
