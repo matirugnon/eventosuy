@@ -130,8 +130,14 @@ public class SignupServlet extends HttpServlet {
 
         String rutaImagen = procesarImagen(request);
 
-        // Llamada SOAP para crear asistente
+        // Llamada SOAP para crear asistente - usar "" si no hay imagen
         try {
+<<<<<<< HEAD
+            publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
+                    institucion != null ? institucion : "", 
+                    password, 
+                    rutaImagen != null ? rutaImagen : "");
+=======
             if (rutaImagen != null) {
                 publicador.altaAsistente(nickname, nombre, email, apellido, dia, mes, anio,
                         institucion != null ? institucion : "", password, rutaImagen);
@@ -139,6 +145,7 @@ public class SignupServlet extends HttpServlet {
                 publicador.altaAsistenteSinAvatar(nickname, nombre, email, apellido, dia, mes, anio,
                         institucion != null ? institucion : "", password);
             }
+>>>>>>> main
         } catch (soap.UsuarioRepetidoException_Exception e) {
             mostrarFormularioConError(request, response, "⚠️ " + e.getMessage());
         } catch (soap.CorreoInvalidoException_Exception e) {

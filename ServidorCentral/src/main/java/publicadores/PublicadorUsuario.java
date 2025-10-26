@@ -36,6 +36,8 @@ import utils.Utils;
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
 public class PublicadorUsuario {
     private final IControladorUsuario ctrlUs = IControladorUsuario.getInstance();
+    private final IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
+    private final IControladorEvento ctrlEv = IControladorEvento.getInstance();
 
     public static void main(String[] args) {
         String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
@@ -70,8 +72,10 @@ public class PublicadorUsuario {
                                  int diaNac, int mesNac, int anioNac, 
                                  String institucion, String password, String avatar)
             throws UsuarioRepetidoException, CorreoInvalidoException, FechaInvalidaException {
+
+        String avatarfinal = (avatar == null || avatar.trim().isEmpty()) ? null : avatar;
         DTFecha fechanac = new DTFecha(diaNac, mesNac, anioNac);
-        ctrlUs.altaAsistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
+        ctrlUs.altaAsistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatarfinal);
         return true;
     }
 
@@ -89,7 +93,9 @@ public class PublicadorUsuario {
     public boolean altaOrganizador(String nick, String nombre, String correo, String descripcion,
                                    String link, String password, String avatar)
             throws UsuarioRepetidoException, CorreoInvalidoException {
-        ctrlUs.altaOrganizador(nick, nombre, correo, descripcion, link, password, avatar);
+
+        String avatarfinal = (avatar == null || avatar.trim().isEmpty()) ? null : avatar;
+        ctrlUs.altaOrganizador(nick, nombre, correo, descripcion, link, password, avatarfinal);
         return true;
     }
 
@@ -185,6 +191,47 @@ public class PublicadorUsuario {
 
     @WebMethod
     public String obtenerAvatar(String identificador) throws UsuarioNoExisteException {
-        return ctrlUs.obtenerAvatar(identificador);
+        String avatar = ctrlUs.obtenerAvatar(identificador);
+        return avatar != null ? avatar : "";
+    }
+
+    @WebMethod
+    public String obtenerEmail(String identificador) throws UsuarioNoExisteException {
+        DTUsuario dtUsuario = ctrlUs.getDTUsuario(identificador);
+        String email = dtUsuario.getCorreo();
+        return email != null ? email : "";
+    }
+    @WebMethod
+    public String obtenerNombre(String identificador) throws UsuarioNoExisteException {
+        DTUsuario dtUsuario = ctrlUs.getDTUsuario(identificador);
+        return dtUsuario.getNombre();
+    }
+    
+    @WebMethod
+    public String[] obtenerRegistrosDetallados(String nickname) throws UsuarioNoExisteException {
+        Set<logica.datatypesyenum.DTRegistro> registros = ctrlReg.listarRegistrosPorAsistente(nickname);
+        String[] resultado = new String[registros.size()];
+        int i = 0;
+        for (logica.datatypesyenum.DTRegistro reg : registros) {
+            // Obtener información de la edición
+            try {
+                logica.datatypesyenum.DTEdicion edicion = ctrlEv.consultarEdicion(reg.getnomEdicion());
+                // Formato: nombreEvento|nombreEdicion|siglaEdicion|estado|tipoRegistro|costo|fecha
+                resultado[i] = edicion.getEvento() + "|" + 
+                              edicion.getNombre() + "|" + 
+                              edicion.getSigla() + "|" + 
+                              edicion.getEstado() + "|" + 
+                              reg.getTipoDeRegistro() + "|" + 
+                              reg.getCosto() + "|" + 
+                              reg.getFechaRegistro().toString();
+            } catch (Exception e) {
+                // Si no se puede obtener la edición, devolver info básica
+                resultado[i] = "Desconocido|" + reg.getnomEdicion() + "|N/A|FINALIZADA|" + 
+                              reg.getTipoDeRegistro() + "|" + reg.getCosto() + "|" + 
+                              reg.getFechaRegistro().toString();
+            }
+            i++;
+        }
+        return resultado;
     }
 }

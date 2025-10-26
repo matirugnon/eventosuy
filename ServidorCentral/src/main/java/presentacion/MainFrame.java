@@ -1,4 +1,4 @@
-package presentacion;
+package java.presentacion;
 
 import javax.swing.*;
 
@@ -17,7 +17,7 @@ import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import gui.internal.*;
+import java.gui.internal.*;
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;

@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dtInstitucion complex type.
+ * <p>Clase Java para dtInstitucion complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>{@code
  * <complexType name="dtInstitucion">
@@ -43,7 +43,7 @@ public class DtInstitucion {
     protected String sitioWeb;
 
     /**
-     * Gets the value of the descripcion property.
+     * Obtiene el valor de la propiedad descripcion.
      * 
      * @return
      *     possible object is
@@ -55,7 +55,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Sets the value of the descripcion property.
+     * Define el valor de la propiedad descripcion.
      * 
      * @param value
      *     allowed object is
@@ -67,7 +67,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Gets the value of the logo property.
+     * Obtiene el valor de la propiedad logo.
      * 
      * @return
      *     possible object is
@@ -79,7 +79,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Sets the value of the logo property.
+     * Define el valor de la propiedad logo.
      * 
      * @param value
      *     allowed object is
@@ -91,7 +91,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -103,7 +103,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
@@ -115,7 +115,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Gets the value of the sitioWeb property.
+     * Obtiene el valor de la propiedad sitioWeb.
      * 
      * @return
      *     possible object is
@@ -127,7 +127,7 @@ public class DtInstitucion {
     }
 
     /**
-     * Sets the value of the sitioWeb property.
+     * Define el valor de la propiedad sitioWeb.
      * 
      * @param value
      *     allowed object is
