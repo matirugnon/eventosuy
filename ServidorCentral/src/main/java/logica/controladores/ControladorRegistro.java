@@ -155,7 +155,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	            String asistente = asist.getNickname();
 	            DTRegistro dreg = asist.getRegistro(nombreTipoRegistro);
 
-	            String edicion = dreg.getnomEdicion();
+	            String edicion = dreg.getNomEdicion();
 
 	            DTFecha fecha = dreg.getFechaRegistro();
 

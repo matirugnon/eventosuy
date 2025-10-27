@@ -40,14 +40,12 @@ public class DTRegistro implements Serializable{
 
 	}
 
-	public String getnomEdicion() {
-	    return nomEdicion;
-	}
+	
 
 
 	@Override
 	public String toString() {
-	    return getnomEdicion() + " / " + getTipoDeRegistro();
+	    return getNomEdicion() + " / " + getTipoDeRegistro();
 	}
 
 	public String getNomEdicion() {

@@ -6,13 +6,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTRegistro;
+import soap.DtRegistro;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import utils.SoapClientHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.LinkedHashSet;
@@ -22,14 +24,15 @@ import java.util.stream.Collectors;
 public class MisRegistrosServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private IControladorRegistro ctrlRegistro;
-    private IControladorEvento ctrlEvento;
+    private PublicadorRegistro publicadorReg;
+	private PublicadorControlador publicadorEv;
     
     @Override
     public void init() throws ServletException {
         try {
-            ctrlRegistro = IControladorRegistro.getInstance();
-            ctrlEvento = IControladorEvento.getInstance();
+        	 publicadorReg = SoapClientHelper.getPublicadorRegistro();
+        	 publicadorEv = SoapClientHelper.getPublicadorControlador();
+            
         } catch (Exception e) {
             throw new ServletException("Error al inicializar controladores", e);
         }
@@ -59,15 +62,15 @@ public class MisRegistrosServlet extends HttpServlet {
         
         try {
             // Obtener todos los registros del asistente
-            Set<DTRegistro> misRegistros = ctrlRegistro.listarRegistrosPorAsistente(nickname);
+            Set<DtRegistro> misRegistros = new HashSet<>(publicadorReg.listarRegistrosPorAsistente(nickname).getItem());
             
             // Agrupar por ediciÃ³n para mostrar una lista limpia
             Set<String> edicionesRegistradas = misRegistros.stream()
-                .map(DTRegistro::getnomEdicion)
+                .map(DtRegistro::getNomEdicion)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             
             // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
             

@@ -1,5 +1,6 @@
 import publicadores.PublicadorControlador;
 import publicadores.PublicadorUsuario;
+import publicadores.PublicadorRegistro;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import jakarta.xml.ws.Endpoint;
 
 /**
  * Punto de entrada principal del Servidor Central.
- * Inicia ambos servicios SOAP: PublicadorControlador y PublicadorUsuario.
+ * Inicia los tres servicios SOAP: PublicadorControlador, PublicadorUsuario y PublicadorRegistro.
  */
 public class ServidorCentralMain {
     
@@ -29,19 +30,26 @@ public class ServidorCentralMain {
         
         // Iniciar PublicadorControlador
         String urlControlador = props.getProperty("servidor.central.url", "http://localhost:9128/publicador");
-        System.out.println("\n[1/2] Publicando PublicadorControlador en: " + urlControlador);
+        System.out.println("\n[1/3] Publicando PublicadorControlador en: " + urlControlador);
         Endpoint.publish(urlControlador, new PublicadorControlador());
         System.out.println("✓ PublicadorControlador iniciado correctamente");
         
         // Iniciar PublicadorUsuario
         String urlUsuario = props.getProperty("servidor.usuario.url", "http://localhost:9129/publicadorUsuario");
-        System.out.println("\n[2/2] Publicando PublicadorUsuario en: " + urlUsuario);
+        System.out.println("\n[2/3] Publicando PublicadorUsuario en: " + urlUsuario);
         Endpoint.publish(urlUsuario, new PublicadorUsuario());
         System.out.println("✓ PublicadorUsuario iniciado correctamente");
+        
+        // Iniciar PublicadorRegistro
+        String urlRegistro = props.getProperty("servidor.registro.url", "http://localhost:9130/publicadorRegistro");
+        System.out.println("\n[3/3] Publicando PublicadorRegistro en: " + urlRegistro);
+        Endpoint.publish(urlRegistro, new PublicadorRegistro());
+        System.out.println("✓ PublicadorRegistro iniciado correctamente");
         
         System.out.println("\n=== Servidor Central listo ===");
         System.out.println("PublicadorControlador: " + urlControlador + "?wsdl");
         System.out.println("PublicadorUsuario: " + urlUsuario + "?wsdl");
+        System.out.println("PublicadorRegistro: " + urlRegistro + "?wsdl");
         System.out.println("\nPresiona Ctrl+C para detener el servidor.");
     }
 }

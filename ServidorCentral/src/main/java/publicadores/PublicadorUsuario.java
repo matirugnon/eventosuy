@@ -50,7 +50,7 @@ public class PublicadorUsuario {
             System.err.println("   Usando valores por defecto.");
         }
 
-        String url = props.getProperty("servidor.usuario.url", "http://localhost:9129/publicadorUsuario");
+        String url = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
         System.out.println("Publicando PublicadorUsuario en: " + url);
         Endpoint.publish(url, new PublicadorUsuario());
     }
@@ -215,7 +215,7 @@ public class PublicadorUsuario {
         for (logica.datatypesyenum.DTRegistro reg : registros) {
             // Obtener información de la edición
             try {
-                logica.datatypesyenum.DTEdicion edicion = ctrlEv.consultarEdicion(reg.getnomEdicion());
+                logica.datatypesyenum.DTEdicion edicion = ctrlEv.consultarEdicion(reg.getNomEdicion());
                 // Formato: nombreEvento|nombreEdicion|siglaEdicion|estado|tipoRegistro|costo|fecha
                 resultado[i] = edicion.getEvento() + "|" + 
                               edicion.getNombre() + "|" + 
@@ -226,12 +226,17 @@ public class PublicadorUsuario {
                               reg.getFechaRegistro().toString();
             } catch (Exception e) {
                 // Si no se puede obtener la edición, devolver info básica
-                resultado[i] = "Desconocido|" + reg.getnomEdicion() + "|N/A|FINALIZADA|" + 
+                resultado[i] = "Desconocido|" + reg.getNomEdicion() + "|N/A|FINALIZADA|" + 
                               reg.getTipoDeRegistro() + "|" + reg.getCosto() + "|" + 
                               reg.getFechaRegistro().toString();
             }
             i++;
         }
         return resultado;
+    }
+    
+    @WebMethod
+    public boolean existeNickname(String nick) {
+    	return ctrlUs.existeNickname(nick);
     }
 }

@@ -13,12 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
-import utils.Utils;
-
+import soap.PublicadorCargaDatos;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -39,19 +34,9 @@ public class inicioServlet extends HttpServlet {
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
             
             // Verificar si los datos ya fueron precargados (solo para la primera vez)
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             
-            boolean datosCargados = Utils.datosPrecargados(getServletContext());
-            boolean hayDatosBasicos = Utils.hayDatosBasicos(ctrlUsuario, ctrlEvento, ctrlRegistro);
-
-            if (!datosCargados && !hayDatosBasicos) {
-                Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
-                Utils.marcarDatosCargados(getServletContext());
-                request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
-                request.setAttribute("datosMensajeTipo", "success");
-            }
+            
+           
 
             HttpSession session = request.getSession();
             Object mensaje = session.getAttribute("datosMensaje");
@@ -174,6 +159,31 @@ public class inicioServlet extends HttpServlet {
             throw new ServletException("Error obteniendo eventos", e);
         }
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+
+        if ("cargarDatos".equals(accion)) {
+            try {
+                PublicadorCargaDatos publicadorDatos = SoapClientHelper.getPublicadorCargaDatos();
+                publicadorDatos.cargarDatos();
+
+                // Guardar mensaje en sesión para mostrar después del redirect
+                request.getSession().setAttribute("datosMensaje", "Datos cargados correctamente.");
+                request.getSession().setAttribute("datosMensajeTipo", "success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.getSession().setAttribute("datosMensaje", "Error al cargar los datos: " + e.getMessage());
+                request.getSession().setAttribute("datosMensajeTipo", "error");
+            }
+        }
+
+        // Redirigir para que se vea el resultado actualizado
+        response.sendRedirect(request.getContextPath() + "/inicio");
+    }
+    
 
     // Función para normalizar texto (quitar tildes y convertir a minúsculas)
     private String normalizar(String input) {

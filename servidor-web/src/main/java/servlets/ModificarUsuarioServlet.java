@@ -3,8 +3,10 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -14,16 +16,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import soap.DTFecha;
+import soap.DtAsistente;
+import soap.DtOrganizador;
+import soap.DtUsuario;
+import soap.FechaInvalidaException_Exception;
+import soap.PublicadorControlador;
+import soap.PublicadorUsuario;
+import soap.UsuarioNoExisteException_Exception;
+import utils.SoapClientHelper;
 
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorEvento;
-import logica.datatypesyenum.DTUsuario;
-import logica.datatypesyenum.DTAsistente;
-import logica.datatypesyenum.DTOrganizador;
-import logica.datatypesyenum.DTFecha;
-import excepciones.UsuarioNoExisteException;
-import excepciones.FechaInvalidaException;
-import utils.Utils;
+
 
 @WebServlet("/modificarUsuario")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imÃ¡genes
@@ -49,18 +52,18 @@ public class ModificarUsuarioServlet extends HttpServlet {
             String avatar = (String) session.getAttribute("avatar");
 
             // Obtener los controladores
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-
+            PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+            
+            PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
+    
             // Verificar que el usuario existe
-            if (!ctrlUsuario.existeNickname(nickname)) {
+            if (!publicadorUs.existeNickname(nickname)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
                 return;
             }
 
             // Obtener el DTUsuario especÃ­fico
-            DTUsuario usuario = ctrlUsuario.getDTUsuario(nickname);
+            DtUsuario usuario = publicadorUs.getDTUsuario(nickname);
             
             if (usuario == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "No se pudo obtener la informaciÃ³n del usuario");
@@ -69,15 +72,15 @@ public class ModificarUsuarioServlet extends HttpServlet {
 
             // Determinar el tipo de usuario
             String tipoUsuario;
-            DTAsistente asistente = null;
-            DTOrganizador organizador = null;
+            DtAsistente asistente = null;
+            DtOrganizador organizador = null;
             
-            if (usuario instanceof DTAsistente) {
+            if (usuario instanceof DtAsistente) {
                 tipoUsuario = "Asistente";
-                asistente = (DTAsistente) usuario;
-            } else if (usuario instanceof DTOrganizador) {
+                asistente = (DtAsistente) usuario;
+            } else if (usuario instanceof DtOrganizador) {
                 tipoUsuario = "Organizador";
-                organizador = (DTOrganizador) usuario;
+                organizador = (DtOrganizador) usuario;
             } else {
                 tipoUsuario = "Usuario";
             }
@@ -85,11 +88,11 @@ public class ModificarUsuarioServlet extends HttpServlet {
             // Obtener instituciones disponibles para asistentes
             Set<String> instituciones = null;
             if ("Asistente".equals(tipoUsuario)) {
-                instituciones = ctrlUsuario.listarInstituciones();
+                instituciones = new HashSet<>(publicadorUs.listarInstituciones().getItem());
             }
 
             // Obtener categorÃ­as para el sidebar (ordenadas alfabéticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
 
@@ -130,7 +133,9 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
 
             String nickname = (String) session.getAttribute("usuario");
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            
+            PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+           
 
             // Obtener datos del formulario
             String nombre = request.getParameter("nombre");
@@ -145,7 +150,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
 
             // Obtener usuario actual
-            DTUsuario usuarioActual = ctrlUsuario.getDTUsuario(nickname);
+            DtUsuario usuarioActual = publicadorUs.getDTUsuario(nickname);
             if (usuarioActual == null) {
                 mostrarFormularioConError(request, response, "Usuario no encontrado");
                 return;
@@ -158,9 +163,9 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
 
             // Crear DTUsuario actualizado segÃºn el tipo
-            DTUsuario usuarioModificado = null;
+            DtUsuario usuarioModificado = null;
             
-            if (usuarioActual instanceof DTAsistente) {
+            if (usuarioActual instanceof DtAsistente) {
                 // Procesar datos especÃ­ficos de asistente
                 String apellido = request.getParameter("apellido");
                 String fechaNacStr = request.getParameter("fechaNac");
@@ -176,33 +181,39 @@ public class ModificarUsuarioServlet extends HttpServlet {
                     fechaNac = convertirFecha(fechaNacStr);
                 }
                 
-                DTAsistente asistenteActual = (DTAsistente) usuarioActual;
-                usuarioModificado = new DTAsistente(
-                    nickname,
-                    nombre,
-                    usuarioActual.getCorreo(),
-                    password != null && !password.trim().isEmpty() ? password : usuarioActual.getPassword(),
-                    apellido,
-                    fechaNac != null ? fechaNac : asistenteActual.getFechaNacimiento(),
-                    institucion != null && !institucion.trim().isEmpty() ? institucion : asistenteActual.getInstitucion(),
-                    rutaImagen
-                );
+                DtAsistente asistenteActual = (DtAsistente) usuarioActual;
+                DtAsistente asistenteModificado = new DtAsistente(); // tipo correcto
+                asistenteModificado.setNickname(nickname);
+                asistenteModificado.setNombre(nombre);
+                asistenteModificado.setCorreo(usuarioActual.getCorreo());
+                asistenteModificado.setPassword(password != null && !password.trim().isEmpty()
+                    ? password : usuarioActual.getPassword());
+                asistenteModificado.setApellido(apellido);
+                asistenteModificado.setFechaNacimiento(fechaNac != null ? fechaNac : asistenteActual.getFechaNacimiento());
+                asistenteModificado.setInstitucion(institucion != null && !institucion.trim().isEmpty()
+                    ? institucion : asistenteActual.getInstitucion());
+                asistenteModificado.setAvatar(rutaImagen);
                 
-            } else if (usuarioActual instanceof DTOrganizador) {
+                usuarioModificado = asistenteModificado;
+                
+            } else if (usuarioActual instanceof DtOrganizador) {
                 // Procesar datos especÃ­ficos de organizador
                 String descripcion = request.getParameter("descripcion");
                 String sitioWeb = request.getParameter("web");
                 
-                DTOrganizador organizadorActual = (DTOrganizador) usuarioActual;
-                usuarioModificado = new DTOrganizador(
-                    nickname,
-                    nombre,
-                    usuarioActual.getCorreo(),
-                    password != null && !password.trim().isEmpty() ? password : usuarioActual.getPassword(),
-                    descripcion != null ? descripcion : organizadorActual.getDescripcion(),
-                    sitioWeb != null ? sitioWeb : organizadorActual.getLink(),
-                    rutaImagen
-                );
+                DtOrganizador organizadorActual = (DtOrganizador) usuarioActual;
+                DtOrganizador organizadorModificado = new DtOrganizador();
+                organizadorModificado.setNickname(nickname);
+                organizadorModificado.setNombre(nombre);
+                organizadorModificado.setCorreo(usuarioActual.getCorreo());
+                organizadorModificado.setPassword(password != null && !password.trim().isEmpty()
+                    ? password : usuarioActual.getPassword());
+                organizadorModificado.setDescripcion(descripcion != null ? descripcion : organizadorActual.getDescripcion());
+                organizadorModificado.setLink(sitioWeb != null ? sitioWeb : organizadorActual.getLink());
+                organizadorModificado.setAvatar(rutaImagen);
+                
+                usuarioModificado = organizadorModificado; 
+            
             }
 
             if (usuarioModificado == null) {
@@ -211,7 +222,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
 
             // Modificar usuario en el sistema
-            ctrlUsuario.modificarUsuario(nickname, usuarioModificado);
+            publicadorUs.modificarUsuario(nickname, usuarioModificado);
 
             // Actualizar datos en la sesión
             session.setAttribute("avatar", rutaImagen);
@@ -221,16 +232,16 @@ public class ModificarUsuarioServlet extends HttpServlet {
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/miPerfil");
 
-        } catch (UsuarioNoExisteException e) {
+        } catch (UsuarioNoExisteException_Exception e) {
             mostrarFormularioConError(request, response, "❌ Usuario no encontrado");
-        } catch (FechaInvalidaException e) {
+        } catch (FechaInvalidaException_Exception e) {
             mostrarFormularioConError(request, response, "❌ La fecha de nacimiento no es válida");
         } catch (Exception e) {
             mostrarFormularioConError(request, response, "❌ Error al modificar usuario: " + e.getMessage());
         }
     }
 
-    private DTFecha convertirFecha(String fechaStr) throws FechaInvalidaException {
+    private DTFecha convertirFecha(String fechaStr) throws Exception {
         try {
             // Convertir fecha en formato DD/MM/YYYY
             String[] partes = fechaStr.split("/");
@@ -238,12 +249,16 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 int dia = Integer.parseInt(partes[0]);
                 int mes = Integer.parseInt(partes[1]);
                 int anio = Integer.parseInt(partes[2]);
-                return new DTFecha(dia, mes, anio);
+                DTFecha fech =  new DTFecha();
+                fech.setDia(dia);
+                fech.setMes(mes);
+                fech.setAnio(anio);
+                return fech;
             } else {
-                throw new FechaInvalidaException("Formato de fecha invÃ¡lido. Use DD/MM/YYYY");
+            	throw new Exception("Formato de fecha inválido. Use DD/MM/YYYY");
             }
         } catch (NumberFormatException e) {
-            throw new FechaInvalidaException("Formato de fecha invÃ¡lido");
+            throw new Exception("Formato de fecha inválido");
         }
     }
 
@@ -314,12 +329,12 @@ public class ModificarUsuarioServlet extends HttpServlet {
         try {
             // Recargar datos necesarios
             String nickname = (String) request.getSession().getAttribute("usuario");
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+            PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
             
-            DTUsuario usuario = ctrlUsuario.getDTUsuario(nickname);
-            Set<String> instituciones = ctrlUsuario.listarInstituciones();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            DtUsuario usuario = publicadorUs.getDTUsuario(nickname);
+            Set<String> instituciones = new HashSet<>(publicadorUs.listarInstituciones().getItem());
+            Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
             

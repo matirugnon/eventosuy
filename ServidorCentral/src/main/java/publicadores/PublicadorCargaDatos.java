@@ -45,9 +45,9 @@ public class PublicadorCargaDatos {
             System.err.println("   Usando valores por defecto.");
         }
 
-        String url = props.getProperty("servidor.cargaDatos.url", "http://localhost:9131/publicadorCargaDatos");
+        String url = props.getProperty("servidor.cargaDatos.url", "http://localhost:9128/publicadorCargaDatos");
         System.out.println("Publicando PublicadorCargaDatos en: " + url);
-        Endpoint.publish(url, new PublicadorRegistro());
+        Endpoint.publish(url, new PublicadorCargaDatos());
     }
 	
 	@WebMethod
