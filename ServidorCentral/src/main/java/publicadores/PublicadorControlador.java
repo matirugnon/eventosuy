@@ -294,3 +294,43 @@ public class PublicadorControlador {
 
 
 }
+
+/**
+ * Valida que un organizador sea el dueño de una edición específica.
+ * Retorna true si es el dueño, false en caso contrario.
+ */
+@WebMethod
+public boolean validarOrganizadorEdicion(String nombreEdicion, String nicknameOrganizador) {
+    try {
+        logica.datatypesyenum.DTEdicion edicion = ctrl.consultarEdicion(nombreEdicion);
+        if (edicion == null) {
+            return false;
+        }
+        return nicknameOrganizador != null && nicknameOrganizador.equals(edicion.getOrganizador());
+    } catch (Exception e) {
+        return false;
+    }
+}
+
+/**
+ * Obtiene el detalle completo de una edición con validación de organizador.
+ * Retorna un array con: [0] nombre, [1] sigla, [2] ciudad, [3] pais, 
+ * [4] fechaInicioDia, [5] fechaInicioMes, [6] fechaInicioAnio,
+ * [7] fechaFinDia, [8] fechaFinMes, [9] fechaFinAnio,
+ * [10] organizador, [11] imagen (o cadena vacía si no tiene), [12] estado
+ * Si el organizador no es válido, retorna array vacío.
+ */
+@WebMethod
+public String[] obtenerDetalleEdicionConValidacion(String nombreEdicion, String nicknameOrganizador) {
+    try {
+        // Primero validar que el organizador sea el dueño
+        if (!validarOrganizadorEdicion(nombreEdicion, nicknameOrganizador)) {
+            return new String[0];
+        }
+        
+        // Si es válido, obtener el detalle completo
+        return obtenerDetalleCompletoEdicion(nombreEdicion);
+    } catch (Exception e) {
+        return new String[0];
+    }
+}
