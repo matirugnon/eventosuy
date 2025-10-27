@@ -202,7 +202,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
                 for (String tipo : nombresTipos) {
                     DTRegistro dtReg = ctrlReg.getRegistro(seleccionadoS, tipo);
                     if (dtReg != null) {
-                        String texto = dtReg.getnomEdicion() + " - " + dtReg.getTipoDeRegistro();
+                        String texto = dtReg.getNomEdicion() + " - " + dtReg.getTipoDeRegistro();
                         modeloLista.addElement(texto);
                     } else {
                         modeloLista.addElement("Desconocido - " + tipo);
@@ -287,7 +287,7 @@ public class ConsultaUsuarioFrame extends JInternalFrame {
                 "Tipo de Registro: " + dtRegistro.getTipoDeRegistro() + "\n" +
                 "Fecha de Registro: " + dtRegistro.getFechaRegistro() + "\n" +
                 "Costo: $" + String.format("%.2f", dtRegistro.getCosto()) + "\n" +
-                "Edición: " + dtRegistro.getnomEdicion()
+                "Edición: " + dtRegistro.getNomEdicion()
             );
             titulo = "Detalle de Registro";
 

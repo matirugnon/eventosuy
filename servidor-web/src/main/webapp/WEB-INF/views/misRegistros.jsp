@@ -57,7 +57,7 @@
 
 									<div style="display: grid; gap: 0.75rem; margin-top: 1rem;">
 										<c:forEach var="registro" items="${misRegistros}">
-											<c:if test="${registro.getnomEdicion() eq edicion}">
+											<c:if test="${registro.getNomEdicion() eq edicion}">
 												<div
 													style="background: #f8f9fa; padding: 1rem; border-radius: 6px; border: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
 													<div>

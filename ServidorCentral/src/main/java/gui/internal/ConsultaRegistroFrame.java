@@ -132,7 +132,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
                 DTRegistro dtr = cr.getRegistro(asistente, tipo);
 
                 if (dtr != null) {
-                    String textoMostrado = dtr.getnomEdicion() + " / " + dtr.getTipoDeRegistro();
+                    String textoMostrado = dtr.getNomEdicion() + " / " + dtr.getTipoDeRegistro();
                     model.addElement(textoMostrado);
 
                 }
@@ -184,7 +184,7 @@ public class ConsultaRegistroFrame extends JInternalFrame {
         StringBuilder sb = new StringBuilder();
         sb.append("=== Detalles del Registro ===\n\n");
         sb.append("Asistente: ").append(dtr.getAsistente()).append("\n");
-        sb.append("Edición del Evento: ").append(dtr.getnomEdicion()).append("\n");
+        sb.append("Edición del Evento: ").append(dtr.getNomEdicion()).append("\n");
         sb.append("Tipo de Registro: ").append(dtr.getTipoDeRegistro()).append("\n");
         sb.append("Fecha de Registro: ").append(fechaStr).append("\n");
         sb.append("Costo: $ ").append(

@@ -215,7 +215,7 @@ public class PublicadorUsuario {
         for (logica.datatypesyenum.DTRegistro reg : registros) {
             // Obtener información de la edición
             try {
-                logica.datatypesyenum.DTEdicion edicion = ctrlEv.consultarEdicion(reg.getnomEdicion());
+                logica.datatypesyenum.DTEdicion edicion = ctrlEv.consultarEdicion(reg.getNomEdicion());
                 // Formato: nombreEvento|nombreEdicion|siglaEdicion|estado|tipoRegistro|costo|fecha
                 resultado[i] = edicion.getEvento() + "|" + 
                               edicion.getNombre() + "|" + 
@@ -226,7 +226,7 @@ public class PublicadorUsuario {
                               reg.getFechaRegistro().toString();
             } catch (Exception e) {
                 // Si no se puede obtener la edición, devolver info básica
-                resultado[i] = "Desconocido|" + reg.getnomEdicion() + "|N/A|FINALIZADA|" + 
+                resultado[i] = "Desconocido|" + reg.getNomEdicion() + "|N/A|FINALIZADA|" + 
                               reg.getTipoDeRegistro() + "|" + reg.getCosto() + "|" + 
                               reg.getFechaRegistro().toString();
             }
