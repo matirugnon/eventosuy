@@ -1,5 +1,7 @@
 package utils;
 
+import soap.PublicadorCargaDatos;
+import soap.PublicadorCargaDatosService;
 import soap.PublicadorControlador;
 import soap.PublicadorControladorService;
 import soap.PublicadorRegistro;
@@ -15,6 +17,7 @@ public class SoapClientHelper {
     private static PublicadorControlador publicadorPort = null;
     private static PublicadorUsuario publicadorUsuarioPort = null;
     private static PublicadorRegistro publicadorRegistroPort = null;
+    private static PublicadorCargaDatos publicadorCargaDatosPort = null;
     
     /**
      * Obtiene una instancia del puerto del PublicadorControlador
@@ -65,6 +68,20 @@ public class SoapClientHelper {
         return publicadorRegistroPort;
     }
     
+    public static PublicadorCargaDatos getPublicadorCargaDatos() {
+        if (publicadorCargaDatosPort == null) {
+            try {
+                PublicadorCargaDatosService service = new PublicadorCargaDatosService();
+                publicadorCargaDatosPort = service.getPublicadorCargaDatosPort();
+                System.out.println("✓ Conexión SOAP establecida con el PublicadorCargaDatos");
+            } catch (Exception e) {
+                System.err.println("❌ Error al conectar con el PublicadorCargaDatos: " + e.getMessage());
+                throw new RuntimeException("No se pudo conectar con el servidor SOAP (cargaDatos)", e);
+            }
+        }
+        return publicadorCargaDatosPort;
+    }
+    
     /**
      * Reinicia la conexión SOAP (útil si el servidor se reinicia)
      */
@@ -72,6 +89,7 @@ public class SoapClientHelper {
         publicadorPort = null;
         publicadorUsuarioPort = null;
         publicadorRegistroPort = null;
+        publicadorCargaDatosPort = null;
     }
     
     /**

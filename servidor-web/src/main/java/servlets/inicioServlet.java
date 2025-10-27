@@ -36,17 +36,7 @@ public class inicioServlet extends HttpServlet {
             // Verificar si los datos ya fueron precargados (solo para la primera vez)
             
             
-            PublicadorCargaDatos publicadorDatos = SoapClientHelper.getPublicadorCargaDatos();
-            
-            boolean datosCargados = publicadorDatos.datosPrecargados();
-            boolean hayDatosBasicos = publicadorDatos.hayDatosBasicos();
-
-            if (!datosCargados && !hayDatosBasicos) {
-            	publicadorDatos.cargarDatos();
-            	publicadorDatos.marcarDatosCargados();
-                request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
-                request.setAttribute("datosMensajeTipo", "success");
-            }
+           
 
             HttpSession session = request.getSession();
             Object mensaje = session.getAttribute("datosMensaje");
@@ -169,6 +159,31 @@ public class inicioServlet extends HttpServlet {
             throw new ServletException("Error obteniendo eventos", e);
         }
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+
+        if ("cargarDatos".equals(accion)) {
+            try {
+                PublicadorCargaDatos publicadorDatos = SoapClientHelper.getPublicadorCargaDatos();
+                publicadorDatos.cargarDatos();
+
+                // Guardar mensaje en sesión para mostrar después del redirect
+                request.getSession().setAttribute("datosMensaje", "Datos cargados correctamente.");
+                request.getSession().setAttribute("datosMensajeTipo", "success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.getSession().setAttribute("datosMensaje", "Error al cargar los datos: " + e.getMessage());
+                request.getSession().setAttribute("datosMensajeTipo", "error");
+            }
+        }
+
+        // Redirigir para que se vea el resultado actualizado
+        response.sendRedirect(request.getContextPath() + "/inicio");
+    }
+    
 
     // Función para normalizar texto (quitar tildes y convertir a minúsculas)
     private String normalizar(String input) {

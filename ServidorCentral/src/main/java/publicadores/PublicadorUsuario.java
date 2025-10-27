@@ -234,4 +234,9 @@ public class PublicadorUsuario {
         }
         return resultado;
     }
+    
+    @WebMethod
+    public boolean existeNickname(String nick) {
+    	return ctrlUs.existeNickname(nick);
+    }
 }
