@@ -2,6 +2,7 @@ import publicadores.PublicadorCargaDatos;
 import publicadores.PublicadorControlador;
 import publicadores.PublicadorRegistro;
 import publicadores.PublicadorUsuario;
+import publicadores.PublicadorRegistro;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import jakarta.xml.ws.Endpoint;
 
 /**
  * Punto de entrada principal del Servidor Central.
- * Inicia todos los servicios SOAP.
+ * Inicia los tres servicios SOAP: PublicadorControlador, PublicadorUsuario y PublicadorRegistro.
  */
 public class ServidorCentralMain {
 
@@ -58,6 +59,7 @@ public class ServidorCentralMain {
         System.out.println("PublicadorControlador: " + urlControlador + "?wsdl");
         System.out.println("PublicadorRegistro: " + urlRegistro + "?wsdl");
         System.out.println("PublicadorUsuario: " + urlUsuario + "?wsdl");
+        System.out.println("PublicadorRegistro: " + urlRegistro + "?wsdl");
         System.out.println("\nPresiona Ctrl+C para detener el servidor.");
     }
 }

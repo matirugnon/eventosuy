@@ -81,6 +81,7 @@ public class SoapClientHelper {
         }
         return publicadorCargaDatosPort;
     }
+
     
     /**
      * Reinicia la conexión SOAP (útil si el servidor se reinicia)
@@ -91,10 +92,7 @@ public class SoapClientHelper {
         publicadorRegistroPort = null;
         publicadorCargaDatosPort = null;
     }
-    
-    /**
-     * Verifica si el servidor SOAP está disponible
-     */
+
     public static boolean isServerAvailable() {
         try {
             PublicadorControlador port = getPublicadorControlador();
@@ -104,4 +102,6 @@ public class SoapClientHelper {
             return false;
         }
     }
+
+
 }

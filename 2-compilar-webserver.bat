@@ -7,6 +7,8 @@ echo ========================================
 echo.
 echo IMPORTANTE: El Servidor Central debe estar corriendo
 echo en http://localhost:9128/publicador
+echo en http://localhost:9129/publicadorUsuario
+echo en http://localhost:9130/publicadorRegistro
 echo.
 pause
 

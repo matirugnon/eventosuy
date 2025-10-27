@@ -1,3 +1,6 @@
 /target/
 pom.xml
 /build/
+
+# Clases SOAP generadas automáticamente
+src/main/java/soap/
