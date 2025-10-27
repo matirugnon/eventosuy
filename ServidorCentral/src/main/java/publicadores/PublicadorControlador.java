@@ -6,7 +6,7 @@ import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
-import logica.controladores.ControladorEvento;
+
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
@@ -27,8 +27,7 @@ import java.util.List;
 @SOAPBinding(style = Style.RPC)
 public class PublicadorControlador {
 
-    private final ControladorEvento ctrl = new ControladorEvento();
-
+    private final IControladorEvento ctrl = IControladorEvento.getInstance();
     @WebMethod
     public String hola() {
         return "Hola desde el Servidor Central";

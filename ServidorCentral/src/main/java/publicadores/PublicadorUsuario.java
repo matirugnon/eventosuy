@@ -50,7 +50,7 @@ public class PublicadorUsuario {
             System.err.println("   Usando valores por defecto.");
         }
 
-        String url = props.getProperty("servidor.usuario.url", "http://localhost:9129/publicadorUsuario");
+        String url = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
         System.out.println("Publicando PublicadorUsuario en: " + url);
         Endpoint.publish(url, new PublicadorUsuario());
     }

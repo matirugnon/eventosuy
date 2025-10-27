@@ -1,4 +1,4 @@
-package java.presentacion;
+package presentacion;
 
 import javax.swing.*;
 
@@ -17,7 +17,22 @@ import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import java.gui.internal.*;
+import gui.internal.AceptarRechazarEdicionFrame;
+import gui.internal.AltaEdicionFrame;
+import gui.internal.AltaEventoFrame;
+import gui.internal.AltaInstitucionFrame;
+import gui.internal.AltaPatrocinioFrame;
+import gui.internal.AltaTipoRegistroFrame;
+import gui.internal.AltaUsuarioFrame;
+import gui.internal.ConsultaEdicionFrame;
+import gui.internal.ConsultaEventoFrame;
+import gui.internal.ConsultaPatrocinioFrame;
+import gui.internal.ConsultaRegistroFrame;
+import gui.internal.ConsultaTipoRegistroFrame;
+import gui.internal.ModificarUsuarioFrame;
+import gui.internal.RegistroAEdicionFrame;
+
+
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;

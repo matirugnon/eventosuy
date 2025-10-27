@@ -169,6 +169,8 @@ public interface IControladorEvento {
 
 
 	public DTEvento obtenerEventoPorEdicion(String nomEdicion);
+	
+	public String obtenerEventoDeEdicion(String nombreEdicion) throws EdicionNoExisteException;
 
 
 

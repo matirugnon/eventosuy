@@ -38,7 +38,7 @@ public class PublicadorRegistro {
             System.err.println("   Usando valores por defecto.");
         }
 
-        String url = props.getProperty("servidor.registro.url", "http://localhost:9130/publicadorRegistro");
+        String url = props.getProperty("servidor.registro.url", "http://localhost:9128/publicadorRegistro");
         System.out.println("Publicando PublicadorRegistro en: " + url);
         Endpoint.publish(url, new PublicadorRegistro());
     }

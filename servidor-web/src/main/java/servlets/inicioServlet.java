@@ -13,12 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
-import utils.Utils;
-
+import soap.PublicadorCargaDatos;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -39,16 +34,16 @@ public class inicioServlet extends HttpServlet {
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
             
             // Verificar si los datos ya fueron precargados (solo para la primera vez)
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
             
-            boolean datosCargados = Utils.datosPrecargados(getServletContext());
-            boolean hayDatosBasicos = Utils.hayDatosBasicos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+            
+            PublicadorCargaDatos publicadorDatos = SoapClientHelper.getPublicadorCargaDatos();
+            
+            boolean datosCargados = publicadorDatos.datosPrecargados();
+            boolean hayDatosBasicos = publicadorDatos.hayDatosBasicos();
 
             if (!datosCargados && !hayDatosBasicos) {
-                Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
-                Utils.marcarDatosCargados(getServletContext());
+            	publicadorDatos.cargarDatos();
+            	publicadorDatos.marcarDatosCargados();
                 request.setAttribute("datosMensaje", "Datos de ejemplo cargados automáticamente.");
                 request.setAttribute("datosMensajeTipo", "success");
             }
