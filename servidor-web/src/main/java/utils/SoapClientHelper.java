@@ -81,6 +81,7 @@ public class SoapClientHelper {
         }
         return publicadorCargaDatosPort;
     }
+
     
     /**
      * Reinicia la conexión SOAP (útil si el servidor se reinicia)
@@ -90,3 +91,17 @@ public class SoapClientHelper {
         publicadorUsuarioPort = null;
         publicadorRegistroPort = null;
         publicadorCargaDatosPort = null;
+    }
+
+    public static boolean isServerAvailable() {
+        try {
+            PublicadorControlador port = getPublicadorControlador();
+            String response = port.hola();
+            return response != null && !response.isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+}

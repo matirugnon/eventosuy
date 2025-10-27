@@ -28,6 +28,19 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroResponse")
+    public StringArray obtenerNomsTipoRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
      * @param arg1
      * @return
      *     returns soap.DtTipoDeRegistro
@@ -46,19 +59,6 @@ public interface PublicadorRegistro {
      * @param arg0
      * @return
      *     returns soap.StringArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroResponse")
-    public StringArray obtenerNomsTipoRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns soap.StringArray
      * @throws EdicionNoExisteException_Exception
      */
     @WebMethod
@@ -71,6 +71,22 @@ public interface PublicadorRegistro {
         String arg0)
         throws EdicionNoExisteException_Exception
     ;
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns soap.DtRegistro
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/getRegistroRequest", output = "http://publicadores/PublicadorRegistro/getRegistroResponse")
+    public DtRegistro getRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
 
     /**
      * 
@@ -133,22 +149,6 @@ public interface PublicadorRegistro {
         double arg4)
         throws UsuarioNoExisteException_Exception, UsuarioYaRegistradoEnEdicionException_Exception
     ;
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @return
-     *     returns soap.DtRegistro
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/getRegistroRequest", output = "http://publicadores/PublicadorRegistro/getRegistroResponse")
-    public DtRegistro getRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
 
     /**
      * 
