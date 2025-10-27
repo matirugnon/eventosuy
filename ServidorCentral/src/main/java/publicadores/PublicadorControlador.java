@@ -291,6 +291,39 @@ public class PublicadorControlador {
             return e.getMessage();
         }
     }
+    
+    /**
+     * Consulta una edición y devuelve el DTEdicion completo
+     */
+    @WebMethod
+    public logica.datatypesyenum.DTEdicion consultarEdicion(String nombreEdicion) {
+        try {
+            return ctrl.consultarEdicion(nombreEdicion);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Obtiene un registro específico filtrando por asistente, edición y tipo
+     */
+    @WebMethod
+    public logica.datatypesyenum.DTRegistro obtenerRegistro(String asistente, String edicion, String tipoRegistro) {
+        try {
+            IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
+            Set<logica.datatypesyenum.DTRegistro> registros = ctrlReg.listarRegistrosPorAsistente(asistente);
+            
+            // Filtrar por edición y tipo de registro
+            for (logica.datatypesyenum.DTRegistro reg : registros) {
+                if (reg.getNomEdicion().equals(edicion) && reg.getTipoDeRegistro().equals(tipoRegistro)) {
+                    return reg;
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 
 }
