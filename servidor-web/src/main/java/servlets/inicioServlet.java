@@ -184,11 +184,7 @@ public class inicioServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/inicio");
     }
     
-
-    // Función para normalizar texto (quitar tildes y convertir a minúsculas)
-    private String normalizar(String input) {
-        if (input == null) return "";
-        String espaniolizado = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+er.normalize(input, java.text.Normalizer.Form.NFD);
         espaniolizado = espaniolizado.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
         return espaniolizado.toLowerCase();
     }

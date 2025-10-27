@@ -90,18 +90,3 @@ public class SoapClientHelper {
         publicadorUsuarioPort = null;
         publicadorRegistroPort = null;
         publicadorCargaDatosPort = null;
-    }
-    
-    /**
-     * Verifica si el servidor SOAP está disponible
-     */
-    public static boolean isServerAvailable() {
-        try {
-            PublicadorControlador port = getPublicadorControlador();
-            String response = port.hola();
-            return response != null && !response.isEmpty();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-}

@@ -102,7 +102,7 @@
                         </goals>
                         <configuration>
                             <wsdlUrls>
-                                <wsdlUrl>http://localhost:9129/publicadorUsuario?wsdl</wsdlUrl>
+                                <wsdlUrl>http://localhost:9128/publicadorUsuario?wsdl</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
                             <keep>true</keep>
@@ -118,7 +118,23 @@
                         </goals>
                         <configuration>
                             <wsdlUrls>
-                                <wsdlUrl>http://localhost:9130/publicadorRegistro?wsdl</wsdlUrl>
+                                <wsdlUrl>http://localhost:9128/publicadorRegistro?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <packageName>soap</packageName>
+                            <keep>true</keep>
+                            <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+                        </configuration>
+                    </execution>
+
+                    <!-- Cliente SOAP para PublicadorCargaDatos -->
+                    <execution>
+                        <id>wsimport-publicador-carga-datos</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>http://localhost:9128/publicadorCargaDatos?wsdl</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
                             <keep>true</keep>
@@ -137,3 +153,4 @@
         </plugins>
     </build>
 </project>
+
