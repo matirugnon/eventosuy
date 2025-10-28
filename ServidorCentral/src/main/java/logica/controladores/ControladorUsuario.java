@@ -71,9 +71,10 @@ public class ControladorUsuario implements IControladorUsuario {
         	throw new FechaInvalidaException("La fecha de nacimiento no puede ser futura.");
         }
 
+        // Si no se especifica avatar, asignar imagen por defecto
+        String avatarPorDefecto = "/img/usSinFoto.webp";
 
-
-        Usuario asis = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, null); // Avatar puede ser null
+        Usuario asis = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatarPorDefecto);
         altaUsuario(asis);
     }
 
@@ -106,6 +107,10 @@ public class ControladorUsuario implements IControladorUsuario {
         if (fechanac.compareTo(hoy) > 0) {
         	throw new FechaInvalidaException("La fecha de nacimiento no puede ser futura.");
         }
+        if (avatar == null || avatar.trim().isEmpty()) {
+            // Asignar imagen por defecto cuando no se proporciona avatar
+            avatar = "/img/usSinFoto.webp";
+        }
 
         Usuario asis = new Asistente(nick, nombre, correo, apellido, fechanac, institucion, password, avatar);
         altaUsuario(asis);
@@ -128,8 +133,10 @@ public class ControladorUsuario implements IControladorUsuario {
         if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
         }
+        // Si no se especifica avatar, asignar imagen por defecto
+        String avatarPorDefecto = "/img/usSinFoto.webp";
 
-        Usuario org = new Organizador(nick, nombre, correo, descripcion, link, password, null); // Avatar puede ser null
+        Usuario org = new Organizador(nick, nombre, correo, descripcion, link, password, avatarPorDefecto);
         altaUsuario(org);
     }
 
@@ -149,6 +156,10 @@ public class ControladorUsuario implements IControladorUsuario {
 
         if (existeCorreo(correo)) {
             throw new UsuarioRepetidoException("El correo " + correo + " ya está registrado");
+        }
+        if (avatar == null || avatar.trim().isEmpty()) {
+            // Asignar imagen por defecto cuando no se proporciona avatar
+            avatar = "/img/usSinFoto.webp";
         }
 
         Usuario org = new Organizador(nick, nombre, correo, descripcion, link, password, avatar);
