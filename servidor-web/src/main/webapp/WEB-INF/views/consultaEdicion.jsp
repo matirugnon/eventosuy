@@ -63,6 +63,19 @@
 										${edicion.estado}
 									</p>
 								</div>
+								
+								<!-- Botón de registro solo para asistentes y ediciones aceptadas -->
+								<c:if test="${role == 'asistente' && edicion.estado == 'ACEPTADA'}">
+									<div style="margin-top: 1.5rem;">
+										<a href="${pageContext.request.contextPath}/registroAEdicion?edicion=${edicion.nombre}" 
+										   class="btn-primary" 
+										   style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #182080; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background-color 0.2s;"
+										   onmouseover="this.style.backgroundColor='#0d4f8c';"
+										   onmouseout="this.style.backgroundColor='#182080';">
+											Registrarse a esta edición
+										</a>
+									</div>
+								</c:if>
 
 								<%-- TODO: Implementar tipos de registro
 								<c:if test="${not empty edicion.tiposDeRegistro}">
