@@ -122,7 +122,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
         );
 
         // Categorías
-        Set<String> cats = evento.getCategorias();
+        Set<String> cats = evento.getNombresCategorias();
         if (cats == null || cats.isEmpty()) {
             listaCategorias.setListData(new String[]{"(Sin categorías)"});
         } else {
@@ -130,7 +130,7 @@ public class ConsultaEventoFrame extends JInternalFrame {
         }
 
         // Ediciones
-        Set<String> ediciones = evento.getEdiciones();
+        Set<String> ediciones = evento.getNombresEdiciones();
         if (ediciones == null || ediciones.isEmpty()) {
             tablaEdiciones.setModel(new DefaultTableModel(
                 new Object[][]{{"(Sin ediciones)"}},

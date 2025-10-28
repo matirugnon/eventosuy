@@ -11,7 +11,7 @@ import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
 import utils.Utils;
-import logica.datatypesyenum.DTEdicion;
+
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTSeleccionEvento;
@@ -166,10 +166,7 @@ public class PublicadorControlador {
      * Retorna un array con: [0] nombre, [1] imagen (o cadena vacía si no tiene)
      */
     
-    @WebMethod
-    public DTEdicion consultarEdicion(String nomEdicion) {
-    	return ctrl.consultarEdicion(nomEdicion);
-    }
+
     
     
     
@@ -220,7 +217,7 @@ public class PublicadorControlador {
             detalle[10] = edicion.getOrganizador();
             detalle[11] = edicion.getImagen() != null ? edicion.getImagen() : "";
             detalle[12] = edicion.getEstado() != null ? edicion.getEstado().toString() : "";
-            
+            detalle[13] = edicion.getEvento();
             return detalle;
         } catch (Exception e) {
             return new String[0];
@@ -243,14 +240,10 @@ public class PublicadorControlador {
      * Formato: [nombre, sigla, descripcion, dia, mes, anio, imagen, categorias_separadas_por_coma]
      */
     
-    @WebMethod
-    public DTSeleccionEvento seleccionarEvento(String nomEvento)
-    		throws EventoNoExisteException {
-    	return ctrl.seleccionarEvento(nomEvento);
-    }
+  
     
-    public Set<DTEvento> obtenerDTEventos(){
-    	return ctrl.obtenerDTEventos();
+    public DTEvento[] obtenerDTEventos(){
+    	return ctrl.obtenerDTEventos().toArray(new DTEvento[0]);
     }
     
     public DTEvento obtenerEventoPorEdicion(String nomEdicion){
