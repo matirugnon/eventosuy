@@ -5,14 +5,9 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
-import excepciones.CategoriaNoSeleccionadaException;
-import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EdicionSinPatrociniosException;
 import excepciones.EventoNoExisteException;
-import excepciones.EventoRepetidoException;
-import excepciones.FechaInvalidaException;
-import excepciones.FechasIncompatiblesException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.PatrocinioNoEncontradoException;
 import logica.Categoria;
@@ -160,12 +155,13 @@ public class ControladorEvento implements IControladorEvento {
         return new DTSeleccionEvento(dto, nombresCategorias, nombresEdiciones, edicionesCompletas);
     }
 
-    public DTEdicion consultarEdicion(String nomEdicion) {
-    	Edicion edi = manejadorE.obtenerEdicion(nomEdicion);
-
-    	DTEdicion dte = edi.getDTEdicion();
-    	return dte;
-    }//responsabilizar a evento por la creacion del DT
+	public DTEdicion consultarEdicion(String nomEdicion) {
+		Edicion edi = manejadorE.obtenerEdicion(nomEdicion);
+		if (edi == null) {
+			return null;
+		}
+		return edi.getDTEdicion();
+	}//responsabilizar a evento por la creacion del DT
 
 
 	//altaCategoria

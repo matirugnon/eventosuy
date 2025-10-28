@@ -6,33 +6,34 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTEdicion;
-import logica.datatypesyenum.EstadoEdicion;
-import excepciones.NombreTipoRegistroDuplicadoException;
+import soap.DtEdicion;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import soap.StringArray;
+import utils.SoapClientHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @WebServlet("/altaTipoRegistro")
 public class AltaTipoRegistroServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private IControladorEvento ctrlEvento;
-    private IControladorRegistro ctrlRegistro;
+    private PublicadorControlador publicadorCtrl; // SOAP para consultar edición/categorías
+    private PublicadorRegistro publicadorReg; // SOAP para crear tipo de registro
     
     @Override
     public void init() throws ServletException {
         try {
-            ctrlEvento = IControladorEvento.getInstance();
-            ctrlRegistro = IControladorRegistro.getInstance();
+            publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+            // PublicadorRegistro comparte el mismo service package; obtenerlo del Service
+            soap.PublicadorRegistroService regService = new soap.PublicadorRegistroService();
+            publicadorReg = regService.getPublicadorRegistroPort();
         } catch (Exception e) {
-            throw new ServletException("Error al inicializar controladores", e);
+            throw new ServletException("Error al inicializar controladores/servicios", e);
         }
     }
     
@@ -68,19 +69,19 @@ public class AltaTipoRegistroServlet extends HttpServlet {
         try {
             System.out.println("DEBUG: Iniciando doGet para usuario: " + nickname + ", edicion: " + edicionNombre);
             
-            // Verificar que el organizador tiene ediciones organizadas y que esta ediciÃ³n le pertenece
-            Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
-            System.out.println("DEBUG: Ediciones organizadas obtenidas: " + (edicionesOrganizadas != null ? edicionesOrganizadas.size() : "null"));
-            
-            DTEdicion edicion = edicionesOrganizadas.stream()
-                .filter(ed -> ed.getNombre().equals(edicionNombre))
-                .findFirst()
-                .orElse(null);
+            // Consultar la edición vía SOAP (fuente de verdad del servidor central)
+            DtEdicion edicion = publicadorCtrl.consultarEdicion(edicionNombre);
                 
             System.out.println("DEBUG: Edicion encontrada: " + (edicion != null ? edicion.getNombre() : "null"));
             
             if (edicion == null) {
-                System.out.println("DEBUG: Edicion no encontrada o no pertenece al organizador");
+                System.out.println("DEBUG: Edicion no encontrada");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "EdiciÃ³n no encontrada: " + edicionNombre);
+                return;
+            }
+
+            if (edicion.getOrganizador() == null || !edicion.getOrganizador().equals(nickname)) {
+                System.out.println("DEBUG: Edicion no pertenece al organizador en sesiÃ³n");
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta ediciÃ³n: " + edicionNombre);
                 return;
             }
@@ -102,9 +103,12 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 }
             }
             
-            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente) desde SOAP
+            StringArray categoriasArray = publicadorCtrl.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasArray != null && categoriasArray.getItem() != null) {
+                categorias.addAll(categoriasArray.getItem());
+            }
             Collections.sort(categorias);
             System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
             
@@ -193,20 +197,20 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 return;
             }
             
-            // Verificar que el organizador puede crear tipos de registro en esta ediciÃ³n
-            Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
-            
-            boolean esPropia = edicionesOrganizadas.stream()
-                .anyMatch(ed -> ed.getNombre().equals(edicionNombre));
-            
-            if (!esPropia) {
+            // Verificar pertenencia por organizador directo de la edición vía SOAP
+            DtEdicion ed = publicadorCtrl.consultarEdicion(edicionNombre);
+            if (ed == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "EdiciÃ³n no encontrada");
+                return;
+            }
+            if (ed.getOrganizador() == null || !ed.getOrganizador().equals(nickname)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "No tienes permisos para crear tipos de registro en esta ediciÃ³n");
                 return;
             }
             
             // Intentar crear el tipo de registro
             System.out.println("DEBUG: Creando tipo de registro - Edicion: " + edicionNombre + ", Nombre: " + nombre.trim() + ", Costo: " + costo + ", Cupo: " + cupo);
-            ctrlRegistro.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
+            publicadorReg.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
             System.out.println("DEBUG: Tipo de registro creado exitosamente");
             
             // Redirigir con mensaje de Ã©xito
@@ -214,7 +218,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
             
-        } catch (NombreTipoRegistroDuplicadoException e) {
+        } catch (soap.NombreTipoRegistroDuplicadoException_Exception e) {
             request.setAttribute("error", "âŒ Ya existe un tipo de registro con ese nombre para esta ediciÃ³n. Por favor, elige otro nombre.");
             doGet(request, response);
         } catch (Exception e) {
