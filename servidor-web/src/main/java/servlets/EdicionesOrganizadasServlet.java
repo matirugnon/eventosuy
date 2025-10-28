@@ -6,10 +6,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.datatypesyenum.DTEdicion;
-import logica.datatypesyenum.EstadoEdicion;
+
+// removed unused imports (use soap.DtEdicion instead)
+import utils.SoapClientHelper;
+import soap.PublicadorControlador;
+import soap.PublicadorUsuario;
+import soap.StringArray;
+import soap.DtEdicion;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -18,24 +21,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @WebServlet("/edicionesOrganizadas")
 public class EdicionesOrganizadasServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private IControladorEvento ctrlEvento;
-    private IControladorUsuario ctrlUsuario;
     
-    @Override
-    public void init() throws ServletException {
-        try {
-            ctrlEvento = IControladorEvento.getInstance();
-            ctrlUsuario = IControladorUsuario.getInstance();
-        } catch (Exception e) {
-            throw new ServletException("Error al inicializar controladores", e);
-        }
-    }
+    // init not required: we obtain SOAP clients lazily in doGet
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -55,36 +47,54 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
         
         // Verificar que sea organizador
         if (!"organizador".equals(role)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta funciÃ³n");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: Solo organizadores pueden acceder a esta función");
             return;
         }
         
         try {
-            // Obtener ediciones aceptadas organizadas por este usuario
-            Set<DTEdicion> edicionesOrganizadas = ctrlEvento.listarEdicionesOrganizadasPorEstado(nickname, EstadoEdicion.ACEPTADA);
-            
-            // Verificar cuÃ¡les ediciones ya finalizaron
+            //a partir de aca se puede usar el publicador
+            PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+            PublicadorUsuario publicadorUsuario = SoapClientHelper.getPublicadorUsuario();
+
+
+            // Obtener ediciones organizadas por este usuario (nombres) y convertir a DtEdicion
+            StringArray edicionesNombres = publicadorUsuario.listarEdicionesOrganizador(nickname);
+            List<DtEdicion> edicionesOrganizadas = new ArrayList<>();
+            if (edicionesNombres != null && edicionesNombres.getItem() != null) {
+                for (String nom : edicionesNombres.getItem()) {
+                    try {
+                        DtEdicion d = publicadorControlador.consultarEdicion(nom);
+                        if (d != null) edicionesOrganizadas.add(d);
+                    } catch (Exception ex) {
+                        // ignorar ediciones que no se puedan obtener
+                        System.err.println("Error obteniendo DtEdicion para: " + nom + " -> " + ex.getMessage());
+                    }
+                }
+            }
+
+            // Verificar cuáles ediciones ya finalizaron
             LocalDate hoy = LocalDate.now();
             Map<String, Boolean> edicionesPasadas = new HashMap<>();
-            
-            for (DTEdicion edicion : edicionesOrganizadas) {
+            for (DtEdicion edicion : edicionesOrganizadas) {
                 if (edicion.getFechaFin() != null) {
                     LocalDate fechaFin = LocalDate.of(
                         edicion.getFechaFin().getAnio(),
                         edicion.getFechaFin().getMes(),
                         edicion.getFechaFin().getDia()
                     );
-                    // La ediciÃ³n estÃ¡ finalizada si la fecha de fin es anterior a hoy
                     boolean esPasada = fechaFin.isBefore(hoy);
                     edicionesPasadas.put(edicion.getNombre(), esPasada);
                 } else {
                     edicionesPasadas.put(edicion.getNombre(), false);
                 }
             }
-            
-            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente) vía SOAP
+            StringArray categoriasArray = publicadorControlador.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasArray != null && categoriasArray.getItem() != null) {
+                categorias.addAll(categoriasArray.getItem());
+            }
             Collections.sort(categorias);
             
             request.setAttribute("edicionesOrganizadas", edicionesOrganizadas);
