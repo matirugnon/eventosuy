@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import soap.PublicadorUsuario;
+import soap.PublicadorControlador;
+import soap.DtUsuario;
+import soap.DtAsistente;
+import soap.DtOrganizador;
+import soap.DtRegistro;
+import soap.DtEdicion;
+import soap.StringArray;
 import utils.SoapClientHelper;
 
 @WebServlet({"/perfilUsuario", "/miPerfil"})
@@ -42,69 +52,122 @@ public class PerfilUsuarioServlet extends HttpServlet {
             }
             
             PublicadorUsuario publicador = SoapClientHelper.getPublicadorUsuario();
-            String tipoUsuario = publicador.obtenerTipoUsuario(nickname);
+            PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+
             
-            if ("desconocido".equals(tipoUsuario)) {
+            
+            // Obtener DTUsuario completo desde SOAP
+            DtUsuario dtUsuario = publicador.getDTUsuario(nickname);
+            
+            if (dtUsuario == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
                 return;
             }
             
-            String avatar = publicador.obtenerAvatar(nickname);
-            String email = publicador.obtenerEmail(nickname);
-            String nombre = publicador.obtenerNombre(nickname);
+            // Determinar tipo de usuario
+            String tipoUsuario;
+            if (dtUsuario instanceof DtAsistente) {
+                tipoUsuario = "Asistente";
+            } else if (dtUsuario instanceof DtOrganizador) {
+                tipoUsuario = "Organizador";
+            } else {
+                tipoUsuario = "Usuario";
+            }
             
-            // Crear un objeto simple para el JSP
-            servlets.dto.UsuarioDTO usuario = new servlets.dto.UsuarioDTO();
-            usuario.setNickname(nickname);
-            usuario.setAvatar(avatar);
-            usuario.setEmail(email);
-            usuario.setNombre(nombre);
-            
-            request.setAttribute("usuario", usuario);
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("nickname", nickname);
+            // Enviar DTUsuario completo al JSP
+            request.setAttribute("usuario", dtUsuario);
             request.setAttribute("tipoUsuario", tipoUsuario);
-            request.setAttribute("avatar", avatar);
             
-            // Obtener registros si es asistente
-            if ("asistente".equals(tipoUsuario)) {
+            // Si es Asistente, obtener sus registros
+            if (dtUsuario instanceof DtAsistente) {
+                DtAsistente asistente = (DtAsistente) dtUsuario;
+                request.setAttribute("asistente", asistente);
+                
                 try {
-                    soap.StringArray registrosDetallados = publicador.obtenerRegistrosDetallados(nickname);
+                    // Obtener registros desde PublicadorUsuario
+                    StringArray registrosArray = publicador.obtenerRegistros(nickname);
+                    String[] registrosNicks = registrosArray != null ? registrosArray.getItem().toArray(new String[0]) : new String[0];
                     
-                    // Separar registros por estado
-                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new java.util.ArrayList<>();
-                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new java.util.ArrayList<>();
-                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new java.util.ArrayList<>();
-                    
-                    if (registrosDetallados != null && registrosDetallados.getItem() != null) {
-                        for (String regStr : registrosDetallados.getItem()) {
-                            String[] parts = regStr.split("\\|");
-                            if (parts.length >= 7) {
-                                servlets.dto.RegistroEdicionDTO edicion = new servlets.dto.RegistroEdicionDTO();
-                                edicion.setEvento(parts[0]);
-                                edicion.setNombre(parts[1]);
-                                edicion.setSigla(parts[2]);
-                                String estado = parts[3];
-                                edicion.setEstado(estado);
-                                
-                                // Clasificar por estado
-                                if ("ACEPTADA".equals(estado)) {
-                                    edicionesAceptadas.add(edicion);
-                                } else if ("INGRESADA".equals(estado)) {
-                                    edicionesIngresadas.add(edicion);
-                                } else if ("RECHAZADA".equals(estado)) {
-                                    edicionesRechazadas.add(edicion);
+                    if (registrosNicks != null && registrosNicks.length > 0) {
+                        java.util.List<DtRegistro> registros = new java.util.ArrayList<>();
+                        
+                        // Para cada registro, obtener DTRegistro completo
+                        for (String regNick : registrosNicks) {
+                            // regNick tiene formato: "asistente|edicion|tipoRegistro"
+                            String[] parts = regNick.split("\\|");
+                            if (parts.length >= 3) {
+                                try {
+                                    DtRegistro reg = publicadorControlador.obtenerRegistro(parts[0], parts[1], parts[2]);
+                                    if (reg != null) {
+                                        registros.add(reg);
+                                    }
+                                } catch (Exception e) {
+                                    System.err.println("Error obteniendo registro: " + regNick);
                                 }
                             }
                         }
+                        
+                        request.setAttribute("registros", registros);
+                    } else {
+                        request.setAttribute("registros", new java.util.ArrayList<>());
                     }
-                    
-                    request.setAttribute("edicionesAceptadas", edicionesAceptadas);
-                    request.setAttribute("edicionesIngresadas", edicionesIngresadas);
-                    request.setAttribute("edicionesRechazadas", edicionesRechazadas);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    // Si falla, enviar listas vacías
+                    request.setAttribute("registros", new java.util.ArrayList<>());
+                }
+            }
+            
+            // Si es Organizador, obtener sus ediciones
+            if (dtUsuario instanceof DtOrganizador) {
+                DtOrganizador organizador = (DtOrganizador) dtUsuario;
+                request.setAttribute("organizador", organizador);
+                
+                try {
+                    // Obtener ediciones desde PublicadorUsuario
+                    StringArray edicionesArray = publicador.listarEdicionesOrganizador(nickname);
+                    String[] edicionesNicks = edicionesArray != null ? edicionesArray.getItem().toArray(new String[0]) : new String[0];
+                    
+                    if (edicionesNicks != null && edicionesNicks.length > 0) {
+                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new java.util.ArrayList<>();
+                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new java.util.ArrayList<>();
+                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new java.util.ArrayList<>();
+                        
+                        // Para cada edición, consultar y clasificar por estado
+                        for (String edicionNombre : edicionesNicks) {
+                            try {
+                                DtEdicion edicion = publicadorControlador.consultarEdicion(edicionNombre);
+                                if (edicion != null) {
+                                    servlets.dto.RegistroEdicionDTO dto = new servlets.dto.RegistroEdicionDTO();
+                                    dto.setEvento(edicion.getEvento());
+                                    dto.setNombre(edicion.getNombre());
+                                    dto.setSigla(edicion.getSigla());
+                                    dto.setEstado(edicion.getEstado().value());
+                                    
+                                    // Clasificar por estado
+                                    String estado = edicion.getEstado().value();
+                                    if ("ACEPTADA".equals(estado)) {
+                                        edicionesAceptadas.add(dto);
+                                    } else if ("INGRESADA".equals(estado)) {
+                                        edicionesIngresadas.add(dto);
+                                    } else if ("RECHAZADA".equals(estado)) {
+                                        edicionesRechazadas.add(dto);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.err.println("Error obteniendo edición: " + edicionNombre);
+                            }
+                        }
+                        
+                        request.setAttribute("edicionesAceptadas", edicionesAceptadas);
+                        request.setAttribute("edicionesIngresadas", edicionesIngresadas);
+                        request.setAttribute("edicionesRechazadas", edicionesRechazadas);
+                    } else {
+                        request.setAttribute("edicionesAceptadas", new java.util.ArrayList<>());
+                        request.setAttribute("edicionesIngresadas", new java.util.ArrayList<>());
+                        request.setAttribute("edicionesRechazadas", new java.util.ArrayList<>());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     request.setAttribute("edicionesAceptadas", new java.util.ArrayList<>());
                     request.setAttribute("edicionesIngresadas", new java.util.ArrayList<>());
                     request.setAttribute("edicionesRechazadas", new java.util.ArrayList<>());
@@ -112,9 +175,16 @@ public class PerfilUsuarioServlet extends HttpServlet {
             }
             
             if (session != null) {
+
+                StringArray categoriasSet = publicadorControlador.listarCategorias();
+                List<String> categorias = new ArrayList<>(categoriasSet.getItem());
+                Collections.sort(categorias);
+
+
                 request.setAttribute("sessionNickname", session.getAttribute("usuario"));
                 request.setAttribute("sessionAvatar", session.getAttribute("avatar"));
                 request.setAttribute("sessionRole", session.getAttribute("role"));
+                request.setAttribute("categorias", categorias);
             }
             
             if ("/miPerfil".equals(requestPath)) {
@@ -122,7 +192,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/WEB-INF/views/perfilUsuario.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al consultar el perfil: " + e.getMessage());

@@ -81,8 +81,9 @@
 							</div>
 
 							<label class="input-group"> <span class="label-text">Nickname
-									*</span> <input name="nickname" required maxlength="30"
+									*</span> <input name="nickname" id="nickname" required maxlength="30"
 								placeholder="nickname" value="${param.nickname}" />
+								<span id="nicknameMsg" style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
 							</label> <label class="input-group"> <span class="label-text">Nombre
 									*</span> <input name="nombre" required maxlength="60"
 								placeholder="Nombre" value="${param.nombre}" />
@@ -141,8 +142,9 @@
 							</div>
 
 							<label class="input-group"> <span class="label-text">Correo
-									electrónico *</span> <input name="email" type="email" required
+									electrónico *</span> <input name="email" id="email" type="email" required
 								placeholder="name@example.com" value="${param.email}" />
+								<span id="emailMsg" style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
 							</label>
 
 							<div class="grid-2">
@@ -278,6 +280,93 @@ form {
       // init - preservar estado en caso de error
       toggleRol();
       toggleInstitucion();
+      
+      // ========== VALIDACIÓN AJAX DE DISPONIBILIDAD ==========
+      const inputNickname = $('#nickname');
+      const inputEmail = $('#email');
+      const nicknameMsg = $('#nicknameMsg');
+      const emailMsg = $('#emailMsg');
+      
+      let nicknameDisponible = false;
+      let emailDisponible = false;
+      let timeoutNickname = null;
+      let timeoutEmail = null;
+      
+      function verificarDisponibilidad(tipo, valor, msgElement) {
+        if (!valor || valor.trim().length === 0) {
+          msgElement.textContent = '';
+          msgElement.style.color = '';
+          return;
+        }
+        
+        // Mostrar mensaje de verificando
+        msgElement.textContent = 'Verificando...';
+        msgElement.style.color = '#666';
+        
+        const url = '${pageContext.request.contextPath}/verificarDisponibilidad?tipo=' + 
+                    encodeURIComponent(tipo) + '&valor=' + encodeURIComponent(valor.trim());
+        
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              msgElement.textContent = '';
+              msgElement.style.color = '';
+              return;
+            }
+            
+            if (data.disponible) {
+              msgElement.textContent = '✓ ' + (tipo === 'nickname' ? 'Nickname' : 'Email') + ' disponible';
+              msgElement.style.color = '#2a7f2e';
+              if (tipo === 'nickname') nicknameDisponible = true;
+              if (tipo === 'email') emailDisponible = true;
+            } else {
+              msgElement.textContent = '✗ ' + (tipo === 'nickname' ? 'Nickname' : 'Email') + ' no disponible';
+              msgElement.style.color = '#c00';
+              if (tipo === 'nickname') nicknameDisponible = false;
+              if (tipo === 'email') emailDisponible = false;
+            }
+          })
+          .catch(error => {
+            console.error('Error verificando disponibilidad:', error);
+            msgElement.textContent = '';
+            msgElement.style.color = '';
+          });
+      }
+      
+      // Event listeners con debounce (esperar 500ms después de que el usuario deje de escribir)
+      inputNickname.addEventListener('input', function() {
+        clearTimeout(timeoutNickname);
+        timeoutNickname = setTimeout(() => {
+          verificarDisponibilidad('nickname', this.value, nicknameMsg);
+        }, 500);
+      });
+      
+      inputEmail.addEventListener('input', function() {
+        clearTimeout(timeoutEmail);
+        timeoutEmail = setTimeout(() => {
+          verificarDisponibilidad('email', this.value, emailMsg);
+        }, 500);
+      });
+      
+      // Validar disponibilidad antes de enviar el formulario
+      const originalValidar = validar;
+      validar = function() {
+        // Primero ejecutar las validaciones originales
+        if (!originalValidar()) return false;
+        
+        // Luego verificar disponibilidad
+        if (!nicknameDisponible) {
+          msg.textContent = 'El nickname no está disponible.';
+          return false;
+        }
+        if (!emailDisponible) {
+          msg.textContent = 'El email no está disponible.';
+          return false;
+        }
+        
+        return true;
+      };
     })();
   </script>
 </body>

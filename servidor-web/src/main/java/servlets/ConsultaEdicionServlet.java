@@ -19,14 +19,11 @@ import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTUsuario;
 import logica.Usuario;
 import utils.Utils;
-
+import soap.DtEdicion;
 //nuevos imports (copiar este bloque)
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
-
-import servlets.dto.EdicionDetalleDTO;
-import servlets.dto.EventoDetalleDTO;
 
 
 @WebServlet("/consultaEdicion")
@@ -53,44 +50,33 @@ public class ConsultaEdicionServlet extends HttpServlet {
             }
 
             // Obtener información de la edición específica
-            StringArray detalleEdicionArray = publicador.obtenerDetalleCompletoEdicion(nombreEdicion);
-            EdicionDetalleDTO edicion = new EdicionDetalleDTO(detalleEdicionArray);
+            DtEdicion edicionDt = publicador.consultarEdicion(nombreEdicion);
 
-            if (edicion == null) {
+            if (edicionDt == null) {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
             }
             
-            // Obtener informaciÃ³n del evento padre
+            // Obtener información del evento padre
             String nombreEventoPadre = publicador.obtenerEventoDeEdicion(nombreEdicion);
-            StringArray detalleEventoPadreArray = publicador.obtenerDetalleEvento(nombreEventoPadre);
-
-            EventoDetalleDTO eventoDetalle = new EventoDetalleDTO(detalleEventoPadreArray);
             
-            // Obtener informaciÃ³n del organizador
-            String nicknameOrganizador = edicion.getOrganizador();
+            // Obtener información del organizador
+            String nicknameOrganizador = edicionDt.getOrganizador();
+            DTUsuario organizador = null; 
+            String avatarOrganizador = "/img/usSinFoto.webp"; // Avatar por defecto
             
-            DTUsuario organizador = null; //TODO migrar a SOAP
-
-            String avatarOrganizador = "/img/avatar-default.png"; // Avatar por defecto
-            
-            /** 
             if (nicknameOrganizador != null && !nicknameOrganizador.trim().isEmpty()) {
                 try {
-                    organizador = publicador.obtenerUsuario(nicknameOrganizador);
-                    if (organizador != null) {
-                        // Obtener el avatar del organizador
-                        Usuario usuarioOrganizador = ctrlUsuario.obtenerUsuario(nicknameOrganizador);
-                        if (usuarioOrganizador != null && usuarioOrganizador.getAvatar() != null) {
-                            avatarOrganizador = usuarioOrganizador.getAvatar();
-                        }
+                    soap.PublicadorUsuario publicadorUsuario = SoapClientHelper.getPublicadorUsuario();
+                    avatarOrganizador = publicadorUsuario.obtenerAvatar(nicknameOrganizador);
+                    if (avatarOrganizador == null || avatarOrganizador.trim().isEmpty()) {
+                        avatarOrganizador = "/img/usSinFoto.webp";
                     }
                 } catch (Exception e) {
-                    System.out.println("Error obteniendo informaciÃ³n del organizador: " + e.getMessage());
+                    System.err.println("Error obteniendo avatar del organizador: " + e.getMessage());
+                    avatarOrganizador = "/img/usSinFoto.webp";
                 }
             }
-            
-            */
 
             // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
             StringArray categoriasSet = publicador.listarCategorias();
@@ -98,7 +84,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
             Collections.sort(categorias);
 
             // Pasar los datos a la JSP
-            request.setAttribute("edicion", edicion);
+            request.setAttribute("edicion", edicionDt);
             request.setAttribute("eventoPadre", nombreEventoPadre);
             request.setAttribute("organizador", organizador);
             request.setAttribute("avatarOrganizador", avatarOrganizador);

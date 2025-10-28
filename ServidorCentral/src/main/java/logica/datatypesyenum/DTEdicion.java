@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 
 public class DTEdicion implements Serializable{
@@ -133,7 +134,10 @@ public class DTEdicion implements Serializable{
 	public String getOrganizador() {return organizador; }
 	public Set<String> getPatrocinios() {return patrocinios; }
 	public Set<String> getTiposDeRegistro(){return tiposDeRegistro; }
+	
+	@XmlTransient
 	public Set<Map.Entry<String, String>> getRegistros(){return registros; }
+	
 	public EstadoEdicion getEstado() { return estado; } // Nuevo getter
 	public String getImagen() { return imagen; } // Getter para imagen
 

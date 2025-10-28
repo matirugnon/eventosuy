@@ -18,6 +18,8 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 
+import gui.internal.*;
+
 import gui.internal.AceptarRechazarEdicionFrame;
 import gui.internal.AltaEdicionFrame;
 import gui.internal.AltaEventoFrame;

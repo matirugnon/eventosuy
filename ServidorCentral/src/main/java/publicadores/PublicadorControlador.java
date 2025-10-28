@@ -11,14 +11,19 @@ import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorUsuario;
 import logica.controladores.IControladorRegistro;
 import utils.Utils;
+
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTSeleccionEvento;
 import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
+
+import excepciones.EventoNoExisteException;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -160,6 +165,11 @@ public class PublicadorControlador {
      * Obtiene los detalles de una edición específica.
      * Retorna un array con: [0] nombre, [1] imagen (o cadena vacía si no tiene)
      */
+    
+
+    
+    
+    
     @WebMethod
     public String[] obtenerDetalleEdicion(String nombreEdicion) {
         try {
@@ -207,7 +217,7 @@ public class PublicadorControlador {
             detalle[10] = edicion.getOrganizador();
             detalle[11] = edicion.getImagen() != null ? edicion.getImagen() : "";
             detalle[12] = edicion.getEstado() != null ? edicion.getEstado().toString() : "";
-            
+            detalle[13] = edicion.getEvento();
             return detalle;
         } catch (Exception e) {
             return new String[0];
@@ -229,6 +239,17 @@ public class PublicadorControlador {
      * Obtiene el detalle de un evento por su nombre.
      * Formato: [nombre, sigla, descripcion, dia, mes, anio, imagen, categorias_separadas_por_coma]
      */
+    
+  
+    
+    public DTEvento[] obtenerDTEventos(){
+    	return ctrl.obtenerDTEventos().toArray(new DTEvento[0]);
+    }
+    
+    public DTEvento obtenerEventoPorEdicion(String nomEdicion){
+    	return ctrl.obtenerEventoPorEdicion(nomEdicion);
+    }
+    
     @WebMethod
     public String[] obtenerDetalleEvento(String nombreEvento) {
         try {
@@ -289,6 +310,39 @@ public class PublicadorControlador {
             return "OK";
         } catch (Exception e) {
             return e.getMessage();
+        }
+    }
+    
+    /**
+     * Consulta una edición y devuelve el DTEdicion completo
+     */
+    @WebMethod
+    public logica.datatypesyenum.DTEdicion consultarEdicion(String nombreEdicion) {
+        try {
+            return ctrl.consultarEdicion(nombreEdicion);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Obtiene un registro específico filtrando por asistente, edición y tipo
+     */
+    @WebMethod
+    public logica.datatypesyenum.DTRegistro obtenerRegistro(String asistente, String edicion, String tipoRegistro) {
+        try {
+            IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
+            Set<logica.datatypesyenum.DTRegistro> registros = ctrlReg.listarRegistrosPorAsistente(asistente);
+            
+            // Filtrar por edición y tipo de registro
+            for (logica.datatypesyenum.DTRegistro reg : registros) {
+                if (reg.getNomEdicion().equals(edicion) && reg.getTipoDeRegistro().equals(tipoRegistro)) {
+                    return reg;
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
         }
     }
 

@@ -401,7 +401,7 @@ public Set<DTEvento> obtenerDTEventos(){
 		for (DTEvento evento : eventos) {
 			try {
 				DTSeleccionEvento seleccion = seleccionarEvento(evento.getNombre());
-				if (seleccion.getEdiciones().contains(nomEdicion)) {
+				if (seleccion.getNombresEdiciones().contains(nomEdicion)) {
 					return evento;
 				}
 			} catch (EventoNoExisteException e) {

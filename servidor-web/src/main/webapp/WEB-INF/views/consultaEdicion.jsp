@@ -52,17 +52,30 @@
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Inicio:</strong>
-										${edicion.fechaInicioDia}/${edicion.fechaInicioMes}/${edicion.fechaInicioAnio}
+										${edicion.fechaInicio.dia}/${edicion.fechaInicio.mes}/${edicion.fechaInicio.anio}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Fin:</strong>
-										${edicion.fechaFinDia}/${edicion.fechaFinMes}/${edicion.fechaFinAnio}
+										${edicion.fechaFin.dia}/${edicion.fechaFin.mes}/${edicion.fechaFin.anio}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Estado:</strong>
 										${edicion.estado}
 									</p>
 								</div>
+								
+								<!-- Botón de registro solo para asistentes y ediciones aceptadas -->
+								<c:if test="${role == 'asistente' && edicion.estado == 'ACEPTADA'}">
+									<div style="margin-top: 1.5rem;">
+										<a href="${pageContext.request.contextPath}/registroAEdicion?edicion=${edicion.nombre}" 
+										   class="btn-primary" 
+										   style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #182080; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background-color 0.2s;"
+										   onmouseover="this.style.backgroundColor='#0d4f8c';"
+										   onmouseout="this.style.backgroundColor='#182080';">
+											Registrarse a esta edición
+										</a>
+									</div>
+								</c:if>
 
 								<%-- TODO: Implementar tipos de registro
 								<c:if test="${not empty edicion.tiposDeRegistro}">

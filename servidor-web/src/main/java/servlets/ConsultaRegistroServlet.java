@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,13 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import servlets.dto.EdicionDetalleDTO;
+import soap.DtRegistro;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import utils.SoapClientHelper;
 
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTRegistro;
-import logica.datatypesyenum.DTEdicion;
-import excepciones.UsuarioNoExisteException;
-import utils.Utils;
+
 
 @WebServlet("/consultaRegistro")
 public class ConsultaRegistroServlet extends HttpServlet {
@@ -40,10 +41,11 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/inicio");
                 return;
             }
-
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-
+            
+            
+            PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
+            PublicadorRegistro publicadorReg = SoapClientHelper.getPublicadorRegistro();
+         
             // Verificar que el usuario tenga permisos para ver este registro
             String usuarioSesion = (String) request.getSession().getAttribute("usuario");
             String rolSesion = (String) request.getSession().getAttribute("role");
@@ -59,7 +61,7 @@ public class ConsultaRegistroServlet extends HttpServlet {
                 // Caso 2: Es el organizador especÃ­fico de esta ediciÃ³n
                 else if ("organizador".equals(rolSesion)) {
                     try {
-                        DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
+                        EdicionDetalleDTO edicionInfo = new EdicionDetalleDTO(publicadorEv.obtenerDetalleCompletoEdicion(edicion));
                         // Solo permitir si el usuario logueado es exactamente el organizador de esta ediciÃ³n
                         if (edicionInfo != null && usuarioSesion.equals(edicionInfo.getOrganizador())) {
                             tienePermisos = true;
@@ -79,12 +81,12 @@ public class ConsultaRegistroServlet extends HttpServlet {
 
             // Obtener el registro especÃ­fico
             // Primero obtenemos todos los registros del asistente
-            Set<DTRegistro> registros = ctrlRegistro.listarRegistrosPorAsistente(asistente);
-            DTRegistro registro = null;
+            Set<DtRegistro> registros = new HashSet<>(publicadorReg.listarRegistrosPorAsistente(asistente).getItem());
+            DtRegistro registro = null;
             
             // Buscar el registro especÃ­fico por ediciÃ³n y tipo de registro
-            for (DTRegistro reg : registros) {
-                if (reg.getnomEdicion().equals(edicion) && reg.getTipoDeRegistro().equals(tipoRegistro)) {
+            for (DtRegistro reg : registros) {
+                if (reg.getNomEdicion().equals(edicion) && reg.getTipoDeRegistro().equals(tipoRegistro)) {
                     registro = reg;
                     break;
                 }
@@ -96,10 +98,10 @@ public class ConsultaRegistroServlet extends HttpServlet {
             }
 
             // Obtener informaciÃ³n de la ediciÃ³n
-            DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
+            EdicionDetalleDTO edicionInfo = new EdicionDetalleDTO(publicadorEv.obtenerDetalleEvento(edicion));
             
             // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
 
