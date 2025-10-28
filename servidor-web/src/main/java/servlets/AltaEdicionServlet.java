@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
-import java.util.Arrays;
 import soap.StringArray;
 
 import jakarta.servlet.ServletException;
@@ -22,7 +21,7 @@ import jakarta.servlet.http.Part;
 import soap.PublicadorControlador;
 import soap.DTFecha;
 import utils.SoapClientHelper;
-import java.util.HashSet;
+ 
 
 @WebServlet("/altaEdicion")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB max para imágenes
@@ -52,19 +51,34 @@ public class AltaEdicionServlet extends HttpServlet {
             String nickname = (String) session.getAttribute("usuario");
             String avatar = (String) session.getAttribute("avatar");
 
-            // Obtener eventos via SOAP
+            // Obtener eventos y categorías via SOAP
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
-            StringArray eventosWs = publicador.listarEventos();
-            
-            // Convertir StringArray a List para el JSP
+            StringArray eventosWs = null;
+            StringArray categoriasWs = null;
             List<String> eventos = new ArrayList<>();
+            List<String> categorias = new ArrayList<>();
+            try {
+                eventosWs = publicador.listarEventos();
+            } catch (Exception e) {
+                System.err.println("Aviso: no se pudo listar eventos via SOAP: " + e.getMessage());
+            }
+            try {
+                categoriasWs = publicador.listarCategorias();
+            } catch (Exception e) {
+                System.err.println("Aviso: no se pudo listar categorias via SOAP: " + e.getMessage());
+            }
+
             if (eventosWs != null && eventosWs.getItem() != null) {
                 eventos.addAll(eventosWs.getItem());
                 Collections.sort(eventos);
             }
-
+            if (categoriasWs != null && categoriasWs.getItem() != null) {
+                categorias.addAll(categoriasWs.getItem());
+                Collections.sort(categorias);
+            }
 
             request.setAttribute("eventos", eventos);
+            request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", avatar);
             request.setAttribute("role", role);
@@ -114,7 +128,7 @@ public class AltaEdicionServlet extends HttpServlet {
                 return;
             }
 
-            // Procesar imagen si existe (por ahora no se envía via SOAP, pendiente de implementar)
+            // Procesar imagen si existe
             String rutaImagen = procesarImagen(request);
 
             // Usar el PublicadorControlador via SOAP
@@ -132,21 +146,64 @@ public class AltaEdicionServlet extends HttpServlet {
             fechaAlta.setAnio(hoy.getYear());
 
             // Crear edición vía SOAP
-            String resultado = publicador.altaEdicionDeEvento(
-                nickOrganizador,
-                evento,
-                nombre,
-                sigla,
-                ciudad,
-                pais,
-                fechaInicio,
-                fechaFin,
-                fechaAlta,
-                rutaImagen
-            );
+            String rutaImagenParam = (rutaImagen == null) ? "" : rutaImagen; // imagen opcional: pasar cadena vacía
+            String resultado = null;
+            try {
+                resultado = publicador.altaEdicionDeEvento(
+                    nickOrganizador,
+                    evento,
+                    nombre,
+                    sigla,
+                    ciudad,
+                    pais,
+                    fechaInicio,
+                    fechaFin,
+                    fechaAlta,
+                    rutaImagenParam
+                );
+            } catch (Exception ex) {
+                // Extraer mensaje útil de la excepción
+                String msg = extractExceptionMessage(ex);
+                // Guardar mensaje en sesión para que lo muestre la vista y redirigir (PRG)
+                HttpSession session2 = request.getSession();
+                session2.setAttribute("datosMensaje", "❌ Error al crear edición: " + msg);
+                session2.setAttribute("datosMensajeTipo", "error");
+                response.sendRedirect(request.getContextPath() + "/altaEdicion");
+                return;
+            }
 
-            if (!resultado.equals("OK")) {
-                mostrarFormularioConError(request, response, "❌ No se pudo crear la edición: " + resultado);
+            if (resultado == null || !"OK".equals(resultado)) {
+                // Algunos controladores retornan el nombre como mensaje cuando hay duplicado.
+                if (resultado != null && resultado.trim().equalsIgnoreCase(nombre.trim())) {
+                    HttpSession session2 = request.getSession();
+                    session2.setAttribute("datosMensaje", "❌ No se pudo crear la edición: Ya existe una edición con ese nombre para el evento seleccionado.");
+                    session2.setAttribute("datosMensajeTipo", "error");
+                    response.sendRedirect(request.getContextPath() + "/altaEdicion");
+                    return;
+                }
+
+                // Intentar detectar duplicado consultando las ediciones del evento
+                try {
+                    StringArray eds = publicador.listarEdicionesDeEvento(evento);
+                    if (eds != null && eds.getItem() != null) {
+                        for (String e : eds.getItem()) {
+                            if (e != null && e.equalsIgnoreCase(nombre)) {
+                                HttpSession session2 = request.getSession();
+                                session2.setAttribute("datosMensaje", "❌ No se pudo crear la edición: Ya existe una edición con ese nombre para el evento seleccionado.");
+                                session2.setAttribute("datosMensajeTipo", "error");
+                                response.sendRedirect(request.getContextPath() + "/altaEdicion");
+                                return;
+                            }
+                        }
+                    }
+                } catch (Exception ignore) {
+                }
+
+                HttpSession session2 = request.getSession();
+                String detalle = (resultado == null) ? "Respuesta nula del servicio SOAP" : resultado;
+                session2.setAttribute("datosMensaje", "❌ No se pudo crear la edición: " + detalle);
+                session2.setAttribute("datosMensajeTipo", "error");
+                response.sendRedirect(request.getContextPath() + "/altaEdicion");
                 return;
             }
             
@@ -306,6 +363,18 @@ public class AltaEdicionServlet extends HttpServlet {
         
         request.setAttribute("error", error);
         request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
+    }
+
+    // Helper: extrae mensaje de excepción recorriendo causes
+    private String extractExceptionMessage(Throwable t) {
+        if (t == null) return "Error desconocido";
+        Throwable cur = t;
+        while (cur != null) {
+            String m = cur.getMessage();
+            if (m != null && !m.trim().isEmpty()) return m;
+            cur = cur.getCause();
+        }
+        return t.toString();
     }
 }
 

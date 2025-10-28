@@ -28,6 +28,7 @@ public class ObjectFactory {
     private static final QName _CorreoInvalidoFault_QNAME = new QName("http://publicadores/", "CorreoInvalidoFault");
     private static final QName _EdicionExistenteFault_QNAME = new QName("http://publicadores/", "EdicionExistenteFault");
     private static final QName _EdicionNoExisteFault_QNAME = new QName("http://publicadores/", "EdicionNoExisteFault");
+    private static final QName _EventoNoExisteFault_QNAME = new QName("http://publicadores/", "EventoNoExisteFault");
     private static final QName _EventoRepetidoFault_QNAME = new QName("http://publicadores/", "EventoRepetidoFault");
     private static final QName _ExisteInstitucionFault_QNAME = new QName("http://publicadores/", "ExisteInstitucionFault");
     private static final QName _FechaInvalidaFault_QNAME = new QName("http://publicadores/", "FechaInvalidaFault");
@@ -84,6 +85,16 @@ public class ObjectFactory {
      */
     public EdicionNoExisteException createEdicionNoExisteException() {
         return new EdicionNoExisteException();
+    }
+
+    /**
+     * Create an instance of {@link EventoNoExisteException }
+     * 
+     * @return
+     *     the new instance of {@link EventoNoExisteException }
+     */
+    public EventoNoExisteException createEventoNoExisteException() {
+        return new EventoNoExisteException();
     }
 
     /**
@@ -236,6 +247,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "EdicionNoExisteFault")
     public JAXBElement<EdicionNoExisteException> createEdicionNoExisteFault(EdicionNoExisteException value) {
         return new JAXBElement<>(_EdicionNoExisteFault_QNAME, EdicionNoExisteException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EventoNoExisteException }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link EventoNoExisteException }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "EventoNoExisteFault")
+    public JAXBElement<EventoNoExisteException> createEventoNoExisteFault(EventoNoExisteException value) {
+        return new JAXBElement<>(_EventoNoExisteFault_QNAME, EventoNoExisteException.class, null, value);
     }
 
     /**

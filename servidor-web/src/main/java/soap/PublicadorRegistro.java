@@ -47,13 +47,21 @@ public interface PublicadorRegistro {
      * 
      * @param arg0
      * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
      * @return
-     *     returns soap.DtTipoDeRegistro
+     *     returns boolean
+     * @throws UsuarioNoExisteException_Exception
+     * @throws UsuarioYaRegistradoEnEdicionException_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroRequest", output = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroResponse")
-    public DtTipoDeRegistro consultaTipoDeRegistro(
+    @Action(input = "http://publicadores/PublicadorRegistro/altaRegistroRequest", output = "http://publicadores/PublicadorRegistro/altaRegistroResponse", fault = {
+        @FaultAction(className = UsuarioYaRegistradoEnEdicionException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioYaRegistradoEnEdicionException"),
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioNoExisteException")
+    })
+    public boolean altaRegistro(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")

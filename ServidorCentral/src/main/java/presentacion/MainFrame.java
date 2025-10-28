@@ -35,7 +35,6 @@ import gui.internal.ConsultaTipoRegistroFrame;
 import gui.internal.ModificarUsuarioFrame;
 import gui.internal.RegistroAEdicionFrame;
 
-
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
@@ -194,7 +193,7 @@ public class MainFrame extends JFrame {
 					ExisteInstitucionException |
 					EdicionExistenteException |
 					FechasIncompatiblesException |
-					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException |
+					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException | EventoNoExisteException |
 					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException |
 					PatrocinioDuplicadoException e1) {
 				e1.printStackTrace();

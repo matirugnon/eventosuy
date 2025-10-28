@@ -8,6 +8,7 @@ import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
+import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
@@ -77,7 +78,7 @@ public class PublicadorCargaDatos {
 	
 	public boolean cargarDatos()
 			throws UsuarioRepetidoException,
-			CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException,
+			CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, EventoNoExisteException, FechaInvalidaException,
 			ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 			NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException {
 		
