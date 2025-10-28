@@ -120,17 +120,22 @@
 						<h2 style="margin: 0 0 1.5rem 0; color: #182080;">Alta de
 							Edición de Evento</h2>
 
-						<!-- Mostrar mensaje de error si existe -->
-						<c:if test="${not empty error}">
-							<div class="error-message">${error}</div>
-						</c:if>
+					<!-- Mostrar mensaje de error si existe -->
+					<c:if test="${not empty error}">
+						<div class="error-message">${error}</div>
+					</c:if>
 
-						<!-- Mostrar mensaje de éxito si existe -->
-						<c:if test="${not empty mensaje}">
-							<div class="success-message">${mensaje}</div>
-						</c:if>
-
-						<form action="${pageContext.request.contextPath}/altaEdicion"
+					<!-- Mostrar mensaje según el tipo -->
+					<c:if test="${not empty mensaje}">
+						<c:choose>
+							<c:when test="${tipoMensaje == 'error'}">
+								<div class="error-message">${mensaje}</div>
+							</c:when>
+							<c:otherwise>
+								<div class="success-message">${mensaje}</div>
+							</c:otherwise>
+						</c:choose>
+					</c:if>						<form action="${pageContext.request.contextPath}/altaEdicion"
 							method="post" enctype="multipart/form-data" id="formEdicion">
 							<!-- Evento y Nombre -->
 							<div class="form-grid">
