@@ -100,6 +100,11 @@ public class ControladorEvento implements IControladorEvento {
 		        throw new FechaInvalidaException(fechaAlta.getDia(), fechaAlta.getMes(), fechaAlta.getAnio());
 		    }
 
+		    // Asignar imagen por defecto cuando no se proporciona
+		    if (imagen == null || imagen.trim().isEmpty()) {
+		    	imagen = "/img/eventoSinImagen.png";
+		    }
+
 		    Set<Categoria> categorias = manejadorE.getCategorias(nomcategorias);
 		    Evento eve = new Evento(nomEvento, desc, fechaAlta, sigla, categorias, imagen);
 		    manejadorE.addEvento(eve);
