@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -50,6 +53,8 @@ public class PerfilUsuarioServlet extends HttpServlet {
             
             PublicadorUsuario publicador = SoapClientHelper.getPublicadorUsuario();
             PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+
+            
             
             // Obtener DTUsuario completo desde SOAP
             DtUsuario dtUsuario = publicador.getDTUsuario(nickname);
@@ -170,9 +175,16 @@ public class PerfilUsuarioServlet extends HttpServlet {
             }
             
             if (session != null) {
+
+                StringArray categoriasSet = publicadorControlador.listarCategorias();
+                List<String> categorias = new ArrayList<>(categoriasSet.getItem());
+                Collections.sort(categorias);
+
+
                 request.setAttribute("sessionNickname", session.getAttribute("usuario"));
                 request.setAttribute("sessionAvatar", session.getAttribute("avatar"));
                 request.setAttribute("sessionRole", session.getAttribute("role"));
+                request.setAttribute("categorias", categorias);
             }
             
             if ("/miPerfil".equals(requestPath)) {
@@ -180,7 +192,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/WEB-INF/views/perfilUsuario.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al consultar el perfil: " + e.getMessage());

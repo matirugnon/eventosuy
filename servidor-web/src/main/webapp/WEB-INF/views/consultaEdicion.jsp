@@ -52,11 +52,11 @@
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Inicio:</strong>
-										${edicion.fechaInicioDia}/${edicion.fechaInicioMes}/${edicion.fechaInicioAnio}
+										${edicion.fechaInicio.dia}/${edicion.fechaInicio.mes}/${edicion.fechaInicio.anio}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Fecha Fin:</strong>
-										${edicion.fechaFinDia}/${edicion.fechaFinMes}/${edicion.fechaFinAnio}
+										${edicion.fechaFin.dia}/${edicion.fechaFin.mes}/${edicion.fechaFin.anio}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Estado:</strong>
