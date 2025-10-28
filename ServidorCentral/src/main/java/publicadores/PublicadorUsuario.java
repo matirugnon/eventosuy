@@ -239,4 +239,9 @@ public class PublicadorUsuario {
     public boolean existeNickname(String nick) {
     	return ctrlUs.existeNickname(nick);
     }
+    
+    @WebMethod
+    public boolean existeEmail(String email) {
+    	return ctrlUs.existeCorreo(email);
+    }
 }
