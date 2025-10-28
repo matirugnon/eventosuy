@@ -165,7 +165,7 @@ class prueba1 {
 		DTRegistro DTRegObt = contR.getRegistro("SofiM","General");
 		DTRegistro  DTReges = new DTRegistro("SofiM", "General", new DTFecha(16,7,2024), 600.0, "Montevideo Comics 2024");
 		assertEquals(DTRegObt.getCosto(),DTReges.getCosto());
-		assertEquals(DTRegObt.getnomEdicion(),DTReges.getnomEdicion());
+		assertEquals(DTRegObt.getNomEdicion(),DTReges.getNomEdicion());
 		assertEquals(DTRegObt.getTipoDeRegistro(),DTReges.getTipoDeRegistro());
 		assertEquals(DTRegObt.getAsistente(),DTReges.getAsistente());
 
