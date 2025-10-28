@@ -57,12 +57,26 @@ public class ConsultaEdicionServlet extends HttpServlet {
                 return;
             }
             
-            // Obtener informaciÃ³n del evento padre
+            // Obtener información del evento padre
             String nombreEventoPadre = publicador.obtenerEventoDeEdicion(nombreEdicion);
             
+            // Obtener información del organizador
+            String nicknameOrganizador = edicionDt.getOrganizador();
             DTUsuario organizador = null; 
-
-            String avatarOrganizador = "/img/avatar-default.png"; // Avatar por defecto
+            String avatarOrganizador = "/img/usSinFoto.webp"; // Avatar por defecto
+            
+            if (nicknameOrganizador != null && !nicknameOrganizador.trim().isEmpty()) {
+                try {
+                    soap.PublicadorUsuario publicadorUsuario = SoapClientHelper.getPublicadorUsuario();
+                    avatarOrganizador = publicadorUsuario.obtenerAvatar(nicknameOrganizador);
+                    if (avatarOrganizador == null || avatarOrganizador.trim().isEmpty()) {
+                        avatarOrganizador = "/img/usSinFoto.webp";
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error obteniendo avatar del organizador: " + e.getMessage());
+                    avatarOrganizador = "/img/usSinFoto.webp";
+                }
+            }
 
             // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
             StringArray categoriasSet = publicador.listarCategorias();
