@@ -7,6 +7,7 @@ import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoRepetidoException;
+import excepciones.EventoNoExisteException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
@@ -23,12 +24,13 @@ import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.EstadoEdicion;
 import logica.datatypesyenum.NivelPatrocinio;
 
+
 public class Utils {
 
 
 public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEvento ctrlEvento, IControladorRegistro ctrlRegistro  )
 		throws UsuarioRepetidoException,
-				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException,
+				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, EventoNoExisteException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException
 

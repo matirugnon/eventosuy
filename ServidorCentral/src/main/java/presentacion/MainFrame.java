@@ -17,9 +17,7 @@ import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-<<<<<<< HEAD
-import gui.internal.*;
-=======
+
 import gui.internal.AceptarRechazarEdicionFrame;
 import gui.internal.AltaEdicionFrame;
 import gui.internal.AltaEventoFrame;
@@ -35,8 +33,6 @@ import gui.internal.ConsultaTipoRegistroFrame;
 import gui.internal.ModificarUsuarioFrame;
 import gui.internal.RegistroAEdicionFrame;
 
-
->>>>>>> b0766b072dbd19b918fe707cc4c9473b364e55ff
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
@@ -195,7 +191,7 @@ public class MainFrame extends JFrame {
 					ExisteInstitucionException |
 					EdicionExistenteException |
 					FechasIncompatiblesException |
-					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException |
+					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException | EventoNoExisteException |
 					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException |
 					PatrocinioDuplicadoException e1) {
 				e1.printStackTrace();

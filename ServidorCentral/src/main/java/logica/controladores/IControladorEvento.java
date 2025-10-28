@@ -115,7 +115,8 @@ public interface IControladorEvento {
 
 
 	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
-	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta);
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta) 
+			throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
 
 
 
@@ -187,7 +188,7 @@ public interface IControladorEvento {
 
 
 	public boolean altaEdicion(String string, String string2, String string3, String string4, String string5,
-			String string6, DTFecha dtFecha, DTFecha dtFecha2, DTFecha dtFecha3, String string7);
+			String string6, DTFecha dtFecha, DTFecha dtFecha2, DTFecha dtFecha3, String string7) throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
 
 
 

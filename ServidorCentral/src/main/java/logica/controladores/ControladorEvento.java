@@ -194,27 +194,27 @@ public class ControladorEvento implements IControladorEvento {
 
 	// Método sin imagen (mantiene compatibilidad)
 	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
-	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta) {
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta) throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException{
 	    return altaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, null);
 	}
 
 	// Método con imagen (opcional)
 	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
-	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen) {
-	    try {
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)  throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException{
+	    
 	        // Validaciones y lógica original
 	        ManejadorEventos manEv = ManejadorEventos.getInstance();
 	        Evento event = manEv.obtenerEvento(nomEvento);
 	        if (event == null) {
-	            return false; // Evento no existe
+				throw new EventoNoExisteException(nomEvento);
 	        }
 
 	        if (existeEdicion(nomEdicion)) {
-	            return false; // Edición ya existe
+	            throw new EdicionExistenteException(nomEdicion);// Edición ya existe
 	        }
 
 	        if (fechaFin.compareTo(fechaIni) < 0) {
-	            return false; // Fechas inválidas
+	            throw new FechasIncompatiblesException();// Fechas inválidas
 	        }
 
 	        ManejadorUsuario manUs = ManejadorUsuario.getinstance();
@@ -231,11 +231,6 @@ public class ControladorEvento implements IControladorEvento {
 	        manEv.addEdicion(edi);
 
 	        return true; // Éxito
-
-	    } catch (Exception e) {
-	        // Opcional: loggear el error
-	        return false;
-	    }
 	}
 
 	public Set<String> listarEdiciones(String nomEvento)

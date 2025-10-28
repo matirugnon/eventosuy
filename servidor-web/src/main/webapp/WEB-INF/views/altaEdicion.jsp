@@ -100,6 +100,17 @@
 		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
+		<%-- Copiar mensaje desde sesión a request (si existe), igual que en otras vistas --%>
+		<% String datosMensaje = (String) session.getAttribute("datosMensaje");
+		   String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
+		   if (datosMensaje != null) {
+			   request.setAttribute("mensaje", datosMensaje);
+			   request.setAttribute("tipoMensaje", "error".equals(datosMensajeTipo) ? "error" : "success");
+			   session.removeAttribute("datosMensaje");
+			   session.removeAttribute("datosMensajeTipo");
+		   }
+		%>
+
 		<div class="content">
 			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
