@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
@@ -19,7 +18,17 @@ import jakarta.xml.bind.annotation.XmlType;
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="categorias" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         <element name="categorias" minOccurs="0">
+ *           <complexType>
+ *             <complexContent>
+ *               <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 <sequence>
+ *                   <element name="categoria" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *                 </sequence>
+ *               </restriction>
+ *             </complexContent>
+ *           </complexType>
+ *         </element>
  *         <element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="fechaEvento" type="{http://publicadores/}DTFecha" minOccurs="0"/>
  *         <element name="imagen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -44,8 +53,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class DtEvento {
 
-    @XmlElement(nillable = true)
-    protected List<String> categorias;
+    protected DtEvento.Categorias categorias;
     protected String descripcion;
     protected DTFecha fechaEvento;
     protected String imagen;
@@ -55,32 +63,25 @@ public class DtEvento {
     /**
      * Gets the value of the categorias property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a {@code set} method for the categorias property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getCategorias().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
      * @return
-     *     The value of the categorias property.
+     *     possible object is
+     *     {@link DtEvento.Categorias }
+     *     
      */
-    public List<String> getCategorias() {
-        if (categorias == null) {
-            categorias = new ArrayList<>();
-        }
-        return this.categorias;
+    public DtEvento.Categorias getCategorias() {
+        return categorias;
+    }
+
+    /**
+     * Sets the value of the categorias property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DtEvento.Categorias }
+     *     
+     */
+    public void setCategorias(DtEvento.Categorias value) {
+        this.categorias = value;
     }
 
     /**
@@ -201,6 +202,67 @@ public class DtEvento {
      */
     public void setSigla(String value) {
         this.sigla = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>{@code
+     * <complexType>
+     *   <complexContent>
+     *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       <sequence>
+     *         <element name="categoria" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+     *       </sequence>
+     *     </restriction>
+     *   </complexContent>
+     * </complexType>
+     * }</pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "categoria"
+    })
+    public static class Categorias {
+
+        protected List<String> categoria;
+
+        /**
+         * Gets the value of the categoria property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the Jakarta XML Binding object.
+         * This is why there is not a {@code set} method for the categoria property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getCategoria().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link String }
+         * 
+         * 
+         * @return
+         *     The value of the categoria property.
+         */
+        public List<String> getCategoria() {
+            if (categoria == null) {
+                categoria = new ArrayList<>();
+            }
+            return this.categoria;
+        }
+
     }
 
 }
