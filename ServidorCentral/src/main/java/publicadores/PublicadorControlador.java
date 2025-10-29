@@ -67,7 +67,8 @@ public class PublicadorControlador {
         DTFecha fechaInicio,
         DTFecha fechaFin,
         DTFecha fechaAlta, 
-        String rutaImagen
+        String rutaImagen,
+        String url
 
     ) {
 
@@ -84,7 +85,8 @@ public class PublicadorControlador {
                 fechaInicio,
                 fechaFin,
                 fechaAlta,
-                imagenFinal
+                imagenFinal,
+                url
             );
             return "OK"; // Éxito
 

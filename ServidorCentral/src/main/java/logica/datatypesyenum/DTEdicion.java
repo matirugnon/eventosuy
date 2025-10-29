@@ -24,6 +24,7 @@ public class DTEdicion implements Serializable{
     private Set<Map.Entry<String, String>> registros;
     private EstadoEdicion estado; // Nuevo atributo
     private String imagen; // Imagen de la edición
+    private String video; // Video de la edición
     
     public DTEdicion() {}
     
@@ -33,6 +34,15 @@ public class DTEdicion implements Serializable{
     public void setEvento(String evento) {
 		this.evento = evento;
 	}
+
+	public void setVideo(String video) {
+		this.video = video;
+	}
+	
+	public String getVideo() {
+		return video;
+	}
+	
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
@@ -87,25 +97,29 @@ public class DTEdicion implements Serializable{
 	}
 
     public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado) {
-        this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, null);
+		this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, null, null);
     }
+	public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado, String imagen) {
+		this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, imagen, null);
+	}
 
-    public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado, String imagen) {
-        this.evento = evento;
-        this.nombre = nombre;
-        this.sigla = sig;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.altaEdicion = altaEdicion;
-        this.ciudad = ciudad;
-        this.pais = pais;
-        this.organizador = org;
-        this.tiposDeRegistro = tdr;
-        this.registros = reg != null ? reg : Set.of(); // evita null
-        this.patrocinios = patro;
-        this.estado = estado;
-        this.imagen = imagen;
-    }
+	public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado, String imagen, String video) {
+		this.evento = evento;
+		this.nombre = nombre;
+		this.sigla = sig;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.altaEdicion = altaEdicion;
+		this.ciudad = ciudad;
+		this.pais = pais;
+		this.organizador = org;
+		this.tiposDeRegistro = tdr;
+		this.registros = reg != null ? reg : Set.of(); // evita null
+		this.patrocinios = patro;
+		this.estado = estado;
+		this.imagen = imagen;
+		this.video = video;
+	}
 
  
 

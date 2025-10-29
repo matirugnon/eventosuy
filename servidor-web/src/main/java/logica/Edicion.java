@@ -29,12 +29,14 @@ public class Edicion{
 
 	private EstadoEdicion estado; // Nuevo atributo
 	private String imagen;
+    private String video;
 
 	// Constructor sin imagen (mantiene compatibilidad)
 	public Edicion(String nom, String sigl, String ciu, String pai, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento) {
 		this(nom, sigl, ciu, pai, ini, fin, alta, org, evento, null);
 	}
 
+	// Constructor con imagen (opcional)
 	// Constructor con imagen (opcional)
 	public Edicion(String nom, String sigl, String ciu, String pai, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento, String imagen) {
 		nombre = nom;
@@ -50,6 +52,31 @@ public class Edicion{
 		altaEdicionDtFecha = alta;
 		this.evento = evento; // Inicializar la referencia al objeto Evento
 		this.imagen = imagen;
+		this.video = null;
+
+		this.tiposDeRegistro = new HashMap<>();
+		this.patrocinios = new HashMap<>();
+		this.estado = EstadoEdicion.INGRESADA; // Estado por defecto
+
+		//no me acuerdo como poner localdate :)
+	}
+
+	// Constructor con imagen y video (opcional)
+	public Edicion(String nom, String sigl, String ciu, String pai, DTFecha ini, DTFecha fin, DTFecha alta, Organizador org, Evento evento, String imagen, String video) {
+		nombre = nom;
+		fechaInicioDtFecha = ini;
+		fechafinDtFecha = fin;
+		ciudad = ciu;
+		pais = pai;
+
+		sigla = sigl;
+
+		organizador = org;
+
+		altaEdicionDtFecha = alta;
+		this.evento = evento; // Inicializar la referencia al objeto Evento
+		this.imagen = imagen;
+		this.video = video;
 
 		this.tiposDeRegistro = new HashMap<>();
 		this.patrocinios = new HashMap<>();
@@ -133,23 +160,24 @@ public class Edicion{
 	        }
 	    }
 
-	    // Construir y devolver el DTEdicion
-	    return new DTEdicion(
-	        this.evento.getNombre(), // Obtener el nombre del evento desde el objeto Evento
-	        this.nombre,
-	        this.sigla,
-	        this.fechaInicioDtFecha,
-	        this.fechafinDtFecha,
-	        this.altaEdicionDtFecha,
-	        this.ciudad,
-	        this.pais,
-	        nicknameOrganizador,
-	        nombresTiposDeRegistro,
-	        registrosData,
-	        patrocinios,
-	        this.estado, // Incluir el estado
-	        this.imagen  // Incluir la imagen
-	    );
+		// Construir y devolver el DTEdicion (incluye imagen y video, ambos opcionales)
+		return new DTEdicion(
+			this.evento.getNombre(), // Obtener el nombre del evento desde el objeto Evento
+			this.nombre,
+			this.sigla,
+			this.fechaInicioDtFecha,
+			this.fechafinDtFecha,
+			this.altaEdicionDtFecha,
+			this.ciudad,
+			this.pais,
+			nicknameOrganizador,
+			nombresTiposDeRegistro,
+			registrosData,
+			patrocinios,
+			this.estado, // Incluir el estado
+			this.imagen, // Incluir la imagen (puede ser null)
+			this.video   // Incluir la url de video (puede ser null)
+		);
 	}
 
 	public boolean esPatrocinador(String nomInstitucion) {

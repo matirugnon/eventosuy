@@ -208,6 +208,13 @@
 								</div>
 							</div>
 
+							<!-- Video URL -->
+							<div class="form-group">
+								<label for="videoUrl">URL de video de la edición (opcional)</label>
+								<input type="url" id="videoUrl" name="videoUrl" class="form-control" placeholder="https://ejemplo.com/video">
+								<p class="note">Si la edición tiene un video asociado, ingrese la URL aquí.</p>
+							</div>
+
 							<!-- Botones -->
 							<div style="display: flex; gap: 0.75rem; margin-top: 2rem;">
 								<button type="submit" class="btn-primary">Crear edición</button>

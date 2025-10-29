@@ -27,6 +27,8 @@
 			<main>
 				<section class="panel">
 					<div class="panel-body">
+							<!-- Video full-width (si existe) -->
+							
 						<div class="event-detail" style="display: flex; gap: 2rem;">
 							<div style="flex: 1;">
 								<div class="event-image"
@@ -171,6 +173,14 @@
 								</c:if>
 							</div>
 						</div>
+						<c:if test="${not empty edicion.video}">
+								<div class="event-video-full" style="width: 100%; margin-bottom: 1rem;">
+									<iframe id="videoIframe" data-video="${edicion.video}" src="" title="Video de la edición"
+										style="width: 100%; aspect-ratio: 16/9; border-radius: 8px; border: 0;"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+								</iframe>
+								</div>
+						</c:if>
 					</div>
 				</section>
 			</main>
@@ -178,3 +188,52 @@
 	</div>
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	var iframe = document.getElementById('videoIframe');
+	if (!iframe) return;
+	var video = iframe.dataset.video;
+	if (!video) return;
+
+	function toEmbed(url) {
+		try {
+			url = url.trim();
+			// If already an embed URL, return as-is
+			if (url.includes('/embed/')) return url;
+			// Try to use URL constructor for robust parsing
+			var parsed = new URL(url);
+			var host = parsed.hostname.toLowerCase();
+			// youtube.com/watch?v=...
+			if (host.indexOf('youtube.com') !== -1) {
+				var v = parsed.searchParams.get('v');
+				if (v) return 'https://www.youtube.com/embed/' + v;
+			}
+			// youtu.be/ID
+			if (host.indexOf('youtu.be') !== -1) {
+				var parts = parsed.pathname.split('/');
+				var id = parts.pop() || parts.pop();
+				if (id) return 'https://www.youtube.com/embed/' + id;
+			}
+			// fallback: return original URL (may still be embeddable)
+			return url;
+		} catch (e) {
+			// If URL parsing fails, attempt simple patterns
+			if (url.indexOf('watch?v=') !== -1) {
+				var p = url.split('watch?v=')[1].split('&')[0];
+				return 'https://www.youtube.com/embed/' + p;
+			}
+			if (url.indexOf('youtu.be/') !== -1) {
+				var p2 = url.split('youtu.be/')[1].split('?')[0];
+				return 'https://www.youtube.com/embed/' + p2;
+			}
+			return url;
+		}
+	}
+
+	var embed = toEmbed(video);
+	if (embed) {
+		iframe.src = embed;
+	}
+});
+</script>

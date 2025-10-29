@@ -203,9 +203,15 @@ public class ControladorEvento implements IControladorEvento {
 	    return altaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, null);
 	}
 
+	// Método con imagen (mantiene compatibilidad): solo imagen, sin video
+	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen) throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException{
+	    return altaEdicion(nomEvento, nickOrganizador, nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, imagen, null);
+	}
+
 	// Método con imagen (opcional)
 	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
-	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen)  throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException{
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen, String video)  throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException{
 	    
 	        // Validaciones y lógica original
 	        ManejadorEventos manEv = ManejadorEventos.getInstance();
@@ -229,7 +235,7 @@ public class ControladorEvento implements IControladorEvento {
 	        }
 
 	        Organizador org = (Organizador) usu;
-	        Edicion edi = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, event, imagen);
+	        Edicion edi = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, event, imagen, video);
 
 	        org.agregarEdicion(edi);
 	        event.agregarEdicion(edi);

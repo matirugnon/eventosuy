@@ -230,6 +230,44 @@ public class ControladorEvento implements IControladorEvento {
 	    }
 	}
 
+	// Método con imagen y video (opcional)
+	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String imagen, String video) {
+	    try {
+	        ManejadorEventos manEv = ManejadorEventos.getInstance();
+	        Evento event = manEv.obtenerEvento(nomEvento);
+	        if (event == null) {
+	            return false; // Evento no existe
+	        }
+
+	        if (existeEdicion(nomEdicion)) {
+	            return false; // Edición ya existe
+	        }
+
+	        if (fechaFin.compareTo(fechaIni) < 0) {
+	            return false; // Fechas inválidas
+	        }
+
+	        ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+	        Usuario usu = manUs.obtenerUsuario(nickOrganizador);
+	        if (usu == null || !(usu instanceof Organizador)) {
+	            return false; // Usuario no válido
+	        }
+
+	        Organizador org = (Organizador) usu;
+	        Edicion edi = new Edicion(nomEdicion, sigla, ciudad, pais, fechaIni, fechaFin, fechaAlta, org, event, imagen, video);
+
+	        org.agregarEdicion(edi);
+	        event.agregarEdicion(edi);
+	        manEv.addEdicion(edi);
+
+	        return true; // Éxito
+
+	    } catch (Exception e) {
+	        return false;
+	    }
+	}
+
 	public Set<String> listarEdiciones(String nomEvento)
 			throws EventoNoExisteException{
 

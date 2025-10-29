@@ -113,10 +113,23 @@ public interface IControladorEvento {
 	public boolean existeEdicion(String nomEdicion);
 
 
-
+	//sin nada
 	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
 	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta) 
+				throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
+
+	//con imagen sin video
+	public boolean altaEdicion(String nomEvento, String nickOrganizador, String nomEdicion, String sigla,
+	        String ciudad, String pais, DTFecha fechaIni, DTFecha fechaFin, DTFecha fechaAlta, String img) 
 			throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
+	
+	//con video sin imagen
+
+	//con imagen y video
+	public boolean altaEdicion(String string, String string2, String string3, String string4, String string5,
+			String string6, DTFecha dtFecha, DTFecha dtFecha2, DTFecha dtFecha3, String string7, String video) 
+				throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
+		
 
 
 
@@ -184,15 +197,6 @@ public interface IControladorEvento {
 
 
 	public Set<DTEdicion> listarEdicionesOrganizadasPorEstado(String nicknameOrganizador, EstadoEdicion estado);
-
-
-
-	public boolean altaEdicion(String string, String string2, String string3, String string4, String string5,
-			String string6, DTFecha dtFecha, DTFecha dtFecha2, DTFecha dtFecha3, String string7) throws EdicionExistenteException, SiglaRepetidaException, FechaInvalidaException, FechasIncompatiblesException, EventoNoExisteException;
-
-
-
-
 
 
 	public boolean darAltaEvento(String string, String string2, DTFecha dtFecha, String string3, Set<String> nomCategorias,

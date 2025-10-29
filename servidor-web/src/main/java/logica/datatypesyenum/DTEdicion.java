@@ -20,12 +20,17 @@ public class DTEdicion {
     private Set<Map.Entry<String, String>> registros;
     private EstadoEdicion estado; // Nuevo atributo
     private String imagen; // Imagen de la edición
+    private String video; // Video de la edición
 
     public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado) {
-        this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, null);
+        this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, null, null);
     }
 
     public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado, String imagen) {
+        this(evento, nombre, sig, fechaInicio, fechaFin, altaEdicion, ciudad, pais, org, tdr, reg, patro, estado, imagen, null);
+    }
+
+    public DTEdicion(String evento, String nombre, String sig, DTFecha fechaInicio, DTFecha fechaFin, DTFecha altaEdicion, String ciudad, String pais, String org, Set<String> tdr, Set<Map.Entry<String, String>> reg, Set<String> patro, EstadoEdicion estado, String imagen, String video) {
         this.evento = evento;
         this.nombre = nombre;
         this.sigla = sig;
@@ -40,6 +45,7 @@ public class DTEdicion {
         this.patrocinios = patro;
         this.estado = estado;
         this.imagen = imagen;
+        this.video = video;
     }
 
  
@@ -72,6 +78,7 @@ public class DTEdicion {
 	public Set<Map.Entry<String, String>> getRegistros(){return registros; }
 	public EstadoEdicion getEstado() { return estado; } // Nuevo getter
 	public String getImagen() { return imagen; } // Getter para imagen
+    public String getVideo() { return video; } // Getter para video
 
 
 

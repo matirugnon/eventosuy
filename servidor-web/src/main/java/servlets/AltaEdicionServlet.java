@@ -130,6 +130,7 @@ public class AltaEdicionServlet extends HttpServlet {
 
             // Procesar imagen si existe
             String rutaImagen = procesarImagen(request);
+            String video = request.getParameter("videoUrl");
 
             // Usar el PublicadorControlador via SOAP
             PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
@@ -159,7 +160,8 @@ public class AltaEdicionServlet extends HttpServlet {
                     fechaInicio,
                     fechaFin,
                     fechaAlta,
-                    rutaImagenParam
+                    rutaImagenParam,
+                    video
                 );
             } catch (Exception ex) {
                 // Extraer mensaje útil de la excepción

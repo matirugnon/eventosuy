@@ -1,4 +1,7 @@
+
 package datoprueba;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -188,16 +191,16 @@ class prueba1 {
 		assertEquals(espera,obtenido);
 
 
-		DTSeleccionEvento DTSel = contE.seleccionarEvento("Montevideo Rock");
-		Set<String> edEs = new HashSet<>();
-		edEs.add("Montevideo Rock 2025");
-		DTEvento DTEventes = new DTEvento("Montevideo Rock","MONROCK","Festival de rock con artistas nacionales e internacionales",new DTFecha(15,3,2023), edEs);
-		DTSeleccionEvento DTSelesp = new DTSeleccionEvento(DTEventes,Set.of("Cultura", "Música"),edEs);
-		assertEquals(DTSelesp.getCategorias(),DTSel.getCategorias());
-		assertEquals(DTSelesp.getDescripcion(),DTSel.getDescripcion());
-		assertEquals(DTSelesp.getEdiciones(),DTSel.getEdiciones());
-		assertEquals(DTSelesp.getNombre(),DTSel.getNombre());
-		assertEquals(DTSelesp.getSigla(),DTSel.getSigla());
+	DTSeleccionEvento DTSel = contE.seleccionarEvento("Montevideo Rock");
+	Set<String> edEs = new HashSet<>();
+	edEs.add("Montevideo Rock 2025");
+	DTEvento DTEventes = new DTEvento("Montevideo Rock","MONROCK","Festival de rock con artistas nacionales e internacionales",new DTFecha(15,3,2023), new ArrayList<>(edEs));
+	DTSeleccionEvento DTSelesp = new DTSeleccionEvento(DTEventes,Set.of("Cultura", "Música"),edEs);
+	assertEquals(DTSelesp.getNombresCategoriasList(),DTSel.getNombresCategoriasList());
+	assertEquals(DTSelesp.getDescripcion(),DTSel.getDescripcion());
+	assertEquals(DTSelesp.getNombresEdicionesList(),DTSel.getNombresEdicionesList());
+	assertEquals(DTSelesp.getNombre(),DTSel.getNombre());
+	assertEquals(DTSelesp.getSigla(),DTSel.getSigla());
 
 
 		DTEdicion DTed = contE.consultarEdicion("Web Summit 2026");

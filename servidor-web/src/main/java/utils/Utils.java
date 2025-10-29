@@ -120,63 +120,71 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlEvento.altaCategoria("Investigación");
 
         // Eventos
-        if (!ctrlEvento.existeEvento("Conferencia de Tecnología"))
-            ctrlEvento.darAltaEvento("Conferencia de Tecnología", "Evento sobre innovación tecnológica", new DTFecha(1,10,2025), "CONFTEC", Set.of("Tecnología", "Innovación"));
-        if (!ctrlEvento.existeEvento("Feria del Libro"))
-            ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(1,2,2025), "FERLIB", Set.of("Literatura", "Cultura"), "/img/IMG-EV02.jpeg");
-        if (!ctrlEvento.existeEvento("Montevideo Rock"))
-            ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(15,3,2023), "MONROCK", Set.of("Cultura", "Música"), "/img/IMG-EV03.jpeg");
-        if (!ctrlEvento.existeEvento("Maratón de Montevideo"))
-            ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(1,1,2022), "MARATON", Set.of("Deporte", "Salud"), "/img/IMG-EV04.png");
-        if (!ctrlEvento.existeEvento("Montevideo Comics"))
-            ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(10,4,2024), "COMICS", Set.of("Cultura", "Entretenimiento"), "/img/IMG-EV05.png");
-        if (!ctrlEvento.existeEvento("Expointer Uruguay"))
-            ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"), "/img/IMG-EV06.png");
-        if (!ctrlEvento.existeEvento("Montevideo Fashion Week"))
-            ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(20,7,2025), "MFASHION", Set.of("Cultura", "Moda"));
+        try {
+            if (!ctrlEvento.existeEvento("Conferencia de Tecnología"))
+                ctrlEvento.darAltaEvento("Conferencia de Tecnología", "Evento sobre innovación tecnológica", new DTFecha(1,10,2025), "CONFTEC", Set.of("Tecnología", "Innovación"));
+            if (!ctrlEvento.existeEvento("Feria del Libro"))
+                ctrlEvento.darAltaEvento("Feria del Libro", "Encuentro anual de literatura", new DTFecha(1,2,2025), "FERLIB", Set.of("Literatura", "Cultura"), "/img/IMG-EV02.jpeg");
+            if (!ctrlEvento.existeEvento("Montevideo Rock"))
+                ctrlEvento.darAltaEvento("Montevideo Rock", "Festival de rock con artistas nacionales e internacionales", new DTFecha(15,3,2023), "MONROCK", Set.of("Cultura", "Música"), "/img/IMG-EV03.jpeg");
+            if (!ctrlEvento.existeEvento("Maratón de Montevideo"))
+                ctrlEvento.darAltaEvento("Maratón de Montevideo", "Competencia deportiva anual en la capital", new DTFecha(1,1,2022), "MARATON", Set.of("Deporte", "Salud"), "/img/IMG-EV04.png");
+            if (!ctrlEvento.existeEvento("Montevideo Comics"))
+                ctrlEvento.darAltaEvento("Montevideo Comics", "Convención de historietas, cine y cultura geek", new DTFecha(10,4,2024), "COMICS", Set.of("Cultura", "Entretenimiento"), "/img/IMG-EV05.png");
+            if (!ctrlEvento.existeEvento("Expointer Uruguay"))
+                ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"), "/img/IMG-EV06.png");
+            if (!ctrlEvento.existeEvento("Montevideo Fashion Week"))
+                ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(20,7,2025), "MFASHION", Set.of("Cultura", "Moda"));
+        } catch (excepciones.SiglaRepetidaException e) {
+            // Si la sigla está repetida, ignorar y continuar
+        }
 
         // Ediciones
-        if (!ctrlEvento.existeEdicion("Montevideo Rock 2025"))
-            ctrlEvento.altaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
-                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg");
+        try {
+            if (!ctrlEvento.existeEdicion("Montevideo Rock 2025"))
+                ctrlEvento.altaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
+                        new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
-            ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png");
+            if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
+                ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
+                                new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png");
 
-        if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
-            ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg");
+            if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
+                ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
+                                new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
-            ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2022), new DTFecha(14,9,2022), new DTFecha(21,5,2022), "/img/IMG-EDEV04.jpeg");
+            if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
+                ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
+                                new DTFecha(14,9,2022), new DTFecha(14,9,2022), new DTFecha(21,5,2022), "/img/IMG-EDEV04.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Montevideo Comics 2024"))
-            ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2024", "COMICS24", "Montevideo", "Uruguay",
-                            new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024), "/img/IMG-EDEV05.jpeg");
+            if (!ctrlEvento.existeEdicion("Montevideo Comics 2024"))
+                ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2024", "COMICS24", "Montevideo", "Uruguay",
+                                new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024), "/img/IMG-EDEV05.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Montevideo Comics 2025"))
-            ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2025", "COMICS25", "Montevideo", "Uruguay",
-                            new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025), "/img/IMG-EDEV06.jpeg");
+            if (!ctrlEvento.existeEdicion("Montevideo Comics 2025"))
+                ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2025", "COMICS25", "Montevideo", "Uruguay",
+                                new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025), "/img/IMG-EDEV06.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Expointer Uruguay 2025"))
-            ctrlEvento.altaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
-                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg");
+            if (!ctrlEvento.existeEdicion("Expointer Uruguay 2025"))
+                ctrlEvento.altaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
+                                new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
-            ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
-                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg");
+            if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
+                ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
+                                new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg");
 
-        if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
-            ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
-                            new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024));
+            if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
+                ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
+                                new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024));
 
-        if (!ctrlEvento.existeEdicion("Web Summit 2026"))
-            ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
-                            new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
+            if (!ctrlEvento.existeEdicion("Web Summit 2026"))
+                ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
+                                new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
 
             ctrlEvento.altaEdicion("Montevideo Fashion Week", "mec",  "Montevideo Fashion Week 2026", "MFW26", "Nueva York", "Estados Unidos", new DTFecha(16,2,2026), new DTFecha(20,2,2026),new DTFecha(2,10,2025), "/img/IMG-EDEV11.jpeg");
+        } catch (excepciones.SiglaRepetidaException | excepciones.EventoNoExisteException e) {
+            // Si la sigla está repetida o el evento no existe, ignorar y continuar
+        }
 
 
 		// Estados definidos para mostrar en los perfiles
