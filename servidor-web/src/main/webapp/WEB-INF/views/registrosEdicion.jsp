@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,7 +46,7 @@
 				<div class="panel-header">Registros - Edición:<br>${edicion.nombre}</div>
 				<div class="panel-body">
 					<c:choose>
-						<c:when test="${empty edicion.registros}">
+						<c:when test="${empty registros}">
 							<p>No hay registros para esta edición.</p>
 						</c:when>
 						<c:otherwise>
@@ -59,22 +60,19 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="entry" items="${edicion.registros}">
+										<c:forEach var="reg" items="${registros}">
 											<tr>
-												<td>${entry.key}</td>
-												<td>${entry.value}</td>
+												<td>${reg.asistente}</td>
+												<td>${reg.tipoDeRegistro}</td>
 												<td>
 													<div class="actions">
 														<!-- Solo mostrar el enlace si es el organizador de esta edición -->
-														<c:if
-															test="${role == 'organizador' && nickname == edicion.organizador}">
+														<c:if test="${role == 'organizador' && nickname == edicion.organizador}">
 															<a class="btn-edicion"
-																href="consultaRegistro?asistente=${entry.key}&edicion=${edicion.nombre}&tipoRegistro=${entry.value}">Ver
-																registro</a>
+																href="${pageContext.request.contextPath}/consultaRegistro?asistente=${fn:escapeXml(reg.asistente)}&edicion=${fn:escapeXml(edicion.nombre)}&tipoRegistro=${fn:escapeXml(reg.tipoDeRegistro)}">Ver registro</a>
 														</c:if>
 														<a class="btn-outline"
-															href="perfilUsuario?nickname=${entry.key}&from=edicion&edicion=${edicion.nombre}">Ver
-															perfil</a>
+															href="${pageContext.request.contextPath}/perfilUsuario?nickname=${fn:escapeXml(reg.asistente)}&from=edicion&edicion=${fn:escapeXml(edicion.nombre)}">Ver perfil</a>
 													</div>
 												</td>
 											</tr>

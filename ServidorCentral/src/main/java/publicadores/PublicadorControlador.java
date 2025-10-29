@@ -189,10 +189,11 @@ public class PublicadorControlador {
 
     /**
      * Obtiene el detalle completo de una edición para la página de consulta.
-     * Retorna un array con: [0] nombre, [1] sigla, [2] ciudad, [3] pais, 
+     * Retorna un array con: [0] nombre, [1] sigla, [2] ciudad, [3] pais,
      * [4] fechaInicioDia, [5] fechaInicioMes, [6] fechaInicioAnio,
      * [7] fechaFinDia, [8] fechaFinMes, [9] fechaFinAnio,
-     * [10] organizador, [11] imagen (o cadena vacía si no tiene), [12] estado
+     * [10] organizador, [11] imagen (o cadena vacía si no tiene), [12] estado,
+     * [13] evento
      */
     @WebMethod
     public String[] obtenerDetalleCompletoEdicion(String nombreEdicion) {
@@ -202,7 +203,8 @@ public class PublicadorControlador {
                 return new String[0];
             }
             
-            String[] detalle = new String[13];
+            // Necesitamos 14 posiciones: índices 0..13
+            String[] detalle = new String[14];
             detalle[0] = edicion.getNombre();
             detalle[1] = edicion.getSigla();
             detalle[2] = edicion.getCiudad();

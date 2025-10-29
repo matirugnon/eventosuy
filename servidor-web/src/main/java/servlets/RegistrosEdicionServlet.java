@@ -13,13 +13,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import servlets.dto.EdicionDetalleDTO;
 import soap.PublicadorControlador;
+import soap.PublicadorUsuario;
+import soap.PublicadorRegistro;
+import soap.DtEdicion;
+import soap.DtRegistro;
+import soap.DtRegistroArray;
+import soap.StringArray;
+import utils.SoapClientHelper;
 import utils.SoapClientHelper;
 
 
 
-@WebServlet("/registrosEdicion")
+@WebServlet(urlPatterns = {"/registrosEdicion", "/registrosEdicion/*"})
 public class RegistrosEdicionServlet extends HttpServlet {
 
     @Override
@@ -44,36 +50,74 @@ public class RegistrosEdicionServlet extends HttpServlet {
         }
 
         String edicion = request.getParameter("edicion");
+        // Support path-based parameter: /registrosEdicion/{edicion}
+        if (edicion == null || edicion.trim().isEmpty()) {
+            String pathInfo = request.getPathInfo();
+            if (pathInfo != null && pathInfo.length() > 1) {
+                // pathInfo starts with '/'
+                try {
+                    edicion = java.net.URLDecoder.decode(pathInfo.substring(1), "UTF-8");
+                } catch (Exception ex) {
+                    edicion = pathInfo.substring(1);
+                }
+            }
+        }
         if (edicion == null || edicion.trim().isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
             return;
         }
 
         try {
-        	PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
-            EdicionDetalleDTO dt =  new EdicionDetalleDTO(publicadorEv.obtenerDetalleCompletoEdicion(edicion));
+            // Obtener clientes SOAP
+            PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
+            PublicadorUsuario publicadorUser = SoapClientHelper.getPublicadorUsuario();
+            PublicadorRegistro publicadorReg = SoapClientHelper.getPublicadorRegistro();
 
-            if (dt == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "EdiciÃ³n no encontrada");
+            // Usar los tipos Dt que provee el SOAP
+            DtEdicion dtEd = publicadorEv.consultarEdicion(edicion);
+
+            if (dtEd == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Edición no encontrada");
                 return;
             }
-         
 
-            // Verificar que el organizador de la ediciÃ³n coincide con el usuario en sesiÃ³n
-            if (dt.getOrganizador() == null || !dt.getOrganizador().equals(nickname)) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: No sos el organizador de esta ediciÃ³n");
+            // Verificar que el organizador de la edición coincide con el usuario en sesión
+            if (dtEd.getOrganizador() == null || !dtEd.getOrganizador().equals(nickname)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: No sos el organizador de esta edición");
                 return;
             }
 
-            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
             Set<String> categoriasSet = new HashSet(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
 
-            request.setAttribute("edicion", dt);
+            // Construir la lista de registros de la edición: iteramos asistentes y filtramos
+            List<DtRegistro> registros = new ArrayList<>();
+            StringArray asistentesArr = publicadorUser.listarAsistentes();
+            if (asistentesArr != null && asistentesArr.getItem() != null) {
+                for (String asist : asistentesArr.getItem()) {
+                    try {
+                        DtRegistroArray regsArray = publicadorReg.listarRegistrosPorAsistente(asist);
+                        if (regsArray != null && regsArray.getItem() != null) {
+                            for (DtRegistro r : regsArray.getItem()) {
+                                if (r != null && edicion.equals(r.getNomEdicion())) {
+                                    registros.add(r);
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        // Ignorar asistentes que causen error al consultar registros individuales
+                        System.err.println("Warning: no se pudieron obtener registros para asistente " + asist + ": " + ex.getMessage());
+                    }
+                }
+            }
+
+            request.setAttribute("edicion", dtEd);
+            request.setAttribute("registros", registros);
             request.setAttribute("categorias", categorias);
-            
-            // Pasar datos de sesiÃ³n al JSP
+
+            // Pasar datos de sesión al JSP
             request.setAttribute("nickname", nickname);
             request.setAttribute("role", role);
             request.setAttribute("avatar", session.getAttribute("avatar"));
@@ -82,7 +126,7 @@ public class RegistrosEdicionServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/registrosEdicion.jsp").forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("Error cargando registros de la ediciÃ³n", e);
+            throw new ServletException("Error cargando registros de la edición", e);
         }
     }
 }

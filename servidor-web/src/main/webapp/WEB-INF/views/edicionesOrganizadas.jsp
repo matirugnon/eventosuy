@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -156,7 +157,7 @@
 													Patrocinio</a>
 											</c:if>
 											<a class="btn-edicion"
-												href="registrosEdicion?edicion=${edicion.nombre}">Consultar
+												href="${pageContext.request.contextPath}/registrosEdicion?edicion=${fn:escapeXml(edicion.nombre)}">Consultar
 												registros</a>
 										</div>
 									</div>
