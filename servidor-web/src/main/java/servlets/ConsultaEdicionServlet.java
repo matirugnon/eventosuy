@@ -83,14 +83,28 @@ public class ConsultaEdicionServlet extends HttpServlet {
             List<String> categorias = new ArrayList<>(categoriasSet.getItem());
             Collections.sort(categorias);
 
+
+            // Obtener tipos de registro de la edición
+            List<String> tiposDeRegistro = new ArrayList<>();
+            try {
+                soap.PublicadorRegistro publicadorRegistro = utils.SoapClientHelper.getPublicadorRegistro();
+                soap.StringArray tiposArray = publicadorRegistro.listarTipoRegistro(nombreEdicion);
+                if (tiposArray != null && tiposArray.getItem() != null) {
+                    tiposDeRegistro.addAll(tiposArray.getItem());
+                }
+            } catch (Exception e) {
+                System.err.println("Error obteniendo tipos de registro: " + e.getMessage());
+            }
+
             // Pasar los datos a la JSP
             request.setAttribute("edicion", edicionDt);
             request.setAttribute("eventoPadre", nombreEventoPadre);
             request.setAttribute("organizador", organizador);
             request.setAttribute("avatarOrganizador", avatarOrganizador);
             request.setAttribute("categorias", categorias);
+            request.setAttribute("tiposDeRegistro", tiposDeRegistro);
 
-            // Obtener el rol desde la sesiÃ³n y pasarlo a la JSP
+            // Obtener el rol desde la sesión y pasarlo a la JSP
             String role = (String) request.getSession().getAttribute("role");
             request.setAttribute("role", role);
             request.setAttribute("nickname", request.getSession().getAttribute("usuario"));

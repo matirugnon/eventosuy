@@ -20,7 +20,7 @@ public interface IControladorRegistro {
 
 	public boolean existeTipoDeRegistro(String nombreEd, String nombreTipo);
 
-	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
+	public boolean altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
 			throws NombreTipoRegistroDuplicadoException;
 
 	public Set<String> listarTipoRegistro(String nombreEd)

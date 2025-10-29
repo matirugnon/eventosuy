@@ -67,12 +67,9 @@ public class AltaTipoRegistroServlet extends HttpServlet {
         }
         
         try {
-            System.out.println("DEBUG: Iniciando doGet para usuario: " + nickname + ", edicion: " + edicionNombre);
             
             // Consultar la edición vía SOAP (fuente de verdad del servidor central)
             DtEdicion edicion = publicadorCtrl.consultarEdicion(edicionNombre);
-                
-            System.out.println("DEBUG: Edicion encontrada: " + (edicion != null ? edicion.getNombre() : "null"));
             
             if (edicion == null) {
                 System.out.println("DEBUG: Edicion no encontrada");
@@ -110,7 +107,6 @@ public class AltaTipoRegistroServlet extends HttpServlet {
                 categorias.addAll(categoriasArray.getItem());
             }
             Collections.sort(categorias);
-            System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
             
             request.setAttribute("edicion", edicion);
             request.setAttribute("categorias", categorias);
@@ -154,7 +150,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             return;
         }
         
-        try {
+        
             String edicionNombre = request.getParameter("edicionNombre");
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
@@ -209,23 +205,39 @@ public class AltaTipoRegistroServlet extends HttpServlet {
             }
             
             // Intentar crear el tipo de registro
-            System.out.println("DEBUG: Creando tipo de registro - Edicion: " + edicionNombre + ", Nombre: " + nombre.trim() + ", Costo: " + costo + ", Cupo: " + cupo);
-            publicadorReg.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
-            System.out.println("DEBUG: Tipo de registro creado exitosamente");
-            
-            // Redirigir con mensaje de Ã©xito
-            session.setAttribute("datosMensaje", "El tipo de registro '" + nombre.trim() + "' fue creado exitosamente para la ediciÃ³n '" + edicionNombre + "'");
+
+            String res = publicadorReg.altaTipoDeRegistro(edicionNombre, nombre.trim(), descripcion.trim(), costo, cupo);
+            if (res != null && !"OK".equals(res.trim())) {
+                // Preparar atributos y mostrar el formulario con el mensaje de error
+                request.setAttribute("error", res);
+
+                // Reusar la DtEdicion ya consultada (ed) para el JSP
+                request.setAttribute("edicion", ed);
+
+                // Obtener categorías para el sidebar (igual que en doGet)
+                StringArray categoriasArray2 = publicadorCtrl.listarCategorias();
+                List<String> categorias2 = new ArrayList<>();
+                if (categoriasArray2 != null && categoriasArray2.getItem() != null) {
+                    categorias2.addAll(categoriasArray2.getItem());
+                }
+                Collections.sort(categorias2);
+                request.setAttribute("categorias", categorias2);
+
+                // Pasar datos de sesión para que el header/usuario se muestren correctamente
+                request.setAttribute("nickname", nickname);
+                request.setAttribute("avatar", session.getAttribute("avatar"));
+                request.setAttribute("role", session.getAttribute("role"));
+                request.setAttribute("nombre", session.getAttribute("nombre"));
+
+                // Mantener los valores ingresados en el formulario usando param (ya están en request)
+                request.getRequestDispatcher("/WEB-INF/views/altaTipoRegistro.jsp").forward(request, response);
+                return;
+            }
+
+            // Redirigir con mensaje de éxito
+            session.setAttribute("datosMensaje", "El tipo de registro '" + nombre.trim() + "' fue creado exitosamente para la edición '" + edicionNombre + "'");
             session.setAttribute("datosMensajeTipo", "info");
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
-            
-        } catch (soap.NombreTipoRegistroDuplicadoException_Exception e) {
-            request.setAttribute("error", "âŒ Ya existe un tipo de registro con ese nombre para esta ediciÃ³n. Por favor, elige otro nombre.");
-            doGet(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "âŒ Error al crear el tipo de registro: " + e.getMessage());
-            doGet(request, response);
-        }
     }
 }
 

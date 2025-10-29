@@ -42,16 +42,17 @@ public class ControladorRegistro implements IControladorRegistro {
 	return edicion.existeTipoDeRegistro(nombreTipo);
 	}
 
-	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
+	public boolean altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
 
 		if (existeTipoDeRegistro(nombreEd, nombreTipo)) {
-			 throw new NombreTipoRegistroDuplicadoException(nombreEd);
+			 throw new NombreTipoRegistroDuplicadoException(nombreTipo);
 		}
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion edicion =manejador.obtenerEdicion(nombreEd);
 		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo, descripcion, costo, cupo, edicion);
 		edicion.agregarTipoDeRegistro(tipo, nombreTipo);
+		return true;
 	}
 
 	public Set<String> listarTipoRegistro(String nombreEd)

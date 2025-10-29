@@ -77,14 +77,12 @@
 									</div>
 								</c:if>
 
-								<%-- TODO: Implementar tipos de registro
-								<c:if test="${not empty edicion.tiposDeRegistro}">
+								<c:if test="${not empty tiposDeRegistro}">
 									<div class="panel" style="margin-top: 1rem; max-width: 200px;">
 										<div class="panel-header">Tipos de registro</div>
 										<div class="panel-body">
 											<ul class="menu-list" style="margin-left: 0;">
-												<c:forEach items="${edicion.tiposDeRegistro}"
-													var="tipoRegistro">
+												<c:forEach items="${tiposDeRegistro}" var="tipoRegistro">
 													<c:url var="tipoRegistroUrl" value="/consultaTipoRegistro">
 														<c:param name="tipo" value="${tipoRegistro}" />
 														<c:param name="edicion" value="${edicion.nombre}" />
@@ -96,7 +94,6 @@
 										</div>
 									</div>
 								</c:if>
-								--%>
 							</div>
 
 							<div

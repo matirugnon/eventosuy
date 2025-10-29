@@ -44,10 +44,13 @@ public class PublicadorRegistro {
     }
 	
 	@WebMethod
-	public boolean altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
-			throws NombreTipoRegistroDuplicadoException {
-		ctrlReg.altaTipoDeRegistro(nombreEd, nombreTipo, descripcion, costo, cupo);
-		return true;
+	public String altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo){
+		try {
+			ctrlReg.altaTipoDeRegistro(nombreEd, nombreTipo, descripcion, costo, cupo);
+			return "OK";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 	
 	@WebMethod
