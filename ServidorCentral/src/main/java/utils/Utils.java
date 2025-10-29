@@ -131,15 +131,15 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         // Ediciones
         if (!ctrlEvento.existeEdicion("Montevideo Rock 2025"))
             ctrlEvento.altaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
-                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg");
+                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg", "https://www.youtube.com/watch?v=YiD7EXoOWR8");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png");
+                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png", "https://youtu.be/M1PcxAESEnY?list=RDM1PcxAESEnY&t=4681");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg");
+                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg", "https://youtu.be/M1PcxAESEnY?list=RDM1PcxAESEnY&t=4681");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
@@ -155,7 +155,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
         if (!ctrlEvento.existeEdicion("Expointer Uruguay 2025"))
             ctrlEvento.altaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
-                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg");
+                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg", "https://www.youtube.com/watch?v=YiD7EXoOWR8");
 
         if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
