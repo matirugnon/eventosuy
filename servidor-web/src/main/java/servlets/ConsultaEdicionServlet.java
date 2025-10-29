@@ -11,16 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.datatypesyenum.DTEdicion;
-import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTUsuario;
-import logica.Usuario;
-import utils.Utils;
-import soap.DtEdicion;
+
 //nuevos imports (copiar este bloque)
+import soap.DtEdicion;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;

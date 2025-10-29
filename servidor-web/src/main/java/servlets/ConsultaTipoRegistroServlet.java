@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,12 +12,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTTipoDeRegistro;
-import logica.datatypesyenum.DTEdicion;
-import excepciones.EdicionNoExisteException;
-import utils.Utils;
+
+
+//nuevos imports (copiar este bloque)
+import soap.DtEdicion;
+import soap.DtTipoDeRegistro;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import soap.StringArray;
+import utils.SoapClientHelper;
 
 @WebServlet("/consultaTipoRegistro")
 public class ConsultaTipoRegistroServlet extends HttpServlet {
@@ -44,24 +47,24 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             tipoRegistro = tipoRegistro.trim();
             edicion = edicion.trim();
 
-            // Obtener controladores
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            // Obtener publicador evento
+            PublicadorRegistro publicadorRegistro = SoapClientHelper.getPublicadorRegistro();
+            PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
 
-            // Obtener informaciÃ³n del tipo de registro
-            DTTipoDeRegistro tipoInfo = ctrlRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
+            // Obtener información del tipo de registro
+            DtTipoDeRegistro tipoInfo = publicadorRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
             
             if (tipoInfo == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Tipo de registro no encontrado");
                 return;
             }
 
-            // Obtener informaciÃ³n de la ediciÃ³n
-            DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
+            // Obtener información de la edición
+            DtEdicion edicionInfo = publicador.consultarEdicion(edicion);
             
-            // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            // Obtener todas las categorías para el sidebar (ordenadas alfabéticamente)
+            StringArray categoriasSet = publicador.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet.getItem());
             Collections.sort(categorias);
 
             // Verificar si el usuario logueado es asistente
@@ -70,14 +73,20 @@ public class ConsultaTipoRegistroServlet extends HttpServlet {
             boolean esAsistente = "asistente".equals(role);
             boolean yaRegistrado = false;
             
-            if (esAsistente && nickname != null) {
+            //TODO implementar esto cuando este lo de los registros
+            /** 
+             * if (esAsistente && nickname != null) {
                 try {
                     yaRegistrado = ctrlRegistro.estaRegistrado(edicion, nickname);
                 } catch (Exception e) {
-                    // Si hay error verificando, asumimos que no estÃ¡ registrado
+                    // Si hay error verificando, asumimos que no está registrado
                     yaRegistrado = false;
                 }
             }
+             * 
+             * 
+             * 
+            */
 
             // Pasar los datos a la JSP
             request.setAttribute("tipoRegistro", tipoInfo);

@@ -347,4 +347,8 @@ public class PublicadorControlador {
     }
 
 
+    //consulta TipoDeRegistro
+    
+
+
 }
