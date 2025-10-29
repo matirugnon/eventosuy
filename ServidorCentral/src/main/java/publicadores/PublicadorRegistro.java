@@ -6,18 +6,15 @@ import java.util.Properties;
 import java.util.Set;
 
 import excepciones.EdicionNoExisteException;
-import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import jakarta.jws.WebMethod;
-import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.ParameterStyle;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
 import logica.controladores.IControladorRegistro;
-import logica.controladores.IControladorUsuario;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTRegistro;
 import logica.datatypesyenum.DTTipoDeRegistro;

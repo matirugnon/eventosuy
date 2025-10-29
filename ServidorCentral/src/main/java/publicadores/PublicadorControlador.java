@@ -14,19 +14,15 @@ import utils.Utils;
 
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
-import logica.datatypesyenum.DTSeleccionEvento;
 import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
-
-import excepciones.EventoNoExisteException;
-
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+
 
 @WebService
 @SOAPBinding(style = Style.RPC)
