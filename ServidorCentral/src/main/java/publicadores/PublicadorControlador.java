@@ -14,6 +14,7 @@ import utils.Utils;
 
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
+import logica.datatypesyenum.DTPatrocinio;
 import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.FileInputStream;
@@ -343,6 +344,47 @@ public class PublicadorControlador {
             return null;
         }
     }
+    @WebMethod
+    public logica.datatypesyenum.DTPatrocinio consultarTipoPatrocinioEdicion(String nombreEdicion, String codigoPatrocinio) {
+        try {
+            return ctrl.consultarTipoPatrocinioEdicion(nombreEdicion, codigoPatrocinio);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @WebMethod
+    public boolean existeCodigoPatrocinioEnEdicion(String nombreEdicion, String codigoPatrocinio) {
+        try {
+            return ctrl.existeCodigoPatrocinioEnEdicion(nombreEdicion, codigoPatrocinio);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @WebMethod
+    public String[] listarEdicionesActivasDeEvento(String nombreEvento) {
+        try {
+            Set<String> ediciones = ctrl.listarEdicionesActivas(nombreEvento);
+            return ediciones.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0]; // Retornar arreglo vacío en caso de error
+        }
+    }
+
+    public String[] listarEdicionesActivasAceptadas(String nombreEvento) {
+        try {
+            Set<String> ediciones = ctrl.listarEdicionesPorEstadoDeEvento(nombreEvento, EstadoEdicion.ACEPTADA);
+            Set<String> edicionesActivas = ctrl.listarEdicionesActivas(nombreEvento);
+            
+            ediciones.retainAll(edicionesActivas); // Intersecar ambos conjuntos
+            return ediciones.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0]; // Retornar arreglo vacío en caso de error
+        }
+    }
+
+
 
 
     //consulta TipoDeRegistro

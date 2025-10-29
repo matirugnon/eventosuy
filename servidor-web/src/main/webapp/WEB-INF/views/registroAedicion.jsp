@@ -207,6 +207,67 @@
                 })
                 .catch(error => console.error('Error cargando detalles de edición:', error));
         });
+
+		// Interceptar submit y enviarlo vía AJAX para mostrar errores inline sin recargar
+		const form = document.querySelector('form');
+		const submitBtn = document.getElementById('submitBtn');
+		function ensureMsgEl() {
+			let msgEl = document.getElementById('msg');
+			if (!msgEl) {
+				msgEl = document.createElement('div');
+				msgEl.id = 'msg';
+				msgEl.style.marginTop = '0.5rem';
+				msgEl.style.minHeight = '1.25rem';
+				msgEl.style.fontWeight = '600';
+				const btnContainer = submitBtn.parentElement;
+				btnContainer.parentElement.insertBefore(msgEl, btnContainer);
+			}
+			return msgEl;
+		}
+
+		function setMessage(text, success) {
+			const el = ensureMsgEl();
+			el.textContent = text || '';
+			el.style.color = success ? '#2a7f2e' : '#c00';
+		}
+
+		function clearMessage() {
+			const el = document.getElementById('msg');
+			if (el) el.textContent = '';
+		}
+
+		// Limpiar el mensaje cuando se cambia selección
+		eventoSelect.addEventListener('change', clearMessage);
+		edicionSelect.addEventListener('change', clearMessage);
+		tipoRegistroSelect.addEventListener('change', clearMessage);
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+			submitBtn.disabled = true;
+
+			const params = new URLSearchParams();
+			params.append('edicion', edicionSelect.value || '');
+			params.append('tipoRegistro', tipoRegistroSelect.value || '');
+			params.append('codigoPatrocinio', document.getElementById('codigoPatrocinio').value || '');
+
+			fetch(form.action, { method: 'POST', body: params.toString(), headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' } })
+				.then(resp => resp.json())
+				.then(obj => {
+					if (obj.success) {
+						setMessage(obj.message || 'Registro exitoso', true);
+						// keep the form open; re-enable button
+						submitBtn.disabled = false;
+					} else {
+						setMessage(obj.message || 'Ocurrió un error', false);
+						submitBtn.disabled = false;
+					}
+				})
+				.catch(err => {
+					console.error('Error enviando registro:', err);
+					setMessage('Ocurrió un error al procesar la solicitud', false);
+					submitBtn.disabled = false;
+				});
+		});
     </script>
 </body>
 </html>

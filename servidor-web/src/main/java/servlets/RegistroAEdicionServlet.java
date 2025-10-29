@@ -30,6 +30,22 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import utils.Utils;
 
+import soap.DtEdicion;
+import soap.DtEvento;
+import soap.DtPatrocinio;
+
+import soap.DtTipoDeRegistro;
+import soap.EdicionNoExisteException_Exception;
+import soap.PublicadorControlador;
+import soap.PublicadorUsuario;
+import soap.PublicadorRegistro;
+import soap.StringArray;
+import soap.UsuarioYaRegistradoEnEdicionException_Exception;
+import utils.SoapClientHelper;
+
+
+
+
 @WebServlet("/registroAedicion")
 public class RegistroAEdicionServlet extends HttpServlet {
 
@@ -59,31 +75,51 @@ public class RegistroAEdicionServlet extends HttpServlet {
         }
 
         try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
 
-            // Obtener todos los eventos con sus ediciones activas
-            Set<DTEvento> eventos = ctrlEvento.obtenerDTEventos();
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            //obtener publicadores 
+            PublicadorRegistro publicadorRegistro = SoapClientHelper.getPublicadorRegistro();
+            PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+
+            // Obtener todos los eventos con sus ediciones activas (wsimport genera un wrapper DtEventoArray)
+            soap.DtEventoArray eventosArr = publicadorControlador.obtenerDTEventos();
+            List<DtEvento> eventosList = new ArrayList<>();
+            if (eventosArr != null && eventosArr.getItem() != null) {
+                eventosList.addAll(eventosArr.getItem());
+            }
+
+            StringArray categoriasSet = publicadorControlador.listarCategorias();
+            List<String> categorias = new ArrayList<>(categoriasSet.getItem());
             Collections.sort(categorias);
+            request.setAttribute("categorias", categorias);
             
-            // Para cada evento, obtener las ediciones activas con informaci├│n completa
-            for (DTEvento evento : eventos) {
-                Set<String> nombresEdiciones = ctrlEvento.listarEdicionesActivas(evento.getNombre());
-                for (String nombreEdicion : nombresEdiciones) {
-                    DTEdicion edicion = ctrlEvento.consultarEdicion(nombreEdicion);
+            // Para cada evento, obtener las ediciones activas con información completa
+            for (DtEvento evento : eventosList) {
+                StringArray nombresEdiciones = publicadorControlador.listarEdicionesActivasAceptadas(evento.getNombre());
+
+                List<String> nombresEdicionesList = new ArrayList<>();
+                if (nombresEdiciones != null && nombresEdiciones.getItem() != null) {
+                    nombresEdicionesList.addAll(nombresEdiciones.getItem());
+                }
+                
+                for (String nombreEdicion : nombresEdicionesList) {
+                    DtEdicion edicion = publicadorControlador.consultarEdicion(nombreEdicion);
                     if (edicion != null) {
-                        // Agregar tipos de registro a la edici├│n
-                        Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(nombreEdicion);
-                        // Los tipos ya est├ín en edicion.getTiposDeRegistro(), pero necesitamos la info completa
+                        // Agregar tipos de registro a la edición
+                        StringArray nombresTipos = publicadorRegistro.listarTipoRegistro(nombreEdicion);
+                        List<DtTipoDeRegistro> tiposList = new ArrayList<>();
+                        for (String nombreTipo : nombresTipos.getItem()) {
+                            DtTipoDeRegistro tipo = publicadorRegistro.consultaTipoDeRegistro(nombreEdicion, nombreTipo);
+                            if (tipo != null) {
+                                tiposList.add(tipo);
+                            }
+                        }
+                        // Los tipos ya están en edicion.getTiposDeRegistro(), pero necesitamos la info completa
                     }
                 }
             }
             
             // Pasar los datos a la JSP
-            request.setAttribute("eventos", eventos);
+            request.setAttribute("eventos", eventosList);
             request.setAttribute("categorias", categorias);
             request.setAttribute("role", role);
             request.setAttribute("nickname", usuario);
@@ -95,8 +131,8 @@ public class RegistroAEdicionServlet extends HttpServlet {
             throw new ServletException("Error cargando formulario de registro", e);
         }
     }
-    
-    // M├⌐todo para obtener datos de edici├│n via AJAX
+
+    // Método para obtener datos de edición via AJAX
     private void handleAjaxRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
@@ -105,16 +141,22 @@ public class RegistroAEdicionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
+            //obtener publicadores 
+            PublicadorRegistro publicadorRegistro = SoapClientHelper.getPublicadorRegistro();
+            PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
             
             if ("getEdiciones".equals(action)) {
                 String nombreEvento = request.getParameter("evento");
                 if (nombreEvento != null) {
-                    Set<String> ediciones = ctrlEvento.listarEdicionesActivas(nombreEvento);
+                    StringArray ediciones = publicadorControlador.listarEdicionesActivasAceptadas(nombreEvento);
+                    List<String> edicionesList = new ArrayList<>();
+                    if (ediciones != null && ediciones.getItem() != null) {
+                        edicionesList.addAll(ediciones.getItem());
+                    }
+
                     StringBuilder json = new StringBuilder("[");
                     boolean first = true;
-                    for (String edicion : ediciones) {
+                    for (String edicion : edicionesList) {
                         if (!first) json.append(",");
                         json.append("{\"id\":\"").append(edicion).append("\",\"nombre\":\"").append(edicion).append("\"}");
                         first = false;
@@ -125,14 +167,20 @@ public class RegistroAEdicionServlet extends HttpServlet {
             } else if ("getEdicionDetails".equals(action)) {
                 String nombreEdicion = request.getParameter("edicion");
                 if (nombreEdicion != null) {
-                    DTEdicion edicion = ctrlEvento.consultarEdicion(nombreEdicion);
+                    DtEdicion edicion = publicadorControlador.consultarEdicion(nombreEdicion);
                     if (edicion != null) {
-                        // Obtener tipos de registro con informaci├│n completa
-                        Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(nombreEdicion);
+
+                        // Obtener tipos de registro con información completa
+                        StringArray nombresTipos = publicadorRegistro.listarTipoRegistro(nombreEdicion);
+                        List<String> nombresTiposList = new ArrayList<>();
+                        if (nombresTipos != null && nombresTipos.getItem() != null) {
+                            nombresTiposList.addAll(nombresTipos.getItem());
+                        }
+
                         StringBuilder tiposJson = new StringBuilder("[");
                         boolean first = true;
-                        for (String nombreTipo : nombresTipos) {
-                            DTTipoDeRegistro tipo = ctrlRegistro.consultaTipoDeRegistro(nombreEdicion, nombreTipo);
+                        for (String nombreTipo : nombresTiposList) {
+                            DtTipoDeRegistro tipo = publicadorRegistro.consultaTipoDeRegistro(nombreEdicion, nombreTipo);
                             if (tipo != null) {
                                 if (!first) tiposJson.append(",");
                                 tiposJson.append("{\"id\":\"").append(tipo.getNombre())
@@ -180,12 +228,13 @@ public class RegistroAEdicionServlet extends HttpServlet {
             return;
         }
         
-        try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-            
-            // Obtener par├ímetros del formulario
+    boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    try {
+            //obtener publicadores 
+            PublicadorRegistro publicadorRegistro = SoapClientHelper.getPublicadorRegistro();
+            PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+
+            // Obtener parámetros del formulario
             String edicion = request.getParameter("edicion");
             String tipoRegistro = request.getParameter("tipoRegistro");
             String codigoPatrocinio = request.getParameter("codigoPatrocinio");
@@ -201,24 +250,23 @@ public class RegistroAEdicionServlet extends HttpServlet {
                 edicion = edicion.trim();
                 tipoRegistro = tipoRegistro.trim();
                 
-                try {
                     // Verificar que la edición existe
-                    DTEdicion dtEdicion = ctrlEvento.consultarEdicion(edicion);
+                    DtEdicion dtEdicion = publicadorControlador.consultarEdicion(edicion);
                     if (dtEdicion == null) {
                         mensaje = "❌ La edición seleccionada no existe.";
                     } else {
                         // Verificar que el usuario no esté ya registrado
-                        boolean yaRegistrado = ctrlRegistro.estaRegistrado(edicion, usuario);
+                        boolean yaRegistrado = publicadorRegistro.estaRegistrado(edicion, usuario);
                         if (yaRegistrado) {
-                            mensaje = "❌ Ya estás registrado en esta edición.";
-                        } else {
+                                    mensaje = "❌ Ya estás registrado en esta edición.";
+                                } else {
                             // Verificar que el tipo de registro existe
-                            DTTipoDeRegistro dtTipoRegistro = ctrlRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
+                            DtTipoDeRegistro dtTipoRegistro = publicadorRegistro.consultaTipoDeRegistro(edicion, tipoRegistro);
                             if (dtTipoRegistro == null) {
                                 mensaje = "❌ El tipo de registro seleccionado no existe.";
                             } else {
                                 // Verificar cupo disponible
-                                boolean cupoDisponible = !ctrlRegistro.alcanzoCupo(edicion, tipoRegistro);
+                                boolean cupoDisponible = !publicadorRegistro.alcanzoCupo(edicion, tipoRegistro);
                                 if (!cupoDisponible) {
                                     mensaje = "❌ Ya se alcanzó el cupo para este tipo de registro.";
                                 } else {
@@ -230,12 +278,12 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                         
                                         try {
                                             // Verificar que el código existe en la edición
-                                            boolean existeCodigo = ctrlEvento.existeCodigoPatrocinioEnEdicion(edicion, codigoPatrocinio);
+                                            boolean existeCodigo = publicadorControlador.existeCodigoPatrocinioEnEdicion(edicion, codigoPatrocinio);
                                             if (!existeCodigo) {
                                                 mensaje = "❌ El código de patrocinio no es válido para esta edición.";
                                             } else {
                                                 // Obtener información del patrocinio
-                                                DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigoPatrocinio);
+                                                DtPatrocinio patrocinio = publicadorControlador.consultarTipoPatrocinioEdicion(edicion, codigoPatrocinio);
                                                 
                                                 if (patrocinio == null) {
                                                     mensaje = "❌ El código de patrocinio ingresado no es válido.";
@@ -254,11 +302,9 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                                     }
                                                 }
                                             }
-                                        } catch (EdicionSinPatrociniosException e) {
-                                            mensaje = "❌ Esta edición no tiene patrocinios disponibles.";
-                                        } catch (PatrocinioNoEncontradoException e) {
-                                            mensaje = "❌ El código de patrocinio ingresado no es válido.";
                                         } catch (Exception e) {
+                                            // Las excepciones específicas del backend no se declaran en los stubs SOAP;
+                                            // capturamos cualquier error y mostramos un mensaje genérico.
                                             mensaje = "❌ Error al validar el código de patrocinio: " + e.getMessage();
                                         }
                                     }
@@ -271,21 +317,50 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                             fechaActual.getMonthValue(),
                                             fechaActual.getYear()
                                         );
-                                        
-                                        ctrlRegistro.altaRegistro(edicion, usuario, tipoRegistro, fechaRegistro, costoFinal);
-                                        
-                                        session.setAttribute("datosMensaje", "Registro exitoso a la edición '" + edicion + "'. Fecha: " + fechaRegistro.toString() + " | Costo: $" + String.format("%.0f", costoFinal));
-                                        session.setAttribute("datosMensajeTipo", "info");
-                                        response.sendRedirect(request.getContextPath() + "/inicio");
-                                        return;
+
+                                        // Convertir DTFecha local a SOAP DTFecha antes de llamar al publicador
+                                        soap.DTFecha soapFecha = new soap.DTFecha();
+                                        soapFecha.setDia(fechaRegistro.getDia());
+                                        soapFecha.setMes(fechaRegistro.getMes());
+                                        soapFecha.setAnio(fechaRegistro.getAnio());
+
+                                        String resultado = publicadorRegistro.altaRegistro(edicion, usuario, tipoRegistro, soapFecha, costoFinal);
+
+                                        if ("OK".equals(resultado)) {
+                                            String exito = "Registro exitoso a la edición '" + edicion + "'. Fecha: " + fechaRegistro.toString() + " | Costo: $" + String.format("%.0f", costoFinal);
+                                            if (isAjax) {
+                                                response.setContentType("application/json");
+                                                response.setCharacterEncoding("UTF-8");
+                                                response.getWriter().write("{\"success\":true,\"message\":\"" + exito.replace("\"", "\\\"") + "\"}");
+                                                return;
+                                            } else {
+                                                session.setAttribute("datosMensaje", exito);
+                                                session.setAttribute("datosMensajeTipo", "info");
+                                                response.sendRedirect(request.getContextPath() + "/registroAedicion");
+                                                return;
+                                            }
+                                        } else {
+                                            String errMsg = "❌ Error al procesar el registro: " + resultado;
+                                            if (isAjax) {
+                                                response.setContentType("application/json");
+                                                response.setCharacterEncoding("UTF-8");
+                                                response.getWriter().write("{\"success\":false,\"message\":\"" + errMsg.replace("\"", "\\\"") + "\"}");
+                                                return;
+                                            } else {
+                                                session.setAttribute("datosMensaje", errMsg);
+                                                session.setAttribute("datosMensajeTipo", "error");
+                                                response.sendRedirect(request.getContextPath() + "/registroAedicion");
+                                                System.out.println("DEBUG - HOLAAAA" + resultado);
+                                                return;
+                                            }
+                                        }
+                                    
                                     }
                                 }
                             }
                         }
                     }
-                } catch (Exception e) {
-                    mensaje = "❌ Error al procesar el registro: " + e.getMessage();
-                }
+                
             }
             
             // Si llegamos aquí es porque hubo un error
@@ -293,10 +368,17 @@ public class RegistroAEdicionServlet extends HttpServlet {
             System.out.println("DEBUG - mensaje.isEmpty(): " + mensaje.isEmpty());
             if (!mensaje.isEmpty()) {
                 System.out.println("DEBUG - Guardando mensaje en sesión: " + mensaje);
-                session.setAttribute("datosMensaje", mensaje);
-                session.setAttribute("datosMensajeTipo", "error");
-                response.sendRedirect(request.getContextPath() + "/registroAedicion");
-                return;
+                if (isAjax) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{\"success\":false,\"message\":\"" + mensaje.replace("\"", "\\\"") + "\"}");
+                    return;
+                } else {
+                    session.setAttribute("datosMensaje", mensaje);
+                    session.setAttribute("datosMensajeTipo", "error");
+                    response.sendRedirect(request.getContextPath() + "/registroAedicion");
+                    return;
+                }
             } else {
                 System.out.println("DEBUG - mensaje está vacío, no se redirige con error");
             }
@@ -304,7 +386,7 @@ public class RegistroAEdicionServlet extends HttpServlet {
         } catch (Exception e) {
             session.setAttribute("datosMensaje", "❌ Error procesando registro: " + e.getMessage());
             session.setAttribute("datosMensajeTipo", "error");
-            response.sendRedirect(request.getContextPath() + "/registroAedicion");
+            //response.sendRedirect(request.getContextPath() + "/registroAedicion");
         }
     }
 }

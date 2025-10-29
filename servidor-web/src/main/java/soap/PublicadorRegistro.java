@@ -28,49 +28,44 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
+     * @param arg1
      * @return
-     *     returns soap.DtRegistroArray
+     *     returns boolean
      * @throws UsuarioNoExisteException_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteRequest", output = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteResponse", fault = {
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistente/Fault/UsuarioNoExisteException")
+    @Action(input = "http://publicadores/PublicadorRegistro/estaRegistradoRequest", output = "http://publicadores/PublicadorRegistro/estaRegistradoResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/estaRegistrado/Fault/UsuarioNoExisteException")
     })
-    public DtRegistroArray listarRegistrosPorAsistente(
+    public boolean estaRegistrado(
         @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1)
         throws UsuarioNoExisteException_Exception
     ;
 
     /**
      * 
      * @param arg0
-     * @return
-     *     returns soap.StringArray
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroResponse")
-    public StringArray obtenerNomsTipoRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @return
-     *     returns soap.DtTipoDeRegistro
+     *     returns boolean
+     * @throws EdicionNoExisteException_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroRequest", output = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroResponse")
-    public DtTipoDeRegistro consultaTipoDeRegistro(
+    @Action(input = "http://publicadores/PublicadorRegistro/alcanzoCupoRequest", output = "http://publicadores/PublicadorRegistro/alcanzoCupoResponse", fault = {
+        @FaultAction(className = EdicionNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/alcanzoCupo/Fault/EdicionNoExisteException")
+    })
+    public boolean alcanzoCupo(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
+        String arg1)
+        throws EdicionNoExisteException_Exception
+    ;
 
     /**
      * 
@@ -139,7 +134,7 @@ public interface PublicadorRegistro {
      * @param arg3
      * @param arg4
      * @return
-     *     returns boolean
+     *     returns java.lang.String
      * @throws UsuarioNoExisteException_Exception
      * @throws UsuarioYaRegistradoEnEdicionException_Exception
      */
@@ -149,7 +144,7 @@ public interface PublicadorRegistro {
         @FaultAction(className = UsuarioYaRegistradoEnEdicionException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioYaRegistradoEnEdicionException"),
         @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioNoExisteException")
     })
-    public boolean altaRegistro(
+    public String altaRegistro(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
@@ -161,6 +156,53 @@ public interface PublicadorRegistro {
         @WebParam(name = "arg4", partName = "arg4")
         double arg4)
         throws UsuarioNoExisteException_Exception, UsuarioYaRegistradoEnEdicionException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns soap.DtTipoDeRegistro
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroRequest", output = "http://publicadores/PublicadorRegistro/consultaTipoDeRegistroResponse")
+    public DtTipoDeRegistro consultaTipoDeRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.StringArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/obtenerNomsTipoRegistroResponse")
+    public StringArray obtenerNomsTipoRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.DtRegistroArray
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteRequest", output = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistente/Fault/UsuarioNoExisteException")
+    })
+    public DtRegistroArray listarRegistrosPorAsistente(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws UsuarioNoExisteException_Exception
     ;
 
 }

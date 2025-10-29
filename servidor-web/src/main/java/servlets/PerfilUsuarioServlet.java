@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 import soap.PublicadorUsuario;
 import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
 import soap.DtUsuario;
 import soap.DtAsistente;
 import soap.DtOrganizador;
@@ -53,6 +54,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
             
             PublicadorUsuario publicador = SoapClientHelper.getPublicadorUsuario();
             PublicadorControlador publicadorControlador = SoapClientHelper.getPublicadorControlador();
+            PublicadorRegistro publicadorRegistro = SoapClientHelper.getPublicadorRegistro();
 
             
             
@@ -84,33 +86,26 @@ public class PerfilUsuarioServlet extends HttpServlet {
                 request.setAttribute("asistente", asistente);
                 
                 try {
-                    // Obtener registros desde PublicadorUsuario
-                    StringArray registrosArray = publicador.obtenerRegistros(nickname);
-                    String[] registrosNicks = registrosArray != null ? registrosArray.getItem().toArray(new String[0]) : new String[0];
-                    
-                    if (registrosNicks != null && registrosNicks.length > 0) {
-                        java.util.List<DtRegistro> registros = new java.util.ArrayList<>();
-                        
-                        // Para cada registro, obtener DTRegistro completo
-                        for (String regNick : registrosNicks) {
-                            // regNick tiene formato: "asistente|edicion|tipoRegistro"
-                            String[] parts = regNick.split("\\|");
-                            if (parts.length >= 3) {
-                                try {
-                                    DtRegistro reg = publicadorControlador.obtenerRegistro(parts[0], parts[1], parts[2]);
-                                    if (reg != null) {
-                                        registros.add(reg);
-                                    }
-                                } catch (Exception e) {
-                                    System.err.println("Error obteniendo registro: " + regNick);
-                                }
+                    // Obtener registros desde PublicadorRegistro (SOAP)
+                    soap.DtRegistroArray registrosArray = publicadorRegistro.listarRegistrosPorAsistente(nickname);
+
+                    java.util.List<DtRegistro> registros = new java.util.ArrayList<>();
+
+                    if (registrosArray != null && registrosArray.getItem() != null) {
+                        // Cada DtRegistro en el arreglo SOAP contiene los campos asistente|edicion|tipoRegistro
+                        for (soap.DtRegistro r : registrosArray.getItem()) {
+                            if (r == null) continue;
+                            try {
+                                // Pedir al controlador la representación completa del registro
+                                DtRegistro reg = publicadorControlador.obtenerRegistro(r.getAsistente(), r.getNomEdicion(), r.getTipoDeRegistro());
+                                if (reg != null) registros.add(reg);
+                            } catch (Exception ex) {
+                                System.err.println("Error obteniendo registro desde controlador: " + ex.getMessage());
                             }
                         }
-                        
-                        request.setAttribute("registros", registros);
-                    } else {
-                        request.setAttribute("registros", new java.util.ArrayList<>());
                     }
+
+                    request.setAttribute("registros", registros);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("registros", new java.util.ArrayList<>());

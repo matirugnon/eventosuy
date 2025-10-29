@@ -72,10 +72,14 @@ public class PublicadorRegistro {
 	    return tipos.toArray(new String[0]);
 	}
 	@WebMethod
-	public boolean altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo)
-			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
-		ctrlReg.altaRegistro(nomEdicion, nickAsistente, nomTipoRegistro, fechaRegistro, costo);
-		return true;
+	public String altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo) throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException {
+		try {
+			ctrlReg.altaRegistro(nomEdicion, nickAsistente, nomTipoRegistro, fechaRegistro, costo);
+			return "OK";
+		} catch (Exception e) {
+			// Devolver el mensaje de la excepción para que el cliente SOAP lo muestre
+			return e.getMessage();
+		}
 	}
 	
 	@WebMethod
@@ -95,5 +99,15 @@ public class PublicadorRegistro {
 	@WebMethod
 	public DTRegistro[] listarRegistrosPorAsistente(String nickAsistente) throws UsuarioNoExisteException {
 		return ctrlReg.listarRegistrosPorAsistente(nickAsistente).toArray(new DTRegistro[0]);
+	}
+
+	@WebMethod
+	public boolean estaRegistrado(String nombreEdicion, String nickAsistente) throws UsuarioNoExisteException {
+		return ctrlReg.estaRegistrado(nombreEdicion, nickAsistente);
+	}
+
+	@WebMethod
+	public boolean alcanzoCupo(String nombreEdicion, String nombreTipoRegistro) throws EdicionNoExisteException {
+		return ctrlReg.alcanzoCupo(nombreEdicion, nombreTipoRegistro);
 	}
 }
