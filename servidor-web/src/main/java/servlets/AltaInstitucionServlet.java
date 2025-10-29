@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorEvento;
 import soap.ExisteInstitucionException_Exception;
 import jakarta.servlet.http.Part;
 
@@ -16,15 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.io.File;
 
-
-//nuevos imports (copiar este bloque)
-import soap.DtEdicion;
-import soap.DtTipoDeRegistro;
 import soap.PublicadorControlador;
-import soap.PublicadorRegistro;
 import soap.PublicadorUsuario;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -63,6 +55,7 @@ public class AltaInstitucionServlet extends HttpServlet {
         StringArray categoriasSet = publicadorControlador.listarCategorias();
         List<String> categorias = new ArrayList<>(categoriasSet.getItem());
         Collections.sort(categorias);
+        request.setAttribute("categorias", categorias);
 
         
         // Mostrar el formulario de alta
@@ -138,11 +131,36 @@ public class AltaInstitucionServlet extends HttpServlet {
                 publicadorusuario.altaInstitucion(nombre, descripcion, sitioWeb);
             }
             
-            // Redirigir con mensaje de Ã©xito usando sesiÃ³n
-            HttpSession session = request.getSession();
-            session.setAttribute("datosMensaje", "La instituciÃ³n '" + nombre + "' fue creada exitosamente");
-            session.setAttribute("datosMensajeTipo", "info");
-            response.sendRedirect(request.getContextPath() + "/inicio");
+            // Mensaje de éxito: permitir mostrar inline o redirigir con flash
+            String stay = request.getParameter("stay");
+            if ("true".equalsIgnoreCase(stay) || "on".equalsIgnoreCase(stay)) {
+                // Mostrar el mismo formulario con mensaje de éxito (no redirigir)
+                request.setAttribute("success", "La institución '" + nombre + "' fue creada exitosamente");
+                request.setAttribute("nombre", "");
+                request.setAttribute("descripcion", "");
+                request.setAttribute("sitioWeb", "");
+                // Cargar categorias para el sidebar (igual que en doGet)
+                StringArray categoriasArray = publicadorControlador.listarCategorias();
+                List<String> categorias = new ArrayList<>();
+                if (categoriasArray != null && categoriasArray.getItem() != null) categorias.addAll(categoriasArray.getItem());
+                Collections.sort(categorias);
+                request.setAttribute("categorias", categorias);
+                request.getRequestDispatcher("/WEB-INF/views/altaInstitucion.jsp").forward(request, response);
+            } else {
+                // Flash message en sesión y redirección a la página anterior (referer) o /inicio
+                HttpSession session = request.getSession();
+                session.setAttribute("datosMensaje", "La institución '" + nombre + "' fue creada exitosamente");
+                session.setAttribute("datosMensajeTipo", "info");
+                String referer = request.getHeader("Referer");
+                if (referer != null && referer.contains(request.getContextPath())) {
+                    // Extraer path relativa al contextPath
+                    String path = referer.substring(referer.indexOf(request.getContextPath()) + request.getContextPath().length());
+                    if (path == null || path.isEmpty()) path = "/";
+                    response.sendRedirect(request.getContextPath() + path);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/inicio");
+                }
+            }
             
     } catch (ExisteInstitucionException_Exception e) {
             // La instituciÃ³n ya existe
@@ -204,12 +222,7 @@ public class AltaInstitucionServlet extends HttpServlet {
                 uploadsDirectory.mkdirs();
             }
             
-            // Generar nombre Ãºnico para evitar conflictos
-            String extension = "";
-            int dotIndex = fileName.lastIndexOf('.');
-            if (dotIndex > 0) {
-                extension = fileName.substring(dotIndex);
-            }
+            // Generar nombre único para evitar conflictos
             String newFileName = System.currentTimeMillis() + "_" + fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
             String filePath = uploadsDir + newFileName;
             filePart.write(filePath);

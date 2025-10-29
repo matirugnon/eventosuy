@@ -76,6 +76,20 @@
 		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
+			<%-- Copiar mensaje flash desde sesión a request si existe (para mostrar después de redirect) --%>
+			<% String datosMensaje = (String) session.getAttribute("datosMensaje");
+			   String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
+			   if (datosMensaje != null) {
+				   if ("info".equals(datosMensajeTipo)) {
+					   request.setAttribute("success", datosMensaje);
+				   } else {
+					   request.setAttribute("error", datosMensaje);
+				   }
+				   session.removeAttribute("datosMensaje");
+				   session.removeAttribute("datosMensajeTipo");
+			   }
+			%>
+
 		<div class="content">
 			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 			<main>
@@ -85,6 +99,10 @@
 							Institución</h2>
 						<c:if test="${not empty error}">
 							<div class="error-message">⚠️ ${error}</div>
+						</c:if>
+
+						<c:if test="${not empty success}">
+							<div class="message success">✅ ${success}</div>
 						</c:if>
 
 						<form method="post" action="altaInstitucion"
