@@ -100,6 +100,7 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             request.setAttribute("edicionesOrganizadas", edicionesOrganizadas);
             request.setAttribute("edicionesPasadas", edicionesPasadas);
             request.setAttribute("categorias", categorias);
+            request.setAttribute("nickname", nickname);
             
             request.getRequestDispatcher("/WEB-INF/views/edicionesOrganizadas.jsp").forward(request, response);
             

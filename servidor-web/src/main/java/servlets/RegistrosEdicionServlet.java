@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,9 +13,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import servlets.dto.EdicionDetalleDTO;
+import soap.PublicadorControlador;
+import utils.SoapClientHelper;
 
-import logica.controladores.IControladorEvento;
-import logica.datatypesyenum.DTEdicion;
+
 
 @WebServlet("/registrosEdicion")
 public class RegistrosEdicionServlet extends HttpServlet {
@@ -47,13 +50,14 @@ public class RegistrosEdicionServlet extends HttpServlet {
         }
 
         try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            DTEdicion dt = ctrlEvento.consultarEdicion(edicion);
+        	PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
+            EdicionDetalleDTO dt =  new EdicionDetalleDTO(publicadorEv.obtenerDetalleCompletoEdicion(edicion));
 
             if (dt == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "EdiciÃ³n no encontrada");
                 return;
             }
+         
 
             // Verificar que el organizador de la ediciÃ³n coincide con el usuario en sesiÃ³n
             if (dt.getOrganizador() == null || !dt.getOrganizador().equals(nickname)) {
@@ -62,7 +66,7 @@ public class RegistrosEdicionServlet extends HttpServlet {
             }
 
             // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
+            Set<String> categoriasSet = new HashSet(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
 
