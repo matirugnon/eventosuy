@@ -263,6 +263,18 @@
 	min-height: 1.5rem;
 	font-weight: 500;
 }
+
+/* Mensaje de error estético para formularios (cuadro rojo suave) */
+.error-box {
+	display: inline-block;
+	background: #fff5f5; /* muy claro */
+	border: 1px solid #f5c6cb; /* borde rojizo suave */
+	color: #721c24; /* texto oscuro rojizo */
+	padding: 0.8rem 1rem;
+	border-radius: 8px;
+	font-weight: 600;
+	max-width: 100%;
+}
 /* --- Estética para consultaRegistro.html --- */
 .consulta-registro-form-row {
 	display: flex;

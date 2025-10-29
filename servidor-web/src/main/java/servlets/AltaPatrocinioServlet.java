@@ -2,23 +2,30 @@ package servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import soap.DtEdicion;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import soap.PublicadorUsuario;
+import soap.StringArray;
+import utils.SoapClientHelper;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
+import soap.DtTipoDeRegistro;
+
 
 import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.controladores.IControladorUsuario;
-import logica.datatypesyenum.DTEdicion;
-import logica.datatypesyenum.DTFecha;
-import logica.datatypesyenum.DTTipoDeRegistro;
-import logica.datatypesyenum.NivelPatrocinio;
-import excepciones.PatrocinioDuplicadoException;
+// (Patrocinio exceptions are handled by the SOAP publicador; catch blocks removed)
 
 @WebServlet("/altaPatrocinio")
 public class AltaPatrocinioServlet extends HttpServlet {
@@ -52,13 +59,13 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 return;
             }
 
-            // Cargar datos para el formulario
-            IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+            // Cargar datos para el formulario - PUBLICADORES
+            PublicadorControlador publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+            PublicadorRegistro publicadorReg = SoapClientHelper.getPublicadorRegistro();
+            PublicadorUsuario publicadorUsr = SoapClientHelper.getPublicadorUsuario();
             
             // Verificar que la ediciÃ³n no haya finalizado
-            DTEdicion dtEdicion = ctrlEvento.consultarEdicion(edicion);
+            DtEdicion dtEdicion = publicadorCtrl.consultarEdicion(edicion);
             if (dtEdicion != null && dtEdicion.getFechaFin() != null) {
                 LocalDate hoy = LocalDate.now();
                 LocalDate fechaFin = LocalDate.of(
@@ -75,22 +82,34 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 }
             }
 
-            Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(edicion);
-            Set<DTTipoDeRegistro> tiposRegistro = new HashSet<>();
-            for (String nombreTipo : nombresTipos) {
-                tiposRegistro.add(ctrlRegistro.consultaTipoDeRegistro(edicion, nombreTipo));
+            StringArray nombresTipos = publicadorReg.listarTipoRegistro(edicion);
+            Set<String> nombresTiposSet = new HashSet<>();
+            if (nombresTipos != null && nombresTipos.getItem() != null) {
+                nombresTiposSet.addAll(nombresTipos.getItem());
             }
-            // Obtener categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+
+            Set<DtTipoDeRegistro> tiposRegistro = new HashSet<>();
+            for (String nombreTipo : nombresTiposSet) {
+                tiposRegistro.add(publicadorReg.consultaTipoDeRegistro(edicion, nombreTipo));
+            }
+            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
+            StringArray categoriasSet = publicadorCtrl.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasSet != null && categoriasSet.getItem() != null) {
+                categorias.addAll(categoriasSet.getItem());
+            }
             Collections.sort(categorias);
-            System.out.println("DEBUG: Categorias obtenidas: " + (categorias != null ? categorias.size() : "null"));
-            
-     
             request.setAttribute("categorias", categorias);
 
+            //listar instituciones
+            StringArray institucionesArray = publicadorUsr.listarInstituciones();
+            List<String> instituciones = new ArrayList<>();
+            if (institucionesArray != null && institucionesArray.getItem() != null) {
+                instituciones.addAll(institucionesArray.getItem());
+            }
+
             request.setAttribute("tiposRegistro", tiposRegistro);
-            request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
+            request.setAttribute("instituciones", instituciones);
             request.setAttribute("edicionSeleccionada", edicion);
             
             // Pasar datos de sesiÃ³n al JSP
@@ -133,9 +152,12 @@ public class AltaPatrocinioServlet extends HttpServlet {
         String registrosGratuitosStr = request.getParameter("registrosGratuitos");
         String codigo = request.getParameter("codigoPatrocinio");
 
-        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-        IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-        IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+        //obtener Publicadores
+
+
+        PublicadorControlador publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+        PublicadorRegistro publicadorReg = SoapClientHelper.getPublicadorRegistro();
+        PublicadorUsuario publicadorUsr = SoapClientHelper.getPublicadorUsuario();
 
         // Validaciones bÃ¡sicas
         if (edicion == null || tipoRegistro == null || institucion == null || nivelPatrocinioStr == null ||
@@ -144,10 +166,10 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 nivelPatrocinioStr.isEmpty() || aporteStr.isEmpty() || registrosGratuitosStr.isEmpty() || codigo.isEmpty()) {
 
 
-            request.setAttribute("msg", "âš ï¸ Todos los campos son obligatorios.");
+            request.setAttribute("msg", "Todos los campos son obligatorios.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-            // Recargar datos necesarios para la JSP
-            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            // Recargar datos necesarios para la JSP (usar publicadores)
+            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
             return;
@@ -156,35 +178,53 @@ public class AltaPatrocinioServlet extends HttpServlet {
         try {
             double aporte = Double.parseDouble(aporteStr);
             int registrosGratuitos = Integer.parseInt(registrosGratuitosStr);
-            NivelPatrocinio nivel = NivelPatrocinio.valueOf(nivelPatrocinioStr);
+            // Convertir a tipos SOAP
+            soap.NivelPatrocinio nivel = soap.NivelPatrocinio.fromValue(nivelPatrocinioStr);
 
             LocalDate hoy = LocalDate.now();
-            DTFecha fechaAlta = new DTFecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
+            soap.DTFecha fechaAlta = new soap.DTFecha();
+            fechaAlta.setDia(hoy.getDayOfMonth());
+            fechaAlta.setMes(hoy.getMonthValue());
+            fechaAlta.setAnio(hoy.getYear());
 
-            ctrlEvento.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
+            String resultado = publicadorCtrl.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
+            if (resultado == null || !"OK".equalsIgnoreCase(resultado)) {
+                // Mostrar mensaje de error devuelto por el publicador
+                request.setAttribute("msg", (resultado == null ? "Error al dar de alta el patrocinio" : resultado));
+                setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
+                recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
+                cargarSesionYCategorias(request, session);
+                request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+                return;
+            }
 
             response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
 
         } catch (NumberFormatException e) {
-            request.setAttribute("msg", "âš ï¸ Formato invÃ¡lido en nÃºmeros.");
+            request.setAttribute("msg", "Formato inválido en números.");
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            // recargar con publicadores SOAP
+            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
         } catch (IllegalArgumentException e) {
-            request.setAttribute("msg", "âš ï¸ Nivel de patrocinio no reconocido.");
+            // Puede ocurrir por nivel no reconocido o por validaciones del servidor (p.ej. costo supera aporte)
+            request.setAttribute("msg", e.getMessage() == null ? "Nivel de patrocinio no reconocido." : e.getMessage());
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
-        } catch (PatrocinioDuplicadoException e) {
-            request.setAttribute("msg", "âš ï¸ Ya existe un patrocinio de esta instituciÃ³n en esta ediciÃ³n.");
+        } catch (soap.PatrocinioDuplicadoException_Exception e) {
+            // Excepción chequeada generada por el stub SOAP cuando el patrocinio ya existe
+            String mensaje = e.getMessage() != null ? e.getMessage() : "La institución ya es patrocinadora de la edición.";
+            request.setAttribute("msg", mensaje);
             setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-            recargarFormulario(request, ctrlRegistro, ctrlUsuario, edicion);
+            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
+
         }
     }
 
@@ -201,17 +241,41 @@ public class AltaPatrocinioServlet extends HttpServlet {
     }
 
     private void recargarFormulario(HttpServletRequest request,
-                                    IControladorRegistro ctrlRegistro,
-                                    IControladorUsuario ctrlUsuario,
+                                    PublicadorRegistro publicadorReg,
+                                    PublicadorUsuario publicadorUsr,
                                     String edicion) {
         try {
-            Set<String> nombresTipos = ctrlRegistro.listarTipoRegistro(edicion);
-            Set<DTTipoDeRegistro> tiposRegistro = new HashSet<>();
-            for (String nombreTipo : nombresTipos) {
-                tiposRegistro.add(ctrlRegistro.consultaTipoDeRegistro(edicion, nombreTipo));
+            // obtener nombres de tipos via SOAP
+            StringArray nombresTiposArr = publicadorReg.listarTipoRegistro(edicion);
+            Set<DtTipoDeRegistro> tiposRegistro = new HashSet<>();
+            if (nombresTiposArr != null && nombresTiposArr.getItem() != null) {
+                for (String nombreTipo : nombresTiposArr.getItem()) {
+                    try {
+                        DtTipoDeRegistro dt = publicadorReg.consultaTipoDeRegistro(edicion, nombreTipo);
+                        if (dt != null) tiposRegistro.add(dt);
+                    } catch (Exception ex) {
+                        // ignorar tipo que no se pueda obtener
+                    }
+                }
             }
             request.setAttribute("tiposRegistro", tiposRegistro);
-            request.setAttribute("instituciones", ctrlUsuario.listarInstituciones());
+
+            //categorias para el sidebar
+            PublicadorControlador publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+            StringArray categoriasArr = publicadorCtrl.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasArr != null && categoriasArr.getItem() != null) {
+                categorias.addAll(categoriasArr.getItem());
+            }
+            request.setAttribute("categorias", categorias);
+
+            // instituciones
+            StringArray institucionesArr = publicadorUsr.listarInstituciones();
+            List<String> instituciones = new ArrayList<>();
+            if (institucionesArr != null && institucionesArr.getItem() != null) {
+                instituciones.addAll(institucionesArr.getItem());
+            }
+            request.setAttribute("instituciones", instituciones);
             request.setAttribute("edicionSeleccionada", edicion);
         } catch (Exception ignored) {}
     }

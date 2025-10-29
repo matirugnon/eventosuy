@@ -383,6 +383,11 @@ public class ControladorEvento implements IControladorEvento {
 		        throw new IllegalArgumentException("No existe el tipo de registro: " + nomTipoRegistro);
 		    }
 
+		 // Validación: el costo de los registros gratuitos no debe superar el 20% del aporte
+		 if (costoSuperaAporte(nomEdicion, nomInstitucion, nomTipoRegistro, aporte, cantRegistrosGratuitos)) {
+			 throw new IllegalArgumentException("El costo de los registros gratuitos supera el 20% del aporte económico.");
+		 }
+
 
 		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
 		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
