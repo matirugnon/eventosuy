@@ -118,21 +118,27 @@ public class PerfilUsuarioServlet extends HttpServlet {
             }
             
             // Si es Organizador, obtener sus ediciones
+
             if (dtUsuario instanceof DtOrganizador) {
                 DtOrganizador organizador = (DtOrganizador) dtUsuario;
                 request.setAttribute("organizador", organizador);
-                
+
                 try {
                     // Obtener ediciones desde PublicadorUsuario
                     StringArray edicionesArray = publicador.listarEdicionesOrganizador(nickname);
                     String[] edicionesNicks = edicionesArray != null ? edicionesArray.getItem().toArray(new String[0]) : new String[0];
-                    
+
+                    // Determinar si el usuario logueado es el mismo que el del perfil
+                    String usuarioLogueado = null;
+                    if (session != null && session.getAttribute("usuario") != null) {
+                        usuarioLogueado = (String) session.getAttribute("usuario");
+                    }
+
+                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new java.util.ArrayList<>();
+                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new java.util.ArrayList<>();
+                    java.util.List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new java.util.ArrayList<>();
+
                     if (edicionesNicks != null && edicionesNicks.length > 0) {
-                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new java.util.ArrayList<>();
-                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new java.util.ArrayList<>();
-                        java.util.List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new java.util.ArrayList<>();
-                        
-                        // Para cada edición, consultar y clasificar por estado
                         for (String edicionNombre : edicionesNicks) {
                             try {
                                 DtEdicion edicion = publicadorControlador.consultarEdicion(edicionNombre);
@@ -142,30 +148,33 @@ public class PerfilUsuarioServlet extends HttpServlet {
                                     dto.setNombre(edicion.getNombre());
                                     dto.setSigla(edicion.getSigla());
                                     dto.setEstado(edicion.getEstado().value());
-                                    
-                                    // Clasificar por estado
+
                                     String estado = edicion.getEstado().value();
-                                    if ("ACEPTADA".equals(estado)) {
-                                        edicionesAceptadas.add(dto);
-                                    } else if ("INGRESADA".equals(estado)) {
-                                        edicionesIngresadas.add(dto);
-                                    } else if ("RECHAZADA".equals(estado)) {
-                                        edicionesRechazadas.add(dto);
+                                    // Si el usuario logueado es el organizador, mostrar todas las ediciones
+                                    if (usuarioLogueado != null && usuarioLogueado.equals(nickname)) {
+                                        if ("ACEPTADA".equals(estado)) {
+                                            edicionesAceptadas.add(dto);
+                                        } else if ("INGRESADA".equals(estado)) {
+                                            edicionesIngresadas.add(dto);
+                                        } else if ("RECHAZADA".equals(estado)) {
+                                            edicionesRechazadas.add(dto);
+                                        }
+                                    } else {
+                                        // Si es otro usuario, mostrar solo las ediciones ACEPTADA
+                                        if ("ACEPTADA".equals(estado)) {
+                                            edicionesAceptadas.add(dto);
+                                        }
                                     }
                                 }
                             } catch (Exception e) {
                                 System.err.println("Error obteniendo edición: " + edicionNombre);
                             }
                         }
-                        
-                        request.setAttribute("edicionesAceptadas", edicionesAceptadas);
-                        request.setAttribute("edicionesIngresadas", edicionesIngresadas);
-                        request.setAttribute("edicionesRechazadas", edicionesRechazadas);
-                    } else {
-                        request.setAttribute("edicionesAceptadas", new java.util.ArrayList<>());
-                        request.setAttribute("edicionesIngresadas", new java.util.ArrayList<>());
-                        request.setAttribute("edicionesRechazadas", new java.util.ArrayList<>());
                     }
+
+                    request.setAttribute("edicionesAceptadas", edicionesAceptadas);
+                    request.setAttribute("edicionesIngresadas", edicionesIngresadas);
+                    request.setAttribute("edicionesRechazadas", edicionesRechazadas);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("edicionesAceptadas", new java.util.ArrayList<>());
