@@ -99,10 +99,17 @@ public class PublicadorUsuario {
         return true;
     }
 
-    @WebMethod
     public boolean altaInstitucion(String nombreInstitucion, String descripcion, String web)
             throws ExisteInstitucionException {
         ctrlUs.altaInstitucion(nombreInstitucion, descripcion, web);
+        return true;
+    }
+    //alta institucion con logo
+    // Nota: no se pueden exponer dos operaciones SOAP con el mismo nombre y distinto signature;
+    // por eso esta operación usa un operationName distinto en el WSDL.
+    public boolean altaInstitucionConLogo(String nombreInstitucion, String descripcion, String web, String logo)
+            throws ExisteInstitucionException {
+        ctrlUs.altaInstitucion(nombreInstitucion, descripcion, web, logo);
         return true;
     }
 
