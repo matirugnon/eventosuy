@@ -64,7 +64,7 @@
 														<div
 															style="font-weight: 600; color: #182080; font-size: 1.1rem; margin-bottom: 0.25rem;">${registro.getTipoDeRegistro()}</div>
 														<div style="color: #666; font-size: 0.9rem;">Registrado:
-															${registro.getFechaRegistro()}</div>
+															${registro.getFechaRegistro().getDia()}/${registro.getFechaRegistro().getMes()}/${registro.getFechaRegistro().getAnio()}</div>
 													</div>
 													<a
 														href="${pageContext.request.contextPath}/consultaRegistro?asistente=${nickname}&edicion=${edicion}&tipoRegistro=${registro.getTipoDeRegistro()}&from=misRegistros"
