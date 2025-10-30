@@ -120,22 +120,23 @@
 						<h2 style="margin: 0 0 1.5rem 0; color: #182080;">Alta de
 							Edición de Evento</h2>
 
-					<!-- Mostrar mensaje de error si existe -->
-					<c:if test="${not empty error}">
-						<div class="error-message">${error}</div>
-					</c:if>
+						<!-- Mostrar mensaje de error si existe -->
+						<c:if test="${not empty error}">
+							<div class="error-message">${error}</div>
+						</c:if>
 
-					<!-- Mostrar mensaje según el tipo -->
-					<c:if test="${not empty mensaje}">
-						<c:choose>
-							<c:when test="${tipoMensaje == 'error'}">
-								<div class="error-message">${mensaje}</div>
-							</c:when>
-							<c:otherwise>
-								<div class="success-message">${mensaje}</div>
-							</c:otherwise>
-						</c:choose>
-					</c:if>						<form action="${pageContext.request.contextPath}/altaEdicion"
+						<!-- Mostrar mensaje según el tipo -->
+						<c:if test="${not empty mensaje}">
+							<c:choose>
+								<c:when test="${tipoMensaje == 'error'}">
+									<div class="error-message">${mensaje}</div>
+								</c:when>
+								<c:otherwise>
+									<div class="success-message">${mensaje}</div>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+						<form action="${pageContext.request.contextPath}/altaEdicion"
 							method="post" enctype="multipart/form-data" id="formEdicion">
 							<!-- Evento y Nombre -->
 							<div class="form-grid">
@@ -210,9 +211,11 @@
 
 							<!-- Video URL -->
 							<div class="form-group">
-								<label for="videoUrl">URL de video de la edición (opcional)</label>
-								<input type="url" id="videoUrl" name="videoUrl" class="form-control" placeholder="https://ejemplo.com/video">
-								<p class="note">Si la edición tiene un video asociado, ingrese la URL aquí.</p>
+								<label for="videoUrl">URL de video de la edición
+									(opcional)</label> <input type="url" id="videoUrl" name="videoUrl"
+									class="form-control" placeholder="https://ejemplo.com/video">
+								<p class="note">Si la edición tiene un video asociado,
+									ingrese la URL aquí.</p>
 							</div>
 
 							<!-- Botones -->

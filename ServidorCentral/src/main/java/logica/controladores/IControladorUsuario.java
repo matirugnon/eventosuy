@@ -87,5 +87,14 @@ public interface IControladorUsuario {
 	public boolean validarCredenciales(String identificador, String password);
 
 	public String obtenerAvatar(String identificador) throws UsuarioNoExisteException;
-}
 
+	public void seguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException;
+
+	public void dejarSeguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException;
+
+	public Set<String> obtenerSeguidores(String nickname) throws UsuarioNoExisteException;
+
+	public Set<String> obtenerSeguidos(String nickname) throws UsuarioNoExisteException;
+
+	public boolean esSeguidor(String seguidor, String seguido) throws UsuarioNoExisteException;
+}

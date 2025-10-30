@@ -22,7 +22,7 @@
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
 		<div class="content">
-			
+
 
 			<main>
 				<section class="panel">
@@ -35,8 +35,7 @@
 
 						<c:if test="${not empty success}">
 							<div class="success-message">
-								✅ ${success} <br>
-								<br> <a
+								✅ ${success} <br> <br> <a
 									href="${pageContext.request.contextPath}/edicionesOrganizadas"
 									class="btn-link">Volver a Ediciones Organizadas</a>
 							</div>

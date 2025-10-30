@@ -25,7 +25,10 @@
 				<div id="modal" class="modal">
 					<div class="modal-content">
 						<button id="closeModalBtn" class="close">&times;</button>
-						<h2><a href="${pageContext.request.contextPath}/logout">Cerrar sesión</a></h2>
+						<h2>
+							<a href="${pageContext.request.contextPath}/logout">Cerrar
+								sesión</a>
+						</h2>
 						<hr>
 						<c:choose>
 							<c:when test="${role == 'organizador'}">
@@ -81,7 +84,7 @@
 						<hr>
 						<div style="margin-top: 2rem; padding-top: 1rem;">
 							<a href="${pageContext.request.contextPath}/listarUsuarios"
-								style="color: white;display: flex; align-items: center; gap: 0.5rem;font-weight: 600; text-decoration: none; padding: 0.75rem; border-radius: 6px; transition: background-color 0.2s; background-color: rgba(24, 32, 128, 0.05);">
+								style="color: white; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; text-decoration: none; padding: 0.75rem; border-radius: 6px; transition: background-color 0.2s; background-color: rgba(24, 32, 128, 0.05);">
 								Ver listado de Usuarios </a>
 						</div>
 					</div>

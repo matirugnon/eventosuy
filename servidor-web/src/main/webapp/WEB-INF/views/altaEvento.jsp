@@ -141,9 +141,9 @@
 
 						<!-- Mostrar advertencia si existe -->
 						<c:if test="${not empty warning}">
-							<div class="error-message" style="background:#fff3cd;border-color:#ffeeba;color:#856404;">
-								${warning}
-							</div>
+							<div class="error-message"
+								style="background: #fff3cd; border-color: #ffeeba; color: #856404;">
+								${warning}</div>
 						</c:if>
 
 						<!-- Mostrar mensaje de éxito si existe -->
@@ -187,8 +187,8 @@
 												<c:if test="${paramValues.categorias != null}">
                                                        <c:forEach var="selected" items="${paramValues.categorias}">
                                                            <c:if test="${selected == categoria}">checked</c:if>
-													</c:forEach>
-											</c:if>
+									</c:forEach>
+									</c:if>
 									> <label for="cat_${categoria}">${categoria}</label>
 								</div>
 								</c:forEach>

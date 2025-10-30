@@ -213,6 +213,33 @@ public class PublicadorUsuario {
         DTUsuario dtUsuario = ctrlUs.getDTUsuario(identificador);
         return dtUsuario.getNombre();
     }
+
+    @WebMethod
+    public boolean seguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException {
+        ctrlUs.seguirUsuario(seguidor, seguido);
+        return true;
+    }
+
+    @WebMethod
+    public boolean dejarSeguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException {
+        ctrlUs.dejarSeguirUsuario(seguidor, seguido);
+        return true;
+    }
+
+    @WebMethod
+    public String[] obtenerSeguidores(String nickname) throws UsuarioNoExisteException {
+        return ctrlUs.obtenerSeguidores(nickname).toArray(new String[0]);
+    }
+
+    @WebMethod
+    public String[] obtenerSeguidos(String nickname) throws UsuarioNoExisteException {
+        return ctrlUs.obtenerSeguidos(nickname).toArray(new String[0]);
+    }
+
+    @WebMethod
+    public boolean esSeguidor(String seguidor, String seguido) throws UsuarioNoExisteException {
+        return ctrlUs.esSeguidor(seguidor, seguido);
+    }
     
     @WebMethod
     public String[] obtenerRegistrosDetallados(String nickname) throws UsuarioNoExisteException {

@@ -112,6 +112,61 @@
 	border-radius: 50%;
 	object-fit: cover;
 }
+
+.follow-info {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-left: auto;
+}
+
+.follow-counts {
+	display: flex;
+	gap: 1.5rem;
+	text-align: center;
+}
+
+.follow-count-number {
+	display: block;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #182080;
+}
+
+.follow-count-label {
+	display: block;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	color: #6c757d;
+	letter-spacing: 0.04em;
+}
+
+.follow-form button {
+	padding: 0.45rem 1.1rem;
+	border-radius: 999px;
+	border: none;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.follow-form .btn-outline {
+	border: 1px solid #182080;
+	background-color: transparent;
+	color: #182080;
+}
+
+.follow-form .btn-primary {
+	background-color: #182080;
+	color: #fff;
+}
+
+.alert-error {
+	background-color: #fdecea;
+	color: #b71c1c;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+}
 </style>
 </head>
 <body>
@@ -127,6 +182,9 @@
 			<main>
 				<section class="auth-container">
 					<div class="auth-card">
+						<c:if test="${not empty perfilError}">
+							<div class="alert-error">${perfilError}</div>
+						</c:if>
 						<!-- Encabezado: avatar + nombre del usuario -->
 						<div class="profile-header">
 							<img
@@ -140,6 +198,36 @@
                   </c:if>
 								</h2>
 								<p style="margin: 0.25rem 0; color: #666; font-size: 1.1rem;">@${usuario.nickname}</p>
+							</div>
+							<div class="follow-info">
+								<div class="follow-counts">
+									<div>
+										<span class="follow-count-number">${seguidoresCount}</span>
+										<span class="follow-count-label">Seguidores</span>
+									</div>
+									<div>
+										<span class="follow-count-number">${seguidosCount}</span>
+										<span class="follow-count-label">Siguiendo</span>
+									</div>
+								</div>
+								<c:if test="${puedeSeguir}">
+									<form method="post"
+										action="${pageContext.request.contextPath}/perfilUsuario"
+										class="follow-form">
+										<input type="hidden" name="nickname"
+											value="${perfilNickname}" />
+										<c:choose>
+											<c:when test="${siguiendo}">
+												<input type="hidden" name="action" value="dejar" />
+												<button type="submit" class="btn-outline">Dejar de seguir</button>
+											</c:when>
+											<c:otherwise>
+												<input type="hidden" name="action" value="seguir" />
+												<button type="submit" class="btn-primary">Seguir</button>
+											</c:otherwise>
+										</c:choose>
+									</form>
+								</c:if>
 							</div>
 						</div>
 

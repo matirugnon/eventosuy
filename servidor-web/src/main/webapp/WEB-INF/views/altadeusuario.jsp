@@ -70,20 +70,20 @@
 							<div class="form-group">
 								<span class="label-text">Rol</span>
 								<div style="display: flex; gap: 1rem; margin-top: 1rem;">
-									<label class="row"><span>Asistente</span><input type="radio" name="rol"
-										value="asistente"
-										${param.rol == 'organizador' ? '' : 'checked'}>
-									</label> <label class="row"><span>Organizador</span><input type="radio" name="rol"
-										value="organizador"
-										${param.rol == 'organizador' ? 'checked' : ''}>
-									</label>
+									<label class="row"><span>Asistente</span><input
+										type="radio" name="rol" value="asistente"
+										${param.rol == 'organizador' ? '' : 'checked'}> </label> <label
+										class="row"><span>Organizador</span><input
+										type="radio" name="rol" value="organizador"
+										${param.rol == 'organizador' ? 'checked' : ''}> </label>
 								</div>
 							</div>
 
 							<label class="input-group"> <span class="label-text">Nickname
 									*</span> <input name="nickname" id="nickname" required maxlength="30"
-								placeholder="nickname" value="${param.nickname}" />
-								<span id="nicknameMsg" style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
+								placeholder="nickname" value="${param.nickname}" /> <span
+								id="nicknameMsg"
+								style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
 							</label> <label class="input-group"> <span class="label-text">Nombre
 									*</span> <input name="nombre" required maxlength="60"
 								placeholder="Nombre" value="${param.nombre}" />
@@ -92,7 +92,8 @@
 							<!--                Específico Asistente (mover aquí)                 -->
 							<div id="bloqueAsistente" class="bloqueAsistente">
 								<div
-									style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;" class="apellidoYNacimiento">
+									style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;"
+									class="apellidoYNacimiento">
 									<label class="input-group"> <span class="label-text">Apellido
 											*</span> <input name="apellido" maxlength="60"
 										placeholder="Apellido" value="${param.apellido}" />
@@ -142,9 +143,10 @@
 							</div>
 
 							<label class="input-group"> <span class="label-text">Correo
-									electrónico *</span> <input name="email" id="email" type="email" required
-								placeholder="name@example.com" value="${param.email}" />
-								<span id="emailMsg" style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
+									electrónico *</span> <input name="email" id="email" type="email"
+								required placeholder="name@example.com" value="${param.email}" />
+								<span id="emailMsg"
+								style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
 							</label>
 
 							<div class="grid-2">

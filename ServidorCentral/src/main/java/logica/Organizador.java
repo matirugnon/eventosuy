@@ -1,10 +1,9 @@
 package logica;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
 import java.util.Set;
 
 import logica.datatypesyenum.DTOrganizador;
@@ -16,66 +15,69 @@ public class Organizador extends Usuario {
     private String link;
     private Map<String, Edicion> ediciones;
 
-
     public Organizador(String nickname, String nombre, String correo, String descripcion, String link, String password, String avatar) {
-        super(nickname, nombre, correo, password, avatar); // Actualizado para incluir avatar
+        super(nickname, nombre, correo, password, avatar);
         this.descripcion = descripcion;
         this.link = link;
-
         this.ediciones = new HashMap<>();
-
     }
 
-    public String getDescripcion() { return descripcion; }
-    public String getLink() { return link; }
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public String getLink() {
+        return link;
+    }
 
     @Override
     public String getTipo() {
         return "organizador";
     }
 
-	public void setDescripcion(String desc) {
-		this.descripcion = desc;
-	}
+    public void setDescripcion(String desc) {
+        this.descripcion = desc;
+    }
 
-	public void setLink(String link) {
-		this.link = link;
-	}
+    public void setLink(String link) {
+        this.link = link;
+    }
 
+    public void agregarEdicion(Edicion edicion) {
+        this.ediciones.put(edicion.getNombre(), edicion);
+    }
 
-	public void agregarEdicion(Edicion edicion) {
-	    this.ediciones.put(edicion.getNombre(), edicion);
-	}
+    public Edicion obtenerEdicion(String nombre) {
+        return this.ediciones.get(nombre);
+    }
 
-	// Obtener una edición por nombre
-	public Edicion obtenerEdicion(String nombre) {
-	    return this.ediciones.get(nombre);
-	}
+    public Set<Edicion> getEdiciones() {
+        return new HashSet<>(ediciones.values());
+    }
 
-	// Obtener todas las ediciones como Set<Edicion> (para mostrar en listas, etc.)
-	public Set<Edicion> getEdiciones() {
+    public Set<String> getNombresEdiciones() {
+        return ediciones.keySet();
+    }
 
-	    return new HashSet<>(ediciones.values()); // devuelve copia del conjunto
-	}
+    public void removerEdicion(String nombre) {
+        this.ediciones.remove(nombre);
+    }
 
-	public Set<String> getNombresEdiciones() {
-	    return ediciones.keySet(); // devuelve copia del conjunto
-	}
+    public boolean tieneEdicion(String nombre) {
+        return this.ediciones.containsKey(nombre);
+    }
 
-
-	// Eliminar una edición
-	public void removerEdicion(String nombre) {
-	    this.ediciones.remove(nombre);
-	}
-
-	// Verificar si tiene una edición
-	public boolean tieneEdicion(String nombre) {
-	    return this.ediciones.containsKey(nombre);
-	}
-
-	public DTUsuario getDTOrganizador() {
-		return new DTOrganizador(getNickname(), getNombre(), getCorreo(), getPassword(), descripcion, link, getAvatar()); // Incluir avatar
-	}
-
-
+    public DTUsuario getDTOrganizador() {
+        DTOrganizador dto = new DTOrganizador(
+                getNickname(),
+                getNombre(),
+                getCorreo(),
+                getPassword(),
+                descripcion,
+                link,
+                getAvatar());
+        dto.setSeguidores(new ArrayList<>(getSeguidores()));
+        dto.setSeguidos(new ArrayList<>(getSeguidos()));
+        return dto;
+    }
 }

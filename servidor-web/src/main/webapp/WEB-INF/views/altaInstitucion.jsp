@@ -76,8 +76,8 @@
 		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
-			<%-- Copiar mensaje flash desde sesión a request si existe (para mostrar después de redirect) --%>
-			<% String datosMensaje = (String) session.getAttribute("datosMensaje");
+		<%-- Copiar mensaje flash desde sesión a request si existe (para mostrar después de redirect) --%>
+		<% String datosMensaje = (String) session.getAttribute("datosMensaje");
 			   String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
 			   if (datosMensaje != null) {
 				   if ("info".equals(datosMensajeTipo)) {

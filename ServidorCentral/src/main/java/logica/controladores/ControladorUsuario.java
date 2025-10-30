@@ -421,6 +421,93 @@ public class ControladorUsuario implements IControladorUsuario {
 
 
 
+
+    @Override
+    public void seguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException {
+        if (seguidor == null || seguido == null) {
+            throw new IllegalArgumentException("Los usuarios no pueden ser nulos");
+        }
+        if (seguidor.equals(seguido)) {
+            return;
+        }
+
+        Usuario usuarioSeguidor = manejador.obtenerUsuario(seguidor);
+        if (usuarioSeguidor == null) {
+            throw new UsuarioNoExisteException(seguidor);
+        }
+        Usuario usuarioSeguido = manejador.obtenerUsuario(seguido);
+        if (usuarioSeguido == null) {
+            throw new UsuarioNoExisteException(seguido);
+        }
+
+        if (usuarioSeguidor.agregarSeguido(seguido)) {
+            usuarioSeguido.agregarSeguidor(seguidor);
+        } else if (!usuarioSeguido.getSeguidores().contains(seguidor)) {
+            usuarioSeguido.agregarSeguidor(seguidor);
+        }
+    }
+
+    @Override
+    public void dejarSeguirUsuario(String seguidor, String seguido) throws UsuarioNoExisteException {
+        if (seguidor == null || seguido == null) {
+            throw new IllegalArgumentException("Los usuarios no pueden ser nulos");
+        }
+        if (seguidor.equals(seguido)) {
+            return;
+        }
+
+        Usuario usuarioSeguidor = manejador.obtenerUsuario(seguidor);
+        if (usuarioSeguidor == null) {
+            throw new UsuarioNoExisteException(seguidor);
+        }
+        Usuario usuarioSeguido = manejador.obtenerUsuario(seguido);
+        if (usuarioSeguido == null) {
+            throw new UsuarioNoExisteException(seguido);
+        }
+
+        if (usuarioSeguidor.eliminarSeguido(seguido)) {
+            usuarioSeguido.eliminarSeguidor(seguidor);
+        } else if (usuarioSeguido.getSeguidores().contains(seguidor)) {
+            usuarioSeguido.eliminarSeguidor(seguidor);
+        }
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws UsuarioNoExisteException {
+        if (nickname == null) {
+            throw new IllegalArgumentException("El nickname no puede ser nulo");
+        }
+        Usuario usuario = manejador.obtenerUsuario(nickname);
+        if (usuario == null) {
+            throw new UsuarioNoExisteException(nickname);
+        }
+        return new HashSet<>(usuario.getSeguidores());
+    }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws UsuarioNoExisteException {
+        if (nickname == null) {
+            throw new IllegalArgumentException("El nickname no puede ser nulo");
+        }
+        Usuario usuario = manejador.obtenerUsuario(nickname);
+        if (usuario == null) {
+            throw new UsuarioNoExisteException(nickname);
+        }
+        return new HashSet<>(usuario.getSeguidos());
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidor, String seguido) throws UsuarioNoExisteException {
+        if (seguidor == null || seguido == null) {
+            throw new IllegalArgumentException("Los usuarios no pueden ser nulos");
+        }
+        Usuario usuarioSeguido = manejador.obtenerUsuario(seguido);
+        if (usuarioSeguido == null) {
+            throw new UsuarioNoExisteException(seguido);
+        }
+        return usuarioSeguido.getSeguidores().contains(seguidor);
+    }
+
 	public boolean validarCredenciales(String identificador, String password) {
 		if (identificador == null || identificador.isEmpty() || password == null || password.isEmpty()) {
 			return false;
@@ -440,4 +527,3 @@ public class ControladorUsuario implements IControladorUsuario {
 		return usuario.getAvatar();
 	}
 }
-

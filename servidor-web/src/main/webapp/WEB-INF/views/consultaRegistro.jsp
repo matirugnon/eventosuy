@@ -55,7 +55,8 @@
 							<strong>Tipo de Registro:</strong> ${registro.tipoDeRegistro}
 						</p>
 						<p>
-							<strong>Fecha de Registro:</strong> ${registro.getFechaRegistro().getDia()}/${registro.getFechaRegistro().getMes()}/${registro.getFechaRegistro().getAnio()}
+							<strong>Fecha de Registro:</strong>
+							${registro.getFechaRegistro().getDia()}/${registro.getFechaRegistro().getMes()}/${registro.getFechaRegistro().getAnio()}
 						</p>
 						<p>
 							<strong>Costo:</strong> $ ${registro.costo}

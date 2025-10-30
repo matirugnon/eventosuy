@@ -27,8 +27,8 @@
 			<main>
 				<section class="panel">
 					<div class="panel-body">
-							<!-- Video full-width (si existe) -->
-							
+						<!-- Video full-width (si existe) -->
+
 						<div class="event-detail" style="display: flex; gap: 2rem;">
 							<div style="flex: 1;">
 								<div class="event-image"
@@ -61,21 +61,21 @@
 										${edicion.fechaFin.dia}/${edicion.fechaFin.mes}/${edicion.fechaFin.anio}
 									</p>
 									<p style="margin: 0.25rem 0;">
-										<strong>Estado:</strong>
-										${edicion.estado}
+										<strong>Estado:</strong> ${edicion.estado}
 									</p>
 								</div>
-								
+
 								<!-- Botón de registro solo para asistentes y ediciones aceptadas -->
-								<c:if test="${role == 'asistente' && edicion.estado == 'ACEPTADA'}">
+								<c:if
+									test="${role == 'asistente' && edicion.estado == 'ACEPTADA'}">
 									<div style="margin-top: 1.5rem;">
-										<a href="${pageContext.request.contextPath}/registroAEdicion?edicion=${edicion.nombre}" 
-										   class="btn-primary" 
-										   style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #182080; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background-color 0.2s;"
-										   onmouseover="this.style.backgroundColor='#0d4f8c';"
-										   onmouseout="this.style.backgroundColor='#182080';">
-											Registrarse a esta edición
-										</a>
+										<a
+											href="${pageContext.request.contextPath}/registroAEdicion?edicion=${edicion.nombre}"
+											class="btn-primary"
+											style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #182080; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background-color 0.2s;"
+											onmouseover="this.style.backgroundColor='#0d4f8c';"
+											onmouseout="this.style.backgroundColor='#182080';">
+											Registrarse a esta edición </a>
 									</div>
 								</c:if>
 
@@ -174,12 +174,14 @@
 							</div>
 						</div>
 						<c:if test="${not empty edicion.video}">
-								<div class="event-video-full" style="width: 100%; margin-bottom: 1rem;">
-									<iframe id="videoIframe" data-video="${edicion.video}" src="" title="Video de la edición"
-										style="width: 100%; aspect-ratio: 16/9; border-radius: 8px; border: 0;"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
-								</iframe>
-								</div>
+							<div class="event-video-full"
+								style="width: 100%; margin-bottom: 1rem;">
+								<iframe id="videoIframe" data-video="${edicion.video}" src=""
+									title="Video de la edición"
+									style="width: 100%; aspect-ratio: 16/9; border-radius: 8px; border: 0;"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									allowfullscreen> </iframe>
+							</div>
 						</c:if>
 					</div>
 				</section>

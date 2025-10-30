@@ -40,16 +40,15 @@
 								<div>
 									<h3 style="margin: 0 0 0.25rem 0;">${eventoDetalle.nombre}</h3>
 									<p style="margin: 0.25rem 0;">
-										<strong>Descripción:</strong>
-										${eventoDetalle.descripcion}
+										<strong>Descripción:</strong> ${eventoDetalle.descripcion}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Sigla:</strong> ${eventoDetalle.sigla}
 									</p>
 									<p style="margin: 0.25rem 0;">
 										<strong>Categorías:</strong>
-										<c:forEach items="${eventoDetalle.categorias}"
-											var="categoria" varStatus="status">
+										<c:forEach items="${eventoDetalle.categorias}" var="categoria"
+											varStatus="status">
                       ${categoria}<c:if test="${!status.last}">, </c:if>
 										</c:forEach>
 									</p>
