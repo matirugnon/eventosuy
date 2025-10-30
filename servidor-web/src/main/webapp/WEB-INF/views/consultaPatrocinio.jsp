@@ -34,7 +34,7 @@
 					</div>
 
 					<div class="panel-body">
-						<c:if test="${not empty institucion and institucion.tieneLogo()}">
+						<c:if test="${not empty institucion and not empty institucion.logo}">
 							<div
 								style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
 								<img

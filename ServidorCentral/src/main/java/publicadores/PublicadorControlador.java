@@ -16,11 +16,15 @@ import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTPatrocinio;
 import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.NivelPatrocinio;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
+
+import excepciones.PatrocinioDuplicadoException;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -386,10 +390,23 @@ public class PublicadorControlador {
         }
     }
 
+    @WebMethod
+    public String altaPatrocinio(String edicion, String institucion, NivelPatrocinio nivel, double aporte, String tipoRegistro, int registrosGratuitos, String codigo, DTFecha fechaAlta)
+        throws PatrocinioDuplicadoException {
+        try {
+            ctrl.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
+            return "OK";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
 
 
 
     //consulta TipoDeRegistro
+    
+    //Alta patrocinio
     
 
 
