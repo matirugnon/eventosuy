@@ -10,7 +10,7 @@ import soap.StringArray;
 /**
  * DTO para mapear los datos de un evento obtenidos desde SOAP.
  * El array SOAP tiene el formato:
- * [0] nombre, [1] sigla, [2] descripcion, [3] dia, [4] mes, [5] anio, [6] imagen, [7] categorias_csv
+ * [0] nombre, [1] sigla, [2] descripcion, [3] dia, [4] mes, [5] anio, [6] imagen, [7] categorias_csv, [8] estado
  */
 public class EventoDetalleDTO {
     private String nombre;
@@ -21,6 +21,8 @@ public class EventoDetalleDTO {
     private int mes;
     private int anio;
     private Set<String> categorias;
+    private boolean finalizado;
+    private String estado;
 
     public EventoDetalleDTO(StringArray soapArray) {
         if (soapArray == null || soapArray.getItem() == null || soapArray.getItem().isEmpty()) {
@@ -36,6 +38,13 @@ public class EventoDetalleDTO {
         this.mes = Integer.parseInt(items.get(4));
         this.anio = Integer.parseInt(items.get(5));
         this.imagen = items.get(6).isEmpty() ? null : items.get(6);
+        if (items.size() > 8) {
+            this.estado = items.get(8);
+            this.finalizado = "FINALIZADO".equalsIgnoreCase(this.estado);
+        } else {
+            this.estado = "ACTIVO";
+            this.finalizado = false;
+        }
         
         // Parsear categorías separadas por coma
         String categoriasStr = items.get(7);
@@ -80,5 +89,13 @@ public class EventoDetalleDTO {
 
     public String getFechaEvento() {
         return dia + "/" + mes + "/" + anio;
+    }
+
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+
+    public String getEstado() {
+        return estado;
     }
 }

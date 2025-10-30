@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Evento · eventos.uy</title>
+<title>Evento | eventos.uy</title>
 <link rel="icon" type="image/png"
 	href="${pageContext.request.contextPath}/img/favicon.png">
 <link rel="stylesheet"
@@ -19,7 +19,6 @@
 </head>
 <body>
 	<div>
-		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
 		<div class="content">
@@ -28,6 +27,26 @@
 			<main>
 				<section class="panel">
 					<div class="panel-body">
+						<c:if test="${not empty eventoMensaje}">
+							<c:set var="eventoBgColor" value="#fdecea" />
+							<c:set var="eventoTextColor" value="#b32025" />
+							<c:choose>
+								<c:when test="${eventoMensajeTipo eq 'success'}">
+									<c:set var="eventoBgColor" value="#eaf7ea" />
+									<c:set var="eventoTextColor" value="#2d7a32" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="eventoBgColor" value="#fdecea" />
+									<c:set var="eventoTextColor" value="#b32025" />
+								</c:otherwise>
+							</c:choose>
+							<div
+								style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 8px; background-color: <c:out value='${eventoBgColor}'/>; color: <c:out value='${eventoTextColor}'/>;">
+								${eventoMensaje}
+							</div>
+						</c:if>
+
+						<c:if test="${not empty eventoDetalle}">
 						<div class="event-detail">
 							<article class="event-item" style="border-bottom: 0;">
 								<div class="event-image"
@@ -39,6 +58,13 @@
 								</div>
 								<div>
 									<h3 style="margin: 0 0 0.25rem 0;">${eventoDetalle.nombre}</h3>
+									<c:if test="${eventoFinalizado}">
+										<span
+											style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; background-color: #b32025; color: white; font-size: 0.85rem; margin-bottom: 0.5rem;">
+											Evento finalizado
+										</span>
+									</c:if>
+
 									<p style="margin: 0.25rem 0;">
 										<strong>Descripción:</strong> ${eventoDetalle.descripcion}
 									</p>
@@ -49,13 +75,32 @@
 										<strong>Categorías:</strong>
 										<c:forEach items="${eventoDetalle.categorias}" var="categoria"
 											varStatus="status">
-                      ${categoria}<c:if test="${!status.last}">, </c:if>
+											${fn:trim(categoria)}<c:if test="${!status.last}">, </c:if>
 										</c:forEach>
 									</p>
 									<p style="margin: 0.25rem 0;">
-										<strong>Fecha Alta:</strong>
+										<strong>Fecha alta:</strong>
 										${eventoDetalle.dia}/${eventoDetalle.mes}/${eventoDetalle.anio}
 									</p>
+
+									<c:if test="${puedeFinalizar}">
+										<form method="post"
+											action="${pageContext.request.contextPath}/consultaEvento"
+											style="margin-top: 1rem;">
+											<input type="hidden" name="evento"
+												value="${eventoSeleccionado}" />
+											<button type="submit"
+												style="padding: 0.5rem 1rem; border-radius: 6px; background-color: #b32025; color: #fff; border: none; cursor: pointer;">
+												Finalizar evento
+											</button>
+										</form>
+									</c:if>
+
+									<c:if test="${eventoFinalizado}">
+										<p style="margin-top: 1rem; color: #555;">
+											No se publican ediciones porque este evento ya fue finalizado.
+										</p>
+									</c:if>
 								</div>
 							</article>
 
@@ -67,9 +112,10 @@
 											<c:url var="edicionUrl" value="/consultaEdicion">
 												<c:param name="edicion" value="${edicion.nombre}" />
 											</c:url>
-											<a class="mini-card" href="${edicionUrl}"> <img
-												src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
-												alt="${edicion.nombre}" />
+											<a class="mini-card" href="${edicionUrl}">
+												<img
+													src="${not empty edicion.imagen ? pageContext.request.contextPath.concat(edicion.imagen) : pageContext.request.contextPath.concat('/img/eventoSinImagen.png')}"
+													alt="${edicion.nombre}" />
 												<div class="mini-card-title">${edicion.nombre}</div>
 											</a>
 										</c:forEach>
@@ -77,6 +123,12 @@
 								</div>
 							</c:if>
 						</div>
+						</c:if>
+						<c:if test="${empty eventoDetalle}">
+							<div class="event-detail">
+								<p style="margin: 1rem 0;">No se encontraron datos para el evento solicitado.</p>
+							</div>
+						</c:if>
 					</div>
 				</section>
 			</main>

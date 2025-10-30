@@ -60,9 +60,20 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             // Obtener ediciones organizadas por este usuario (nombres) y convertir a DtEdicion
             StringArray edicionesNombres = publicadorUsuario.listarEdicionesOrganizador(nickname);
             List<DtEdicion> edicionesOrganizadas = new ArrayList<>();
+            Map<String, Boolean> eventoFinalizadoCache = new HashMap<>();
             if (edicionesNombres != null && edicionesNombres.getItem() != null) {
                 for (String nom : edicionesNombres.getItem()) {
                     try {
+                        String nombreEvento = publicadorControlador.obtenerEventoDeEdicion(nom);
+                        boolean eventoFinalizado = false;
+                        if (nombreEvento != null && !nombreEvento.isBlank()) {
+                            eventoFinalizado = eventoFinalizadoCache.computeIfAbsent(nombreEvento,
+                                    key -> publicadorControlador.esEventoFinalizado(key));
+                        }
+                        if (eventoFinalizado) {
+                            continue;
+                        }
+
                         DtEdicion d = publicadorControlador.consultarEdicion(nom);
                         if (d != null) edicionesOrganizadas.add(d);
                     } catch (Exception ex) {
@@ -111,4 +122,3 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
         }
     }
 }
-

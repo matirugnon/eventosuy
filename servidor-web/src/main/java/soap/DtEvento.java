@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
@@ -30,6 +31,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *           </complexType>
  *         </element>
  *         <element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="estado" type="{http://publicadores/}estadoEvento" minOccurs="0"/>
  *         <element name="fechaEvento" type="{http://publicadores/}DTFecha" minOccurs="0"/>
  *         <element name="imagen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -46,6 +48,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "dtEvento", propOrder = {
     "categorias",
     "descripcion",
+    "estado",
     "fechaEvento",
     "imagen",
     "nombre",
@@ -55,6 +58,8 @@ public class DtEvento {
 
     protected DtEvento.Categorias categorias;
     protected String descripcion;
+    @XmlSchemaType(name = "string")
+    protected EstadoEvento estado;
     protected DTFecha fechaEvento;
     protected String imagen;
     protected String nombre;
@@ -106,6 +111,30 @@ public class DtEvento {
      */
     public void setDescripcion(String value) {
         this.descripcion = value;
+    }
+
+    /**
+     * Gets the value of the estado property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link EstadoEvento }
+     *     
+     */
+    public EstadoEvento getEstado() {
+        return estado;
+    }
+
+    /**
+     * Sets the value of the estado property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link EstadoEvento }
+     *     
+     */
+    public void setEstado(EstadoEvento value) {
+        this.estado = value;
     }
 
     /**

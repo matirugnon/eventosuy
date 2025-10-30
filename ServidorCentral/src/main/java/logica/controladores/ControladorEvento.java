@@ -11,6 +11,7 @@ import excepciones.EdicionNoExisteException;
 import excepciones.EdicionSinPatrociniosException;
 import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
+import excepciones.EventoYaFinalizadoException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.PatrocinioDuplicadoException;
@@ -117,7 +118,15 @@ public class ControladorEvento implements IControladorEvento {
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Set<String> eventos = manejador.listarEventos();
 
-		return eventos;
+		Set<String> activos = new HashSet<>();
+		for (String nombre : eventos) {
+			Evento evento = manejador.obtenerEvento(nombre);
+			if (evento != null && !evento.estaFinalizado()) {
+				activos.add(nombre);
+			}
+		}
+
+		return activos;
 
 	}
 
@@ -383,11 +392,6 @@ public class ControladorEvento implements IControladorEvento {
 		        throw new IllegalArgumentException("No existe el tipo de registro: " + nomTipoRegistro);
 		    }
 
-		 // Validación: el costo de los registros gratuitos no debe superar el 20% del aporte
-		 if (costoSuperaAporte(nomEdicion, nomInstitucion, nomTipoRegistro, aporte, cantRegistrosGratuitos)) {
-			 throw new IllegalArgumentException("El costo de los registros gratuitos supera el 20% del aporte económico.");
-		 }
-
 
 		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();
 		 Institucion ins = manejadorU.obtenerInstitucion(nomInstitucion);
@@ -504,4 +508,30 @@ public Set<DTEvento> obtenerDTEventos(){
 		return eve.obtenerEdicionesPorEstado(estado);
 	}
 
+	public void finalizarEvento(String nomEvento) throws EventoNoExisteException, EventoYaFinalizadoException {
+		Evento evento = manejadorE.obtenerEvento(nomEvento);
+		if (evento == null) {
+			throw new EventoNoExisteException(nomEvento);
+		}
+		if (evento.estaFinalizado()) {
+			throw new EventoYaFinalizadoException(nomEvento);
+		}
+		evento.finalizar();
+	}
+
+	public boolean esEventoFinalizado(String nomEvento) throws EventoNoExisteException {
+		Evento evento = manejadorE.obtenerEvento(nomEvento);
+		if (evento == null) {
+			throw new EventoNoExisteException(nomEvento);
+		}
+		return evento.estaFinalizado();
+	}
+
+	public DTEvento obtenerDTEvento(String nomEvento) throws EventoNoExisteException {
+		Evento evento = manejadorE.obtenerEvento(nomEvento);
+		if (evento == null) {
+			throw new EventoNoExisteException(nomEvento);
+		}
+		return new DTEvento(evento);
+	}
 }

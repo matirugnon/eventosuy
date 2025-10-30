@@ -27,6 +27,7 @@ import excepciones.EventoNoExisteException;
 
 
 import excepciones.EventoRepetidoException;
+import excepciones.EventoYaFinalizadoException;
 
 
 
@@ -176,11 +177,13 @@ public interface IControladorEvento {
 
 	public Set<String> listarCategorias();
 
+	public void finalizarEvento(String nomEvento) throws EventoNoExisteException, EventoYaFinalizadoException;
 
+	public boolean esEventoFinalizado(String nomEvento) throws EventoNoExisteException;
 
 	public Set<DTEvento> obtenerDTEventos();
 
-
+	public DTEvento obtenerDTEvento(String nomEvento) throws EventoNoExisteException;
 
 	public DTEvento obtenerEventoPorEdicion(String nomEdicion);
 	
@@ -207,6 +210,5 @@ public interface IControladorEvento {
 
 
 }
-
 
 

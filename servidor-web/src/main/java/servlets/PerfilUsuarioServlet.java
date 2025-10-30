@@ -3,7 +3,9 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -166,10 +168,21 @@ public class PerfilUsuarioServlet extends HttpServlet {
                     List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new ArrayList<>();
                     List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new ArrayList<>();
                     List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new ArrayList<>();
+                    Map<String, Boolean> eventoFinalizadoCache = new HashMap<>();
 
                     if (edicionesNicks != null && edicionesNicks.length > 0) {
                         for (String edicionNombre : edicionesNicks) {
                             try {
+                                String eventoPadre = publicadorControlador.obtenerEventoDeEdicion(edicionNombre);
+                                boolean eventoFinalizado = false;
+                                if (eventoPadre != null && !eventoPadre.isBlank()) {
+                                    eventoFinalizado = eventoFinalizadoCache.computeIfAbsent(eventoPadre,
+                                            key -> publicadorControlador.esEventoFinalizado(key));
+                                }
+                                if (eventoFinalizado) {
+                                    continue;
+                                }
+
                                 DtEdicion edicion = publicadorControlador.consultarEdicion(edicionNombre);
                                 if (edicion != null) {
                                     servlets.dto.RegistroEdicionDTO dto = new servlets.dto.RegistroEdicionDTO();

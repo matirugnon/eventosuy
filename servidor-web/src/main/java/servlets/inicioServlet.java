@@ -60,7 +60,10 @@ public class inicioServlet extends HttpServlet {
                     if (detallesWs != null && detallesWs.getItem() != null && detallesWs.getItem().size() > 0) {
                         // Convertir List<String> a String[]
                         String[] detalles = detallesWs.getItem().toArray(new String[0]);
-                        eventos.add(new EventoDTO(detalles));
+                        EventoDTO dto = new EventoDTO(detalles);
+                        if (dto.getNombre() != null && !dto.isFinalizado()) {
+                            eventos.add(dto);
+                        }
                     }
                 }
             }

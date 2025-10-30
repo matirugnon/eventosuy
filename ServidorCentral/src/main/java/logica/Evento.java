@@ -7,6 +7,7 @@ import java.util.Set;
 
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.EstadoEdicion;
+import logica.datatypesyenum.EstadoEvento;
 
 public class Evento {
 
@@ -17,6 +18,7 @@ public class Evento {
     private Set<String> categorias;
     private Map<String, Edicion> ediciones;
     private String imagen;
+    private EstadoEvento estado;
 
     // Constructor sin imagen (mantiene compatibilidad)
     public Evento(String nom, String desc, DTFecha fecha, String sig, Set<Categoria> categoriaObjetos) {
@@ -31,6 +33,7 @@ public class Evento {
         this.sigla = sig;
         this.ediciones = new HashMap<>();
         this.imagen = imagen;
+        this.estado = EstadoEvento.ACTIVO;
 
         this.categorias = new HashSet<>();
         for (Categoria cat : categoriaObjetos) {
@@ -46,8 +49,11 @@ public class Evento {
     public Set<String> getCategorias() { return new HashSet<>(categorias); }
     public Set<String> getEdiciones() { return ediciones.keySet(); }
     public String getImagen() { return imagen; }
+    public EstadoEvento getEstado() { return estado; }
+    public boolean estaFinalizado() { return estado == EstadoEvento.FINALIZADO; }
     
     public void setImagen(String imagen) { this.imagen = imagen; }
+    public void finalizar() { this.estado = EstadoEvento.FINALIZADO; }
    
     public void agregarEdicion(Edicion edicion) {
         ediciones.put(edicion.getNombre(), edicion);
@@ -78,7 +84,6 @@ public class Evento {
     }
 
 }
-
 
 
 

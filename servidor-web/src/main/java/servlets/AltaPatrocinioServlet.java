@@ -224,15 +224,6 @@ public class AltaPatrocinioServlet extends HttpServlet {
             cargarSesionYCategorias(request, session);
             request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
-        } catch (soap.PatrocinioDuplicadoException_Exception e) {
-            // Excepción chequeada generada por el stub SOAP cuando el patrocinio ya existe
-            String mensaje = e.getMessage() != null ? e.getMessage() : "La institución ya es patrocinadora de la edición.";
-            request.setAttribute("msg", mensaje);
-            setValoresPrevios(request, edicion, tipoRegistro, institucion, nivelPatrocinioStr, aporteStr, registrosGratuitosStr, codigo);
-            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
-            cargarSesionYCategorias(request, session);
-            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
-
         }
     }
 

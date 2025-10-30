@@ -15,16 +15,13 @@ import utils.Utils;
 import logica.datatypesyenum.DTEvento;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTPatrocinio;
-import logica.datatypesyenum.EstadoEdicion;
 import logica.datatypesyenum.NivelPatrocinio;
+import logica.datatypesyenum.EstadoEdicion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
-
-import excepciones.PatrocinioDuplicadoException;
-
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -390,9 +387,33 @@ public class PublicadorControlador {
         }
     }
 
+
+
+
+
     @WebMethod
-    public String altaPatrocinio(String edicion, String institucion, NivelPatrocinio nivel, double aporte, String tipoRegistro, int registrosGratuitos, String codigo, DTFecha fechaAlta)
-        throws PatrocinioDuplicadoException {
+    public String finalizarEvento(String nombreEvento) {
+        try {
+            ctrl.finalizarEvento(nombreEvento);
+            return "OK";
+        } catch (Exception e) {
+            String mensaje = e.getMessage();
+            return (mensaje != null && !mensaje.isBlank()) ? mensaje : "No se pudo finalizar el evento.";
+        }
+    }
+
+    @WebMethod
+    public boolean esEventoFinalizado(String nombreEvento) {
+        try {
+            return ctrl.esEventoFinalizado(nombreEvento);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @WebMethod
+    public String altaPatrocinio(String edicion, String institucion, NivelPatrocinio nivel, double aporte,
+                                 String tipoRegistro, int registrosGratuitos, String codigo, DTFecha fechaAlta) {
         try {
             ctrl.altaPatrocinio(edicion, institucion, nivel, aporte, tipoRegistro, registrosGratuitos, codigo, fechaAlta);
             return "OK";
@@ -401,12 +422,16 @@ public class PublicadorControlador {
         }
     }
 
-
-
+    @WebMethod
+    public DTEvento obtenerDTEvento(String nombreEvento) {
+        try {
+            return ctrl.obtenerDTEvento(nombreEvento);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     //consulta TipoDeRegistro
-    
-    //Alta patrocinio
     
 
 
