@@ -13,6 +13,7 @@ import soap.PublicadorRegistro;
 import soap.PublicadorUsuario;
 import soap.StringArray;
 import utils.SoapClientHelper;
+import soap.DtTipoDeRegistro;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
-import soap.DtTipoDeRegistro;
+
 
 
 import logica.controladores.IControladorEvento;
@@ -200,6 +201,7 @@ public class AltaPatrocinioServlet extends HttpServlet {
 
             // Mostrar mensaje de éxito, limpiar valores del formulario y quedarse en la misma página
             request.setAttribute("successMsg", "Patrocinio creado correctamente.");
+
             // Mantener la edición seleccionada pero limpiar los demás campos
             setValoresPrevios(request, edicion, "", "", "", "", "", "");
             recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
@@ -237,8 +239,17 @@ public class AltaPatrocinioServlet extends HttpServlet {
     // MÃ©todo para recargar categorÃ­as y datos de sesiÃ³n
     private void cargarSesionYCategorias(HttpServletRequest request, HttpSession session) {
         try {
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            request.setAttribute("categorias", ctrlEvento.listarCategorias());
+
+            PublicadorControlador publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+
+            StringArray categoriasSet = publicadorCtrl.listarCategorias();
+            List<String> categorias = new ArrayList<>();
+            if (categoriasSet != null && categoriasSet.getItem() != null) {
+                categorias.addAll(categoriasSet.getItem());
+            }
+            Collections.sort(categorias);
+
+            request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", session.getAttribute("usuario"));
             request.setAttribute("avatar", session.getAttribute("avatar"));
             request.setAttribute("role", session.getAttribute("role"));

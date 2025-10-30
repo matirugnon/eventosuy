@@ -22,6 +22,16 @@ import excepciones.EdicionSinPatrociniosException;
 import excepciones.PatrocinioNoEncontradoException;
 import utils.Utils;
 
+import soap.DtEdicion;
+import soap.PublicadorControlador;
+import soap.PublicadorRegistro;
+import soap.PublicadorUsuario;
+import soap.StringArray;
+import utils.SoapClientHelper;
+import soap.DtTipoDeRegistro;
+import soap.DtPatrocinio;
+import soap.DtInstitucion;
+
 @WebServlet("/consultaPatrocinio")
 public class ConsultaPatrocinioServlet extends HttpServlet {
 
@@ -46,12 +56,12 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             codigo = codigo.trim();
             edicion = edicion.trim();
 
-            // Obtener controladores
-            IControladorEvento ctrlEvento = IControladorEvento.getInstance();
-            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            // Obtener publicadores
+            PublicadorControlador publicadorCtrl = SoapClientHelper.getPublicadorControlador();
+            PublicadorUsuario publicadorUsr = SoapClientHelper.getPublicadorUsuario();
 
             // Obtener informaciÃ³n del patrocinio
-            DTPatrocinio patrocinio = ctrlEvento.consultarTipoPatrocinioEdicion(edicion, codigo);
+            DtPatrocinio patrocinio = publicadorCtrl.consultarTipoPatrocinioEdicion(edicion, codigo);
 
             if (patrocinio == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patrocinio no encontrado");
@@ -59,14 +69,18 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
             }
 
             // Obtener informaciÃ³n de la instituciÃ³n (incluyendo logo)
-            DTInstitucion institucion = ctrlUsuario.getInstitucion(patrocinio.getInstitucion());
+            DtInstitucion institucion = publicadorUsr.getInstitucion(patrocinio.getInstitucion());
 
             // Obtener informaciÃ³n de la ediciÃ³n
-            DTEdicion edicionInfo = ctrlEvento.consultarEdicion(edicion);
+            DtEdicion edicionInfo = publicadorCtrl.consultarEdicion(edicion);
 
             // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
-            Set<String> categoriasSet = ctrlEvento.listarCategorias();
-            List<String> categorias = new ArrayList<>(categoriasSet);
+            StringArray categoriasSet = publicadorCtrl.listarCategorias();
+
+            List<String> categorias = new ArrayList<>();
+            if (categoriasSet != null && categoriasSet.getItem() != null) {
+                categorias.addAll(categoriasSet.getItem());
+            }
             Collections.sort(categorias);
 
             // Pasar los datos a la JSP
@@ -83,10 +97,8 @@ public class ConsultaPatrocinioServlet extends HttpServlet {
 
             request.getRequestDispatcher("/WEB-INF/views/consultaPatrocinio.jsp").forward(request, response);
 
-        } catch (EdicionNoExisteException | EdicionSinPatrociniosException | PatrocinioNoEncontradoException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patrocinio no encontrado: " + e.getMessage());
         } catch (Exception e) {
-            throw new ServletException("Error obteniendo informaciÃ³n del patrocinio", e);
+            throw new ServletException("Error obteniendo información del patrocinio", e);
         }
     }
 }
