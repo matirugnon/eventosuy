@@ -198,7 +198,13 @@ public class AltaPatrocinioServlet extends HttpServlet {
                 return;
             }
 
-            response.sendRedirect(request.getContextPath() + "/edicionesOrganizadas");
+            // Mostrar mensaje de éxito, limpiar valores del formulario y quedarse en la misma página
+            request.setAttribute("successMsg", "Patrocinio creado correctamente.");
+            // Mantener la edición seleccionada pero limpiar los demás campos
+            setValoresPrevios(request, edicion, "", "", "", "", "", "");
+            recargarFormulario(request, publicadorReg, publicadorUsr, edicion);
+            cargarSesionYCategorias(request, session);
+            request.getRequestDispatcher("/WEB-INF/views/altaPatrocinio.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
             request.setAttribute("msg", "Formato inválido en números.");

@@ -110,6 +110,9 @@
 						</div>
 
 						<div id="msg" class="alta-patrocinio-message">
+							<c:if test="${not empty successMsg}">
+								<div class="success-box">${successMsg}</div>
+							</c:if>
 							<c:if test="${not empty msg}">
 								<div class="error-box">${msg}</div>
 							</c:if>

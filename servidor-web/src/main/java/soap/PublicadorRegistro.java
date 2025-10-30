@@ -100,6 +100,24 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
+     * @return
+     *     returns soap.StringArray
+     * @throws EdicionNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/listarTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/listarTipoRegistroResponse", fault = {
+        @FaultAction(className = EdicionNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarTipoRegistro/Fault/EdicionNoExisteException")
+    })
+    public StringArray listarTipoRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws EdicionNoExisteException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
      * @param arg1
      * @return
      *     returns soap.DtRegistro
@@ -112,6 +130,27 @@ public interface PublicadorRegistro {
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
         String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns boolean
+     * @throws EdicionNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/alcanzoCupoRequest", output = "http://publicadores/PublicadorRegistro/alcanzoCupoResponse", fault = {
+        @FaultAction(className = EdicionNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/alcanzoCupo/Fault/EdicionNoExisteException")
+    })
+    public boolean alcanzoCupo(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1)
+        throws EdicionNoExisteException_Exception
+    ;
 
     /**
      * 
@@ -148,24 +187,6 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns soap.StringArray
-     * @throws EdicionNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/listarTipoRegistroRequest", output = "http://publicadores/PublicadorRegistro/listarTipoRegistroResponse", fault = {
-        @FaultAction(className = EdicionNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarTipoRegistro/Fault/EdicionNoExisteException")
-    })
-    public StringArray listarTipoRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws EdicionNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @return
      *     returns boolean
@@ -182,27 +203,6 @@ public interface PublicadorRegistro {
         @WebParam(name = "arg1", partName = "arg1")
         String arg1)
         throws UsuarioNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @return
-     *     returns boolean
-     * @throws EdicionNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/alcanzoCupoRequest", output = "http://publicadores/PublicadorRegistro/alcanzoCupoResponse", fault = {
-        @FaultAction(className = EdicionNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/alcanzoCupo/Fault/EdicionNoExisteException")
-    })
-    public boolean alcanzoCupo(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1)
-        throws EdicionNoExisteException_Exception
     ;
 
 }

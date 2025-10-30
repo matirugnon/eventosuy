@@ -275,6 +275,18 @@
 	font-weight: 600;
 	max-width: 100%;
 }
+
+/* Mensaje de éxito estético para formularios (cuadro verde suave) */
+.success-box {
+	display: inline-block;
+	background: #f0fdf4; /* muy claro verde */
+	border: 1px solid #bbf7d0; /* borde verdoso suave */
+	color: #064e3b; /* texto verde oscuro */
+	padding: 0.8rem 1rem;
+	border-radius: 8px;
+	font-weight: 600;
+	max-width: 100%;
+}
 /* --- Estética para consultaRegistro.html --- */
 .consulta-registro-form-row {
 	display: flex;
