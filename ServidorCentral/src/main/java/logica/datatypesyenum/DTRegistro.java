@@ -10,6 +10,7 @@ public class DTRegistro implements Serializable{
 	private DTFecha fechaRegistro;
 	private Double costo;
 	private String nomEdicion;
+	private boolean asistio;
 
 	public DTRegistro() {}
 	
@@ -19,6 +20,16 @@ public class DTRegistro implements Serializable{
 		fechaRegistro = fecha;
 		costo = cos;
 		this.nomEdicion = edicion;
+		this.asistio = false;
+	}
+	
+	public DTRegistro(String asis, String tdr, DTFecha fecha, Double cos, String edicion, boolean asistio){
+		asistente = asis;
+		tipoDeRegistro = tdr;
+		fechaRegistro = fecha;
+		costo = cos;
+		this.nomEdicion = edicion;
+		this.asistio = asistio;
 	}
 
 	public String getAsistente() {
@@ -71,6 +82,14 @@ public class DTRegistro implements Serializable{
 
 	public void setCosto(Double costo) {
 		this.costo = costo;
+	}
+
+	public boolean isAsistio() {
+		return asistio;
+	}
+
+	public void setAsistio(boolean asistio) {
+		this.asistio = asistio;
 	}
 
 

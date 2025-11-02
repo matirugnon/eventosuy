@@ -93,8 +93,9 @@ public class Asistente extends Usuario {
                 DTFecha fecha = r.getFechaRegistro();
                 Double costo = r.getCosto();
                 String edicion = r.getNomEdicion();
+                boolean asistio = r.getAsistio();
 
-                return new DTRegistro(asistente, nombreTR, fecha, costo, edicion);
+                return new DTRegistro(asistente, nombreTR, fecha, costo, edicion, asistio);
             }
         }
 
@@ -109,5 +110,22 @@ public class Asistente extends Usuario {
         }
 
         return resultado;
+    }
+    
+    public Registro obtenerRegistro(String nomEdicion, String nomTipoRegistro) {
+        if (registros == null) {
+            return null;
+        }
+        
+        for (Registro r : registros) {
+            String nombreTR = r.getTipoDeRegistro().getNombre();
+            String nomEd = r.getNomEdicion();
+            if (nombreTR != null && nombreTR.equals(nomTipoRegistro) && 
+                nomEd != null && nomEd.equals(nomEdicion)) {
+                return r;
+            }
+        }
+        
+        return null;
     }
 }

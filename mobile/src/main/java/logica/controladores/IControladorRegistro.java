@@ -20,7 +20,7 @@ public interface IControladorRegistro {
 
 	public boolean existeTipoDeRegistro(String nombreEd, String nombreTipo);
 
-	public boolean altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo)
 			throws NombreTipoRegistroDuplicadoException;
 
 	public Set<String> listarTipoRegistro(String nombreEd)
@@ -42,8 +42,4 @@ public interface IControladorRegistro {
 
 	// Método para listar registros por asistente
     public Set<DTRegistro> listarRegistrosPorAsistente(String nickname) throws UsuarioNoExisteException;
-    
-    // Método para registrar asistencia a edición
-    public void registrarAsistencia(String nickAsistente, String nomEdicion, String nomTipoRegistro) 
-    		throws UsuarioNoExisteException;
 }

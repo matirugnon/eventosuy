@@ -110,4 +110,10 @@ public class PublicadorRegistro {
 	public boolean alcanzoCupo(String nombreEdicion, String nombreTipoRegistro) throws EdicionNoExisteException {
 		return ctrlReg.alcanzoCupo(nombreEdicion, nombreTipoRegistro);
 	}
+
+	@WebMethod
+	public void registrarAsistencia(String nickAsistente, String nomEdicion, String nomTipoRegistro) 
+			throws UsuarioNoExisteException {
+		ctrlReg.registrarAsistencia(nickAsistente, nomEdicion, nomTipoRegistro);
+	}
 }

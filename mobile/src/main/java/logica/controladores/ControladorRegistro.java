@@ -42,17 +42,16 @@ public class ControladorRegistro implements IControladorRegistro {
 	return edicion.existeTipoDeRegistro(nombreTipo);
 	}
 
-	public boolean altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
+	public void altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo) throws NombreTipoRegistroDuplicadoException {
 
 		if (existeTipoDeRegistro(nombreEd, nombreTipo)) {
-			 throw new NombreTipoRegistroDuplicadoException(nombreTipo);
+			 throw new NombreTipoRegistroDuplicadoException(nombreEd);
 		}
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion edicion =manejador.obtenerEdicion(nombreEd);
 		TipoDeRegistro tipo = new TipoDeRegistro(nombreTipo, descripcion, costo, cupo, edicion);
 		edicion.agregarTipoDeRegistro(tipo, nombreTipo);
-		return true;
 	}
 
 	public Set<String> listarTipoRegistro(String nombreEd)
@@ -156,15 +155,13 @@ public class ControladorRegistro implements IControladorRegistro {
 	            String asistente = asist.getNickname();
 	            DTRegistro dreg = asist.getRegistro(nombreTipoRegistro);
 
-	            String edicion = dreg.getNomEdicion();
+	            String edicion = dreg.getnomEdicion();
 
 	            DTFecha fecha = dreg.getFechaRegistro();
 
 	            Double costo = dreg.getCosto();
-	            
-	            boolean asistio = dreg.isAsistio();
 
-	            return new DTRegistro(asistente, tr, fecha, costo, edicion, asistio);
+	            return new DTRegistro(asistente, tr, fecha, costo, edicion);
 	        }
 	    }
 
@@ -185,46 +182,11 @@ public class ControladorRegistro implements IControladorRegistro {
 	                reg.getTipoDeRegistro().getNombre(),
 	                reg.getFechaRegistro(),
 	                reg.getCosto(),
-	                reg.getTipoDeRegistro().getNombreEdicion(),
-	                reg.getAsistio()
+	                reg.getTipoDeRegistro().getNombreEdicion()
 	            );
 	            registros.add(dtRegistro);
 	        }
 	        return registros;
-	    } else {
-	        throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
-	    }
-	}
-
-	@Override
-	public void registrarAsistencia(String nickAsistente, String nomEdicion, String nomTipoRegistro) 
-	        throws UsuarioNoExisteException {
-	    System.out.println("=== DEBUG registrarAsistencia ===");
-	    System.out.println("Asistente: " + nickAsistente);
-	    System.out.println("Edición: " + nomEdicion);
-	    System.out.println("Tipo Registro: " + nomTipoRegistro);
-	    
-	    ManejadorUsuario manUs = ManejadorUsuario.getinstance();
-	    Usuario usu = manUs.obtenerUsuario(nickAsistente);
-
-	    if (usu instanceof Asistente asist) {
-	        System.out.println("Total registros del asistente: " + asist.getRegistros().size());
-	        
-	        // Debug: ver todos los registros
-	        for (Registro r : asist.getRegistros()) {
-	            System.out.println("  Registro: edicion=" + r.getNomEdicion() + 
-	                             ", tipo=" + r.getTipoDeRegistro().getNombre() + 
-	                             ", asistio=" + r.getAsistio());
-	        }
-	        
-	        Registro registro = asist.obtenerRegistro(nomEdicion, nomTipoRegistro);
-	        if (registro != null) {
-	            System.out.println("Registro encontrado, marcando asistencia...");
-	            registro.registrarAsistencia();
-	            System.out.println("Asistencia marcada: " + registro.getAsistio());
-	        } else {
-	            System.out.println("ERROR: No se encontró el registro!");
-	        }
 	    } else {
 	        throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
 	    }

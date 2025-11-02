@@ -9,14 +9,12 @@ public class Registro{
 	private TipoDeRegistro tipo;
 
 	private String asistente;
-	private boolean asistio;
 
 	public Registro(DTFecha fecha, double costo, TipoDeRegistro tipo, String asis) {
 		fechaRegistro = fecha;
 		costoRegistro = costo;
 		this.tipo = tipo;
 		asistente = asis;
-		this.asistio = false; // Por defecto no ha asistido
 
 	}
 
@@ -43,17 +41,5 @@ public class Registro{
 
 	public String getNomEdicion() {
 	    return tipo.getNombreEdicion();
-	}
-
-	public boolean getAsistio() {
-		return asistio;
-	}
-
-	public void setAsistio(boolean asistio) {
-		this.asistio = asistio;
-	}
-
-	public void registrarAsistencia() {
-		this.asistio = true;
 	}
 }
