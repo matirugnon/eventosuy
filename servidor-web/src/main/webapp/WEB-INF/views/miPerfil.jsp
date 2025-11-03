@@ -116,37 +116,74 @@
 </head>
 <body>
 	<div>
-		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
+		
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
 		<div class="content">
-			<!-- Sidebar -->
+			
 			<jsp:include page="/WEB-INF/views/componentes/aside.jsp" />
 
-			<!-- Main: Mi Perfil -->
+			
 			<main>
 				<section class="auth-container">
 					<div class="auth-card">
-						<!-- Encabezado: avatar + nombre del usuario -->
-						<div class="profile-header">
-							<img
-								src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}"
-								alt="Avatar de ${usuario.nickname}" class="profile-avatar">
-							<div>
-								<h2 style="margin: 0; color: #333;">
-									<c:choose>
-										<c:when
-											test="${tipoUsuario == 'Asistente' && not empty asistente}">
-                      ${asistente.nombre} ${asistente.apellido}
-                    </c:when>
-										<c:otherwise>
-                      ${usuario.nombre}
-                    </c:otherwise>
-									</c:choose>
-								</h2>
-								<p style="margin: 0.25rem 0; color: #666; font-size: 1.1rem;">@${usuario.nickname}</p>
-							</div>
-						</div>
+					
+<div class="profile-header" 
+     style="display: flex; align-items: center; justify-content: space-between; gap: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+    
+    <!-- Avatar -->
+    <img
+        src="${not empty usuario.avatar ? pageContext.request.contextPath.concat(usuario.avatar) : pageContext.request.contextPath.concat('/img/usSinFoto.webp')}"
+        alt="Avatar de ${usuario.nickname}"
+        class="profile-avatar"
+        style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;"
+    >
+
+    <!-- Info central -->
+    <div style="flex: 1;">
+        <h2 style="margin: 0; color: #333; font-size: 1.6rem;">
+            <c:choose>
+                <c:when test="${tipoUsuario == 'Asistente' && not empty asistente}">
+                    ${asistente.nombre} ${asistente.apellido}
+                </c:when>
+                <c:otherwise>
+                    ${usuario.nombre}
+                </c:otherwise>
+            </c:choose>
+        </h2>
+        <p style="margin: 0.25rem 0; color: #666; font-size: 1.1rem;">
+            @${usuario.nickname}
+        </p>
+    </div>
+
+    <!-- Contadores a la derecha -->
+    <div style="display: flex; gap: 2rem; text-align: center;">
+        <div>
+            <a href="${pageContext.request.contextPath}/listarUsuarios?filtro=seguidores&nickname=${usuario.nickname}"
+               style="text-decoration: none;">
+                <span style="display: block; font-size: 1.25rem; font-weight: 600; color: #182080;">
+                    ${seguidoresCount}
+                </span>
+                <span style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #6c757d; letter-spacing: 0.04em;">
+                    Seguidores
+                </span>
+            </a>
+        </div>
+        <div>
+            <a href="${pageContext.request.contextPath}/listarUsuarios?filtro=seguidos&nickname=${usuario.nickname}"
+               style="text-decoration: none;">
+                <span style="display: block; font-size: 1.25rem; font-weight: 600; color: #182080;">
+                    ${seguidosCount}
+                </span>
+                <span style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #6c757d; letter-spacing: 0.04em;">
+                    Siguiendo
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+						
+
 
 						<!-- Tabs de navegación -->
 						<div class="tabs">
