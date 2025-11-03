@@ -66,6 +66,15 @@ public class EdicionDetalleDTO {
     public String getOrganizador() { return organizador; }
     public String getImagen() { return imagen; }
     public String getEstado() { return estado; }
+    
+    // Métodos de ayuda para obtener objetos de fecha
+    public FechaDTO getFechaInicio() {
+        return new FechaDTO(fechaInicioDia, fechaInicioMes, fechaInicioAnio);
+    }
+    
+    public FechaDTO getFechaFin() {
+        return new FechaDTO(fechaFinDia, fechaFinMes, fechaFinAnio);
+    }
 
     // Setters
     public void setEvento(String evento) { this.evento = evento; }
