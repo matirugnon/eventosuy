@@ -1124,6 +1124,9 @@ textarea {
 		display: flex !important;
 		flex-direction: column !important;
 	}
+	.editarUsuarioResponsive {
+		display: none;
+	}
 	#perteneceInstitucion {
 		width: auto;
 	}

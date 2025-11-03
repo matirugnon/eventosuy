@@ -1,5 +1,4 @@
 /target/
-pom.xml
 /build/
 
 # Clases SOAP generadas automáticamente

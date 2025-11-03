@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>uy.edu.fing.tprog</groupId>
+	<artifactId>mobile</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- Dependencia del Servidor Central para acceder a la lógica -->
+		<dependency>
+			<groupId>uy.edu.fing.tprog</groupId>
+			<artifactId>servidor-central</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+    <!-- Si usas JSP -->
+    <dependency>
+        <groupId>jakarta.servlet.jsp</groupId>
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+        <version>3.1.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+		<!-- JAX-WS para consumir SOAP -->
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>mobile</finalName>
+		<plugins>
+			<!-- Plugin para generar cliente SOAP -->
+			<plugin>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>4.0.2</version>
+				<executions>
+					<!-- Cliente SOAP para Publicador Principal -->
+					<execution>
+						<id>wsimport-publicador</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<wsdlUrls>
+								<wsdlUrl>http://localhost:9128/publicador?wsdl</wsdlUrl>
+							</wsdlUrls>
+							<packageName>soap</packageName>
+							<keep>true</keep>
+							<sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+						</configuration>
+					</execution>
+
+					<!-- Otros clientes SOAP igual que en servidor-web -->
+					<execution>
+						<id>wsimport-publicador-usuario</id>
+						<goals><goal>wsimport</goal></goals>
+						<configuration>
+							<wsdlUrls>
+								<wsdlUrl>http://localhost:9128/publicadorUsuario?wsdl</wsdlUrl>
+							</wsdlUrls>
+							<packageName>soap</packageName>
+							<keep>true</keep>
+							<sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>wsimport-publicador-registro</id>
+						<goals><goal>wsimport</goal></goals>
+						<configuration>
+							<wsdlUrls>
+								<wsdlUrl>http://localhost:9128/publicadorRegistro?wsdl</wsdlUrl>
+							</wsdlUrls>
+							<packageName>soap</packageName>
+							<keep>true</keep>
+							<sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>wsimport-publicador-carga-datos</id>
+						<goals><goal>wsimport</goal></goals>
+						<configuration>
+							<wsdlUrls>
+								<wsdlUrl>http://localhost:9128/publicadorCargaDatos?wsdl</wsdlUrl>
+							</wsdlUrls>
+							<packageName>soap</packageName>
+							<keep>true</keep>
+							<sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-rt</artifactId>
+						<version>4.0.2</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
