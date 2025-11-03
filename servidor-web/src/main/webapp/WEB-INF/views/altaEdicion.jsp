@@ -93,6 +93,10 @@
 	font-size: 0.9rem;
 	font-style: italic;
 }
+
+.form-group select {
+	padding: 0;
+}
 </style>
 </head>
 <body>
