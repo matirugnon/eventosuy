@@ -28,189 +28,208 @@ import utils.Utils;
 @WebServlet("/listarUsuarios")
 public class ListarUsuariosServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	
-    	request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-    	
-        try {
-        	PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
-        	PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
-            
-            // Obtener los nicks de los usuarios registrados
-        	StringArray nickArr = publicadorUs.listarUsuarios();
-            Set<String> nicksUsuarios = new HashSet<>(nickArr.getItem());
-            System.out.println("DEBUG: Nicks después de carga: " + (nicksUsuarios != null ? nicksUsuarios.size() + " - " + nicksUsuarios : "null"));
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-            // Usar el método más eficiente que devuelve DTUsuarios directamente
-            DtUsuarioArray dtUsArr =  publicadorUs.listarUsuariosDT();
-            Set<DtUsuario> usuarios = new HashSet<>(dtUsArr.getItem());
-            System.out.println("DEBUG: DTUsuarios obtenidos directamente:" + (usuarios != null ? usuarios.size() : "null"));
-            
-            List<DtUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 
-            usuariosOrdenados.sort(Comparator.comparing(DtUsuario::getNickname));
-         // Obtener parámetros de filtro desde la URL
-            String filtro = request.getParameter("filtro");       // "seguidores" o "seguidos"
-            String filterNickname = request.getParameter("nickname"); // nickname del usuario cuyo seguidores/seguidos queremos ver
+		try {
+			PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+			PublicadorControlador publicadorEv = SoapClientHelper.getPublicadorControlador();
 
-            // Si ambos parámetros existen, filtramos la lista de usuarios
-            if (filtro != null && filterNickname != null && !filterNickname.isEmpty()) {
-                // Crear un conjunto con los nicks a mostrar
-                Set<String> nicksFiltrados = new HashSet<>();
+			// Obtener los nicks de los usuarios registrados
+			StringArray nickArr = publicadorUs.listarUsuarios();
+			Set<String> nicksUsuarios = new HashSet<>(nickArr.getItem());
+			System.out.println("DEBUG: Nicks después de carga: "
+					+ (nicksUsuarios != null ? nicksUsuarios.size() + " - " + nicksUsuarios : "null"));
 
-                // Dependiendo del tipo, obtenemos los seguidores o seguidos
-                if ("seguidores".equals(filtro)) {
-                    StringArray seguidoresArr = publicadorUs.obtenerSeguidores(filterNickname);
-                    if (seguidoresArr != null && seguidoresArr.getItem() != null) {
-                        nicksFiltrados.addAll(seguidoresArr.getItem());
-                    }
-                } else if ("seguidos".equals(filtro)) {
-                    StringArray seguidosArr = publicadorUs.obtenerSeguidos(filterNickname);
-                    if (seguidosArr != null && seguidosArr.getItem() != null) {
-                        nicksFiltrados.addAll(seguidosArr.getItem());
-                    }
-                }
+			// Usar el método más eficiente que devuelve DTUsuarios directamente
+			DtUsuarioArray dtUsArr = publicadorUs.listarUsuariosDT();
+			Set<DtUsuario> usuarios = new HashSet<>(dtUsArr.getItem());
+			System.out.println(
+					"DEBUG: DTUsuarios obtenidos directamente:" + (usuarios != null ? usuarios.size() : "null"));
 
-                // Filtrar la lista de usuarios para que solo queden los del conjunto
-                usuariosOrdenados.removeIf(u -> !nicksFiltrados.contains(u.getNickname()));
-            }
+			List<DtUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
 
-            
-            
-            // Obtener lista de usuarios seguidosl
-            HttpSession session = request.getSession(false);
-            String nicknameActual = null;
-            Set<String> seguidos = new HashSet<>();
+			usuariosOrdenados.sort(Comparator.comparing(DtUsuario::getNickname));
+			// Obtener parámetros de filtro desde la URL
+			String filtro = request.getParameter("filtro"); // "seguidores" o "seguidos"
+			String filterNickname = request.getParameter("nickname"); // nickname del usuario cuyo seguidores/seguidos
+																		// queremos ver
 
-            if (session != null && session.getAttribute("usuario") != null) {
-                nicknameActual = (String) session.getAttribute("usuario");
+			// Si ambos parámetros existen, filtramos la lista de usuarios
+			if (filtro != null && filterNickname != null && !filterNickname.isEmpty()) {
+				// Crear un conjunto con los nicks a mostrar
+				Set<String> nicksFiltrados = new HashSet<>();
 
-                try {
-                    
-                    StringArray seguidosArr = publicadorUs.obtenerSeguidos(nicknameActual);
-                    if (seguidosArr != null && seguidosArr.getItem() != null) {
-                        for (String s : seguidosArr.getItem()) {
-                            if (s != null) {
-                                seguidos.add(s);
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+				// Dependiendo del tipo, obtenemos los seguidores o seguidos
+				if ("seguidores".equals(filtro)) {
+					StringArray seguidoresArr = publicadorUs.obtenerSeguidores(filterNickname);
+					if (seguidoresArr != null && seguidoresArr.getItem() != null) {
+						nicksFiltrados.addAll(seguidoresArr.getItem());
+					}
+				} else if ("seguidos".equals(filtro)) {
+					StringArray seguidosArr = publicadorUs.obtenerSeguidos(filterNickname);
+					if (seguidosArr != null && seguidosArr.getItem() != null) {
+						nicksFiltrados.addAll(seguidosArr.getItem());
+					}
+				}
 
-            
-            request.setAttribute("seguidos", seguidos);
+				// Filtrar la lista de usuarios para que solo queden los del conjunto
+				usuariosOrdenados.removeIf(u -> !nicksFiltrados.contains(u.getNickname()));
+			}
 
-            Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
-            
-            if (usuarios != null && !usuarios.isEmpty()) {
-                for (DtUsuario dtUsuario : usuarios) {
-                    String tipo = (dtUsuario instanceof DtAsistente) ? "Asistente" : "Organizador";
-                    tiposUsuarios.put(dtUsuario.getNickname(), tipo);
-                    System.out.println("DEBUG: DTUsuario procesado: " + dtUsuario.getNickname() + " - " + dtUsuario.getNombre() + " (" + tipo + ")");
-                }
-            } else {
-                System.out.println("DEBUG: usuarios DTUsuario está vacío o es null");
-            }
-            System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0));            // Obtener categorías para el sidebar (ordenadas alfabéticamente)
-            StringArray catArr = publicadorEv.listarCategorias();
-            List<String> categorias = new ArrayList<>(catArr.getItem());
-            Collections.sort(categorias);
-            
-            // --- PAGINACION ---
-            int pageSize = 5; // 5 usuarios por página
-            int page = 1;
-            String pageParam = request.getParameter("page");
-            if (pageParam != null) {
-                try { page = Integer.parseInt(pageParam); if (page < 1) page = 1; } 
-                catch (NumberFormatException e) { page = 1; }
-            }
+			// Obtener lista de usuarios seguidosl
+			HttpSession session = request.getSession(false);
+			String nicknameActual = null;
+			Set<String> seguidos = new HashSet<>();
 
-            int totalUsuarios = usuariosOrdenados.size();
-            int totalPages = (int) Math.ceil((double) totalUsuarios / pageSize);
-            if (totalPages == 0) {
-                page = 1;
-            } else if (page > totalPages) {
-                page = totalPages;
-            }
+			if (session != null && session.getAttribute("usuario") != null) {
+				nicknameActual = (String) session.getAttribute("usuario");
 
-            List<DtUsuario> usuariosPagina;
-            if (totalUsuarios == 0) {
-                usuariosPagina = new ArrayList<>();
-            } else {
-                int fromIndex = Math.max(0, (page - 1) * pageSize);
-                int toIndex = Math.min(fromIndex + pageSize, totalUsuarios);
-                usuariosPagina = usuariosOrdenados.subList(fromIndex, toIndex);
-            }
+				try {
 
+					StringArray seguidosArr = publicadorUs.obtenerSeguidos(nicknameActual);
+					if (seguidosArr != null && seguidosArr.getItem() != null) {
+						for (String s : seguidosArr.getItem()) {
+							if (s != null) {
+								seguidos.add(s);
+							}
+						}
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 
-            // Pasar los datos como atributos a la JSP
-            request.setAttribute("usuariosOrdenados", usuariosPagina);
-            request.setAttribute("usuarios", usuarios);
-            request.setAttribute("tiposUsuarios", tiposUsuarios);
-            request.setAttribute("categorias", categorias);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("totalPages", totalPages);
+			request.setAttribute("seguidos", seguidos);
 
-            // Pasar datos de sesión (nickname, avatar, nombre, role)
-            request.setAttribute("nickname", nicknameActual);
-            if (session != null) {
-                request.setAttribute("avatar", session.getAttribute("avatar"));
-                request.setAttribute("role", session.getAttribute("role"));
-                request.setAttribute("nombre", session.getAttribute("nombre"));
-            }
+			Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
 
-            // Redirigir a la JSP
-            request.getRequestDispatcher("/WEB-INF/views/listarUsuarios.jsp").forward(request, response);
+			if (usuarios != null && !usuarios.isEmpty()) {
+				for (DtUsuario dtUsuario : usuarios) {
+					String tipo = (dtUsuario instanceof DtAsistente) ? "Asistente" : "Organizador";
+					tiposUsuarios.put(dtUsuario.getNickname(), tipo);
+					System.out.println("DEBUG: DTUsuario procesado: " + dtUsuario.getNickname() + " - "
+							+ dtUsuario.getNombre() + " (" + tipo + ")");
+				}
+			} else {
+				System.out.println("DEBUG: usuarios DTUsuario está vacío o es null");
+			}
+			System.out.println("DEBUG: Total DTUsuarios en set: " + (usuarios != null ? usuarios.size() : 0)); // Obtener
+																												// categorías
+																												// para
+																												// el
+																												// sidebar
+																												// (ordenadas
+																												// alfabéticamente)
+			StringArray catArr = publicadorEv.listarCategorias();
+			List<String> categorias = new ArrayList<>(catArr.getItem());
+			Collections.sort(categorias);
 
-        } catch (Exception e) {
-            throw new ServletException("Error al listar usuarios: " + e.getMessage(), e);
-        }
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+			// --- PAGINACION ---
+			int pageSize = 5; // 5 usuarios por página
+			int page = 1;
+			String pageParam = request.getParameter("page");
+			if (pageParam != null) {
+				try {
+					page = Integer.parseInt(pageParam);
+					if (page < 1)
+						page = 1;
+				} catch (NumberFormatException e) {
+					page = 1;
+				}
+			}
 
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
+			int totalUsuarios = usuariosOrdenados.size();
+			int totalPages = (int) Math.ceil((double) totalUsuarios / pageSize);
+			if (totalPages == 0) {
+				page = 1;
+			} else if (page > totalPages) {
+				page = totalPages;
+			}
 
-        String accion = request.getParameter("accion");
-        String seguido = request.getParameter("seguido");
-        String seguidor = (String) request.getSession().getAttribute("usuario");
+			List<DtUsuario> usuariosPagina;
+			if (totalUsuarios == 0) {
+				usuariosPagina = new ArrayList<>();
+			} else {
+				int fromIndex = Math.max(0, (page - 1) * pageSize);
+				int toIndex = Math.min(fromIndex + pageSize, totalUsuarios);
+				usuariosPagina = usuariosOrdenados.subList(fromIndex, toIndex);
+			}
 
-        // Parámetros para mantener la vista de origen
-        String filtro = request.getParameter("filtro");              // "seguidores", "seguidos" o null
-        String nicknameOrigen = request.getParameter("nicknameOrigen"); // Usuario del que se está viendo la lista
+			// Pasar los datos como atributos a la JSP
+			request.setAttribute("usuariosOrdenados", usuariosPagina);
+			request.setAttribute("usuarios", usuarios);
+			request.setAttribute("tiposUsuarios", tiposUsuarios);
+			request.setAttribute("categorias", categorias);
+			request.setAttribute("currentPage", page);
+			request.setAttribute("totalPages", totalPages);
 
-        if (accion != null && seguido != null && seguidor != null && !seguidor.equals(seguido)) {
-            try {
-                PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
-                if ("seguir".equals(accion)) {
-                    publicadorUs.seguirUsuario(seguidor, seguido);
-                } else if ("dejar".equals(accion)) {
-                    publicadorUs.dejarSeguirUsuario(seguidor, seguido);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+			// Pasar datos de sesión (nickname, avatar, nombre, role)
+			request.setAttribute("nickname", nicknameActual);
+			if (session != null) {
+				request.setAttribute("avatar", session.getAttribute("avatar"));
+				request.setAttribute("role", session.getAttribute("role"));
+				request.setAttribute("nombre", session.getAttribute("nombre"));
+			}
 
-        // Redirigir según la vista de origen
-        if (filtro != null && nicknameOrigen != null) {
-            response.sendRedirect(request.getContextPath()
-                    + "/listarUsuarios?filtro=" + filtro + "&nickname=" + nicknameOrigen);
-        } else {
-            // Caso por defecto: listado general de usuarios
-            response.sendRedirect(request.getContextPath() + "/listarUsuarios");
-        }
-    }
+			// Redirigir a la JSP
+			request.getRequestDispatcher("/WEB-INF/views/listarUsuarios.jsp").forward(request, response);
+
+		} catch (Exception e) {
+			throw new ServletException("Error al listar usuarios: " + e.getMessage(), e);
+		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+
+		String accion = request.getParameter("accion");
+		String seguido = request.getParameter("seguido");
+		String seguidor = (String) request.getSession().getAttribute("usuario");
+
+		// Parámetros para mantener la vista de origen
+		String filtro = request.getParameter("filtro"); // "seguidores", "seguidos" o null
+		String nicknameOrigen = request.getParameter("nicknameOrigen"); // Usuario del que se está viendo la lista
+		String page = request.getParameter("page");
+
+		if (accion != null && seguido != null && seguidor != null && !seguidor.equals(seguido)) {
+			try {
+				PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+				if ("seguir".equals(accion)) {
+					publicadorUs.seguirUsuario(seguidor, seguido);
+				} else if ("dejar".equals(accion)) {
+					publicadorUs.dejarSeguirUsuario(seguidor, seguido);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Redirigir según la vista de origen
+		String redirectUrl = request.getContextPath() + "/listarUsuarios";
+
+		List<String> params = new ArrayList<>();
+		if (filtro != null && !filtro.isEmpty())
+			params.add("filtro=" + filtro);
+		if (nicknameOrigen != null && !nicknameOrigen.isEmpty())
+			params.add("nickname=" + nicknameOrigen);
+		if (page != null && !page.isEmpty())
+			params.add("page=" + page);
+
+		if (!params.isEmpty()) {
+			redirectUrl += "?" + String.join("&", params);
+		}
+
+		response.sendRedirect(redirectUrl);
+
+	}
 
 }
-
-

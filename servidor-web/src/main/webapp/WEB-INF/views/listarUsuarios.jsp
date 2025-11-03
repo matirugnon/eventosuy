@@ -100,6 +100,7 @@
                                                                         <!-- Mantenemos el contexto -->
                                                                         <input type="hidden" name="filtro" value="${param.filtro}"/>
                                                                         <input type="hidden" name="nicknameOrigen" value="${param.nickname}"/>
+                                                                        <input type="hidden" name="page" value="${currentPage}"/>
                                                                         <button type="submit" class="btn-secondary">Dejar de seguir</button>
                                                                     </form>
                                                                 </c:when>
@@ -110,6 +111,7 @@
                                                                         <!-- Mantenemos el contexto -->
                                                                         <input type="hidden" name="filtro" value="${param.filtro}"/>
                                                                         <input type="hidden" name="nicknameOrigen" value="${param.nickname}"/>
+                                                                        <input type="hidden" name="page" value="${currentPage}"/>
                                                                         <button type="submit" class="btn-primary">Seguir</button>
                                                                     </form>
                                                                 </c:otherwise>
