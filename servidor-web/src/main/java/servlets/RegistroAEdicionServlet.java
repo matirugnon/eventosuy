@@ -321,7 +321,8 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                         String resultado = publicadorRegistro.altaRegistro(edicion, usuario, tipoRegistro, soapFecha, costoFinal);
 
                                         if ("OK".equals(resultado)) {
-                                            String exito = "Registro exitoso a la edición '" + edicion + "'. Fecha: " + fechaRegistro.toString() + " | Costo: $" + String.format("%.0f", costoFinal);
+                                        	String fechaStr = String.format("%02d/%02d/%d", fechaRegistro.getDia(), fechaRegistro.getMes(), fechaRegistro.getAnio());
+                                            String exito = "Registro exitoso a la edición '" + edicion + "'. Fecha: " + fechaStr + " | Costo: $" + String.format("%.0f", costoFinal);
                                             if (isAjax) {
                                                 response.setContentType("application/json");
                                                 response.setCharacterEncoding("UTF-8");
