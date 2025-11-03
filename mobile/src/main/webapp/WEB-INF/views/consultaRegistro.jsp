@@ -73,6 +73,17 @@
 							</c:choose>
 						</p>
 
+						<!-- Botón para descargar constancia (solo si confirmó asistencia) -->
+						<c:if test="${role == 'asistente' && nickname == registro.asistente && registro.asistio}">
+							<div style="margin-top: 1.5rem;">
+								<a href="${pageContext.request.contextPath}/descargaConstancia?asistente=${registro.asistente}&edicion=${registro.nomEdicion}&tipoRegistro=${registro.tipoDeRegistro}" 
+								   class="btn-primary" 
+								   style="display: inline-block; text-decoration: none;">
+									📄 Descargar Constancia de Asistencia (PDF)
+								</a>
+							</div>
+						</c:if>
+
 						<!-- Botón para confirmar asistencia (solo para asistentes que no han confirmado) -->
 						<c:if test="${role == 'asistente' && nickname == registro.asistente && !registro.asistio}">
 							<form method="POST" action="${pageContext.request.contextPath}/registrarAsistencia" 

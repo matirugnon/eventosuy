@@ -28,24 +28,6 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns soap.DtRegistroArray
-     * @throws UsuarioNoExisteException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteRequest", output = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteResponse", fault = {
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistente/Fault/UsuarioNoExisteException")
-    })
-    public DtRegistroArray listarRegistrosPorAsistente(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws UsuarioNoExisteException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @return
      *     returns soap.DtRegistro
@@ -58,6 +40,38 @@ public interface PublicadorRegistro {
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
         String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
+     * @return
+     *     returns java.lang.String
+     * @throws UsuarioNoExisteException_Exception
+     * @throws UsuarioYaRegistradoEnEdicionException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/altaRegistroRequest", output = "http://publicadores/PublicadorRegistro/altaRegistroResponse", fault = {
+        @FaultAction(className = UsuarioYaRegistradoEnEdicionException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioYaRegistradoEnEdicionException"),
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioNoExisteException")
+    })
+    public String altaRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        DTFecha arg3,
+        @WebParam(name = "arg4", partName = "arg4")
+        double arg4)
+        throws UsuarioNoExisteException_Exception, UsuarioYaRegistradoEnEdicionException_Exception
+    ;
 
     /**
      * 
@@ -129,38 +143,6 @@ public interface PublicadorRegistro {
     /**
      * 
      * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     * @param arg4
-     * @return
-     *     returns java.lang.String
-     * @throws UsuarioNoExisteException_Exception
-     * @throws UsuarioYaRegistradoEnEdicionException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://publicadores/PublicadorRegistro/altaRegistroRequest", output = "http://publicadores/PublicadorRegistro/altaRegistroResponse", fault = {
-        @FaultAction(className = UsuarioYaRegistradoEnEdicionException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioYaRegistradoEnEdicionException"),
-        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/altaRegistro/Fault/UsuarioNoExisteException")
-    })
-    public String altaRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        DTFecha arg3,
-        @WebParam(name = "arg4", partName = "arg4")
-        double arg4)
-        throws UsuarioNoExisteException_Exception, UsuarioYaRegistradoEnEdicionException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
      * @return
      *     returns soap.StringArray
      * @throws EdicionNoExisteException_Exception
@@ -174,6 +156,24 @@ public interface PublicadorRegistro {
         @WebParam(name = "arg0", partName = "arg0")
         String arg0)
         throws EdicionNoExisteException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns soap.DtRegistroArray
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteRequest", output = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistenteResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/listarRegistrosPorAsistente/Fault/UsuarioNoExisteException")
+    })
+    public DtRegistroArray listarRegistrosPorAsistente(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws UsuarioNoExisteException_Exception
     ;
 
     /**
@@ -204,5 +204,26 @@ public interface PublicadorRegistro {
     public StringArray obtenerNomsTipoRegistro(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @throws UsuarioNoExisteException_Exception
+     */
+    @WebMethod
+    @Action(input = "http://publicadores/PublicadorRegistro/registrarAsistenciaRequest", output = "http://publicadores/PublicadorRegistro/registrarAsistenciaResponse", fault = {
+        @FaultAction(className = UsuarioNoExisteException_Exception.class, value = "http://publicadores/PublicadorRegistro/registrarAsistencia/Fault/UsuarioNoExisteException")
+    })
+    public void registrarAsistencia(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2)
+        throws UsuarioNoExisteException_Exception
+    ;
 
 }

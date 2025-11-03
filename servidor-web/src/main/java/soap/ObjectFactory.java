@@ -24,21 +24,14 @@ import jakarta.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
-    private static final QName _CategoriaNoSeleccionadaFault_QNAME = new QName("http://publicadores/", "CategoriaNoSeleccionadaFault");
     private static final QName _CorreoInvalidoFault_QNAME = new QName("http://publicadores/", "CorreoInvalidoFault");
-    private static final QName _EdicionExistenteFault_QNAME = new QName("http://publicadores/", "EdicionExistenteFault");
-    private static final QName _EdicionNoExisteFault_QNAME = new QName("http://publicadores/", "EdicionNoExisteFault");
-    private static final QName _EventoNoExisteFault_QNAME = new QName("http://publicadores/", "EventoNoExisteFault");
-    private static final QName _EventoRepetidoFault_QNAME = new QName("http://publicadores/", "EventoRepetidoFault");
     private static final QName _ExisteInstitucionFault_QNAME = new QName("http://publicadores/", "ExisteInstitucionFault");
     private static final QName _FechaInvalidaFault_QNAME = new QName("http://publicadores/", "FechaInvalidaFault");
-    private static final QName _FechasIncompatiblesFault_QNAME = new QName("http://publicadores/", "FechasIncompatiblesFault");
-    private static final QName _NombreTipoRegistroDuplicadoFault_QNAME = new QName("http://publicadores/", "NombreTipoRegistroDuplicadoFault");
-    private static final QName _PatrocinioDuplicadoFault_QNAME = new QName("http://publicadores/", "PatrocinioDuplicadoFault");
-    private static final QName _SiglaRepetidaFault_QNAME = new QName("http://publicadores/", "SiglaRepetidaFault");
     private static final QName _UsuarioNoExisteFault_QNAME = new QName("http://publicadores/", "UsuarioNoExisteFault");
     private static final QName _UsuarioRepetidoFault_QNAME = new QName("http://publicadores/", "UsuarioRepetidoFault");
-    private static final QName _UsuarioYaRegistradoEnEdicionFault_QNAME = new QName("http://publicadores/", "UsuarioYaRegistradoEnEdicionFault");
+    private static final QName _DtAsistente_QNAME = new QName("http://publicadores/", "dtAsistente");
+    private static final QName _DtOrganizador_QNAME = new QName("http://publicadores/", "dtOrganizador");
+    private static final QName _DtUsuario_QNAME = new QName("http://publicadores/", "dtUsuario");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soap
@@ -48,13 +41,13 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CategoriaNoSeleccionadaException }
+     * Create an instance of {@link DtUsuario }
      * 
      * @return
-     *     the new instance of {@link CategoriaNoSeleccionadaException }
+     *     the new instance of {@link DtUsuario }
      */
-    public CategoriaNoSeleccionadaException createCategoriaNoSeleccionadaException() {
-        return new CategoriaNoSeleccionadaException();
+    public DtUsuario createDtUsuario() {
+        return new DtUsuario();
     }
 
     /**
@@ -65,46 +58,6 @@ public class ObjectFactory {
      */
     public CorreoInvalidoException createCorreoInvalidoException() {
         return new CorreoInvalidoException();
-    }
-
-    /**
-     * Create an instance of {@link EdicionExistenteException }
-     * 
-     * @return
-     *     the new instance of {@link EdicionExistenteException }
-     */
-    public EdicionExistenteException createEdicionExistenteException() {
-        return new EdicionExistenteException();
-    }
-
-    /**
-     * Create an instance of {@link EdicionNoExisteException }
-     * 
-     * @return
-     *     the new instance of {@link EdicionNoExisteException }
-     */
-    public EdicionNoExisteException createEdicionNoExisteException() {
-        return new EdicionNoExisteException();
-    }
-
-    /**
-     * Create an instance of {@link EventoNoExisteException }
-     * 
-     * @return
-     *     the new instance of {@link EventoNoExisteException }
-     */
-    public EventoNoExisteException createEventoNoExisteException() {
-        return new EventoNoExisteException();
-    }
-
-    /**
-     * Create an instance of {@link EventoRepetidoException }
-     * 
-     * @return
-     *     the new instance of {@link EventoRepetidoException }
-     */
-    public EventoRepetidoException createEventoRepetidoException() {
-        return new EventoRepetidoException();
     }
 
     /**
@@ -128,46 +81,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link FechasIncompatiblesException }
-     * 
-     * @return
-     *     the new instance of {@link FechasIncompatiblesException }
-     */
-    public FechasIncompatiblesException createFechasIncompatiblesException() {
-        return new FechasIncompatiblesException();
-    }
-
-    /**
-     * Create an instance of {@link NombreTipoRegistroDuplicadoException }
-     * 
-     * @return
-     *     the new instance of {@link NombreTipoRegistroDuplicadoException }
-     */
-    public NombreTipoRegistroDuplicadoException createNombreTipoRegistroDuplicadoException() {
-        return new NombreTipoRegistroDuplicadoException();
-    }
-
-    /**
-     * Create an instance of {@link PatrocinioDuplicadoException }
-     * 
-     * @return
-     *     the new instance of {@link PatrocinioDuplicadoException }
-     */
-    public PatrocinioDuplicadoException createPatrocinioDuplicadoException() {
-        return new PatrocinioDuplicadoException();
-    }
-
-    /**
-     * Create an instance of {@link SiglaRepetidaException }
-     * 
-     * @return
-     *     the new instance of {@link SiglaRepetidaException }
-     */
-    public SiglaRepetidaException createSiglaRepetidaException() {
-        return new SiglaRepetidaException();
-    }
-
-    /**
      * Create an instance of {@link UsuarioNoExisteException }
      * 
      * @return
@@ -188,26 +101,83 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UsuarioYaRegistradoEnEdicionException }
+     * Create an instance of {@link DtAsistente }
      * 
      * @return
-     *     the new instance of {@link UsuarioYaRegistradoEnEdicionException }
+     *     the new instance of {@link DtAsistente }
      */
-    public UsuarioYaRegistradoEnEdicionException createUsuarioYaRegistradoEnEdicionException() {
-        return new UsuarioYaRegistradoEnEdicionException();
+    public DtAsistente createDtAsistente() {
+        return new DtAsistente();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CategoriaNoSeleccionadaException }{@code >}
+     * Create an instance of {@link DtOrganizador }
      * 
-     * @param value
-     *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link CategoriaNoSeleccionadaException }{@code >}
+     *     the new instance of {@link DtOrganizador }
      */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "CategoriaNoSeleccionadaFault")
-    public JAXBElement<CategoriaNoSeleccionadaException> createCategoriaNoSeleccionadaFault(CategoriaNoSeleccionadaException value) {
-        return new JAXBElement<>(_CategoriaNoSeleccionadaFault_QNAME, CategoriaNoSeleccionadaException.class, null, value);
+    public DtOrganizador createDtOrganizador() {
+        return new DtOrganizador();
+    }
+
+    /**
+     * Create an instance of {@link DTFecha }
+     * 
+     * @return
+     *     the new instance of {@link DTFecha }
+     */
+    public DTFecha createDTFecha() {
+        return new DTFecha();
+    }
+
+    /**
+     * Create an instance of {@link DtInstitucion }
+     * 
+     * @return
+     *     the new instance of {@link DtInstitucion }
+     */
+    public DtInstitucion createDtInstitucion() {
+        return new DtInstitucion();
+    }
+
+    /**
+     * Create an instance of {@link DtUsuarioArray }
+     * 
+     * @return
+     *     the new instance of {@link DtUsuarioArray }
+     */
+    public DtUsuarioArray createDtUsuarioArray() {
+        return new DtUsuarioArray();
+    }
+
+    /**
+     * Create an instance of {@link StringArray }
+     * 
+     * @return
+     *     the new instance of {@link StringArray }
+     */
+    public StringArray createStringArray() {
+        return new StringArray();
+    }
+
+    /**
+     * Create an instance of {@link DtUsuario.Seguidores }
+     * 
+     * @return
+     *     the new instance of {@link DtUsuario.Seguidores }
+     */
+    public DtUsuario.Seguidores createDtUsuarioSeguidores() {
+        return new DtUsuario.Seguidores();
+    }
+
+    /**
+     * Create an instance of {@link DtUsuario.Seguidos }
+     * 
+     * @return
+     *     the new instance of {@link DtUsuario.Seguidos }
+     */
+    public DtUsuario.Seguidos createDtUsuarioSeguidos() {
+        return new DtUsuario.Seguidos();
     }
 
     /**
@@ -221,58 +191,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "CorreoInvalidoFault")
     public JAXBElement<CorreoInvalidoException> createCorreoInvalidoFault(CorreoInvalidoException value) {
         return new JAXBElement<>(_CorreoInvalidoFault_QNAME, CorreoInvalidoException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EdicionExistenteException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link EdicionExistenteException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "EdicionExistenteFault")
-    public JAXBElement<EdicionExistenteException> createEdicionExistenteFault(EdicionExistenteException value) {
-        return new JAXBElement<>(_EdicionExistenteFault_QNAME, EdicionExistenteException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EdicionNoExisteException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link EdicionNoExisteException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "EdicionNoExisteFault")
-    public JAXBElement<EdicionNoExisteException> createEdicionNoExisteFault(EdicionNoExisteException value) {
-        return new JAXBElement<>(_EdicionNoExisteFault_QNAME, EdicionNoExisteException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EventoNoExisteException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link EventoNoExisteException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "EventoNoExisteFault")
-    public JAXBElement<EventoNoExisteException> createEventoNoExisteFault(EventoNoExisteException value) {
-        return new JAXBElement<>(_EventoNoExisteFault_QNAME, EventoNoExisteException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EventoRepetidoException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link EventoRepetidoException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "EventoRepetidoFault")
-    public JAXBElement<EventoRepetidoException> createEventoRepetidoFault(EventoRepetidoException value) {
-        return new JAXBElement<>(_EventoRepetidoFault_QNAME, EventoRepetidoException.class, null, value);
     }
 
     /**
@@ -302,58 +220,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FechasIncompatiblesException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link FechasIncompatiblesException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "FechasIncompatiblesFault")
-    public JAXBElement<FechasIncompatiblesException> createFechasIncompatiblesFault(FechasIncompatiblesException value) {
-        return new JAXBElement<>(_FechasIncompatiblesFault_QNAME, FechasIncompatiblesException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link NombreTipoRegistroDuplicadoException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link NombreTipoRegistroDuplicadoException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "NombreTipoRegistroDuplicadoFault")
-    public JAXBElement<NombreTipoRegistroDuplicadoException> createNombreTipoRegistroDuplicadoFault(NombreTipoRegistroDuplicadoException value) {
-        return new JAXBElement<>(_NombreTipoRegistroDuplicadoFault_QNAME, NombreTipoRegistroDuplicadoException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PatrocinioDuplicadoException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link PatrocinioDuplicadoException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "PatrocinioDuplicadoFault")
-    public JAXBElement<PatrocinioDuplicadoException> createPatrocinioDuplicadoFault(PatrocinioDuplicadoException value) {
-        return new JAXBElement<>(_PatrocinioDuplicadoFault_QNAME, PatrocinioDuplicadoException.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SiglaRepetidaException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link SiglaRepetidaException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "SiglaRepetidaFault")
-    public JAXBElement<SiglaRepetidaException> createSiglaRepetidaFault(SiglaRepetidaException value) {
-        return new JAXBElement<>(_SiglaRepetidaFault_QNAME, SiglaRepetidaException.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UsuarioNoExisteException }{@code >}
      * 
      * @param value
@@ -380,16 +246,42 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link UsuarioYaRegistradoEnEdicionException }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtAsistente }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link UsuarioYaRegistradoEnEdicionException }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtAsistente }{@code >}
      */
-    @XmlElementDecl(namespace = "http://publicadores/", name = "UsuarioYaRegistradoEnEdicionFault")
-    public JAXBElement<UsuarioYaRegistradoEnEdicionException> createUsuarioYaRegistradoEnEdicionFault(UsuarioYaRegistradoEnEdicionException value) {
-        return new JAXBElement<>(_UsuarioYaRegistradoEnEdicionFault_QNAME, UsuarioYaRegistradoEnEdicionException.class, null, value);
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtAsistente")
+    public JAXBElement<DtAsistente> createDtAsistente(DtAsistente value) {
+        return new JAXBElement<>(_DtAsistente_QNAME, DtAsistente.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtOrganizador }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtOrganizador }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtOrganizador")
+    public JAXBElement<DtOrganizador> createDtOrganizador(DtOrganizador value) {
+        return new JAXBElement<>(_DtOrganizador_QNAME, DtOrganizador.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DtUsuario }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DtUsuario }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "dtUsuario")
+    public JAXBElement<DtUsuario> createDtUsuario(DtUsuario value) {
+        return new JAXBElement<>(_DtUsuario_QNAME, DtUsuario.class, null, value);
     }
 
 }

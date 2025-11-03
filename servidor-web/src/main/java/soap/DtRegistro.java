@@ -17,6 +17,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
  *         <element name="asistente" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="asistio" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         <element name="costo" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         <element name="fechaRegistro" type="{http://publicadores/}DTFecha" minOccurs="0"/>
  *         <element name="nomEdicion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -32,6 +33,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtRegistro", propOrder = {
     "asistente",
+    "asistio",
     "costo",
     "fechaRegistro",
     "nomEdicion",
@@ -41,6 +43,7 @@ import jakarta.xml.bind.annotation.XmlType;
 public class DtRegistro {
 
     protected String asistente;
+    protected boolean asistio;
     protected Double costo;
     protected DTFecha fechaRegistro;
     protected String nomEdicion;
@@ -69,6 +72,22 @@ public class DtRegistro {
      */
     public void setAsistente(String value) {
         this.asistente = value;
+    }
+
+    /**
+     * Gets the value of the asistio property.
+     * 
+     */
+    public boolean isAsistio() {
+        return asistio;
+    }
+
+    /**
+     * Sets the value of the asistio property.
+     * 
+     */
+    public void setAsistio(boolean value) {
+        this.asistio = value;
     }
 
     /**
