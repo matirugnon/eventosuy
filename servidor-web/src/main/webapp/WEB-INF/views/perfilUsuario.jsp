@@ -411,11 +411,6 @@
 								</div>
 							</c:if>
 						</div>
-
-						<!-- Botón de volver -->
-						<div style="margin-top: 1rem;">
-							<a class="btn-primary" href="${backUrl}">${backLabel}</a>
-						</div>
 					</div>
 				</section>
 			</main>
