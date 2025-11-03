@@ -43,7 +43,6 @@ import jakarta.xml.bind.annotation.XmlType;
 public class DtRegistro {
 
     protected String asistente;
-    protected boolean asistio;
     protected Double costo;
     protected DTFecha fechaRegistro;
     protected String nomEdicion;
@@ -78,18 +77,6 @@ public class DtRegistro {
      * Gets the value of the asistio property.
      * 
      */
-    public boolean isAsistio() {
-        return asistio;
-    }
-
-    /**
-     * Sets the value of the asistio property.
-     * 
-     */
-    public void setAsistio(boolean value) {
-        this.asistio = value;
-    }
-
     /**
      * Gets the value of the costo property.
      * 
