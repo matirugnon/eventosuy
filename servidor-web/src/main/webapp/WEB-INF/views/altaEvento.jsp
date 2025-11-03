@@ -189,7 +189,7 @@
                                                            <c:if test="${selected == categoria}">checked</c:if>
 									</c:forEach>
 									</c:if>
-									> <label for="cat_${categoria}">${categoria}</label>
+									<label for="cat_${categoria}">${categoria}</label>
 								</div>
 								</c:forEach>
 							</div>
