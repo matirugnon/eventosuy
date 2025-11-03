@@ -27,7 +27,20 @@
         <main>
             <section class="auth-container">
                 <div class="auth-card">
-                    <h2>Listado de usuarios</h2>
+                	<h2>
+   				 		<c:choose>
+        					<c:when test="${param.filtro eq 'seguidores'}">
+            					Seguidores de ${param.nickname}
+        					</c:when>
+        					<c:when test="${param.filtro eq 'seguidos'}">
+            					Seguidos de ${param.nickname}
+        					</c:when>
+        					<c:otherwise>
+            					Listado de usuarios
+       						 </c:otherwise>
+				   		 </c:choose>
+					</h2>
+
                     <div style="overflow: auto; margin-top: 1rem;">
                         <table style="width: 100%; border-collapse: collapse;">
                             <thead>
@@ -63,15 +76,14 @@
                                                 <td style="padding: .5rem;">${tiposUsuarios[usuario.nickname]}</td>
                                                 <td style="padding: .5rem;">
                                                     <c:choose>
-                                                       
                                                         <c:when test="${empty nickname}">
                                                             <span style="color: #888;">Inicia sesión para seguir</span>
                                                         </c:when>
-                                             
+
                                                         <c:when test="${usuario.nickname eq nickname}">
                                                             <span style="color: #888;">Este es tu usuario</span>
                                                         </c:when>
-                                                       
+
                                                         <c:otherwise>
                                                             <c:set var="esSeguido" value="false" />
                                                             <c:forEach var="s" items="${seguidos}">
@@ -79,11 +91,15 @@
                                                                     <c:set var="esSeguido" value="true" />
                                                                 </c:if>
                                                             </c:forEach>
+
                                                             <c:choose>
                                                                 <c:when test="${esSeguido}">
                                                                     <form method="post" action="listarUsuarios" style="display:inline;">
                                                                         <input type="hidden" name="accion" value="dejar"/>
                                                                         <input type="hidden" name="seguido" value="${usuario.nickname}"/>
+                                                                        <!-- Mantenemos el contexto -->
+                                                                        <input type="hidden" name="filtro" value="${param.filtro}"/>
+                                                                        <input type="hidden" name="nicknameOrigen" value="${param.nickname}"/>
                                                                         <button type="submit" class="btn-secondary">Dejar de seguir</button>
                                                                     </form>
                                                                 </c:when>
@@ -91,6 +107,9 @@
                                                                     <form method="post" action="listarUsuarios" style="display:inline;">
                                                                         <input type="hidden" name="accion" value="seguir"/>
                                                                         <input type="hidden" name="seguido" value="${usuario.nickname}"/>
+                                                                        <!-- Mantenemos el contexto -->
+                                                                        <input type="hidden" name="filtro" value="${param.filtro}"/>
+                                                                        <input type="hidden" name="nicknameOrigen" value="${param.nickname}"/>
                                                                         <button type="submit" class="btn-primary">Seguir</button>
                                                                     </form>
                                                                 </c:otherwise>
@@ -104,14 +123,20 @@
                                 </c:choose>
                             </tbody>
                         </table>
+
                         <div style="margin-top: 1rem; text-align: center;">
                             <c:if test="${totalPages > 1}">
-                                <c:url var="prevUrl" value="/listarUsuarios">
-                                    <c:param name="page" value="${currentPage - 1}" />
-                                </c:url>
-                                <c:url var="nextUrl" value="/listarUsuarios">
-                                    <c:param name="page" value="${currentPage + 1}" />
-                                </c:url>
+                               <c:url var="prevUrl" value="/listarUsuarios">
+    							<c:param name="page" value="${currentPage - 1}" />
+    							<c:param name="filtro" value="${param.filtro}" />
+    							<c:param name="nickname" value="${param.nickname}" />
+								</c:url>
+								<c:url var="nextUrl" value="/listarUsuarios">
+    							<c:param name="page" value="${currentPage + 1}" />
+    							<c:param name="filtro" value="${param.filtro}" />
+    							<c:param name="nickname" value="${param.nickname}" />
+								</c:url>
+
                                 <a class="btn-primary" href="${currentPage > 1 ? prevUrl : '#'}"
                                    style="${currentPage == 1 ? 'pointer-events:none; opacity:0.5;' : ''}">Anterior</a>
                                 Página ${currentPage} de ${totalPages}
@@ -127,5 +152,6 @@
 </div>
 </body>
 </html>
+
 
 

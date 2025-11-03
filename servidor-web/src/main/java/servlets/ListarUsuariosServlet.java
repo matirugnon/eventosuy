@@ -52,6 +52,32 @@ public class ListarUsuariosServlet extends HttpServlet {
             List<DtUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
 
             usuariosOrdenados.sort(Comparator.comparing(DtUsuario::getNickname));
+         // Obtener parámetros de filtro desde la URL
+            String filtro = request.getParameter("filtro");       // "seguidores" o "seguidos"
+            String filterNickname = request.getParameter("nickname"); // nickname del usuario cuyo seguidores/seguidos queremos ver
+
+            // Si ambos parámetros existen, filtramos la lista de usuarios
+            if (filtro != null && filterNickname != null && !filterNickname.isEmpty()) {
+                // Crear un conjunto con los nicks a mostrar
+                Set<String> nicksFiltrados = new HashSet<>();
+
+                // Dependiendo del tipo, obtenemos los seguidores o seguidos
+                if ("seguidores".equals(filtro)) {
+                    StringArray seguidoresArr = publicadorUs.obtenerSeguidores(filterNickname);
+                    if (seguidoresArr != null && seguidoresArr.getItem() != null) {
+                        nicksFiltrados.addAll(seguidoresArr.getItem());
+                    }
+                } else if ("seguidos".equals(filtro)) {
+                    StringArray seguidosArr = publicadorUs.obtenerSeguidos(filterNickname);
+                    if (seguidosArr != null && seguidosArr.getItem() != null) {
+                        nicksFiltrados.addAll(seguidosArr.getItem());
+                    }
+                }
+
+                // Filtrar la lista de usuarios para que solo queden los del conjunto
+                usuariosOrdenados.removeIf(u -> !nicksFiltrados.contains(u.getNickname()));
+            }
+
             
             
             // Obtener lista de usuarios seguidosl
@@ -150,13 +176,17 @@ public class ListarUsuariosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String accion = request.getParameter("accion");
         String seguido = request.getParameter("seguido");
         String seguidor = (String) request.getSession().getAttribute("usuario");
+
+        // Parámetros para mantener la vista de origen
+        String filtro = request.getParameter("filtro");              // "seguidores", "seguidos" o null
+        String nicknameOrigen = request.getParameter("nicknameOrigen"); // Usuario del que se está viendo la lista
 
         if (accion != null && seguido != null && seguidor != null && !seguidor.equals(seguido)) {
             try {
@@ -171,9 +201,16 @@ public class ListarUsuariosServlet extends HttpServlet {
             }
         }
 
-        // Luego de realizar la acción, recargamos la lista
-        doGet(request, response);
+        // Redirigir según la vista de origen
+        if (filtro != null && nicknameOrigen != null) {
+            response.sendRedirect(request.getContextPath()
+                    + "/listarUsuarios?filtro=" + filtro + "&nickname=" + nicknameOrigen);
+        } else {
+            // Caso por defecto: listado general de usuarios
+            response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+        }
     }
+
 }
 
 

@@ -201,15 +201,20 @@
 							</div>
 							<div class="follow-info">
 								<div class="follow-counts">
-									<div>
-										<span class="follow-count-number">${seguidoresCount}</span>
-										<span class="follow-count-label">Seguidores</span>
+    								<div>
+        								<a href="${pageContext.request.contextPath}/listarUsuarios?filtro=seguidores&nickname=${usuario.nickname}">
+            								<span class="follow-count-number">${seguidoresCount}</span>
+            								<span class="follow-count-label">Seguidores</span>
+        								</a>
+    								</div>
+    								<div>
+        								<a href="${pageContext.request.contextPath}/listarUsuarios?filtro=seguidos&nickname=${usuario.nickname}">
+            								<span class="follow-count-number">${seguidosCount}</span>
+            								<span class="follow-count-label">Siguiendo</span>
+       									 </a>
+    									</div>
 									</div>
-									<div>
-										<span class="follow-count-number">${seguidosCount}</span>
-										<span class="follow-count-label">Siguiendo</span>
-									</div>
-								</div>
+									
 								<c:if test="${puedeSeguir}">
 									<form method="post"
 										action="${pageContext.request.contextPath}/perfilUsuario"
