@@ -338,33 +338,30 @@ public class AltaEdicionServlet extends HttpServlet {
     }
 
     private void mostrarFormularioConError(HttpServletRequest request, HttpServletResponse response, 
-                                         String error) throws ServletException, IOException {
-        
-        try {
-            // TODO: Obtener eventos y categorías via SOAP cuando el cliente esté regenerado
-            Set<String> eventos = new java.util.HashSet<>();
-            eventos.add("Evento Demo 1");
-            eventos.add("Evento Demo 2");
-            
-            List<String> categorias = new ArrayList<>();
-            categorias.add("Deportes");
-            categorias.add("Cultura");
-            categorias.add("Tecnología");
-            categorias.add("Música");
-            categorias.add("Arte");
-            Collections.sort(categorias);
-            
-            request.setAttribute("eventos", eventos);
-            request.setAttribute("categorias", categorias);
-            request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
-            request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
-            request.setAttribute("role", request.getSession().getAttribute("role"));
-        } catch (Exception e) {
-            // Si no se pueden cargar datos, continuar sin ellos
-        }
-        
-        request.setAttribute("error", error);
-        request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
+            String error) throws ServletException, IOException {
+    	try {
+    		PublicadorControlador publicador = SoapClientHelper.getPublicadorControlador();
+    		StringArray eventosWs = publicador.listarEventos();
+    		List<String> eventos = new ArrayList<>();
+    		if (eventosWs != null && eventosWs.getItem() != null) {
+    			eventos.addAll(eventosWs.getItem());
+    			Collections.sort(eventos);
+    		}
+    		request.setAttribute("eventos", eventos);
+
+    		StringArray categoriasWs = publicador.listarCategorias();
+    		List<String> categorias = new ArrayList<>();
+    		if (categoriasWs != null && categoriasWs.getItem() != null) {
+    			categorias.addAll(categoriasWs.getItem());
+    			Collections.sort(categorias);
+    		}
+    		request.setAttribute("categorias", categorias);
+    		} catch (Exception e) {
+    			System.err.println("No se pudieron cargar eventos/categorías: " + e.getMessage());
+    		}
+
+    		request.setAttribute("error", error);
+    		request.getRequestDispatcher("/WEB-INF/views/altaEdicion.jsp").forward(request, response);
     }
 
     // Helper: extrae mensaje de excepción recorriendo causes
