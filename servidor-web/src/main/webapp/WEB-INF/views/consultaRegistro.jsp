@@ -66,9 +66,8 @@
 						<div style="margin-top: 1.5rem; display: flex; gap: .75rem;">
 							<c:choose>
 								<c:when test="${param.from == 'misRegistros'}">
-									<a class="btn-outline"
-										href="${pageContext.request.contextPath}/misRegistros">Volver
-										a Mis Registros</a>
+									<a class="btn-outline" href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a>
+									<a class="btn-outline" href="${url}">Ver Edicion</a>
 								</c:when>
 								<c:otherwise>
 									<a class="btn-outline"

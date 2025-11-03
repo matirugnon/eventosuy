@@ -16,6 +16,10 @@
 	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
 	rel="stylesheet" />
 <style>
+.auth-container {
+	padding: 10px;
+}
+
 .auth-card {
 	width: 760px;
 	max-width: 95%;
@@ -81,12 +85,10 @@
 }
 
 .tab-content {
-	min-height: 400px;
 	background: white;
-	padding: 1.5rem;
+	padding: .5rem;
 	border-radius: 0 8px 8px 8px;
 	border: 1px solid #e0e0e0;
-	margin-bottom: 1rem;
 }
 
 .tab-panel {

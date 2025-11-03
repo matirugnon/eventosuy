@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -100,12 +102,17 @@ public class ConsultaRegistroServlet extends HttpServlet {
             // Obtener informaciÃ³n de la ediciÃ³n
             EdicionDetalleDTO edicionInfo = new EdicionDetalleDTO(publicadorEv.obtenerDetalleCompletoEdicion(edicion));
             
+            String url = null;
+            String nombreCodificadoX264 = URLEncoder.encode(edicionInfo.getNombre(), StandardCharsets.UTF_8);
+			url = "/web/consultaEdicion?edicion=" + nombreCodificadoX264;
+            
             // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
             List<String> categorias = new ArrayList<>(categoriasSet);
             Collections.sort(categorias);
 
             // Pasar los datos a la JSP
+            request.setAttribute("url", url);
             request.setAttribute("registro", registro);
             request.setAttribute("edicionInfo", edicionInfo);
             request.setAttribute("categorias", categorias);

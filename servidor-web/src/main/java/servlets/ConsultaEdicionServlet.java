@@ -14,11 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logica.datatypesyenum.DTRegistro;
 import logica.datatypesyenum.DTUsuario;
 
 //nuevos imports (copiar este bloque)
 import soap.DtEdicion;
 import soap.DTFecha;
+import soap.DtRegistro;
+import soap.DtRegistroArray;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -96,17 +99,24 @@ public class ConsultaEdicionServlet extends HttpServlet {
 			String usuarioSesion = (String) request.getSession().getAttribute("usuario");
 			String role = (String) request.getSession().getAttribute("role");
 			String url = null;
+			boolean registrado = false;
 
 			if ("asistente".equals(role)) {
 				soap.PublicadorRegistro publicadorRegistro = utils.SoapClientHelper.getPublicadorRegistro();
-				boolean registrado = publicadorRegistro.estaRegistrado(edicionDt.getNombre(), usuarioSesion);
+				registrado = publicadorRegistro.estaRegistrado(edicionDt.getNombre(), usuarioSesion);
 				if (registrado) {
 					String nombreCodificadoX264 = URLEncoder.encode(edicionDt.getNombre(), StandardCharsets.UTF_8);
-					url = "/web/consultaRegistro?asistente=" + usuarioSesion + "&edicion=" + nombreCodificadoX264;
+					DtRegistroArray regsArray = publicadorRegistro.listarRegistrosPorAsistente(usuarioSesion);
+					String tdr = null;
+					for (DtRegistro r : regsArray.getItem()) {
+                        if (r != null && edicionDt.getNombre().equals(r.getNomEdicion())) {
+                            tdr = r.getTipoDeRegistro();
+                        }
+                    }
+					url = "/web/consultaRegistro?asistente=" + usuarioSesion + "&edicion=" + nombreCodificadoX264 + "&tipoRegistro=" + tdr + "&from=misRegistros";
 				} else {
 					String nombreCodificadoX264 = URLEncoder.encode(edicionDt.getNombre(), StandardCharsets.UTF_8);
 					String eventoCodificadoX264 = URLEncoder.encode(edicionDt.getEvento(), StandardCharsets.UTF_8);
-					System.out.print(edicionDt.getEvento());
 					url = "/web/registroAedicion?edicion=" + nombreCodificadoX264  + "&evento=" + eventoCodificadoX264;
 				}
 			} else if ("organizador".equals(role)) {
@@ -124,6 +134,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
 
 			// pasar al JSP
 			request.setAttribute("finalizado", finalizado);
+			request.setAttribute("registrado", registrado);
 			request.setAttribute("urlBoton", url);
 
 			// Pasar los datos a la JSP
