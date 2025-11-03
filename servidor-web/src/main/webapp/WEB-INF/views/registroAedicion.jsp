@@ -1,15 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%
-    // Leer mensajes de sesión si existen
-    String datosMensaje = (String) session.getAttribute("datosMensaje");
-    String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
-    if (datosMensaje != null) {
-        request.setAttribute("mensaje", datosMensaje);
-        request.setAttribute("tipoMensaje", datosMensajeTipo != null && datosMensajeTipo.equals("info") ? "success" : "error");
-        session.removeAttribute("datosMensaje");
-        session.removeAttribute("datosMensajeTipo");
-    }
+// Leer mensajes de sesión si existen
+String datosMensaje = (String) session.getAttribute("datosMensaje");
+String datosMensajeTipo = (String) session.getAttribute("datosMensajeTipo");
+if (datosMensaje != null) {
+	request.setAttribute("mensaje", datosMensaje);
+	request.setAttribute("tipoMensaje",
+	datosMensajeTipo != null && datosMensajeTipo.equals("info") ? "success" : "error");
+	session.removeAttribute("datosMensaje");
+	session.removeAttribute("datosMensajeTipo");
+}
+
+// Leer parámetros de preselección
+String eventoParam = request.getParameter("evento") != null ? request.getParameter("evento") : "";
+String edicionParam = request.getParameter("edicion") != null ? request.getParameter("edicion") : "";
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,7 +34,6 @@
 </head>
 <body>
 	<div>
-		<!-- Header : ahora el header esta en la carpeta componentes, para que se cambie en una sola pag y sea igual para todas-->
 		<jsp:include page="/WEB-INF/views/componentes/header.jsp" />
 
 		<div class="content">
@@ -48,7 +52,9 @@
 								</label> <select id="eventoSelect" required>
 									<option value="">Seleccionar…</option>
 									<c:forEach items="${eventos}" var="evento">
-										<option value="${evento.nombre}">${evento.nombre}</option>
+										<option value="${evento.nombre}"
+											${evento.nombre == eventoParam ? "selected" : ""}>
+											${evento.nombre}</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -146,39 +152,41 @@
         const tipoRegistroSelect = document.getElementById('tipoRegistroSelect');
         const formRegistro = document.getElementById('formRegistro');
 
+        const eventoParam = "<%=eventoParam%>";
+        const edicionParam = "<%=edicionParam%>";
+
         let edicionActual = null;
         let tiposActuales = [];
 
-        eventoSelect.addEventListener('change', function() {
+        function cargarEdiciones(eventoNombre, callback) {
             edicionSelect.innerHTML = '<option value="">Seleccionar…</option>';
-            stepEdicion.style.display = eventoSelect.value ? '' : 'none';
+            stepEdicion.style.display = eventoNombre ? '' : 'none';
             stepDetalle.style.display = 'none';
             formRegistro.style.display = 'none';
 
-            if (!eventoSelect.value) return;
+            if (!eventoNombre) return;
 
-            // Cargar ediciones via AJAX
-            fetch('${pageContext.request.contextPath}/registroAedicion?action=getEdiciones&evento=' + encodeURIComponent(eventoSelect.value))
+            fetch('${pageContext.request.contextPath}/registroAedicion?action=getEdiciones&evento=' + encodeURIComponent(eventoNombre))
                 .then(response => response.json())
                 .then(ediciones => {
                     ediciones.forEach(edicion => {
                         const opt = document.createElement('option');
                         opt.value = edicion.id;
                         opt.textContent = edicion.nombre;
+                        if(edicion.nombre === edicionParam) opt.selected = true;
                         edicionSelect.appendChild(opt);
                     });
+                    if(callback) callback();
                 })
                 .catch(error => console.error('Error cargando ediciones:', error));
-        });
+        }
 
-        edicionSelect.addEventListener('change', function() {
+        function cargarDetalleEdicion(edicionId) {
             stepDetalle.style.display = 'none';
             formRegistro.style.display = 'none';
+            if (!edicionId) return;
 
-            if (!edicionSelect.value) return;
-
-            // Cargar detalles de edición via AJAX
-            fetch('${pageContext.request.contextPath}/registroAedicion?action=getEdicionDetails&edicion=' + encodeURIComponent(edicionSelect.value))
+            fetch('${pageContext.request.contextPath}/registroAedicion?action=getEdicionDetails&edicion=' + encodeURIComponent(edicionId))
                 .then(response => response.json())
                 .then(edicion => {
                     edicionActual = edicion;
@@ -188,7 +196,6 @@
                     edicionPais.textContent = edicion.pais;
                     tiposActuales = edicion.tipos;
 
-                    // Mostrar tipos de registro
                     tiposRegistroDiv.innerHTML = '';
                     tipoRegistroSelect.innerHTML = '';
                     edicion.tipos.forEach(tipo => {
@@ -206,9 +213,26 @@
                     formRegistro.style.display = '';
                 })
                 .catch(error => console.error('Error cargando detalles de edición:', error));
+        }
+
+        // Preseleccionar evento y edición si vienen por URL
+        if(eventoParam) {
+            eventoSelect.value = eventoParam;
+            cargarEdiciones(eventoParam, function(){
+                const edicionSeleccionada = Array.from(edicionSelect.options).find(opt => opt.selected);
+                if(edicionSeleccionada) cargarDetalleEdicion(edicionSeleccionada.value);
+            });
+        }
+
+        eventoSelect.addEventListener('change', function() {
+            cargarEdiciones(eventoSelect.value);
         });
 
-		// Interceptar submit y enviarlo vía AJAX para mostrar errores inline sin recargar
+        edicionSelect.addEventListener('change', function() {
+            cargarDetalleEdicion(edicionSelect.value);
+        });
+
+		// Submit AJAX
 		const form = document.querySelector('form');
 		const submitBtn = document.getElementById('submitBtn');
 		function ensureMsgEl() {
@@ -236,7 +260,6 @@
 			if (el) el.textContent = '';
 		}
 
-		// Limpiar el mensaje cuando se cambia selección
 		eventoSelect.addEventListener('change', clearMessage);
 		edicionSelect.addEventListener('change', clearMessage);
 		tipoRegistroSelect.addEventListener('change', clearMessage);
@@ -255,7 +278,6 @@
 				.then(obj => {
 					if (obj.success) {
 						setMessage(obj.message || 'Registro exitoso', true);
-						// keep the form open; re-enable button
 						submitBtn.disabled = false;
 					} else {
 						setMessage(obj.message || 'Ocurrió un error', false);
