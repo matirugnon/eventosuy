@@ -98,7 +98,7 @@ public class ConsultaRegistroServlet extends HttpServlet {
             }
 
             // Obtener informaciÃ³n de la ediciÃ³n
-            EdicionDetalleDTO edicionInfo = new EdicionDetalleDTO(publicadorEv.obtenerDetalleEvento(edicion));
+            EdicionDetalleDTO edicionInfo = new EdicionDetalleDTO(publicadorEv.obtenerDetalleCompletoEdicion(edicion));
             
             // Obtener todas las categorÃ­as para el sidebar (ordenadas alfabÃ©ticamente)
             Set<String> categoriasSet = new HashSet<>(publicadorEv.listarCategorias().getItem());
