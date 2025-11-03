@@ -81,27 +81,29 @@
 										</div>
 									</div>
 								</c:if>
-								<c:if test="${not empty urlBoton}">
-									<a href="${urlBoton}" class="btn-primary"
-										style="padding: 0.5rem 1rem; border-radius: 6px; background-color: #182080; color: white; text-decoration: none; font-weight: 600; transition: background-color 0.2s;"
-										onmouseover="this.style.backgroundColor='#101858'"
-										onmouseout="this.style.backgroundColor='#182080'"> <c:choose>
-											<c:when test="${role == 'asistente'}">
-												<c:choose>
-													<c:when test="${registrado}">
-                       									Ver registro a edición
-                    								</c:when>
-													<c:otherwise>
-                        								Registrarse a la edición
-                    								</c:otherwise>
-												</c:choose>
+								<c:choose>
+									<c:when test="${role == 'asistente'}">
+										<c:choose>
+											<c:when test="${finalizado}">
+												<p style="color: #c00; font-weight: 600;">La edición ya finalizó</p>
 											</c:when>
-											<c:when test="${role == 'organizador'}">
-                								Consultar registros a edición
-            								</c:when>
+											<c:otherwise>
+												<a href="${urlBoton}" class="btn-primary"> <c:choose>
+														<c:when test="${registrado}">
+                            								Ver registro
+                        								</c:when>
+														<c:otherwise>
+                            								Registrarse a la edición
+                        								</c:otherwise>
+													</c:choose>
+												</a>
+											</c:otherwise>
 										</c:choose>
-									</a>
-								</c:if>
+									</c:when>
+									<c:when test="${role == 'organizador' && not empty urlBoton}">
+										<a href="${urlBoton}" class="btn-primary">Consultar Registros</a>
+									</c:when>
+								</c:choose>
 							</div>
 
 							<div

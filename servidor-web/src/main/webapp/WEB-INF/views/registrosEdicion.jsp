@@ -89,8 +89,13 @@
 
 					<div style="margin-top: 1rem;">
 						<a class="btn-outline"
-							href="${pageContext.request.contextPath}/edicionesOrganizadas">←
-							Volver a mis ediciones</a>
+							href="${pageContext.request.contextPath}/edicionesOrganizadas">
+							Ir a mis ediciones</a>
+						<c:if test="${not empty urlConsulta}">
+							<a class="btn-outline"
+								href="${urlConsulta}">
+								Consultar edición</a>
+						</c:if>
 					</div>
 				</div>
 			</section>

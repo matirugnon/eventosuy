@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -112,6 +114,13 @@ public class RegistrosEdicionServlet extends HttpServlet {
                     }
                 }
             }
+            
+            String url = null;
+            String nombreCodificadoX264 = URLEncoder.encode(dtEd.getNombre(), StandardCharsets.UTF_8);
+			url = "/web/consultaEdicion?edicion=" + nombreCodificadoX264;
+			
+			
+			request.setAttribute("urlConsulta", url);
 
             request.setAttribute("edicion", dtEd);
             request.setAttribute("registros", registros);

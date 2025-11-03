@@ -7,6 +7,7 @@ import java.util.List;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import logica.datatypesyenum.DTUsuario;
 
 //nuevos imports (copiar este bloque)
 import soap.DtEdicion;
+import soap.DTFecha;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -114,7 +116,14 @@ public class ConsultaEdicionServlet extends HttpServlet {
 				}
 			}
 
-			// Pasar la URL al JSP
+			// obtener la fecha fin de la edición
+			DTFecha fechaFinDt = edicionDt.getFechaFin();
+			LocalDate fechaFin = LocalDate.of(fechaFinDt.getAnio(), fechaFinDt.getMes(), fechaFinDt.getDia());
+			LocalDate hoy = LocalDate.now();
+			boolean finalizado = fechaFin.isBefore(hoy);
+
+			// pasar al JSP
+			request.setAttribute("finalizado", finalizado);
 			request.setAttribute("urlBoton", url);
 
 			// Pasar los datos a la JSP
