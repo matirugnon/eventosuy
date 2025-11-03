@@ -1,3 +1,5 @@
 /bin/
 
 /target/
+run-gui.ps1
+run-gui.bat
