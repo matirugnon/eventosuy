@@ -33,7 +33,6 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtRegistro", propOrder = {
     "asistente",
-    "asistio",
     "costo",
     "fechaRegistro",
     "nomEdicion",
