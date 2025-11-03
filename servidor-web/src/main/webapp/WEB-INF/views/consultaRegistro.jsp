@@ -61,6 +61,9 @@
 						<p>
 							<strong>Costo:</strong> $ ${registro.costo}
 						</p>
+						<p>
+							<strong>Asistió:</strong> ${registro.asistio ? 'Sí' : 'No'}
+						</p>
 
 						<!-- Enlaces relacionados -->
 						<div style="margin-top: 1.5rem; display: flex; gap: .75rem;">
