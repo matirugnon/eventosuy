@@ -64,21 +64,6 @@
 										<strong>Estado:</strong> ${edicion.estado}
 									</p>
 								</div>
-
-								<!-- Botón de registro solo para asistentes y ediciones aceptadas -->
-								<c:if
-									test="${role == 'asistente' && edicion.estado == 'ACEPTADA'}">
-									<div style="margin-top: 1.5rem;">
-										<a
-											href="${pageContext.request.contextPath}/registroAEdicion?edicion=${edicion.nombre}"
-											class="btn-primary"
-											style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #182080; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background-color 0.2s;"
-											onmouseover="this.style.backgroundColor='#0d4f8c';"
-											onmouseout="this.style.backgroundColor='#182080';">
-											Registrarse a esta edición </a>
-									</div>
-								</c:if>
-
 								<c:if test="${not empty tiposDeRegistro}">
 									<div class="panel" style="margin-top: 1rem; max-width: 200px;">
 										<div class="panel-header">Tipos de registro</div>
@@ -95,6 +80,27 @@
 											</ul>
 										</div>
 									</div>
+								</c:if>
+								<c:if test="${not empty urlBoton}">
+									<a href="${urlBoton}" class="btn-primary"
+										style="padding: 0.5rem 1rem; border-radius: 6px; background-color: #182080; color: white; text-decoration: none; font-weight: 600; transition: background-color 0.2s;"
+										onmouseover="this.style.backgroundColor='#101858'"
+										onmouseout="this.style.backgroundColor='#182080'"> <c:choose>
+											<c:when test="${role == 'asistente'}">
+												<c:choose>
+													<c:when test="${registrado}">
+                       									Ver registro a edición
+                    								</c:when>
+													<c:otherwise>
+                        								Registrarse a la edición
+                    								</c:otherwise>
+												</c:choose>
+											</c:when>
+											<c:when test="${role == 'organizador'}">
+                								Consultar registros a edición
+            								</c:when>
+										</c:choose>
+									</a>
 								</c:if>
 							</div>
 
@@ -192,50 +198,55 @@
 </html>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-	var iframe = document.getElementById('videoIframe');
-	if (!iframe) return;
-	var video = iframe.dataset.video;
-	if (!video) return;
+	document.addEventListener('DOMContentLoaded', function() {
+		var iframe = document.getElementById('videoIframe');
+		if (!iframe)
+			return;
+		var video = iframe.dataset.video;
+		if (!video)
+			return;
 
-	function toEmbed(url) {
-		try {
-			url = url.trim();
-			// If already an embed URL, return as-is
-			if (url.includes('/embed/')) return url;
-			// Try to use URL constructor for robust parsing
-			var parsed = new URL(url);
-			var host = parsed.hostname.toLowerCase();
-			// youtube.com/watch?v=...
-			if (host.indexOf('youtube.com') !== -1) {
-				var v = parsed.searchParams.get('v');
-				if (v) return 'https://www.youtube.com/embed/' + v;
+		function toEmbed(url) {
+			try {
+				url = url.trim();
+				// If already an embed URL, return as-is
+				if (url.includes('/embed/'))
+					return url;
+				// Try to use URL constructor for robust parsing
+				var parsed = new URL(url);
+				var host = parsed.hostname.toLowerCase();
+				// youtube.com/watch?v=...
+				if (host.indexOf('youtube.com') !== -1) {
+					var v = parsed.searchParams.get('v');
+					if (v)
+						return 'https://www.youtube.com/embed/' + v;
+				}
+				// youtu.be/ID
+				if (host.indexOf('youtu.be') !== -1) {
+					var parts = parsed.pathname.split('/');
+					var id = parts.pop() || parts.pop();
+					if (id)
+						return 'https://www.youtube.com/embed/' + id;
+				}
+				// fallback: return original URL (may still be embeddable)
+				return url;
+			} catch (e) {
+				// If URL parsing fails, attempt simple patterns
+				if (url.indexOf('watch?v=') !== -1) {
+					var p = url.split('watch?v=')[1].split('&')[0];
+					return 'https://www.youtube.com/embed/' + p;
+				}
+				if (url.indexOf('youtu.be/') !== -1) {
+					var p2 = url.split('youtu.be/')[1].split('?')[0];
+					return 'https://www.youtube.com/embed/' + p2;
+				}
+				return url;
 			}
-			// youtu.be/ID
-			if (host.indexOf('youtu.be') !== -1) {
-				var parts = parsed.pathname.split('/');
-				var id = parts.pop() || parts.pop();
-				if (id) return 'https://www.youtube.com/embed/' + id;
-			}
-			// fallback: return original URL (may still be embeddable)
-			return url;
-		} catch (e) {
-			// If URL parsing fails, attempt simple patterns
-			if (url.indexOf('watch?v=') !== -1) {
-				var p = url.split('watch?v=')[1].split('&')[0];
-				return 'https://www.youtube.com/embed/' + p;
-			}
-			if (url.indexOf('youtu.be/') !== -1) {
-				var p2 = url.split('youtu.be/')[1].split('?')[0];
-				return 'https://www.youtube.com/embed/' + p2;
-			}
-			return url;
 		}
-	}
 
-	var embed = toEmbed(video);
-	if (embed) {
-		iframe.src = embed;
-	}
-});
+		var embed = toEmbed(video);
+		if (embed) {
+			iframe.src = embed;
+		}
+	});
 </script>
