@@ -15,7 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpSession;
 import soap.DtAsistente;
 import soap.DtUsuario;
 import soap.DtUsuarioArray;
@@ -52,6 +52,33 @@ public class ListarUsuariosServlet extends HttpServlet {
             List<DtUsuario> usuariosOrdenados = new ArrayList<>(usuarios);
 
             usuariosOrdenados.sort(Comparator.comparing(DtUsuario::getNickname));
+            
+            
+            // Obtener lista de usuarios seguidosl
+            HttpSession session = request.getSession(false);
+            String nicknameActual = null;
+            Set<String> seguidos = new HashSet<>();
+
+            if (session != null && session.getAttribute("usuario") != null) {
+                nicknameActual = (String) session.getAttribute("usuario");
+
+                try {
+                    
+                    StringArray seguidosArr = publicadorUs.obtenerSeguidos(nicknameActual);
+                    if (seguidosArr != null && seguidosArr.getItem() != null) {
+                        for (String s : seguidosArr.getItem()) {
+                            if (s != null) {
+                                seguidos.add(s);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            
+            request.setAttribute("seguidos", seguidos);
 
             Map<String, String> tiposUsuarios = new HashMap<>(); // Para almacenar los tipos
             
@@ -105,10 +132,12 @@ public class ListarUsuariosServlet extends HttpServlet {
             request.setAttribute("totalPages", totalPages);
 
             // Pasar datos de sesión (nickname, avatar, nombre, role)
-            request.setAttribute("nickname", request.getSession().getAttribute("usuario"));
-            request.setAttribute("avatar", request.getSession().getAttribute("avatar"));
-            request.setAttribute("role", request.getSession().getAttribute("role"));
-            request.setAttribute("nombre", request.getSession().getAttribute("nombre"));
+            request.setAttribute("nickname", nicknameActual);
+            if (session != null) {
+                request.setAttribute("avatar", session.getAttribute("avatar"));
+                request.setAttribute("role", session.getAttribute("role"));
+                request.setAttribute("nombre", session.getAttribute("nombre"));
+            }
 
             // Redirigir a la JSP
             request.getRequestDispatcher("/WEB-INF/views/listarUsuarios.jsp").forward(request, response);
@@ -116,6 +145,34 @@ public class ListarUsuariosServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException("Error al listar usuarios: " + e.getMessage(), e);
         }
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        String accion = request.getParameter("accion");
+        String seguido = request.getParameter("seguido");
+        String seguidor = (String) request.getSession().getAttribute("usuario");
+
+        if (accion != null && seguido != null && seguidor != null && !seguidor.equals(seguido)) {
+            try {
+                PublicadorUsuario publicadorUs = SoapClientHelper.getPublicadorUsuario();
+                if ("seguir".equals(accion)) {
+                    publicadorUs.seguirUsuario(seguidor, seguido);
+                } else if ("dejar".equals(accion)) {
+                    publicadorUs.dejarSeguirUsuario(seguidor, seguido);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Luego de realizar la acción, recargamos la lista
+        doGet(request, response);
     }
 }
 
