@@ -14,22 +14,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorUsuario;
-import logica.controladores.IControladorRegistro;
-import logica.datatypesyenum.DTEdicion;
-import logica.datatypesyenum.DTEvento;
-import logica.datatypesyenum.DTFecha;
-import logica.datatypesyenum.DTPatrocinio;
-import logica.datatypesyenum.DTTipoDeRegistro;
-import logica.datatypesyenum.EstadoEdicion;
+
 import excepciones.EdicionNoExisteException;
 import excepciones.EdicionSinPatrociniosException;
 import excepciones.PatrocinioNoEncontradoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
-import utils.Utils;
-
+import soap.DTFecha;
 import soap.DtEdicion;
 import soap.DtEvento;
 import soap.DtPatrocinio;
@@ -194,8 +185,11 @@ public class RegistroAEdicionServlet extends HttpServlet {
                         
                         StringBuilder json = new StringBuilder("{");
                         json.append("\"nombre\":\"").append(edicion.getNombre()).append("\",");
-                        json.append("\"fechas\":\"").append(edicion.getFechaInicio().toString())
-                            .append(" - ").append(edicion.getFechaFin().toString()).append("\",");
+                        DTFecha inicio = edicion.getFechaInicio();
+                        DTFecha fin = edicion.getFechaFin();
+
+                        String fechaInicioStr = inicio.getDia() + "/" + inicio.getMes() + "/" + inicio.getAnio();
+                        String fechaFinStr = fin.getDia() + "/" + fin.getMes() + "/" + fin.getAnio();
                         json.append("\"ciudad\":\"").append(edicion.getCiudad()).append("\",");
                         json.append("\"pais\":\"").append(edicion.getPais()).append("\",");
                         json.append("\"tipos\":").append(tiposJson.toString());
@@ -312,11 +306,11 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                     // Si no hay errores, proceder con el registro
                                     if (mensaje.isEmpty()) {
                                         LocalDate fechaActual = LocalDate.now();
-                                        DTFecha fechaRegistro = new DTFecha(
-                                            fechaActual.getDayOfMonth(),
-                                            fechaActual.getMonthValue(),
-                                            fechaActual.getYear()
-                                        );
+                                        DTFecha fechaRegistro = new DTFecha();
+                                        fechaRegistro.setDia(fechaActual.getDayOfMonth());
+                                        fechaRegistro.setMes(fechaActual.getMonthValue());
+                                        fechaRegistro.setAnio(fechaActual.getYear());
+                                        
 
                                         // Convertir DTFecha local a SOAP DTFecha antes de llamar al publicador
                                         soap.DTFecha soapFecha = new soap.DTFecha();

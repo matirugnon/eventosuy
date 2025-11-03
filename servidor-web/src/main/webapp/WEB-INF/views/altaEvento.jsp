@@ -178,21 +178,29 @@
 
 							<!-- Categorías -->
 							<div class="form-group">
-								<label>Categorías (selecciona al menos una) *</label>
-								<div class="categorias-grid">
-									<c:forEach var="categoria" items="${categorias}">
-										<div class="categoria-item">
-											<input type="checkbox" id="cat_${categoria}"
-												name="categorias" value="${categoria}"
-												<c:if test="${paramValues.categorias != null}">
-                                                       <c:forEach var="selected" items="${paramValues.categorias}">
-                                                           <c:if test="${selected == categoria}">checked</c:if>
-									</c:forEach>
-									</c:if>
-									<label for="cat_${categoria}">${categoria}</label>
-								</div>
-								</c:forEach>
-							</div>
+    <label>Categorías (selecciona al menos una) *</label>
+    <div class="categorias-grid">
+        <c:forEach var="categoria" items="${categorias}">
+            <div class="categoria-item">
+                <c:set var="checked" value="" />
+                <c:if test="${paramValues.categorias != null}">
+                    <c:forEach var="selected" items="${paramValues.categorias}">
+                        <c:if test="${selected == categoria}">
+                            <c:set var="checked" value="checked" />
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+
+                <input type="checkbox"
+                       id="cat_${categoria}"
+                       name="categorias"
+                       value="${categoria}"
+                       ${checked} />
+
+                <label for="cat_${categoria}">${categoria}</label>
+            </div>
+        </c:forEach>
+    </div>
 					</div>
 
 					<!-- Imagen -->
