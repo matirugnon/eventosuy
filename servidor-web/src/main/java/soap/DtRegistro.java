@@ -33,20 +33,20 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtRegistro", propOrder = {
     "asistente",
+    "asistio",
     "costo",
     "fechaRegistro",
     "nomEdicion",
-    "tipoDeRegistro",
-    "asistio"
+    "tipoDeRegistro"
 })
 public class DtRegistro {
 
     protected String asistente;
+    protected boolean asistio;
     protected Double costo;
     protected DTFecha fechaRegistro;
     protected String nomEdicion;
     protected String tipoDeRegistro;
-    protected boolean asistio;
 
     /**
      * Gets the value of the asistente property.
@@ -76,6 +76,18 @@ public class DtRegistro {
      * Gets the value of the asistio property.
      * 
      */
+    public boolean isAsistio() {
+        return asistio;
+    }
+
+    /**
+     * Sets the value of the asistio property.
+     * 
+     */
+    public void setAsistio(boolean value) {
+        this.asistio = value;
+    }
+
     /**
      * Gets the value of the costo property.
      * 
@@ -170,14 +182,6 @@ public class DtRegistro {
      */
     public void setTipoDeRegistro(String value) {
         this.tipoDeRegistro = value;
-    }
-    
-    public boolean isAsistio() {
-        return asistio;
-    }
-    
-    public void setAsistio(boolean asistio) {
-        this.asistio = asistio;
     }
 
 }
