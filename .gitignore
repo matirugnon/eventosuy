@@ -4,6 +4,9 @@
 /target/
 # Clases SOAP generadas automáticamente
 servidor-web/src/main/java/soap/
+
+# Datos generados por HSQLDB (ediciones archivadas)
+ServidorCentral/data/
 4-desplegar-tomcat.bat
 mobile-desplegar.bat
 /scripts/

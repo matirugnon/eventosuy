@@ -49,3 +49,10 @@ Mientras se use el modo archivo, la única forma segura de revisar los datos es 
 - Para evitar escribir siempre el comando, podés crear un `.bat` con el `java -cp ... DatabaseManagerSwing` y lanzarlo cuando el servidor esté detenido.
 - Los archivos de la base están en `ServidorCentral/data/`. El contenido de `edicionesArchivadas.log` muestra los `CREATE TABLE` y `INSERT` generados, útil para auditorías rápidas sin abrir la consola.
 
+## Volver la base a estado inicial
+
+1. Detené el Servidor Central/Tomcat.
+2. Eliminá (o mové a un backup) los archivos `ServidorCentral/data/edicionesArchivadas.*` y la carpeta `ServidorCentral/data/edicionesArchivadas.tmp/`.
+3. Reiniciá el Servidor Central: EclipseLink recreará la tabla vacía automáticamente.
+
+> **Tip:** Los archivos de la base ya están ignorados en Git (`ServidorCentral/data/`), así cada integrante mantiene su propio estado local sin afectar al repositorio.
