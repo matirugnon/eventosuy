@@ -135,11 +135,11 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png", "https://youtu.be/M1PcxAESEnY?list=RDM1PcxAESEnY&t=4681");
+                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png", "https://www.youtube.com/watch?v=dOzjAHTzXl0&list=RDdOzjAHTzXl0&start_radio=1");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg", "https://youtu.be/M1PcxAESEnY?list=RDM1PcxAESEnY&t=4681");
+                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg", "https://www.youtube.com/watch?v=dOzjAHTzXl0&list=RDdOzjAHTzXl0&start_radio=1");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
@@ -159,11 +159,11 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
         if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
-                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg");
+                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg", "https://www.youtube.com/watch?v=Ayh54tDYVV0&list=PLWVo2tank-zzW1C3bCRwBF9JGOMxHcroD&index=5");
 
         if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
-                            new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024));
+                            new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024), "/img/IMG-EDEV08.jpeg", "https://www.youtube.com/watch?v=SskpYGyEDmU&list=RDSskpYGyEDmU&start_radio=1");
 
         if (!ctrlEvento.existeEdicion("Web Summit 2026"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",

@@ -2,9 +2,14 @@
 REM Script para desplegar la aplicación mobile en Tomcat
 
 setlocal
-set TOMCAT_HOME=C:\apache-tomcat-11.0.4
-set WAR_FILE=%~dp0mobile\target\web.war
+set TOMCAT_HOME=C:\Program Files\Apache Software Foundation\Tomcat 11.0
+set JAVA_HOME=C:\Program Files\Microsoft\jdk-21.0.8.9-hotspot
+set WAR_FILE=%~dp0mobile\target\mobile.war
 set WEBAPP_NAME=mobile
+
+REM Configurar variables de entorno para Tomcat
+set CATALINA_HOME=%TOMCAT_HOME%
+set CATALINA_BASE=%TOMCAT_HOME%
 
 echo ========================================
 echo  Desplegando aplicación Mobile en Tomcat

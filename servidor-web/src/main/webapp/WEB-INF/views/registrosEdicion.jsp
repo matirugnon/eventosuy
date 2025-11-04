@@ -58,6 +58,7 @@
 											<th>Asistente</th>
 											<th>Tipo de Registro</th>
 											<th>Acciones</th>
+											<th>Asistió</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -79,6 +80,7 @@
 															perfil</a>
 													</div>
 												</td>
+												<td>${reg.asistio ? 'Sí' : 'No'}</td>
 											</tr>
 										</c:forEach>
 									</tbody>
