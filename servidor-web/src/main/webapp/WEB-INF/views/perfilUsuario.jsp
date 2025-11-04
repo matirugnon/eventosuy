@@ -408,6 +408,19 @@
 															Consultar </a></td>
 												</tr>
 											</c:forEach>
+											<c:forEach var="edicion" items="${edicionesArchivadas}">
+												<tr>
+													<td>${edicion.evento}</td>
+													<td>${edicion.nombre}</td>
+													<td>${edicion.sigla}</td>
+													<td><span style="color: #888; font-weight: 600;">Archivada</span></td>
+													<td><a
+														href="${pageContext.request.contextPath}/consultaEdicion?edicion=${edicion.nombre}"
+														class="btn-primary"
+														style="background-color: #182080; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+															Consultar </a></td>
+												</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>

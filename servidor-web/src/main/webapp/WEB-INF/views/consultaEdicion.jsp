@@ -102,6 +102,20 @@
 									</c:when>
 									<c:when test="${role == 'organizador' && not empty urlBoton}">
 										<a href="${urlBoton}" class="btn-primary">Consultar Registros</a>
+										
+										<!-- Botón para archivar edición (solo si ya finalizó y el organizador es el dueño) -->
+										<c:if test="${finalizado && nickname == edicion.organizador && edicion.estado == 'ACEPTADA'}">
+											<form action="${pageContext.request.contextPath}/archivarEdicion" 
+												  method="post" 
+												  style="margin-top: 1rem;"
+												  onsubmit="return confirm('¿Está seguro que desea archivar esta edición? Esta acción cambiará el estado de la edición.');">
+												<input type="hidden" name="edicion" value="${edicion.nombre}" />
+												<button type="submit" class="btn-primary" 
+														style="background-color: #f57c00; border-color: #f57c00;">
+													Archivar Edición
+												</button>
+											</form>
+										</c:if>
 									</c:when>
 								</c:choose>
 							</div>

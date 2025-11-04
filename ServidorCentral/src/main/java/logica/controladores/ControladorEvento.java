@@ -8,7 +8,9 @@ import java.util.Set;
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
+import excepciones.EdicionNoFinalizadaException;
 import excepciones.EdicionSinPatrociniosException;
+import excepciones.EdicionYaArchivadaException;
 import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.EventoYaFinalizadoException;
@@ -19,6 +21,7 @@ import excepciones.PatrocinioNoEncontradoException;
 import excepciones.SiglaRepetidaException;
 import logica.Categoria;
 import logica.Edicion;
+import logica.EdicionArchivada;
 import logica.Evento;
 import logica.Institucion;
 import logica.Organizador;
@@ -34,6 +37,7 @@ import logica.datatypesyenum.DTSeleccionEvento;
 import logica.datatypesyenum.EstadoEdicion;
 import logica.datatypesyenum.NivelPatrocinio;
 import logica.manejadores.ManejadorEventos;
+import logica.manejadores.ManejadorPersistencia;
 import logica.manejadores.ManejadorUsuario;
 
 public class ControladorEvento implements IControladorEvento {
@@ -135,9 +139,7 @@ public class ControladorEvento implements IControladorEvento {
 		Map<String, Edicion> ediciones = manejador.getEdiciones();
 		Set<String> listaEdiciones = ediciones.keySet();
 		return listaEdiciones;
-		}
-
-    public DTSeleccionEvento seleccionarEvento(String nomEvento)
+	}    public DTSeleccionEvento seleccionarEvento(String nomEvento)
     		throws EventoNoExisteException {
 
         Evento eve = manejadorE.obtenerEvento(nomEvento);
@@ -165,10 +167,11 @@ public class ControladorEvento implements IControladorEvento {
             for (String ed : eve.getEdiciones()) {
 
                 if (ed != "") {
-                    nombresEdiciones.add(ed);
-                    // Obtener la edición completa con su imagen
+                    // Obtener la edición completa
                     Edicion edicion = manejadorE.obtenerEdicion(ed);
-                    if (edicion != null) {
+                    // FILTRAR ediciones archivadas SOLO en consulta evento (listado público)
+                    if (edicion != null && edicion.getEstado() != EstadoEdicion.ARCHIVADA) {
+                        nombresEdiciones.add(ed);
                         edicionesCompletas.add(edicion.getDTEdicion());
                     }
                 }
@@ -533,5 +536,92 @@ public Set<DTEvento> obtenerDTEventos(){
 			throw new EventoNoExisteException(nomEvento);
 		}
 		return new DTEvento(evento);
+	}
+	
+	/**
+	 * Archiva una edición de evento. 
+	 * Solo se pueden archivar ediciones que ya han finalizado y están en estado ACEPTADA.
+	 * Los datos de la edición se persisten en disco usando JPA.
+	 */
+	public void archivarEdicion(String nomEdicion) throws EdicionNoExisteException, EdicionNoFinalizadaException, EdicionYaArchivadaException {
+		Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
+		
+		if (edicion == null) {
+			throw new EdicionNoExisteException(nomEdicion);
+		}
+		
+		// Verificar que la edición esté en estado ACEPTADA
+		if (edicion.getEstado() != EstadoEdicion.ACEPTADA) {
+			throw new EdicionNoFinalizadaException(nomEdicion + " (debe estar en estado ACEPTADA)");
+		}
+		
+		// Verificar que la edición ya haya finalizado
+		LocalDate fechaActual = LocalDate.now();
+		DTFecha fechaFin = edicion.getFechaFin();
+		LocalDate fechaFinEdicion = LocalDate.of(fechaFin.getAnio(), fechaFin.getMes(), fechaFin.getDia());
+		
+		if (!fechaFinEdicion.isBefore(fechaActual)) {
+			throw new EdicionNoFinalizadaException(nomEdicion);
+		}
+		
+		// Crear la entidad de edición archivada y persistir
+		int diaArchivado = fechaActual.getDayOfMonth();
+		int mesArchivado = fechaActual.getMonthValue();
+		int anioArchivado = fechaActual.getYear();
+		
+		EdicionArchivada edicionArchivada = new EdicionArchivada(edicion, diaArchivado, mesArchivado, anioArchivado);
+		
+		// Persistir en base de datos
+		ManejadorPersistencia manejadorP = ManejadorPersistencia.getInstance();
+		manejadorP.persistirEdicionArchivada(edicionArchivada);
+		
+		// Cambiar el estado de la edición a ARCHIVADA
+		edicion.setEstado(EstadoEdicion.ARCHIVADA);
+	}
+	
+	/**
+	 * Lista las ediciones finalizadas y aceptadas de un organizador que pueden ser archivadas.
+	 */
+	public Set<DTEdicion> listarEdicionesArchivables(String nicknameOrganizador) {
+		Set<DTEdicion> resultado = new HashSet<>();
+		LocalDate fechaActual = LocalDate.now();
+		
+		// Obtener todas las ediciones del organizador en estado ACEPTADA
+		Set<DTEdicion> edicionesAceptadas = listarEdicionesOrganizadasPorEstado(nicknameOrganizador, EstadoEdicion.ACEPTADA);
+		ManejadorPersistencia manejadorP = ManejadorPersistencia.getInstance();
+		
+		for (DTEdicion edicion : edicionesAceptadas) {
+			DTFecha fechaFin = edicion.getFechaFin();
+			LocalDate fechaFinEdicion = LocalDate.of(fechaFin.getAnio(), fechaFin.getMes(), fechaFin.getDia());
+			
+			// Solo agregar si ya finalizó y no está archivada
+			if (fechaFinEdicion.isBefore(fechaActual) && !manejadorP.estaArchivada(edicion.getNombre())) {
+				resultado.add(edicion);
+			}
+		}
+		
+		return resultado;
+	}
+	
+	/**
+	 * Verifica si una edición está archivada.
+	 */
+	public boolean estaEdicionArchivada(String nomEdicion) {
+		ManejadorPersistencia manejadorP = ManejadorPersistencia.getInstance();
+		return manejadorP.estaArchivada(nomEdicion);
+	}
+	
+	/**
+	 * Lista las ediciones archivadas de un organizador.
+	 */
+	public Set<String> listarEdicionesArchivadasPorOrganizador(String nicknameOrganizador) {
+		ManejadorPersistencia manejadorP = ManejadorPersistencia.getInstance();
+		Set<String> resultado = new HashSet<>();
+		
+		for (EdicionArchivada ea : manejadorP.listarEdicionesArchivadasPorOrganizador(nicknameOrganizador)) {
+			resultado.add(ea.getNombreEdicion());
+		}
+		
+		return resultado;
 	}
 }

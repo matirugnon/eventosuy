@@ -152,5 +152,18 @@ public class ManejadorEventos {
         }
         return resultado;
     }
+    
+    /**
+     * Obtiene todas las ediciones NO archivadas (para listados públicos).
+     */
+    public Map<String, Edicion> getEdicionesNoArchivadas() {
+        Map<String, Edicion> resultado = new HashMap<>();
+        for (Map.Entry<String, Edicion> entry : ediciones.entrySet()) {
+            if (entry.getValue().getEstado() != EstadoEdicion.ARCHIVADA) {
+                resultado.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return resultado;
+    }
 
 }

@@ -168,6 +168,7 @@ public class PerfilUsuarioServlet extends HttpServlet {
                     List<servlets.dto.RegistroEdicionDTO> edicionesAceptadas = new ArrayList<>();
                     List<servlets.dto.RegistroEdicionDTO> edicionesIngresadas = new ArrayList<>();
                     List<servlets.dto.RegistroEdicionDTO> edicionesRechazadas = new ArrayList<>();
+                    List<servlets.dto.RegistroEdicionDTO> edicionesArchivadas = new ArrayList<>();
                     
                     if (edicionesNicks != null && edicionesNicks.length > 0) {
                         for (String edicionNombre : edicionesNicks) {
@@ -190,9 +191,16 @@ public class PerfilUsuarioServlet extends HttpServlet {
                                             edicionesIngresadas.add(dto);
                                         } else if ("RECHAZADA".equals(estado)) {
                                             edicionesRechazadas.add(dto);
+                                        } else if ("ARCHIVADA".equals(estado)) {
+                                            edicionesArchivadas.add(dto);
                                         }
-                                    } else if ("ACEPTADA".equals(estado)) {
-                                        edicionesAceptadas.add(dto);
+                                    } else if ("ACEPTADA".equals(estado) || "ARCHIVADA".equals(estado)) {
+                                        // Mostrar aceptadas y archivadas en perfiles públicos
+                                        if ("ACEPTADA".equals(estado)) {
+                                            edicionesAceptadas.add(dto);
+                                        } else {
+                                            edicionesArchivadas.add(dto);
+                                        }
                                     }
                                 }
                             } catch (Exception e) {
@@ -204,11 +212,13 @@ public class PerfilUsuarioServlet extends HttpServlet {
                     request.setAttribute("edicionesAceptadas", edicionesAceptadas);
                     request.setAttribute("edicionesIngresadas", edicionesIngresadas);
                     request.setAttribute("edicionesRechazadas", edicionesRechazadas);
+                    request.setAttribute("edicionesArchivadas", edicionesArchivadas);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("edicionesAceptadas", new ArrayList<>());
                     request.setAttribute("edicionesIngresadas", new ArrayList<>());
                     request.setAttribute("edicionesRechazadas", new ArrayList<>());
+                    request.setAttribute("edicionesArchivadas", new ArrayList<>());
                 }
             }
 

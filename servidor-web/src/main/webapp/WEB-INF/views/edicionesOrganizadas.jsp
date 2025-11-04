@@ -113,6 +113,12 @@
 						Organizadas</h2>
 				</div>
 				<div class="panel-body">
+					<c:if test="${not empty success}">
+						<div class="success-message" style="color: #0a0; margin-bottom: 1rem; padding: 0.75rem; background-color: #f0fff0; border: 1px solid #90ee90; border-radius: 4px;">
+							✓ ${success}
+						</div>
+					</c:if>
+					
 					<c:if test="${not empty error}">
 						<div class="error-message">⚠️ ${error}</div>
 					</c:if>
@@ -155,6 +161,24 @@
 												<a class="btn-edicion"
 													href="altaPatrocinio?edicion=${edicion.nombre}">Alta
 													Patrocinio</a>
+											</c:if>
+											<c:if test="${edicionesPasadas[edicion.nombre] && edicion.estado == 'ACEPTADA'}">
+												<!-- Botón para archivar edición si ya finalizó -->
+												<form action="${pageContext.request.contextPath}/archivarEdicion" 
+													  method="post" 
+													  style="margin: 0;"
+													  onsubmit="return confirm('¿Está seguro que desea archivar la edición ${edicion.nombre}?');">
+													<input type="hidden" name="edicion" value="${edicion.nombre}" />
+													<button type="submit" class="btn-edicion" 
+															style="background-color: #f57c00; border-color: #f57c00;">
+														Archivar Edición
+													</button>
+												</form>
+											</c:if>
+											<c:if test="${edicion.estado == 'ARCHIVADA'}">
+												<span style="color: #888; font-size: 0.9rem; padding: 0.5rem 1rem;">
+													(Archivada)
+												</span>
 											</c:if>
 											<a class="btn-edicion"
 												href="${pageContext.request.contextPath}/registrosEdicion?edicion=${fn:escapeXml(edicion.nombre)}">Consultar

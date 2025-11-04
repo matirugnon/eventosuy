@@ -108,10 +108,34 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             }
             Collections.sort(categorias);
             
+            // Pasar mensajes de éxito o error desde la sesión
+            String success = (String) session.getAttribute("success");
+            String error = (String) session.getAttribute("error");
+            if (success != null) {
+                request.setAttribute("success", success);
+                session.removeAttribute("success");
+            }
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("error");
+            }
+            
             request.setAttribute("edicionesOrganizadas", edicionesOrganizadas);
             request.setAttribute("edicionesPasadas", edicionesPasadas);
             request.setAttribute("categorias", categorias);
             request.setAttribute("nickname", nickname);
+            
+            // Obtener mensajes de éxito/error de la sesión
+            String successMsg = (String) session.getAttribute("success");
+            String errorMsg = (String) session.getAttribute("error");
+            if (successMsg != null) {
+                request.setAttribute("success", successMsg);
+                session.removeAttribute("success");
+            }
+            if (errorMsg != null) {
+                request.setAttribute("error", errorMsg);
+                session.removeAttribute("error");
+            }
             
             request.getRequestDispatcher("/WEB-INF/views/edicionesOrganizadas.jsp").forward(request, response);
             

@@ -430,6 +430,61 @@ public class PublicadorControlador {
             return null;
         }
     }
+    
+    /**
+     * Archiva una edición de evento.
+     * Solo se pueden archivar ediciones que ya han finalizado.
+     */
+    @WebMethod
+    public String archivarEdicion(String nombreEdicion) {
+        try {
+            ctrl.archivarEdicion(nombreEdicion);
+            return "OK";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+    
+    /**
+     * Lista las ediciones que pueden ser archivadas por un organizador.
+     * Retorna ediciones finalizadas y aceptadas que aún no están archivadas.
+     */
+    @WebMethod
+    public String[] listarEdicionesArchivables(String nicknameOrganizador) {
+        try {
+            Set<logica.datatypesyenum.DTEdicion> ediciones = ctrl.listarEdicionesArchivables(nicknameOrganizador);
+            return ediciones.stream()
+                .map(e -> e.getNombre())
+                .toArray(String[]::new);
+        } catch (Exception e) {
+            return new String[0];
+        }
+    }
+    
+    /**
+     * Verifica si una edición está archivada.
+     */
+    @WebMethod
+    public boolean estaEdicionArchivada(String nombreEdicion) {
+        try {
+            return ctrl.estaEdicionArchivada(nombreEdicion);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Lista las ediciones archivadas de un organizador.
+     */
+    @WebMethod
+    public String[] listarEdicionesArchivadasPorOrganizador(String nicknameOrganizador) {
+        try {
+            Set<String> ediciones = ctrl.listarEdicionesArchivadasPorOrganizador(nicknameOrganizador);
+            return ediciones.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0];
+        }
+    }
 
     //consulta TipoDeRegistro
     

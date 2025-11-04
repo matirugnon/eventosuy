@@ -206,7 +206,15 @@ public interface IControladorEvento {
 			String string4) throws EventoRepetidoException, SiglaRepetidaException, CategoriaNoSeleccionadaException, FechaInvalidaException;
 
 
-	public Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado);
+	Set<String> listarEdicionesPorEstadoDeEvento(String nomEvento, EstadoEdicion estado);
+	
+	void archivarEdicion(String nomEdicion) throws EdicionNoExisteException, excepciones.EdicionNoFinalizadaException, excepciones.EdicionYaArchivadaException;
+	
+	Set<DTEdicion> listarEdicionesArchivables(String nicknameOrganizador);
+	
+	boolean estaEdicionArchivada(String nomEdicion);
+	
+	Set<String> listarEdicionesArchivadasPorOrganizador(String nicknameOrganizador);
 
 
 }
