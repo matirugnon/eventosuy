@@ -20,6 +20,7 @@ import excepciones.UsuarioYaRegistradoEnEdicionException;
 
 import gui.internal.*;
 
+import gui.internal.EventosMasVisitadosFrame;
 import gui.internal.AceptarRechazarEdicionFrame;
 import gui.internal.AltaEdicionFrame;
 import gui.internal.AltaEventoFrame;
@@ -124,6 +125,11 @@ public class MainFrame extends JFrame {
         JMenuItem aceptarRechazarEdicion = new JMenuItem("Aceptar/Rechazar Edición");
         aceptarRechazarEdicion.addActionListener(e -> openInternal(new AceptarRechazarEdicionFrame()));
         menuEventos.add(aceptarRechazarEdicion);
+        
+        
+        JMenuItem eventosMasVisitados = new JMenuItem("Eventos Más Visitados");
+        eventosMasVisitados.addActionListener(e -> openInternal(new EventosMasVisitadosFrame()));
+        menuEventos.add(eventosMasVisitados);
 
 
         // Menú Instituciones

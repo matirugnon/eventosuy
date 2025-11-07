@@ -22,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
+
+import excepciones.EventoNoExisteException;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -485,8 +488,15 @@ public class PublicadorControlador {
             return new String[0];
         }
     }
+    
+    @WebMethod
+    public boolean incrementarVisitas(String nomEvento) throws EventoNoExisteException{
+    	ctrl.incrementarVisitas(nomEvento);
+    	return true;
+    	
+    }
 
-    //consulta TipoDeRegistro
+  
     
 
 

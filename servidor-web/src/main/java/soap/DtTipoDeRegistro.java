@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dtTipoDeRegistro complex type.
+ * <p>Clase Java para dtTipoDeRegistro complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>{@code
  * <complexType name="dtTipoDeRegistro">
@@ -43,7 +43,7 @@ public class DtTipoDeRegistro {
     protected String nombre;
 
     /**
-     * Gets the value of the costo property.
+     * Obtiene el valor de la propiedad costo.
      * 
      */
     public double getCosto() {
@@ -51,7 +51,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Sets the value of the costo property.
+     * Define el valor de la propiedad costo.
      * 
      */
     public void setCosto(double value) {
@@ -59,7 +59,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Gets the value of the cupo property.
+     * Obtiene el valor de la propiedad cupo.
      * 
      */
     public int getCupo() {
@@ -67,7 +67,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Sets the value of the cupo property.
+     * Define el valor de la propiedad cupo.
      * 
      */
     public void setCupo(int value) {
@@ -75,7 +75,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Gets the value of the descripcion property.
+     * Obtiene el valor de la propiedad descripcion.
      * 
      * @return
      *     possible object is
@@ -87,7 +87,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Sets the value of the descripcion property.
+     * Define el valor de la propiedad descripcion.
      * 
      * @param value
      *     allowed object is
@@ -99,7 +99,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -111,7 +111,7 @@ public class DtTipoDeRegistro {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is

@@ -2,7 +2,9 @@ package logica.controladores;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import excepciones.CategoriaNoSeleccionadaException;
@@ -623,5 +625,24 @@ public Set<DTEvento> obtenerDTEventos(){
 		}
 		
 		return resultado;
+	}
+	
+	public void incrementarVisitas(String nomEv) throws EventoNoExisteException {
+		if (!existeEvento(nomEv)) {
+			throw new EventoNoExisteException(nomEv);
+		}
+		ManejadorEventos manEv  = ManejadorEventos.getInstance();
+		Evento eve = manEv.obtenerEvento(nomEv);
+		eve.incrementarVisitas();
+	}
+	
+	public List<DTEvento> obtenerMasVisitados() {
+		ManejadorEventos manEv  = ManejadorEventos.getInstance();
+		Set<DTEvento> dtEventos = manEv.getDTEventos();
+	    return dtEventos.stream()
+	    		.filter(ev -> ev.getVisitas() > 0)
+	            .sorted(Comparator.comparingInt(DTEvento::getVisitas).reversed())
+	            .limit(5)
+	            .toList();
 	}
 }

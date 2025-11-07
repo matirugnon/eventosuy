@@ -2,6 +2,7 @@ package logica.controladores;
 
 
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -216,7 +217,9 @@ public interface IControladorEvento {
 	
 	Set<String> listarEdicionesArchivadasPorOrganizador(String nicknameOrganizador);
 
-
+	public void incrementarVisitas(String nomEv) throws EventoNoExisteException;
+	
+	public List<DTEvento> obtenerMasVisitados();
 }
 
 

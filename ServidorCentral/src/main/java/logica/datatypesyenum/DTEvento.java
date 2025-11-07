@@ -18,6 +18,7 @@ public class DTEvento implements Serializable {
     private List<String> categorias; // ahora es List
     private String imagen;
     private EstadoEvento estado;
+    private int visitas;
 
     public DTEvento() {
         this.categorias = new ArrayList<>();
@@ -50,6 +51,7 @@ public class DTEvento implements Serializable {
         this.categorias = new ArrayList<>(event.getCategorias()); // convertir Set a List
         this.imagen = event.getImagen();
         this.estado = event.getEstado();
+        this.visitas =event.getVisitas();
     }
 
     // Getters normales
@@ -59,6 +61,7 @@ public class DTEvento implements Serializable {
     public DTFecha getFechaEvento() { return fechaEvento; }
     public String getImagen() { return imagen; }
     public EstadoEvento getEstado() { return estado; }
+    public int getVisitas() { return visitas; }
 
     // Setters
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -67,7 +70,8 @@ public class DTEvento implements Serializable {
     public void setFechaEvento(DTFecha fechaEvento) { this.fechaEvento = fechaEvento; }
     public void setImagen(String imagen) { this.imagen = imagen; }
     public void setEstado(EstadoEvento estado) { this.estado = estado; }
-
+    public void setVisitas(int visitas) { this.visitas = visitas;}
+    
     // Getter/Setter para la lista (JAXB-friendly)
     @XmlElementWrapper(name = "categorias")
     @XmlElement(name = "categoria")

@@ -10,9 +10,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dtEvento complex type.
+ * <p>Clase Java para dtEvento complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>{@code
  * <complexType name="dtEvento">
@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *         <element name="imagen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="sigla" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="visitas" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -52,7 +53,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "fechaEvento",
     "imagen",
     "nombre",
-    "sigla"
+    "sigla",
+    "visitas"
 })
 public class DtEvento {
 
@@ -64,9 +66,10 @@ public class DtEvento {
     protected String imagen;
     protected String nombre;
     protected String sigla;
+    protected int visitas;
 
     /**
-     * Gets the value of the categorias property.
+     * Obtiene el valor de la propiedad categorias.
      * 
      * @return
      *     possible object is
@@ -78,7 +81,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the categorias property.
+     * Define el valor de la propiedad categorias.
      * 
      * @param value
      *     allowed object is
@@ -90,7 +93,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the descripcion property.
+     * Obtiene el valor de la propiedad descripcion.
      * 
      * @return
      *     possible object is
@@ -102,7 +105,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the descripcion property.
+     * Define el valor de la propiedad descripcion.
      * 
      * @param value
      *     allowed object is
@@ -114,7 +117,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the estado property.
+     * Obtiene el valor de la propiedad estado.
      * 
      * @return
      *     possible object is
@@ -126,7 +129,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the estado property.
+     * Define el valor de la propiedad estado.
      * 
      * @param value
      *     allowed object is
@@ -138,7 +141,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the fechaEvento property.
+     * Obtiene el valor de la propiedad fechaEvento.
      * 
      * @return
      *     possible object is
@@ -150,7 +153,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the fechaEvento property.
+     * Define el valor de la propiedad fechaEvento.
      * 
      * @param value
      *     allowed object is
@@ -162,7 +165,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the imagen property.
+     * Obtiene el valor de la propiedad imagen.
      * 
      * @return
      *     possible object is
@@ -174,7 +177,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the imagen property.
+     * Define el valor de la propiedad imagen.
      * 
      * @param value
      *     allowed object is
@@ -186,7 +189,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -198,7 +201,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
@@ -210,7 +213,7 @@ public class DtEvento {
     }
 
     /**
-     * Gets the value of the sigla property.
+     * Obtiene el valor de la propiedad sigla.
      * 
      * @return
      *     possible object is
@@ -222,7 +225,7 @@ public class DtEvento {
     }
 
     /**
-     * Sets the value of the sigla property.
+     * Define el valor de la propiedad sigla.
      * 
      * @param value
      *     allowed object is
@@ -233,11 +236,27 @@ public class DtEvento {
         this.sigla = value;
     }
 
+    /**
+     * Obtiene el valor de la propiedad visitas.
+     * 
+     */
+    public int getVisitas() {
+        return visitas;
+    }
 
     /**
-     * <p>Java class for anonymous complex type.
+     * Define el valor de la propiedad visitas.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     */
+    public void setVisitas(int value) {
+        this.visitas = value;
+    }
+
+
+    /**
+     * <p>Clase Java para anonymous complex type.
+     * 
+     * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
      * 
      * <pre>{@code
      * <complexType>

@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for DTFecha complex type.
+ * <p>Clase Java para DTFecha complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>{@code
  * <complexType name="DTFecha">
@@ -40,7 +40,7 @@ public class DTFecha {
     protected int anio;
 
     /**
-     * Gets the value of the dia property.
+     * Obtiene el valor de la propiedad dia.
      * 
      */
     public int getDia() {
@@ -48,7 +48,7 @@ public class DTFecha {
     }
 
     /**
-     * Sets the value of the dia property.
+     * Define el valor de la propiedad dia.
      * 
      */
     public void setDia(int value) {
@@ -56,7 +56,7 @@ public class DTFecha {
     }
 
     /**
-     * Gets the value of the mes property.
+     * Obtiene el valor de la propiedad mes.
      * 
      */
     public int getMes() {
@@ -64,7 +64,7 @@ public class DTFecha {
     }
 
     /**
-     * Sets the value of the mes property.
+     * Define el valor de la propiedad mes.
      * 
      */
     public void setMes(int value) {
@@ -72,7 +72,7 @@ public class DTFecha {
     }
 
     /**
-     * Gets the value of the anio property.
+     * Obtiene el valor de la propiedad anio.
      * 
      */
     public int getAnio() {
@@ -80,7 +80,7 @@ public class DTFecha {
     }
 
     /**
-     * Sets the value of the anio property.
+     * Define el valor de la propiedad anio.
      * 
      */
     public void setAnio(int value) {

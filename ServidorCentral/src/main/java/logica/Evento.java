@@ -19,6 +19,7 @@ public class Evento {
     private Map<String, Edicion> ediciones;
     private String imagen;
     private EstadoEvento estado;
+    private int visitas;
 
     // Constructor sin imagen (mantiene compatibilidad)
     public Evento(String nom, String desc, DTFecha fecha, String sig, Set<Categoria> categoriaObjetos) {
@@ -39,6 +40,7 @@ public class Evento {
         for (Categoria cat : categoriaObjetos) {
             this.categorias.add(cat.getNombre()); // asumiendo que Categoria tiene getNombre()
         }
+        this.visitas = 0;
 
     }
 
@@ -81,6 +83,14 @@ public class Evento {
     	ediciones.put(edicion.getNombre(), edicion);
 
 		return edicion;
+    }
+    
+    public int getVisitas() {
+    	return this.visitas;
+    }
+    
+    public void incrementarVisitas() {
+    	this.visitas++;
     }
 
 }
