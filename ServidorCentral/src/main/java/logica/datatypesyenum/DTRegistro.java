@@ -11,6 +11,7 @@ public class DTRegistro implements Serializable{
 	private Double costo;
 	private String nomEdicion;
 	private boolean asistio;
+	private boolean patrocinado;
 
 	public DTRegistro() {}
 	
@@ -21,6 +22,7 @@ public class DTRegistro implements Serializable{
 		costo = cos;
 		this.nomEdicion = edicion;
 		this.asistio = false;
+		this.patrocinado = false;
 	}
 	
 	public DTRegistro(String asis, String tdr, DTFecha fecha, Double cos, String edicion, boolean asistio){
@@ -30,6 +32,17 @@ public class DTRegistro implements Serializable{
 		costo = cos;
 		this.nomEdicion = edicion;
 		this.asistio = asistio;
+		this.patrocinado = false;
+	}
+	//con patrocinado
+	public DTRegistro(String asis, String tdr, DTFecha fecha, Double cos, String edicion, boolean asistio, boolean patrocinado){
+		asistente = asis;
+		tipoDeRegistro = tdr;
+		fechaRegistro = fecha;
+		costo = cos;
+		this.nomEdicion = edicion;
+		this.asistio = asistio;
+		this.patrocinado = patrocinado;
 	}
 
 	public String getAsistente() {
@@ -49,6 +62,14 @@ public class DTRegistro implements Serializable{
 	public Double getCosto() {
 		return costo;
 
+	}
+	
+	public boolean getPatrocinado() {
+		return patrocinado;
+	}
+	
+	public void setPatrocinado(boolean patrocinado) {
+		this.patrocinado = patrocinado;
 	}
 
 	

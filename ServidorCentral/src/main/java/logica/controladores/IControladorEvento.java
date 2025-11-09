@@ -220,6 +220,8 @@ public interface IControladorEvento {
 	public void incrementarVisitas(String nomEv) throws EventoNoExisteException;
 	
 	public List<DTEvento> obtenerMasVisitados();
+	
+	public void setVisitas(String nomEv, int visitas);
 }
 
 

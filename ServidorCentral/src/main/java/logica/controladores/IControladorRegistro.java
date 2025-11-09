@@ -46,4 +46,7 @@ public interface IControladorRegistro {
     // Método para registrar asistencia a edición
     public void registrarAsistencia(String nickAsistente, String nomEdicion, String nomTipoRegistro) 
     		throws UsuarioNoExisteException;
+    
+    public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo, boolean patrocinado)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
 }

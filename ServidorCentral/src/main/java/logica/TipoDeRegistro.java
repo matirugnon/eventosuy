@@ -71,6 +71,11 @@ public class TipoDeRegistro{
 		this.registros.add(reg);
 		return reg;
 	}
+	public Registro altaRegistro(DTFecha fecha, double costo, String asistente, boolean patrocinado) {
+		Registro reg = new Registro(fecha, costo, this, asistente, patrocinado);
+		this.registros.add(reg);
+		return reg;
+	}
 	
 	public void asociarcantidadDeTipoRegistro(CantidadTipoDeRegistro cant) {
 		cantidadTipo = cant;

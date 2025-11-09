@@ -8,6 +8,7 @@ import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
+import excepciones.EventoYaFinalizadoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
@@ -201,7 +202,7 @@ public class MainFrame extends JFrame {
 					FechasIncompatiblesException |
 					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException | EventoNoExisteException |
 					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException |
-					PatrocinioDuplicadoException e1) {
+					PatrocinioDuplicadoException | EventoYaFinalizadoException e1) {
 				e1.printStackTrace();
 			}//excepciones a nivel de logica
         });

@@ -134,6 +134,28 @@ public class ControladorRegistro implements IControladorRegistro {
 		asist.agregarRegistro(reg);
 
 	}
+	
+	public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo, boolean patrocinado)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
+
+
+		if (estaRegistrado(nomEdicion, nickAsistente)) {
+			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
+		}
+
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion edicion = manejador.obtenerEdicion(nomEdicion);
+		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
+		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
+		Asistente asist = (Asistente) usuario;
+		Registro reg = tipo.altaRegistro(fechaRegistro, costo, nickAsistente, patrocinado);
+		asist.agregarRegistro(reg);
+
+	}
+	
+	
+	
 
 	public DTRegistro getRegistro(String nombreUsuario, String nombreTipoRegistro) {
 

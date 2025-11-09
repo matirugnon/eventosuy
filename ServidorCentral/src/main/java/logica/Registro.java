@@ -10,14 +10,26 @@ public class Registro{
 
 	private String asistente;
 	private boolean asistio;
+	boolean patrocinado;
 
+	//para la gui
 	public Registro(DTFecha fecha, double costo, TipoDeRegistro tipo, String asis) {
 		fechaRegistro = fecha;
 		costoRegistro = costo;
 		this.tipo = tipo;
 		asistente = asis;
 		this.asistio = false; // Por defecto no ha asistido
-
+		this.patrocinado = false;
+	}
+	
+	//para la web
+	public Registro(DTFecha fecha, double costo, TipoDeRegistro tipo, String asis, boolean patrocinado) {
+		fechaRegistro = fecha;
+		costoRegistro = costo;
+		this.tipo = tipo;
+		asistente = asis;
+		this.asistio = false; // Por defecto no ha asistido
+		this.patrocinado = patrocinado;
 	}
 
 	public String getNomTipo(){

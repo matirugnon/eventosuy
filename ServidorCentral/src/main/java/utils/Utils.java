@@ -7,6 +7,7 @@ import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoRepetidoException;
+import excepciones.EventoYaFinalizadoException;
 import excepciones.EventoNoExisteException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
@@ -32,7 +33,9 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		throws UsuarioRepetidoException,
 				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, EventoNoExisteException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
-				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException
+				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException,
+				EventoYaFinalizadoException
+				
 
 {
 
@@ -86,6 +89,17 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         // Asignar avatares a usuarios específicos
 
 
+        
+        //seguidores
+        ctrlUsuario.seguirUsuario("atorres", "sofirod");
+        ctrlUsuario.seguirUsuario("atorres", "imm");
+        ctrlUsuario.seguirUsuario("sofirod", "imm");
+        ctrlUsuario.seguirUsuario("sofirod", "atorres");
+        ctrlUsuario.seguirUsuario("udelar", "techcorp");
+        ctrlUsuario.seguirUsuario("udelar", "mec");
+        ctrlUsuario.seguirUsuario("techcorp", "sofirod");
+        
+        
         // Categorias
         if (!ctrlEvento.existeCategoria("Tecnología"))
             ctrlEvento.altaCategoria("Tecnología");
@@ -127,19 +141,35 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
             ctrlEvento.darAltaEvento("Expointer Uruguay", "Exposición internacional agropecuaria y ganadera", new DTFecha(12,12,2024), "EXPOAGRO", Set.of("Agro", "Negocios"), "/img/IMG-EV06.png");
         if (!ctrlEvento.existeEvento("Montevideo Fashion Week"))
             ctrlEvento.darAltaEvento("Montevideo Fashion Week", "Pasarela de moda uruguaya e internacional", new DTFecha(20,7,2025), "MFASHION", Set.of("Cultura", "Moda"));
-
+        if (!ctrlEvento.existeEvento("Global"))
+            ctrlEvento.darAltaEvento("Global", "Aventureros en grupo", new DTFecha(01,01,2025), "GBL", Set.of("Cultura"), "/img/IMG-EV08.jpeg");
+        
+        //visitas
+        ctrlEvento.setVisitas("Conferencia de Tecnología", 2);
+        ctrlEvento.setVisitas("Feria del Libro", 10);
+        ctrlEvento.setVisitas("Montevideo Rock", 25);
+        ctrlEvento.setVisitas("Maratón de Montevideo", 13);
+        ctrlEvento.setVisitas("Montevideo Comics", 5);
+        ctrlEvento.setVisitas("Expointer Uruguay", 10);
+        ctrlEvento.setVisitas("Montevideo Fashion Week", 8);
+        ctrlEvento.setVisitas("Global", 20);
+        
+        //Finalizar evento
+        ctrlEvento.finalizarEvento("Global");
+        
+        
         // Ediciones
         if (!ctrlEvento.existeEdicion("Montevideo Rock 2025"))
             ctrlEvento.altaEdicion("Montevideo Rock", "imm", "Montevideo Rock 2025", "MONROCK25", "Montevideo", "Uruguay",
-                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg", "https://www.youtube.com/watch?v=YiD7EXoOWR8");
+                    new DTFecha(20,11,2025), new DTFecha(22,11,2025), new DTFecha(12,3,2025), "/img/IMG-EDEV01.jpeg", "https://www.youtube.com/watch?v=YFbRrUX04tU");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2025"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2025", "MARATON25", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png", "https://www.youtube.com/watch?v=dOzjAHTzXl0&list=RDdOzjAHTzXl0&start_radio=1");
+                            new DTFecha(14,9,2025), new DTFecha(14,9,2025), new DTFecha(5,2,2025), "/img/IMG-EDEV02.png", "https://www.youtube.com/watch?v=Pg7Jw787MgE");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2024"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2024", "MARATON24", "Montevideo", "Uruguay",
-                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg", "https://www.youtube.com/watch?v=dOzjAHTzXl0&list=RDdOzjAHTzXl0&start_radio=1");
+                            new DTFecha(14,9,2024), new DTFecha(14,9,2024), new DTFecha(21,4,2024), "/img/IMG-EDEV03.jpeg", "https://www.youtube.com/watch?v=hxDn4EEMank");
 
         if (!ctrlEvento.existeEdicion("Maratón de Montevideo 2022"))
             ctrlEvento.altaEdicion("Maratón de Montevideo", "imm", "Maratón de Montevideo 2022", "MARATON22", "Montevideo", "Uruguay",
@@ -147,30 +177,33 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 
         if (!ctrlEvento.existeEdicion("Montevideo Comics 2024"))
             ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2024", "COMICS24", "Montevideo", "Uruguay",
-                            new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024), "/img/IMG-EDEV05.jpeg");
+                            new DTFecha(18,7,2024), new DTFecha(21,7,2024), new DTFecha(20,6,2024), "/img/IMG-EDEV05.jpeg", "https://www.youtube.com/watch?v=4n0itnXxCMg");
 
         if (!ctrlEvento.existeEdicion("Montevideo Comics 2025"))
             ctrlEvento.altaEdicion("Montevideo Comics", "miseventos", "Montevideo Comics 2025", "COMICS25", "Montevideo", "Uruguay",
-                            new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025), "/img/IMG-EDEV06.jpeg");
+                            new DTFecha(4,8,2025), new DTFecha(6,8,2025), new DTFecha(4,7,2025), "/img/IMG-EDEV06.jpeg", "https://www.youtube.com/watch?v=jRJt4i7G-SY");
 
         if (!ctrlEvento.existeEdicion("Expointer Uruguay 2025"))
             ctrlEvento.altaEdicion("Expointer Uruguay", "miseventos", "Expointer Uruguay 2025", "EXPOAGRO25", "Durazno", "Uruguay",
-                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg", "https://www.youtube.com/watch?v=YiD7EXoOWR8");
+                            new DTFecha(11,9,2025), new DTFecha(17,9,2025), new DTFecha(1,2,2025), "/img/IMG-EDEV07.jpeg", "https://www.youtube.com/watch?v=NFjb-JujCCY");
 
         if (!ctrlEvento.existeEdicion("Tecnología Punta del Este 2026"))
-            ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
-                            new DTFecha(15,3,2026), new DTFecha(17,3,2026), new DTFecha(1,1,2026), "/img/IMG-EDEV08.jpeg", "https://www.youtube.com/watch?v=Ayh54tDYVV0&list=PLWVo2tank-zzW1C3bCRwBF9JGOMxHcroD&index=5");
+            ctrlEvento.altaEdicion("Conferencia de Tecnología", "udelar", "Tecnología Punta del Este 2026", "TECH26", "Punta del Este", "Uruguay",
+                            new DTFecha(6,4,2026), new DTFecha(10,4,2026), new DTFecha(1,8,2025), "/img/IMG-EDEV08.jpeg", "https://www.youtube.com/watch?v=IPukuYb9xWw");
 
         if (!ctrlEvento.existeEdicion("Mobile World Congress 2025"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Mobile World Congress 2025", "MWC25", "Barcelona", "España",
-                            new DTFecha(24,2,2025), new DTFecha(27,2,2025), new DTFecha(1,12,2024), "/img/IMG-EDEV08.jpeg", "https://www.youtube.com/watch?v=SskpYGyEDmU&list=RDSskpYGyEDmU&start_radio=1");
+                            new DTFecha(12,12,2025), new DTFecha(15,12,2025), new DTFecha(21,8,2025), "/img/eventoSinImagen.png", "https://www.youtube.com/watch?v=zNVbgEJfgz8");
 
         if (!ctrlEvento.existeEdicion("Web Summit 2026"))
             ctrlEvento.altaEdicion("Conferencia de Tecnología", "techcorp", "Web Summit 2026", "WS26", "Lisboa", "Portugal",
-                            new DTFecha(2,11,2026), new DTFecha(5,11,2026), new DTFecha(1,8,2026));
+                            new DTFecha(13,1,2026), new DTFecha(1,2,2026), new DTFecha(4,6,2025));
 
             ctrlEvento.altaEdicion("Montevideo Fashion Week", "mec",  "Montevideo Fashion Week 2026", "MFW26", "Nueva York", "Estados Unidos", new DTFecha(16,2,2026), new DTFecha(20,2,2026),new DTFecha(2,10,2025), "/img/IMG-EDEV11.jpeg");
-
+            
+            ctrlEvento.altaEdicion("Global", "miseventos",  "Descubre la Magia de Machu Picchu", "MAPI25", "Cusco", "Perú", new DTFecha(10,11,2025), new DTFecha(30,11,2025),new DTFecha(7,8,2025), "/img/IMG-EDEV12.jpeg", "https://www.youtube.com/watch?v=cnMa-Sm9H4k");
+            
+        
 
 		// Estados definidos para mostrar en los perfiles
 		ctrlEvento.actualizarEstadoEdicion("Montevideo Rock 2025", EstadoEdicion.ACEPTADA);
@@ -183,7 +216,8 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlEvento.actualizarEstadoEdicion("Tecnología Punta del Este 2026", EstadoEdicion.ACEPTADA);
         ctrlEvento.actualizarEstadoEdicion("Mobile World Congress 2025", EstadoEdicion.ACEPTADA);
 		ctrlEvento.actualizarEstadoEdicion("Web Summit 2026", EstadoEdicion.ACEPTADA);
-        ctrlEvento.actualizarEstadoEdicion("Montevideo Fashion Week 2026", EstadoEdicion.ACEPTADA);
+        ctrlEvento.actualizarEstadoEdicion("Montevideo Fashion Week 2026", EstadoEdicion.INGRESADA);
+        ctrlEvento.actualizarEstadoEdicion("Descubre la Magia de Machu Picchu", EstadoEdicion.ACEPTADA);
 
 		// TipoRegistro
 
@@ -236,6 +270,8 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlRegistro.altaTipoDeRegistro("Montevideo Fashion Week 2026", "Full", "Acceso a todos los eventos de la semana", 450, 50);
 		ctrlRegistro.altaTipoDeRegistro("Montevideo Fashion Week 2026", "Visitante", "Acceso parcial a los eventos de la semana", 150, 25);
 
+		ctrlRegistro.altaTipoDeRegistro("Descubre la Magia de Machu Picchu", "plus50", "Viaje para personas con más de 50 años", 250, 10);
+		ctrlRegistro.altaTipoDeRegistro("Descubre la Magia de Machu Picchu", "Mayores", "Viaje para personas con más de 1 8 años", 300, 20);
 
 		//Patrocinios
 		ctrlEvento.altaPatrocinio("Tecnología Punta del Este 2026", "Facultad de Ingeniería",NivelPatrocinio.Oro, 20000, "Estudiante", 4, "TECHFING", new DTFecha(21,8,2025));
@@ -253,7 +289,10 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlRegistro.altaRegistro("Maratón de Montevideo 2025", "JaviL", "Corredor 21K", new DTFecha(10,4,2025), 800);
 		ctrlRegistro.altaRegistro("Montevideo Comics 2025", "MariR", "Cosplayer", new DTFecha(3,8,2025), 500);
 		ctrlRegistro.altaRegistro("Montevideo Comics 2024", "SofiM", "General", new DTFecha(16,7,2024), 600);
-
+		
+		ctrlRegistro.altaRegistro("Tecnología Punta del Este 2026", "msilva", "Estudiante", new DTFecha(1,10,2025), 0, true);
+		ctrlRegistro.altaRegistro("Tecnología Punta del Este 2026", "andrearod", "General", new DTFecha(6,10,2025), 0, true);
+		
 	}
 
 	// Método para verificar si los datos ya fueron precargados

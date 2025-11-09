@@ -645,4 +645,10 @@ public Set<DTEvento> obtenerDTEventos(){
 	            .limit(5)
 	            .toList();
 	}
+	
+	public void setVisitas(String nomEv, int visitas) {
+		ManejadorEventos manEv  = ManejadorEventos.getInstance();
+		Evento eve = manEv.obtenerEvento(nomEv);
+		eve.setVisitas(visitas);
+	}
 }

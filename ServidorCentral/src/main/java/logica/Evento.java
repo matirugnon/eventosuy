@@ -92,6 +92,10 @@ public class Evento {
     public void incrementarVisitas() {
     	this.visitas++;
     }
+    
+    public void setVisitas(int visitas) {
+    	this.visitas = visitas;
+    }
 
 }
 

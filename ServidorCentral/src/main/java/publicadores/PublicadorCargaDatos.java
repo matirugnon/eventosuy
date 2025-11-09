@@ -10,6 +10,7 @@ import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
+import excepciones.EventoYaFinalizadoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
@@ -80,7 +81,7 @@ public class PublicadorCargaDatos {
 			throws UsuarioRepetidoException,
 			CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, EventoNoExisteException, FechaInvalidaException,
 			ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
-			NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException {
+			NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException, EventoYaFinalizadoException {
 		
 		 if (datosCargados) return false;
 		 
