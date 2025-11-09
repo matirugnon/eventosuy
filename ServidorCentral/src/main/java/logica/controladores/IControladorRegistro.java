@@ -49,4 +49,7 @@ public interface IControladorRegistro {
     
     public void altaRegistro(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, double costo, boolean patrocinado)
 			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
+    
+    public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
 }

@@ -290,9 +290,13 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlRegistro.altaRegistro("Montevideo Comics 2025", "MariR", "Cosplayer", new DTFecha(3,8,2025), 500);
 		ctrlRegistro.altaRegistro("Montevideo Comics 2024", "SofiM", "General", new DTFecha(16,7,2024), 600);
 		
-		ctrlRegistro.altaRegistro("Tecnología Punta del Este 2026", "msilva", "Estudiante", new DTFecha(1,10,2025), 0, true);
-		ctrlRegistro.altaRegistro("Tecnología Punta del Este 2026", "andrearod", "General", new DTFecha(6,10,2025), 0, true);
-		
+		ctrlRegistro.altaRegistroConPatrocinio("Tecnología Punta del Este 2026", "msilva", "Estudiante", new DTFecha(1,10,2025), "TECHFING");
+		ctrlRegistro.altaRegistroConPatrocinio("Tecnología Punta del Este 2026", "andrearod", "General", new DTFecha(6,10,2025), "TECHANII");
+        
+        ctrlRegistro.altaRegistro("Tecnología Punta del Este 2026", "MariR", "General", new DTFecha(10,10,2025), 1500);
+        ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "atorres", "Mayores", new DTFecha(7,11,2025), 300);
+        ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "msilva", "Mayores", new DTFecha(10,8,2025), 300);
+        ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "AnaG", "plus50", new DTFecha(30,9,2025), 250);
 	}
 
 	// Método para verificar si los datos ya fueron precargados

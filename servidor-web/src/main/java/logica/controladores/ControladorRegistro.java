@@ -191,5 +191,13 @@ public class ControladorRegistro implements IControladorRegistro {
 	        throw new UsuarioNoExisteException("El usuario " + nickAsistente + " no es asistente");
 	    }
 	}
+	
+	@Override
+	public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException {
+		// Este método no debería ser llamado directamente en el servidor-web
+		// ya que debe hacerse a través del servicio SOAP
+		throw new UnsupportedOperationException("Este método debe ser llamado a través del servicio SOAP");
+	}
 }
 

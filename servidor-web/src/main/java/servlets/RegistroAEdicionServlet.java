@@ -318,7 +318,16 @@ public class RegistroAEdicionServlet extends HttpServlet {
                                         soapFecha.setMes(fechaRegistro.getMes());
                                         soapFecha.setAnio(fechaRegistro.getAnio());
 
-                                        String resultado = publicadorRegistro.altaRegistro(edicion, usuario, tipoRegistro, soapFecha, costoFinal);
+                                        String resultado;
+                                        
+                                        // Usar el método apropiado según si hay código de patrocinio o no
+                                        if (codigoPatrocinio != null && !codigoPatrocinio.trim().isEmpty() && costoFinal == 0.0) {
+                                            // Registro con patrocinio
+                                            resultado = publicadorRegistro.altaRegistroConPatrocinio(edicion, usuario, tipoRegistro, soapFecha, codigoPatrocinio);
+                                        } else {
+                                            // Registro normal
+                                            resultado = publicadorRegistro.altaRegistro(edicion, usuario, tipoRegistro, soapFecha, costoFinal);
+                                        }
 
                                         if ("OK".equals(resultado)) {
                                         	String fechaStr = String.format("%02d/%02d/%d", fechaRegistro.getDia(), fechaRegistro.getMes(), fechaRegistro.getAnio());

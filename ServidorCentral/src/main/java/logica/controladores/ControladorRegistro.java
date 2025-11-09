@@ -9,6 +9,7 @@ import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import logica.Asistente;
 import logica.Edicion;
+import logica.Patrocinio;
 import logica.Registro;
 import logica.manejadores.ManejadorEventos;
 import logica.manejadores.ManejadorUsuario;
@@ -154,6 +155,45 @@ public class ControladorRegistro implements IControladorRegistro {
 
 	}
 	
+	// Nuevo método para registrar con código de patrocinio
+	public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
+
+		if (estaRegistrado(nomEdicion, nickAsistente)) {
+			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
+		}
+
+		ManejadorEventos manejador = ManejadorEventos.getInstance();
+		Edicion edicion = manejador.obtenerEdicion(nomEdicion);
+		
+		// Buscar el patrocinio por código
+		Patrocinio patrocinio = edicion.buscarPatrocinioPorCodigo(codigoPatrocinio);
+		if (patrocinio == null) {
+			throw new UsuarioNoExisteException("Código de patrocinio no válido: " + codigoPatrocinio);
+		}
+		
+		// Validar que haya usos disponibles
+		if (patrocinio.getCantidadGratis() <= 0) {
+			throw new UsuarioNoExisteException("El código de patrocinio ya no tiene usos disponibles");
+		}
+		
+		// Validar que el patrocinio aplique al tipo de registro
+		if (!patrocinio.getNombreTipoDeRegistro().equals(nomTipoRegistro)) {
+			throw new UsuarioNoExisteException("El código de patrocinio no aplica a este tipo de registro");
+		}
+		
+		// Crear el registro con costo 0 y marcado como patrocinado
+		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
+		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
+		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
+		Asistente asist = (Asistente) usuario;
+		Registro reg = tipo.altaRegistro(fechaRegistro, 0.0, nickAsistente, true);
+		asist.agregarRegistro(reg);
+		
+		// Decrementar el contador de usos del patrocinio
+		patrocinio.decrementarCantidadGratis();
+	}
+	
 	
 	
 
@@ -185,8 +225,10 @@ public class ControladorRegistro implements IControladorRegistro {
 	            Double costo = dreg.getCosto();
 	            
 	            boolean asistio = dreg.isAsistio();
+	            
+	            boolean patrocinado = dreg.getPatrocinado();
 
-	            return new DTRegistro(asistente, tr, fecha, costo, edicion, asistio);
+	            return new DTRegistro(asistente, tr, fecha, costo, edicion, asistio, patrocinado);
 	        }
 	    }
 
@@ -208,7 +250,8 @@ public class ControladorRegistro implements IControladorRegistro {
 	                reg.getFechaRegistro(),
 	                reg.getCosto(),
 	                reg.getTipoDeRegistro().getNombreEdicion(),
-	                reg.getAsistio()
+	                reg.getAsistio(),
+	                reg.getPatrocinado()
 	            );
 	            registros.add(dtRegistro);
 	        }

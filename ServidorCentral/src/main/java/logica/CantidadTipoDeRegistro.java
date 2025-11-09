@@ -28,5 +28,15 @@ public class CantidadTipoDeRegistro{
 	public Patrocinio getPatrocinio() {
 		return patrocinio;
 	}
+	
+	public int getCantidad() {
+		return cantRegistros;
+	}
+	
+	public void decrementar() {
+		if (cantRegistros > 0) {
+			cantRegistros--;
+		}
+	}
 }
 	

@@ -94,8 +94,9 @@ public class Asistente extends Usuario {
                 Double costo = r.getCosto();
                 String edicion = r.getNomEdicion();
                 boolean asistio = r.getAsistio();
+                boolean patrocinado = r.getPatrocinado();
 
-                return new DTRegistro(asistente, nombreTR, fecha, costo, edicion, asistio);
+                return new DTRegistro(asistente, nombreTR, fecha, costo, edicion, asistio, patrocinado);
             }
         }
 

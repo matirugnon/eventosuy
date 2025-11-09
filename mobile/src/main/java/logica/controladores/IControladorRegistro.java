@@ -42,4 +42,8 @@ public interface IControladorRegistro {
 
 	// Método para listar registros por asistente
     public Set<DTRegistro> listarRegistrosPorAsistente(String nickname) throws UsuarioNoExisteException;
+    
+    // Método para registrar con código de patrocinio
+    public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
 }

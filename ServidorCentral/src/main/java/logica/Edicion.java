@@ -175,6 +175,10 @@ public class Edicion{
 		this.patrocinios.put(codigo, pat);
 		return pat;
 	}
+	
+	public Patrocinio buscarPatrocinioPorCodigo(String codigo) {
+		return patrocinios.get(codigo);
+	}
 
 	public EstadoEdicion getEstado() {
         return estado;

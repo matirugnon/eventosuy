@@ -83,6 +83,17 @@ public class PublicadorRegistro {
 	}
 	
 	@WebMethod
+	public String altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio) throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException {
+		try {
+			ctrlReg.altaRegistroConPatrocinio(nomEdicion, nickAsistente, nomTipoRegistro, fechaRegistro, codigoPatrocinio);
+			return "OK";
+		} catch (Exception e) {
+			// Devolver el mensaje de la excepción para que el cliente SOAP lo muestre
+			return e.getMessage();
+		}
+	}
+	
+	@WebMethod
 	public DTRegistro getRegistro(String nombreUsuario, String nombreTipoRegistro) {
 		try{
 			DTRegistro dtReg = ctrlReg.getRegistro(nombreUsuario, nombreTipoRegistro);

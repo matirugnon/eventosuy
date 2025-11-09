@@ -268,7 +268,8 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 		ctrlRegistro.altaRegistro("Maratón de Montevideo 2025", "JaviL", "Corredor 21K", new DTFecha(10,4,2025), 800);
 		ctrlRegistro.altaRegistro("Montevideo Comics 2025", "MariR", "Cosplayer", new DTFecha(3,8,2025), 500);
 		ctrlRegistro.altaRegistro("Montevideo Comics 2024", "SofiM", "General", new DTFecha(16,7,2024), 600);
-
+        ctrlRegistro.altaRegistroConPatrocinio("Tecnología Punta del Este 2026", "msilva", "Estudiante", new DTFecha(1,10,2025), "TECHFING"); 
+        ctrlRegistro.altaRegistroConPatrocinio("Tecnología Punta del Este 2026", "andrearod", "General", new DTFecha(6,10,2025), "TECHANII");
 	}
 
 	public static boolean datosPrecargados(ServletContext context) {

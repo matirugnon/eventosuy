@@ -68,4 +68,12 @@ public class Registro{
 	public void registrarAsistencia() {
 		this.asistio = true;
 	}
+	
+	public boolean getPatrocinado() {
+		return patrocinado;
+	}
+	
+	public void setPatrocinado(boolean patrocinado) {
+		this.patrocinado = patrocinado;
+	}
 }

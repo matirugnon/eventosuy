@@ -45,4 +45,12 @@ public class Patrocinio{
 	   public String getNombreEdicion() {
 		   return edicion.getNombre();
 	   }
+	   
+	   public int getCantidadGratis() {
+		   return cantTipo.getCantidad();
+	   }
+	   
+	   public void decrementarCantidadGratis() {
+		   cantTipo.decrementar();
+	   }
 }
