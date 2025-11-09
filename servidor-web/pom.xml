@@ -54,16 +54,22 @@
 			<version>4.0.2</version>
 		</dependency>
 
-		<!-- Dependencia del Servidor Central para acceder a la lógica -->
-		<dependency>
-			<groupId>uy.edu.fing.tprog</groupId>
-			<artifactId>servidor-central</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+	<!-- Dependencia del Servidor Central para acceder a la lógica -->
+	<dependency>
+		<groupId>uy.edu.fing.tprog</groupId>
+		<artifactId>servidor-central</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
 
-	<build>
+	<!-- iText para generar PDFs -->
+	<dependency>
+		<groupId>com.itextpdf</groupId>
+		<artifactId>itext7-core</artifactId>
+		<version>7.2.5</version>
+		<type>pom</type>
+	</dependency>
+</dependencies>	<build>
 		<finalName>web</finalName>
 		<plugins>
 			<plugin>

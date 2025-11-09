@@ -61,12 +61,31 @@
 						<p>
 							<strong>Costo:</strong> $ ${registro.costo}
 						</p>
-						<p>
-							<strong>Asistió:</strong> ${registro.asistio ? 'Sí' : 'No'}
-						</p>
+					<p>
+						<strong>Asistió:</strong> ${registro.asistio ? 'Sí' : 'No'}
+					</p>
 
-						<!-- Enlaces relacionados -->
-						<div style="margin-top: 1.5rem; display: flex; gap: .75rem;">
+					<!-- Botón de descarga de certificado -->
+					<div style="margin-top: 1.5rem;">
+						<c:choose>
+							<c:when test="${registro.asistio}">
+								<a class="btn" 
+								   href="${pageContext.request.contextPath}/descargaConstancia?asistente=${registro.asistente}&edicion=${registro.nomEdicion}&tipoRegistro=${registro.tipoDeRegistro}"
+								   style="background-color: #182080; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; display: inline-block;">
+									📄 Descargar Certificado de Asistencia
+								</a>
+							</c:when>
+							<c:otherwise>
+								<button disabled 
+										style="background-color: #ccc; color: #666; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: not-allowed; display: inline-block;">
+									📄 Descargar Certificado de Asistencia (Asistencia no confirmada)
+								</button>
+							</c:otherwise>
+						</c:choose>
+					</div>
+
+					<!-- Enlaces relacionados -->
+					<div style="margin-top: 1.5rem; display: flex; gap: .75rem;">
 							<c:choose>
 								<c:when test="${param.from == 'misRegistros'}">
 									<a class="btn-outline" href="${pageContext.request.contextPath}/misRegistros">Mis Registros</a>

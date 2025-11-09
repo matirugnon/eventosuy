@@ -122,11 +122,6 @@ public class ConsultaRegistroServlet extends HttpServlet {
             String nickname = (String) request.getSession().getAttribute("usuario");
             String avatar = (String) request.getSession().getAttribute("avatar");
             
-            // Debug temporal
-            System.out.println("DEBUG ConsultaRegistroServlet - role: " + role);
-            System.out.println("DEBUG ConsultaRegistroServlet - nickname: " + nickname);
-            System.out.println("DEBUG ConsultaRegistroServlet - avatar: " + avatar);
-            
             request.setAttribute("role", role);
             request.setAttribute("nickname", nickname);
             request.setAttribute("avatar", avatar);

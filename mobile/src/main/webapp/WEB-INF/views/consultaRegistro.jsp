@@ -41,6 +41,14 @@
 				<section class="panel">
 					<div class="panel-header">Consulta de Registro</div>
 					<div class="panel-body">
+						<!-- Mensaje de error si el evento no ha comenzado -->
+						<c:if test="${param.error == 'eventoNoIniciado'}">
+							<div style="background-color: #fee; border: 1px solid #c33; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem; color: #c33;">
+								<strong>⚠ Error:</strong> No puedes confirmar asistencia a un evento que aún no ha comenzado. 
+								Debes esperar hasta la fecha de inicio del evento.
+							</div>
+						</c:if>
+						
 						<!-- Datos básicos del registro -->
 						<p>
 							<strong>Asistente:</strong> ${registro.asistente}

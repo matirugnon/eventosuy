@@ -57,8 +57,8 @@
 										<tr>
 											<th>Asistente</th>
 											<th>Tipo de Registro</th>
-											<th>Acciones</th>
 											<th>Asistió</th>
+											<th>Acciones</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -66,6 +66,7 @@
 											<tr>
 												<td>${reg.asistente}</td>
 												<td>${reg.tipoDeRegistro}</td>
+												<td>${reg.asistio ? 'Sí' : 'No'}</td>
 												<td>
 													<div class="actions">
 														<!-- Solo mostrar el enlace si es el organizador de esta edición -->
@@ -78,9 +79,27 @@
 														<a class="btn-outline"
 															href="${pageContext.request.contextPath}/perfilUsuario?nickname=${fn:escapeXml(reg.asistente)}&from=edicion&edicion=${fn:escapeXml(edicion.nombre)}">Ver
 															perfil</a>
+														
+														<!-- Botón de descarga de certificado -->
+														<c:choose>
+															<c:when test="${reg.asistio}">
+																<a class="btn-edicion"
+																   style="background: #28a745; border-color: #28a745;"
+																   href="${pageContext.request.contextPath}/descargaConstancia?asistente=${fn:escapeXml(reg.asistente)}&edicion=${fn:escapeXml(edicion.nombre)}&tipoRegistro=${fn:escapeXml(reg.tipoDeRegistro)}">
+																	📄 Certificado
+																</a>
+															</c:when>
+															<c:otherwise>
+																<button disabled 
+																		class="btn-outline"
+																		style="cursor: not-allowed; opacity: 0.5;"
+																		title="Asistencia no confirmada">
+																	📄 Certificado
+																</button>
+															</c:otherwise>
+														</c:choose>
 													</div>
 												</td>
-												<td>${reg.asistio ? 'Sí' : 'No'}</td>
 											</tr>
 										</c:forEach>
 									</tbody>

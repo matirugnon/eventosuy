@@ -59,19 +59,45 @@
 										<c:forEach var="registro" items="${misRegistros}">
 											<c:if test="${registro.getNomEdicion() eq edicion}">
 												<div
-													style="background: #f8f9fa; padding: 1rem; border-radius: 6px; border: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
-													<div>
-														<div
-															style="font-weight: 600; color: #182080; font-size: 1.1rem; margin-bottom: 0.25rem;">${registro.getTipoDeRegistro()}</div>
-														<div style="color: #666; font-size: 0.9rem;">Registrado:
-															${registro.getFechaRegistro().getDia()}/${registro.getFechaRegistro().getMes()}/${registro.getFechaRegistro().getAnio()}</div>
+													style="background: #f8f9fa; padding: 1rem; border-radius: 6px; border: 1px solid #e9ecef;">
+													<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+														<div>
+															<div
+																style="font-weight: 600; color: #182080; font-size: 1.1rem; margin-bottom: 0.25rem;">${registro.getTipoDeRegistro()}</div>
+															<div style="color: #666; font-size: 0.9rem;">
+																Registrado: ${registro.getFechaRegistro().getDia()}/${registro.getFechaRegistro().getMes()}/${registro.getFechaRegistro().getAnio()}
+																<span style="margin-left: 1rem; font-weight: 500; color: ${registro.isAsistio() ? '#28a745' : '#6c757d'};">
+																	${registro.isAsistio() ? '✓ Asistió' : 'No asistió'}
+																</span>
+															</div>
+														</div>
 													</div>
-													<a
-														href="${pageContext.request.contextPath}/consultaRegistro?asistente=${nickname}&edicion=${edicion}&tipoRegistro=${registro.getTipoDeRegistro()}&from=misRegistros"
-														style="background: #182080; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s;"
-														onmouseover="this.style.backgroundColor='#0f1660'"
-														onmouseout="this.style.backgroundColor='#182080'">Ver
-														Detalles</a>
+													<div style="display: flex; gap: 0.5rem;">
+														<a
+															href="${pageContext.request.contextPath}/consultaRegistro?asistente=${nickname}&edicion=${edicion}&tipoRegistro=${registro.getTipoDeRegistro()}&from=misRegistros"
+															style="background: #182080; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s;"
+															onmouseover="this.style.backgroundColor='#0f1660'"
+															onmouseout="this.style.backgroundColor='#182080'">Ver
+															Detalles</a>
+														
+														<c:choose>
+															<c:when test="${registro.isAsistio()}">
+																<a
+																	href="${pageContext.request.contextPath}/descargaConstancia?asistente=${nickname}&edicion=${edicion}&tipoRegistro=${registro.getTipoDeRegistro()}"
+																	style="background: #28a745; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s;"
+																	onmouseover="this.style.backgroundColor='#218838'"
+																	onmouseout="this.style.backgroundColor='#28a745'">
+																	📄 Descargar Certificado
+																</a>
+															</c:when>
+															<c:otherwise>
+																<button disabled
+																	style="background: #ccc; color: #666; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: not-allowed; font-size: 0.9rem; font-weight: 500;">
+																	📄 Certificado (No disponible)
+																</button>
+															</c:otherwise>
+														</c:choose>
+													</div>
 												</div>
 											</c:if>
 										</c:forEach>

@@ -49,7 +49,7 @@ class prueba1 {
     private IControladorRegistro contR = IControladorRegistro.getInstance();
 
     @Test
-	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException {
+	public void altaUsuarios() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException, excepciones.EventoYaFinalizadoException {
 
 
 		Utils.cargarDatos(contrU,contE,contR);

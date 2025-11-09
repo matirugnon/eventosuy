@@ -30,6 +30,7 @@ public class ObjectFactory {
     private static final QName _EdicionNoExisteFault_QNAME = new QName("http://publicadores/", "EdicionNoExisteFault");
     private static final QName _EventoNoExisteFault_QNAME = new QName("http://publicadores/", "EventoNoExisteFault");
     private static final QName _EventoRepetidoFault_QNAME = new QName("http://publicadores/", "EventoRepetidoFault");
+    private static final QName _EventoYaFinalizadoException_QNAME = new QName("http://publicadores/", "EventoYaFinalizadoException");
     private static final QName _ExisteInstitucionFault_QNAME = new QName("http://publicadores/", "ExisteInstitucionFault");
     private static final QName _FechaInvalidaFault_QNAME = new QName("http://publicadores/", "FechaInvalidaFault");
     private static final QName _FechasIncompatiblesFault_QNAME = new QName("http://publicadores/", "FechasIncompatiblesFault");
@@ -105,6 +106,16 @@ public class ObjectFactory {
      */
     public EventoRepetidoException createEventoRepetidoException() {
         return new EventoRepetidoException();
+    }
+
+    /**
+     * Create an instance of {@link EventoYaFinalizadoException }
+     * 
+     * @return
+     *     the new instance of {@link EventoYaFinalizadoException }
+     */
+    public EventoYaFinalizadoException createEventoYaFinalizadoException() {
+        return new EventoYaFinalizadoException();
     }
 
     /**
@@ -273,6 +284,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "EventoRepetidoFault")
     public JAXBElement<EventoRepetidoException> createEventoRepetidoFault(EventoRepetidoException value) {
         return new JAXBElement<>(_EventoRepetidoFault_QNAME, EventoRepetidoException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EventoYaFinalizadoException }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link EventoYaFinalizadoException }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "EventoYaFinalizadoException")
+    public JAXBElement<EventoYaFinalizadoException> createEventoYaFinalizadoException(EventoYaFinalizadoException value) {
+        return new JAXBElement<>(_EventoYaFinalizadoException_QNAME, EventoYaFinalizadoException.class, null, value);
     }
 
     /**
