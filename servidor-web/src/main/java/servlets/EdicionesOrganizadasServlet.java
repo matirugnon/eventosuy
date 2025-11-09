@@ -64,16 +64,6 @@ public class EdicionesOrganizadasServlet extends HttpServlet {
             if (edicionesNombres != null && edicionesNombres.getItem() != null) {
                 for (String nom : edicionesNombres.getItem()) {
                     try {
-                        String nombreEvento = publicadorControlador.obtenerEventoDeEdicion(nom);
-                        boolean eventoFinalizado = false;
-                        if (nombreEvento != null && !nombreEvento.isBlank()) {
-                            eventoFinalizado = eventoFinalizadoCache.computeIfAbsent(nombreEvento,
-                                    key -> publicadorControlador.esEventoFinalizado(key));
-                        }
-                        if (eventoFinalizado) {
-                            continue;
-                        }
-
                         DtEdicion d = publicadorControlador.consultarEdicion(nom);
                         if (d != null) edicionesOrganizadas.add(d);
                     } catch (Exception ex) {

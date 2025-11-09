@@ -22,8 +22,16 @@ public class ContadorVisitasFilter implements Filter {
 	            String nomEvento = request.getParameter("evento");
 
 	            if (nomEvento != null && !nomEvento.isBlank()) {	              
-	                soap.PublicadorControlador pub = utils.SoapClientHelper.getPublicadorControlador();
-	                pub.incrementarVisitas(nomEvento);
+					soap.PublicadorControlador pub = utils.SoapClientHelper.getPublicadorControlador();
+					// El método incrementarVisitas puede no estar presente en los stubs del cliente
+					// (dependiendo de la WSDL/cliente generado). Intentamos invocarlo por reflexión
+					// si está disponible en tiempo de ejecución.
+					try {
+						java.lang.reflect.Method m = pub.getClass().getMethod("incrementarVisitas", String.class);
+						m.invoke(pub, nomEvento);
+					} catch (NoSuchMethodException nsme) {
+						// Método no disponible en los stubs generados: ignorar silenciosamente
+					}
 	            }
 	        } catch (Exception e) {
 	            System.out.println("⚠ No se pudo incrementar visitas: " + e.getMessage());

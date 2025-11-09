@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para dtAsistente complex type.
+ * <p>Java class for dtAsistente complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>{@code
  * <complexType name="dtAsistente">
@@ -42,7 +42,7 @@ public class DtAsistente
     protected String institucion;
 
     /**
-     * Obtiene el valor de la propiedad apellido.
+     * Gets the value of the apellido property.
      * 
      * @return
      *     possible object is
@@ -54,7 +54,7 @@ public class DtAsistente
     }
 
     /**
-     * Define el valor de la propiedad apellido.
+     * Sets the value of the apellido property.
      * 
      * @param value
      *     allowed object is
@@ -66,7 +66,7 @@ public class DtAsistente
     }
 
     /**
-     * Obtiene el valor de la propiedad fechaNacimiento.
+     * Gets the value of the fechaNacimiento property.
      * 
      * @return
      *     possible object is
@@ -78,7 +78,7 @@ public class DtAsistente
     }
 
     /**
-     * Define el valor de la propiedad fechaNacimiento.
+     * Sets the value of the fechaNacimiento property.
      * 
      * @param value
      *     allowed object is
@@ -90,7 +90,7 @@ public class DtAsistente
     }
 
     /**
-     * Obtiene el valor de la propiedad institucion.
+     * Gets the value of the institucion property.
      * 
      * @return
      *     possible object is
@@ -102,7 +102,7 @@ public class DtAsistente
     }
 
     /**
-     * Define el valor de la propiedad institucion.
+     * Sets the value of the institucion property.
      * 
      * @param value
      *     allowed object is

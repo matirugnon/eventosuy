@@ -56,20 +56,18 @@ public class inicioServlet extends HttpServlet {
                 }
             }
 
-            // 🔹 Obtener EDICIONES ACTIVAS Y ACEPTADAS (no archivadas, no finalizadas)
+            // 🔹 Obtener TODAS LAS EDICIONES ACEPTADAS (incluye ediciones de eventos finalizados)
             List<DtEdicion> ediciones = new ArrayList<>();
-            for (DtEvento evento : eventos) {
-                StringArray nombresEdicionesWs = publicador.listarEdicionesActivasAceptadas(evento.getNombre());
-                if (nombresEdicionesWs != null && nombresEdicionesWs.getItem() != null) {
-                    for (String nombreEdicion : nombresEdicionesWs.getItem()) {
-                        try {
-                            DtEdicion ed = publicador.consultarEdicion(nombreEdicion);
-                            if (ed != null) {
-                                ediciones.add(ed);
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Error obteniendo edición " + nombreEdicion + ": " + e.getMessage());
+            StringArray nombresEdicionesWs = publicador.listarEdicionesPorEstado(EstadoEdicion.ACEPTADA);
+            if (nombresEdicionesWs != null && nombresEdicionesWs.getItem() != null) {
+                for (String nombreEdicion : nombresEdicionesWs.getItem()) {
+                    try {
+                        DtEdicion ed = publicador.consultarEdicion(nombreEdicion);
+                        if (ed != null) {
+                            ediciones.add(ed);
                         }
+                    } catch (Exception e) {
+                        System.err.println("Error obteniendo edición " + nombreEdicion + ": " + e.getMessage());
                     }
                 }
             }
@@ -129,11 +127,20 @@ public class inicioServlet extends HttpServlet {
                 String nombreEvento = ed.getEvento();
                 List<String> listaCategorias = new ArrayList<>();
                 if (nombreEvento != null) {
-                    // Buscar el evento en la lista de eventos ya obtenidos
+                    // Buscar el evento en la lista de eventos activos
                     DtEvento eventoPadre = eventos.stream()
                         .filter(e -> e.getNombre().equals(nombreEvento))
                         .findFirst()
                         .orElse(null);
+                    
+                    // Si no está en la lista (puede ser un evento finalizado/archivado), consultar vía SOAP
+                    if (eventoPadre == null) {
+                        try {
+                            eventoPadre = publicador.obtenerDTEvento(nombreEvento);
+                        } catch (Exception ex) {
+                            System.err.println("Error obteniendo evento padre " + nombreEvento + ": " + ex.getMessage());
+                        }
+                    }
                     
                     if (eventoPadre != null && eventoPadre.getCategorias() != null && eventoPadre.getCategorias().getCategoria() != null) {
                         listaCategorias.addAll(eventoPadre.getCategorias().getCategoria());
