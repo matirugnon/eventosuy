@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
             
     
     <wb-module deploy-name="logica3">
@@ -11,4 +12,14 @@
     </wb-module>
         
 
+=======
+        
+    <wb-module deploy-name="logica3">
+                
+        <wb-resource deploy-path="/" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/" source-path="/src/main/resources"/>
+            
+    </wb-module>
+    
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
 </project-modules>

@@ -495,6 +495,21 @@ public class PublicadorControlador {
     	return true;
     	
     }
+    
+    /**
+     * Lista las ediciones por estado.
+     * @param estado El estado de la edición (ACEPTADA, FINALIZADA, etc.)
+     * @return Array con los nombres de las ediciones
+     */
+    @WebMethod
+    public String[] listarEdicionesPorEstado(EstadoEdicion estado) {
+        try {
+            Set<String> resultado = ctrl.listarEdicionesPorEstado(estado);
+            return resultado.toArray(new String[0]);
+        } catch (Exception e) {
+            return new String[0];
+        }
+    }
 
   
     

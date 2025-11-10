@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 package soap;
 
@@ -369,3 +370,376 @@ public class DtUsuario {
     }
 
 }
+=======
+
+package soap;
+
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for dtUsuario complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>{@code
+ * <complexType name="dtUsuario">
+ *   <complexContent>
+ *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       <sequence>
+ *         <element name="nickname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="correo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="avatar" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="seguidores" minOccurs="0">
+ *           <complexType>
+ *             <complexContent>
+ *               <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 <sequence>
+ *                   <element name="seguidor" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *                 </sequence>
+ *               </restriction>
+ *             </complexContent>
+ *           </complexType>
+ *         </element>
+ *         <element name="seguidos" minOccurs="0">
+ *           <complexType>
+ *             <complexContent>
+ *               <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 <sequence>
+ *                   <element name="seguido" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *                 </sequence>
+ *               </restriction>
+ *             </complexContent>
+ *           </complexType>
+ *         </element>
+ *       </sequence>
+ *     </restriction>
+ *   </complexContent>
+ * </complexType>
+ * }</pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "dtUsuario", propOrder = {
+    "nickname",
+    "nombre",
+    "correo",
+    "password",
+    "avatar",
+    "seguidores",
+    "seguidos"
+})
+@XmlSeeAlso({
+    DtAsistente.class,
+    DtOrganizador.class
+})
+public class DtUsuario {
+
+    protected String nickname;
+    protected String nombre;
+    protected String correo;
+    protected String password;
+    protected String avatar;
+    protected DtUsuario.Seguidores seguidores;
+    protected DtUsuario.Seguidos seguidos;
+
+    /**
+     * Gets the value of the nickname property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNickname() {
+        return nickname;
+    }
+
+    /**
+     * Sets the value of the nickname property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNickname(String value) {
+        this.nickname = value;
+    }
+
+    /**
+     * Gets the value of the nombre property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * Sets the value of the nombre property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNombre(String value) {
+        this.nombre = value;
+    }
+
+    /**
+     * Gets the value of the correo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCorreo() {
+        return correo;
+    }
+
+    /**
+     * Sets the value of the correo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCorreo(String value) {
+        this.correo = value;
+    }
+
+    /**
+     * Gets the value of the password property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets the value of the password property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPassword(String value) {
+        this.password = value;
+    }
+
+    /**
+     * Gets the value of the avatar property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAvatar() {
+        return avatar;
+    }
+
+    /**
+     * Sets the value of the avatar property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAvatar(String value) {
+        this.avatar = value;
+    }
+
+    /**
+     * Gets the value of the seguidores property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DtUsuario.Seguidores }
+     *     
+     */
+    public DtUsuario.Seguidores getSeguidores() {
+        return seguidores;
+    }
+
+    /**
+     * Sets the value of the seguidores property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DtUsuario.Seguidores }
+     *     
+     */
+    public void setSeguidores(DtUsuario.Seguidores value) {
+        this.seguidores = value;
+    }
+
+    /**
+     * Gets the value of the seguidos property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DtUsuario.Seguidos }
+     *     
+     */
+    public DtUsuario.Seguidos getSeguidos() {
+        return seguidos;
+    }
+
+    /**
+     * Sets the value of the seguidos property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DtUsuario.Seguidos }
+     *     
+     */
+    public void setSeguidos(DtUsuario.Seguidos value) {
+        this.seguidos = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>{@code
+     * <complexType>
+     *   <complexContent>
+     *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       <sequence>
+     *         <element name="seguidor" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+     *       </sequence>
+     *     </restriction>
+     *   </complexContent>
+     * </complexType>
+     * }</pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "seguidor"
+    })
+    public static class Seguidores {
+
+        protected List<String> seguidor;
+
+        /**
+         * Gets the value of the seguidor property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the Jakarta XML Binding object.
+         * This is why there is not a {@code set} method for the seguidor property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getSeguidor().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link String }
+         * 
+         * 
+         * @return
+         *     The value of the seguidor property.
+         */
+        public List<String> getSeguidor() {
+            if (seguidor == null) {
+                seguidor = new ArrayList<>();
+            }
+            return this.seguidor;
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>{@code
+     * <complexType>
+     *   <complexContent>
+     *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       <sequence>
+     *         <element name="seguido" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+     *       </sequence>
+     *     </restriction>
+     *   </complexContent>
+     * </complexType>
+     * }</pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "seguido"
+    })
+    public static class Seguidos {
+
+        protected List<String> seguido;
+
+        /**
+         * Gets the value of the seguido property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the Jakarta XML Binding object.
+         * This is why there is not a {@code set} method for the seguido property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getSeguido().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link String }
+         * 
+         * 
+         * @return
+         *     The value of the seguido property.
+         */
+        public List<String> getSeguido() {
+            if (seguido == null) {
+                seguido = new ArrayList<>();
+            }
+            return this.seguido;
+        }
+
+    }
+
+}
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
