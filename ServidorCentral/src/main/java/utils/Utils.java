@@ -298,6 +298,17 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "msilva", "Mayores", new DTFecha(10,8,2025), 300);
         ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "AnaG", "plus50", new DTFecha(30,9,2025), 250);
         ctrlEvento.finalizarEvento("Global");
+        
+        
+        //inicia 20/11/2025
+        //ctrlRegistro.registrarAsistencia("sofirod", "Montevideo Rock 2025", "VIP");
+        
+        ctrlRegistro.registrarAsistencia("sofirod", "Maratón de Montevideo 2025", "Corredor 42K");
+        ctrlRegistro.registrarAsistencia("AnaG", "Maratón de Montevideo 2025", "Corredor 10K");
+        ctrlRegistro.registrarAsistencia("SofiM", "Montevideo Comics 2024", "General");
+        ctrlRegistro.registrarAsistencia("atorres", "Descubre la Magia de Machu Picchu", "Mayores");
+        ctrlRegistro.registrarAsistencia("AnaG", "Descubre la Magia de Machu Picchu", "plus50");
+        
 	}
 
 	// Método para verificar si los datos ya fueron precargados
