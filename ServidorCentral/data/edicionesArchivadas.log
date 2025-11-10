@@ -1,0 +1,3 @@
+/*C2*/SET SCHEMA PUBLIC
+INSERT INTO EDICIONES_ARCHIVADAS VALUES('Test Edicion Persistencia 1762744125599','Montevideo',2025,1,5,2025,1,11,2025,3,6,2025,1,6,'test.jpg','Test Evento Persistencia','testorg','Uruguay','TEP1762744125599',NULL)
+COMMIT

@@ -155,7 +155,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         ctrlEvento.setVisitas("Global", 20);
         
         //Finalizar evento
-        ctrlEvento.finalizarEvento("Global");
+      
         
         
         // Ediciones
@@ -297,6 +297,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
         ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "atorres", "Mayores", new DTFecha(7,11,2025), 300);
         ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "msilva", "Mayores", new DTFecha(10,8,2025), 300);
         ctrlRegistro.altaRegistro("Descubre la Magia de Machu Picchu", "AnaG", "plus50", new DTFecha(30,9,2025), 250);
+        ctrlEvento.finalizarEvento("Global");
 	}
 
 	// Método para verificar si los datos ya fueron precargados
