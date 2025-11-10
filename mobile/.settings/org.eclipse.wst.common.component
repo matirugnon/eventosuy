@@ -1,34 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
+                        	
+    
+=======
                     	
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
     
     
     
     
     <wb-module deploy-name="mobile">
+<<<<<<< HEAD
+                                                		
+        
+=======
                                         		
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
         
         
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<<<<<<< HEAD
+                                                		
+        
+=======
                                         		
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
         
         
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+<<<<<<< HEAD
+                                                		
+        
+=======
                                         		
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
         
         
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+<<<<<<< HEAD
+                                                		
+        
+=======
                                         		
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
         
         
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+                
+        <dependent-module archiveName="servidor-central-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ServidorCentral/ServidorCentral">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+                        
+        
+        <property name="java-output-path" value="/mobile/build/classes"/>
+                        
+        
+        <property name="context-root" value="mobile"/>
+                                                	
+    
+=======
         <dependent-module archiveName="servidor-central-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/logica3/logica3">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -37,12 +79,18 @@
                 
         <property name="context-root" value="mobile"/>
                                         	
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
     
     
     
     
     </wb-module>
+<<<<<<< HEAD
+                        
+
+=======
                     
+>>>>>>> 8e3f4e17fd01823b8a4bc129c00786b7138cfa5f
 
 
 

@@ -9,6 +9,29 @@ En este modo la base solo admite una conexión a la vez, por lo que el Servidor 
 - Localizá el JAR de HSQLDB: se descarga vía Maven en  
   //en mi compu es aca : busquen la suya 
   `C:\Users\facu3\.m2\repository\org\hsqldb\hsqldb\2.7.2\hsqldb-2.7.2.jar`  
+  COMANDO: 
+java -cp "/ens/home01/f/facundo.grela/.m2/repository/org/hsqldb/hsqldb/2.7.2/hsqldb-2.7.2.jar" org.hsqldb.util.DatabaseManagerSwing --url "jdbc:hsqldb:file:/ens/devel01/tpgr15/tpgr15/ServidorCentral/data/edicionesArchivadas" --user SA
+
+  
+  
+  query 
+  SELECT * FROM EDICIONES_ARCHIVADAS;
+  
+  Como SERVIDOR: 
+  
+  Levanta Servidor:
+java -cp "/ens/home01/f/facundo.grela/.m2/repository/org/hsqldb/hsqldb/2.7.2/hsqldb-2.7.2.jar" org.hsqldb.server.Server --database.0 file:/ens/devel01/tpgr15/tpgr15/ServidorCentral/data/edicionesArchivadas --dbname.0 Archivadas
+
+ Levanta gui 
+ java -cp "/ens/home01/f/facundo.grela/.m2/repository/org/hsqldb/hsqldb/2.7.2/hsqldb-2.7.2.jar" org.hsqldb.util.DatabaseManagerSwing --url "jdbc:hsqldb:hsql://localhost:9001/Archivadas" --user SA
+ 
+Limpiar tabla 
+DELETE FROM EDICIONES_ARCHIVADAS;
+
+
+  
+  
+  
   (ajustá la versión si Maven trae otra).
 
 ## Abrir DatabaseManager (GUI)
