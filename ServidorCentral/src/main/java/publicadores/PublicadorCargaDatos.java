@@ -1,9 +1,5 @@
 package publicadores;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
 import excepciones.EdicionExistenteException;
@@ -31,69 +27,92 @@ import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
 import utils.Utils;
 
+import config.Config;
+
 @WebService
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
 public class PublicadorCargaDatos {
-	 private static boolean datosCargados = false;
-	 
-	public static void main(String[] args) {
-        String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
-        Properties props = new Properties();
 
-        try {
-            props.load(new FileInputStream(configPath));
-        } catch (IOException e) {
-            System.err.println("⚠️ Advertencia: No se encontró el archivo de configuración en: " + configPath);
-            System.err.println("   Usando valores por defecto.");
-        }
+    private static boolean datosCargados = false;
 
-        String url = props.getProperty("servidor.cargaDatos.url", "http://localhost:9128/publicadorCargaDatos");
+    public static void main(String[] args) {
+        // 1) Ver si vienen valores por -D desde el script
+        String hostProp = System.getProperty("publicadorCargaDatos.host");
+        String portProp = System.getProperty("publicadorCargaDatos.port");
+        String urlProp  = System.getProperty("publicadorCargaDatos.url");
+
+        // 2) Si no vienen por -D, usar config.Config (~/config/config.properties)
+        String host = (hostProp != null)
+                ? hostProp
+                : Config.getPublisherHost("publicadorCargaDatos");
+
+        int port = (portProp != null)
+                ? Integer.parseInt(portProp)
+                : Config.getPublisherPort("publicadorCargaDatos");
+
+        String path = (urlProp != null)
+                ? urlProp
+                : Config.getPublisherUrl("publicadorCargaDatos");
+
+        String url = "http://" + host + ":" + port + path;
+
         System.out.println("Publicando PublicadorCargaDatos en: " + url);
         Endpoint.publish(url, new PublicadorCargaDatos());
     }
-	
-	@WebMethod
-	public boolean hayDatosBasicos() {
-	    try {
-	        IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-	        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
 
-	        boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
-	        boolean hayEventos = !ctrlEvento.obtenerDTEventos().isEmpty();
+    @WebMethod
+    public boolean hayDatosBasicos() {
+        try {
+            IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
+            IControladorEvento  ctrlEvento  = IControladorEvento.getInstance();
 
-	        return hayUsuarios && hayEventos;
-	    } catch (Exception e) {
-	        return false;
-	    }
-	}
-	
-	@WebMethod
-	public boolean datosPrecargados() {
-		return datosCargados;
-	}
-	
-	@WebMethod
+            boolean hayUsuarios = !ctrlUsuario.listarUsuarios().isEmpty();
+            boolean hayEventos  = !ctrlEvento.obtenerDTEventos().isEmpty();
+
+            return hayUsuarios && hayEventos;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @WebMethod
+    public boolean datosPrecargados() {
+        return datosCargados;
+    }
+
+    @WebMethod
     public void marcarDatosCargados() {
         datosCargados = true;
     }
-	
-	public boolean cargarDatos()
-			throws UsuarioRepetidoException,
-			CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, EventoNoExisteException, FechaInvalidaException,
-			ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
-			NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException, EventoYaFinalizadoException {
-		
-		 if (datosCargados) return false;
-		 
-		IControladorUsuario ctrlUsuario = IControladorUsuario.getInstance();
-        IControladorEvento ctrlEvento = IControladorEvento.getInstance();
+
+    public boolean cargarDatos()
+            throws UsuarioRepetidoException,
+                   CorreoInvalidoException,
+                   EventoRepetidoException,
+                   SiglaRepetidaException,
+                   EventoNoExisteException,
+                   FechaInvalidaException,
+                   ExisteInstitucionException,
+                   EdicionExistenteException,
+                   FechasIncompatiblesException,
+                   NombreTipoRegistroDuplicadoException,
+                   UsuarioNoExisteException,
+                   UsuarioYaRegistradoEnEdicionException,
+                   CategoriaNoSeleccionadaException,
+                   PatrocinioDuplicadoException,
+                   EdicionNoExisteException,
+                   EventoYaFinalizadoException {
+
+        if (datosCargados) return false;
+
+        IControladorUsuario  ctrlUsuario  = IControladorUsuario.getInstance();
+        IControladorEvento   ctrlEvento   = IControladorEvento.getInstance();
         IControladorRegistro ctrlRegistro = IControladorRegistro.getInstance();
-        
-  
-		Utils.cargarDatos(ctrlUsuario,ctrlEvento,ctrlRegistro);
-		marcarDatosCargados();
-		
-		return true;
-	}
+
+        Utils.cargarDatos(ctrlUsuario, ctrlEvento, ctrlRegistro);
+        marcarDatosCargados();
+
+        return true;
+    }
 
 }

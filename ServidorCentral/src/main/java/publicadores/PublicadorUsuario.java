@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
+import config.Config;
 import excepciones.CorreoInvalidoException;
 import excepciones.ExisteInstitucionException;
 import excepciones.FechaInvalidaException;
@@ -40,20 +41,28 @@ public class PublicadorUsuario {
     private final IControladorEvento ctrlEv = IControladorEvento.getInstance();
 
     public static void main(String[] args) {
-        String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
-        Properties props = new Properties();
+        String hostProp = System.getProperty("publicadorUsuario.host");
+        String portProp = System.getProperty("publicadorUsuario.port");
+        String urlProp  = System.getProperty("publicadorUsuario.url");
 
-        try {
-            props.load(new FileInputStream(configPath));
-        } catch (IOException e) {
-            System.err.println("⚠️ Advertencia: No se encontró el archivo de configuración en: " + configPath);
-            System.err.println("   Usando valores por defecto.");
-        }
+        String host = (hostProp != null)
+                ? hostProp
+                : Config.getPublisherHost("publicadorUsuario");
 
-        String url = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
+        int port = (portProp != null)
+                ? Integer.parseInt(portProp)
+                : Config.getPublisherPort("publicadorUsuario");
+
+        String path = (urlProp != null)
+                ? urlProp
+                : Config.getPublisherUrl("publicadorUsuario");
+
+        String url = "http://" + host + ":" + port + path;
+
         System.out.println("Publicando PublicadorUsuario en: " + url);
         Endpoint.publish(url, new PublicadorUsuario());
     }
+
 
     
     

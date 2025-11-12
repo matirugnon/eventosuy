@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
+import config.Config;
 import excepciones.EdicionNoExisteException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
@@ -25,20 +26,28 @@ public class PublicadorRegistro {
 	private final IControladorRegistro ctrlReg = IControladorRegistro.getInstance();
 	
 	public static void main(String[] args) {
-        String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
-        Properties props = new Properties();
+	    String hostProp = System.getProperty("publicadorRegistro.host");
+	    String portProp = System.getProperty("publicadorRegistro.port");
+	    String urlProp  = System.getProperty("publicadorRegistro.url");
 
-        try {
-            props.load(new FileInputStream(configPath));
-        } catch (IOException e) {
-            System.err.println("⚠️ Advertencia: No se encontró el archivo de configuración en: " + configPath);
-            System.err.println("   Usando valores por defecto.");
-        }
+	    String host = (hostProp != null)
+	            ? hostProp
+	            : Config.getPublisherHost("publicadorRegistro");
 
-        String url = props.getProperty("servidor.registro.url", "http://localhost:9128/publicadorRegistro");
-        System.out.println("Publicando PublicadorRegistro en: " + url);
-        Endpoint.publish(url, new PublicadorRegistro());
-    }
+	    int port = (portProp != null)
+	            ? Integer.parseInt(portProp)
+	            : Config.getPublisherPort("publicadorRegistro");
+
+	    String path = (urlProp != null)
+	            ? urlProp
+	            : Config.getPublisherUrl("publicadorRegistro");
+
+	    String url = "http://" + host + ":" + port + path;
+
+	    System.out.println("Publicando PublicadorRegistro en: " + url);
+	    Endpoint.publish(url, new PublicadorRegistro());
+	}
+
 	
 	@WebMethod
 	public String altaTipoDeRegistro(String nombreEd, String nombreTipo, String descripcion, double costo, int cupo){

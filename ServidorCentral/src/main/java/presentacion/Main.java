@@ -8,29 +8,63 @@ import publicadores.PublicadorCargaDatos;
 import publicadores.PublicadorControlador;
 import publicadores.PublicadorRegistro;
 import publicadores.PublicadorUsuario;
+import config.Config;
 
-// Arranca (opcionalmente) los endpoints SOAP locales y luego muestra la GUI.
 public class Main {
     public static void main(String[] args) {
-        // Cargar configuración de URLs (opcional)
-        String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
-        Properties props = new Properties();
-        try {
-            props.load(new FileInputStream(configPath));
-            System.out.println("✓ Configuración cargada desde: " + configPath);
-        } catch (IOException e) {
-            System.err.println("⚠️ Advertencia: No se encontró el archivo de configuración en: " + configPath);
-            System.err.println("   Usando valores por defecto.");
-        }
 
         // Allow disabling publishing via system property: -Dpublish.soap=false
         boolean publishSoap = Boolean.parseBoolean(System.getProperty("publish.soap", "true"));
+
         if (publishSoap) {
             try {
-                String urlCarga = props.getProperty("servidor.cargaDatos.url", "http://localhost:9128/publicadorCargaDatos");
-                String urlControlador = props.getProperty("servidor.central.url", "http://localhost:9128/publicador");
-                String urlRegistro = props.getProperty("servidor.registro.url", "http://localhost:9128/publicadorRegistro");
-                String urlUsuario = props.getProperty("servidor.usuario.url", "http://localhost:9128/publicadorUsuario");
+                // ===== PublicadorCargaDatos =====
+                String hostCarga = System.getProperty("publicadorCargaDatos.host");
+                if (hostCarga == null) hostCarga = Config.getPublisherHost("publicadorCargaDatos");
+
+                String portCarga = System.getProperty("publicadorCargaDatos.port");
+                if (portCarga == null) portCarga = String.valueOf(Config.getPublisherPort("publicadorCargaDatos"));
+
+                String pathCarga = System.getProperty("publicadorCargaDatos.url");
+                if (pathCarga == null) pathCarga = Config.getPublisherUrl("publicadorCargaDatos");
+
+                String urlCarga = "http://" + hostCarga + ":" + portCarga + pathCarga;
+
+                // ===== PublicadorControlador =====
+                String hostCtrl = System.getProperty("publicadorControlador.host");
+                if (hostCtrl == null) hostCtrl = Config.getPublisherHost("publicadorControlador");
+
+                String portCtrl = System.getProperty("publicadorControlador.port");
+                if (portCtrl == null) portCtrl = String.valueOf(Config.getPublisherPort("publicadorControlador"));
+
+                String pathCtrl = System.getProperty("publicadorControlador.url");
+                if (pathCtrl == null) pathCtrl = Config.getPublisherUrl("publicadorControlador");
+
+                String urlControlador = "http://" + hostCtrl + ":" + portCtrl + pathCtrl;
+
+                // ===== PublicadorRegistro =====
+                String hostReg = System.getProperty("publicadorRegistro.host");
+                if (hostReg == null) hostReg = Config.getPublisherHost("publicadorRegistro");
+
+                String portReg = System.getProperty("publicadorRegistro.port");
+                if (portReg == null) portReg = String.valueOf(Config.getPublisherPort("publicadorRegistro"));
+
+                String pathReg = System.getProperty("publicadorRegistro.url");
+                if (pathReg == null) pathReg = Config.getPublisherUrl("publicadorRegistro");
+
+                String urlRegistro = "http://" + hostReg + ":" + portReg + pathReg;
+
+                // ===== PublicadorUsuario =====
+                String hostUsr = System.getProperty("publicadorUsuario.host");
+                if (hostUsr == null) hostUsr = Config.getPublisherHost("publicadorUsuario");
+
+                String portUsr = System.getProperty("publicadorUsuario.port");
+                if (portUsr == null) portUsr = String.valueOf(Config.getPublisherPort("publicadorUsuario"));
+
+                String pathUsr = System.getProperty("publicadorUsuario.url");
+                if (pathUsr == null) pathUsr = Config.getPublisherUrl("publicadorUsuario");
+
+                String urlUsuario = "http://" + hostUsr + ":" + portUsr + pathUsr;
 
                 System.out.println("Publicando servicios SOAP locales (para que la web pueda consultarlos):");
                 System.out.println(" - PublicadorCargaDatos: " + urlCarga);

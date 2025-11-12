@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
+import config.Config;
 import excepciones.EventoNoExisteException;
 
 import java.util.Arrays;
@@ -45,21 +46,30 @@ public class PublicadorControlador {
     }
 
     public static void main(String[] args) {
-        // Ruta del archivo de configuración: ~/.eventosUy/servidor-central.properties
-        String configPath = System.getProperty("user.home") + "/.eventosUy/servidor-central.properties";
-        Properties props = new Properties();
+        // 1) Intentar leer host/port/url desde -D si el script los pasa
+        String hostProp = System.getProperty("publicadorControlador.host");
+        String portProp = System.getProperty("publicadorControlador.port");
+        String urlProp  = System.getProperty("publicadorControlador.url");
 
-        try {
-            props.load(new FileInputStream(configPath));
-        } catch (IOException e) {
-            System.err.println("⚠️ Advertencia: No se encontró el archivo de configuración en: " + configPath);
-            System.err.println("   Usando valores por defecto.");
-        }
+        // 2) Si no vienen por -D, usar config.Config (~/config/config.properties)
+        String host = (hostProp != null)
+                ? hostProp
+                : Config.getPublisherHost("publicadorControlador");
 
-        String url = props.getProperty("servidor.central.url", "http://localhost:9128/publicador");
+        int port = (portProp != null)
+                ? Integer.parseInt(portProp)
+                : Config.getPublisherPort("publicadorControlador");
+
+        String path = (urlProp != null)
+                ? urlProp
+                : Config.getPublisherUrl("publicadorControlador");
+
+        String url = "http://" + host + ":" + port + path;
+
         System.out.println("Publicando Servidor Central en: " + url);
         Endpoint.publish(url, new PublicadorControlador());
     }
+
 
     @WebMethod
     public String altaEdicionDeEvento(
