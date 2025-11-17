@@ -18,6 +18,7 @@ import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
+import excepciones.UsuarioNoPerteneceException;
 
 import gui.internal.*;
 
@@ -201,7 +202,7 @@ public class MainFrame extends JFrame {
 					EdicionExistenteException |
 					FechasIncompatiblesException |
 					NombreTipoRegistroDuplicadoException | UsuarioNoExisteException | EventoNoExisteException |
-					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException |
+					UsuarioYaRegistradoEnEdicionException | CategoriaNoSeleccionadaException | UsuarioNoPerteneceException |
 					PatrocinioDuplicadoException | EventoYaFinalizadoException e1) {
 				e1.printStackTrace();
 			}//excepciones a nivel de logica

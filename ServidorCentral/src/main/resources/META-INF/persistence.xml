@@ -8,22 +8,26 @@
     <persistence-unit name="EdicionesArchivadas" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-		<!-- Clase de entidad -->
+        <!-- Clase de entidad -->
         <class>logica.EdicionArchivada</class>
         
         <properties>
-			<!-- Configuración de la base de datos HSQLDB -->
+            <!-- Configuración de la base de datos HSQLDB -->
             <property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:file:./data/edicionesArchivadas;shutdown=true"/>
+            
+            <!-- *** AQUÍ EL CAMBIO IMPORTANTE *** -->
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:hsqldb:hsql://localhost:9001/Archivadas"/>
+            
             <property name="jakarta.persistence.jdbc.user" value="SA"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
-			<!-- Configuración de EclipseLink -->
+            <!-- Configuración de EclipseLink -->
             <property name="eclipselink.logging.level" value="INFO"/>
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
 
-			<!-- Generación automática del esquema -->
+            <!-- Generación automática del esquema -->
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
         </properties>

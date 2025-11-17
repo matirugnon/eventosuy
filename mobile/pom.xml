@@ -18,13 +18,6 @@
     </properties>
 
     <dependencies>
-        <!-- Dependencia del Servidor Central para acceder a la lógica -->
-        <dependency>
-            <groupId>uy.edu.fing.tprog</groupId>
-            <artifactId>servidor-central</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- Servlet API -->
         <dependency>
@@ -42,7 +35,8 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JAX-WS runtime para consumir SOAP -->
+
+		<!-- JAX-WS runtime para consumir SOAP -->
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
@@ -54,14 +48,21 @@
         <finalName>mobile</finalName>
 
         <plugins>
-            <!-- Plugin para generar cliente SOAP -->
+
+
+			<!--
+            ==============================================================
+            DESACTIVADO: Plugin de wsimport que intentaba conectarse
+            al servidor central. Esto impedía compilar cuando no hay WSDL.
+            ==============================================================
+            
             <plugin>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>4.0.2</version>
 
                 <executions>
-                    <!-- Cliente SOAP para Publicador Usuario -->
+
                     <execution>
                         <id>wsimport-publicador-usuario</id>
                         <goals>
@@ -69,7 +70,6 @@
                         </goals>
                         <configuration>
                             <wsdlUrls>
-                                <!-- Se inyecta desde la línea de comandos: -Dwsdl.publicadorUsuario=... -->
                                 <wsdlUrl>${wsdl.publicadorUsuario}</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
@@ -78,7 +78,6 @@
                         </configuration>
                     </execution>
 
-                    <!-- Cliente SOAP para Publicador Registro -->
                     <execution>
                         <id>wsimport-publicador-registro</id>
                         <goals>
@@ -86,7 +85,6 @@
                         </goals>
                         <configuration>
                             <wsdlUrls>
-                                <!-- -Dwsdl.publicadorRegistro=... -->
                                 <wsdlUrl>${wsdl.publicadorRegistro}</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
@@ -95,7 +93,6 @@
                         </configuration>
                     </execution>
 
-                    <!-- Cliente SOAP para Publicador CargaDatos -->
                     <execution>
                         <id>wsimport-publicador-carga-datos</id>
                         <goals>
@@ -103,7 +100,6 @@
                         </goals>
                         <configuration>
                             <wsdlUrls>
-                                <!-- -Dwsdl.publicadorCargaDatos=... -->
                                 <wsdlUrl>${wsdl.publicadorCargaDatos}</wsdlUrl>
                             </wsdlUrls>
                             <packageName>soap</packageName>
@@ -111,6 +107,7 @@
                             <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
                         </configuration>
                     </execution>
+
                 </executions>
 
                 <dependencies>
@@ -121,6 +118,9 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            -->
+
         </plugins>
     </build>
 </project>

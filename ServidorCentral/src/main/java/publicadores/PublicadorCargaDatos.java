@@ -15,6 +15,7 @@ import excepciones.PatrocinioDuplicadoException;
 import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import excepciones.UsuarioNoPerteneceException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
@@ -101,7 +102,7 @@ public class PublicadorCargaDatos {
                    CategoriaNoSeleccionadaException,
                    PatrocinioDuplicadoException,
                    EdicionNoExisteException,
-                   EventoYaFinalizadoException {
+                   EventoYaFinalizadoException, UsuarioNoPerteneceException {
 
         if (datosCargados) return false;
 

@@ -187,7 +187,7 @@ public class DescargaConstanciaServlet extends HttpServlet {
                         // Si es una ruta relativa (no empieza con http o C:), construir ruta absoluta
                         if (!imagenEdicion.startsWith("http") && !imagenEdicion.matches("^[A-Za-z]:.*")) {
                             // Asumir que es relativa al directorio de recursos de la aplicación
-                            imagenPath = "C:\\Users\\Mati\\eclipse-workspace\\tpgr15\\mobile\\src\\main\\webapp\\" + imagenEdicion.replace("/", "\\");
+                            imagenPath = getServletContext().getRealPath(imagenEdicion);
                             System.out.println("DEBUG: Ruta absoluta construida: " + imagenPath);
                         }
                         

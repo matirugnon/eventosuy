@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <groupId>uy.edu.fing.tprog</groupId>
     <artifactId>servidor-web</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -60,13 +60,13 @@
             <version>4.0.2</version>
         </dependency>
 
-        <!-- Servidor Central -->
+        <!-- Servidor Central 
         <dependency>
             <groupId>uy.edu.fing.tprog</groupId>
             <artifactId>servidor-central</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
 
         <!-- iText -->
         <dependency>
@@ -91,13 +91,8 @@
     <!-- PERFIL OPCIONAL PARA WSIMPORT -->
     <profiles>
         <profile>
-            <id>wsimport</id>
             <activation>
                 <!-- Solo se activa si ponés -Dwsimport=true -->
-                <property>
-                    <name>wsimport</name>
-                    <value>true</value>
-                </property>
             </activation>
             <build>
                 <plugins>
@@ -108,10 +103,7 @@
                         <executions>
                             <!-- Publicador Controlador -->
                             <execution>
-                                <id>wsimport-publicador</id>
-                                <goals>
-                                    <goal>wsimport</goal>
-                                </goals>
+                               
                                 <configuration>
                                     <wsdlUrls>
                                         <wsdlUrl>${publicadorControlador.wsdl}</wsdlUrl>
@@ -124,10 +116,7 @@
 
                             <!-- Publicador Usuario -->
                             <execution>
-                                <id>wsimport-publicador-usuario</id>
-                                <goals>
-                                    <goal>wsimport</goal>
-                                </goals>
+                            <id>usuario</id>
                                 <configuration>
                                     <wsdlUrls>
                                         <wsdlUrl>${publicadorUsuario.wsdl}</wsdlUrl>
@@ -140,10 +129,7 @@
 
                             <!-- Publicador Registro -->
                             <execution>
-                                <id>wsimport-publicador-registro</id>
-                                <goals>
-                                    <goal>wsimport</goal>
-                                </goals>
+                            <id>registro</id>
                                 <configuration>
                                     <wsdlUrls>
                                         <wsdlUrl>${publicadorRegistro.wsdl}</wsdlUrl>
@@ -157,9 +143,6 @@
                             <!-- Publicador CargaDatos -->
                             <execution>
                                 <id>wsimport-publicador-carga-datos</id>
-                                <goals>
-                                    <goal>wsimport</goal>
-                                </goals>
                                 <configuration>
                                     <wsdlUrls>
                                         <wsdlUrl>${publicadorCargaDatos.wsdl}</wsdlUrl>

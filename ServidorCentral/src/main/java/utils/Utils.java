@@ -18,6 +18,7 @@ import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
+import excepciones.UsuarioNoPerteneceException;
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
@@ -34,7 +35,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, EventoNoExisteException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException,
-				EventoYaFinalizadoException
+				EventoYaFinalizadoException, UsuarioNoPerteneceException
 				
 
 {

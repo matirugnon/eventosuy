@@ -29,9 +29,7 @@ public class AltaTipoRegistroServlet extends HttpServlet {
     public void init() throws ServletException {
         try {
             publicadorCtrl = SoapClientHelper.getPublicadorControlador();
-            // PublicadorRegistro comparte el mismo service package; obtenerlo del Service
-            soap.PublicadorRegistroService regService = new soap.PublicadorRegistroService();
-            publicadorReg = regService.getPublicadorRegistroPort();
+            publicadorReg = SoapClientHelper.getPublicadorRegistro();            // PublicadorRegistro comparte el mismo service package; obtenerlo del Service
         } catch (Exception e) {
             throw new ServletException("Error al inicializar controladores/servicios", e);
         }
