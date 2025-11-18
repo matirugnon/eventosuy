@@ -85,40 +85,27 @@ color: #182080;
 margin-bottom: 0.85rem;
 }
 
-.details dl {
-display: grid;
-grid-template-columns: 150px 1fr;
-row-gap: 0.6rem;
-column-gap: 1.5rem;
-}
-
-.details dt {
-font-weight: 600;
-color: #182080;
-}
-
-.details dd {
+.details ul {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 0.75rem;
+padding: 0;
 margin: 0;
+}
+
+.details li {
+display: flex;
+align-items: flex-start;
+gap: 0.6rem;
 color: #333;
-word-break: break-word;
-}
-
-.logs h2 {
-font-size: 1.05rem;
-color: #182080;
-margin-bottom: 0.8rem;
-}
-
-pre {
-background: #0f111a;
-color: #d7ffe9;
-font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-padding: 1.1rem;
-border-radius: 12px;
-max-height: 340px;
-overflow: auto;
-font-size: 0.9rem;
 line-height: 1.5;
+}
+
+.details li::before {
+content: "•";
+color: #182080;
+font-weight: 700;
 }
 
 .actions {
@@ -182,32 +169,16 @@ grid-template-columns: 1fr;
 <div class="code">500</div>
 <p class="title">Error interno del servidor</p>
 <p class="message">
-Algo inesperado ocurrió en el servidor. Debajo vas a encontrar información técnica y el log detallado para diagnosticarlo.
+Algo inesperado ocurrió y no pudimos completar tu solicitud. El equipo ya recibe un aviso con lo sucedido.
 </p>
 
 <section class="details">
-<h2>📋 Información de la solicitud</h2>
-<dl>
-<dt>URL</dt>
-<dd><%= request.getRequestURI() %></dd>
-<dt>Método</dt>
-<dd><%= request.getMethod() %></dd>
-<dt>Mensaje</dt>
-<dd><%= (exception != null && exception.getMessage() != null) ? exception.getMessage() : "Sin mensaje disponible" %></dd>
-</dl>
-</section>
-
-<section class="logs">
-<h2>🧾 Stack trace</h2>
-<pre><%
-if (exception != null) {
-java.io.StringWriter sw = new java.io.StringWriter();
-exception.printStackTrace(new java.io.PrintWriter(sw));
-out.print(sw.toString());
-} else {
-out.print("No se recibió información detallada del error.");
-}
-%></pre>
+<h2>¿Qué podés hacer?</h2>
+<ul>
+	<li>Volver a intentar la acción dentro de unos segundos.</li>
+	<li>Regresar a la pantalla anterior y verificar si los datos se guardaron.</li>
+	<li>Si el problema continúa, escribinos a soporte indicando la hora: <strong><%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) %></strong>.</li>
+</ul>
 </section>
 
 <div class="actions">
@@ -216,7 +187,7 @@ out.print("No se recibió información detallada del error.");
 </div>
 
 <p class="timestamp">
-Generado: <%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) %>
+Código: 500 · <%= request.getRequestURI() %>
 </p>
 </article>
 </main>
