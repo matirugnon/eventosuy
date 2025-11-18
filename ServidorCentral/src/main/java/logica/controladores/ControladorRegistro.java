@@ -7,6 +7,7 @@ import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
+import excepciones.UsuarioNoPerteneceException;
 import logica.Asistente;
 import logica.Edicion;
 import logica.Patrocinio;
@@ -143,12 +144,14 @@ public class ControladorRegistro implements IControladorRegistro {
 		if (estaRegistrado(nomEdicion, nickAsistente)) {
 			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
 		}
+		
 
 		ManejadorEventos manejador = ManejadorEventos.getInstance();
 		Edicion edicion = manejador.obtenerEdicion(nomEdicion);
 		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
 		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
 		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
+		
 		Asistente asist = (Asistente) usuario;
 		Registro reg = tipo.altaRegistro(fechaRegistro, costo, nickAsistente, patrocinado);
 		asist.agregarRegistro(reg);
@@ -157,7 +160,7 @@ public class ControladorRegistro implements IControladorRegistro {
 	
 	// Nuevo método para registrar con código de patrocinio
 	public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
-			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException{
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException, UsuarioNoPerteneceException{
 
 		if (estaRegistrado(nomEdicion, nickAsistente)) {
 			throw new UsuarioYaRegistradoEnEdicionException(nickAsistente, nomEdicion);
@@ -182,11 +185,20 @@ public class ControladorRegistro implements IControladorRegistro {
 			throw new UsuarioNoExisteException("El código de patrocinio no aplica a este tipo de registro");
 		}
 		
+		
+		
 		// Crear el registro con costo 0 y marcado como patrocinado
 		TipoDeRegistro tipo = edicion.getTipoDeRegistro(nomTipoRegistro);
 		ManejadorUsuario manUs = ManejadorUsuario.getinstance();
 		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
 		Asistente asist = (Asistente) usuario;
+		
+		if (!asist.getInstitucion().equals(patrocinio.getNombreInstitucion()) ) {
+			throw new UsuarioNoPerteneceException("El Usuario no pertenece a la institucion que patrocina este tipo de registro");
+			
+		}
+		
+		
 		Registro reg = tipo.altaRegistro(fechaRegistro, 0.0, nickAsistente, true);
 		asist.agregarRegistro(reg);
 		

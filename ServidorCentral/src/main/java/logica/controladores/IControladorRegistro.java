@@ -6,6 +6,7 @@ import excepciones.EdicionNoExisteException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
+import excepciones.UsuarioNoPerteneceException;
 import logica.datatypesyenum.DTFecha;
 import logica.datatypesyenum.DTRegistro;
 import logica.datatypesyenum.DTTipoDeRegistro;
@@ -51,5 +52,5 @@ public interface IControladorRegistro {
 			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
     
     public void altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio)
-			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException;
+			throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException, UsuarioNoPerteneceException;
 }

@@ -21,7 +21,7 @@ import excepciones.EdicionNoExisteException;
 
 import excepciones.EdicionSinPatrociniosException;
 
-
+import excepciones.CostoSuperaAporteException;
 
 import excepciones.EventoNoExisteException;
 
@@ -160,7 +160,7 @@ public interface IControladorEvento {
 
 
 
-			throws PatrocinioDuplicadoException;
+			throws PatrocinioDuplicadoException, CostoSuperaAporteException;
 
 
 

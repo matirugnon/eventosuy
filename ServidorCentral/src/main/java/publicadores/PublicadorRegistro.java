@@ -9,6 +9,7 @@ import config.Config;
 import excepciones.EdicionNoExisteException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaRegistradoEnEdicionException;
+import excepciones.UsuarioNoPerteneceException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
@@ -92,7 +93,7 @@ public class PublicadorRegistro {
 	}
 	
 	@WebMethod
-	public String altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio) throws UsuarioYaRegistradoEnEdicionException, UsuarioNoExisteException {
+	public String altaRegistroConPatrocinio(String nomEdicion, String nickAsistente, String nomTipoRegistro, DTFecha fechaRegistro, String codigoPatrocinio) throws UsuarioYaRegistradoEnEdicionException, UsuarioNoPerteneceException, UsuarioNoExisteException {
 		try {
 			ctrlReg.altaRegistroConPatrocinio(nomEdicion, nickAsistente, nomTipoRegistro, fechaRegistro, codigoPatrocinio);
 			return "OK";

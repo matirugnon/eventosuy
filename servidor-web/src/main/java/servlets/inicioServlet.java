@@ -122,10 +122,12 @@ public class inicioServlet extends HttpServlet {
                 m.put("ciudad", ed.getCiudad());
                 m.put("pais", ed.getPais());
                 m.put("imagen", ed.getImagen());
+                m.put("descripcion", "");
                 
                 // Obtener categorías del evento padre para filtrar las ediciones
                 String nombreEvento = ed.getEvento();
                 List<String> listaCategorias = new ArrayList<>();
+                String descripcionEventoPadre = "";
                 if (nombreEvento != null) {
                     // Buscar el evento en la lista de eventos activos
                     DtEvento eventoPadre = eventos.stream()
@@ -142,11 +144,19 @@ public class inicioServlet extends HttpServlet {
                         }
                     }
                     
-                    if (eventoPadre != null && eventoPadre.getCategorias() != null && eventoPadre.getCategorias().getCategoria() != null) {
-                        listaCategorias.addAll(eventoPadre.getCategorias().getCategoria());
+                    if (eventoPadre != null) {
+                        if (eventoPadre.getCategorias() != null && eventoPadre.getCategorias().getCategoria() != null) {
+                            listaCategorias.addAll(eventoPadre.getCategorias().getCategoria());
+                        }
+                        if (eventoPadre.getDescripcion() != null) {
+                            descripcionEventoPadre = eventoPadre.getDescripcion();
+                        }
                     }
                 }
                 m.put("categoriasList", listaCategorias);
+                if (descripcionEventoPadre != null && !descripcionEventoPadre.isBlank()) {
+                    m.put("descripcion", descripcionEventoPadre);
+                }
                 
                 // Fecha de alta de la edición
                 if (ed.getAltaEdicion() != null) {
@@ -203,10 +213,16 @@ public class inicioServlet extends HttpServlet {
                         .filter(o -> {
                             Object nombreObj = o.get("nombre");
                             String nombre = nombreObj != null ? nombreObj.toString() : "";
-                            return normalizar(nombre).contains(texto);
+                            String descripcion = "";
+                            Object descObj = o.get("descripcion");
+                            if (descObj != null) {
+                                descripcion = descObj.toString();
+                            }
+                            return normalizar(nombre).contains(texto) || normalizar(descripcion).contains(texto);
                         })
                         .collect(Collectors.toList());
             }
+
 
             // 🔹 ORDENAMIENTO (por defecto: fecha descendente)
             if (orden == null || orden.isBlank()) {

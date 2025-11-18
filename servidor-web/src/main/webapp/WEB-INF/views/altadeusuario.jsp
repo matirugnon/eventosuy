@@ -168,9 +168,11 @@
 							<div id="bloqueOrganizador"
 								style="display: none; margin-top: 1rem;">
 								<label class="input-group" style="margin-top: .5rem;"> <span
-									class="label-text">Descripción (opcional)</span> <textarea
+									class="label-text">Descripción (Obligatoria)</span> <textarea
 										name="descripcion" rows="3" maxlength="500"
 										placeholder="Somos una organización de…">${param.descripcion}</textarea>
+									<span id="descripcionMsg"
+										style="font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem;"></span>
 								</label> <label class="input-group"> <span class="label-text">Sitio
 										web (opcional)</span> <input name="web" type="url"
 									placeholder="https://mi-sitio.org" value="${param.web}" />
@@ -234,15 +236,41 @@ form {
       const bloqueInst = $('#bloqueInstitucion');
       const inputImg = form.elements['imagen'];
       const msg = $('#msg');
+			const descripcion = form.elements['descripcion'];
+			const descripcionMsg = $('#descripcionMsg');
+
+			function rolActual() {
+				return [...rolRadios].find(r => r.checked)?.value || 'asistente';
+			}
+
+			function validarDescripcion() {
+				const esOrganizador = rolActual() === 'organizador';
+				const vacia = !descripcion.value.trim();
+				if (esOrganizador && vacia) {
+					descripcion.setCustomValidity('La descripcion es obligatoria para organizadores.');
+					if (descripcionMsg) {
+						descripcionMsg.textContent = 'La descripción es obligatoria para organizadores.';
+						descripcionMsg.style.color = '#c00';
+					}
+				} else {
+					descripcion.setCustomValidity('');
+					if (descripcionMsg) {
+						descripcionMsg.textContent = '';
+						descripcionMsg.style.color = '';
+					}
+				}
+			}
 
       function toggleRol() {
-        const rol = [...rolRadios].find(r => r.checked)?.value;
-        const esAs = rol === 'asistente';
+				const rol = rolActual();
+				const esAs = rol === 'asistente';
         bloqueAs.style.display = esAs ? '' : 'none';
         bloqueOr.style.display = esAs ? 'none' : '';
         // requeridos según rol
         form.elements['apellido'].required = esAs;
         form.elements['fechaNacimiento'].required = esAs;
+				descripcion.required = !esAs;
+				validarDescripcion();
       }
 
       function toggleInstitucion() {
@@ -257,6 +285,7 @@ form {
 
       function validar() {
         msg.textContent = '';
+				validarDescripcion();
         // validaciones HTML5
         if (!form.reportValidity()) return false;
         // contraseñas
@@ -270,6 +299,7 @@ form {
       // Eventos
       rolRadios.forEach(r => r.addEventListener('change', toggleRol));
       chkInst && chkInst.addEventListener('change', toggleInstitucion);
+			descripcion.addEventListener('input', validarDescripcion);
       
       form.addEventListener('submit', e => {
         if (!validar()) {

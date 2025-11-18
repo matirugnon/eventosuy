@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <!DOCTYPE html>
 <header class="header">
 	<h1>
@@ -107,6 +108,12 @@
 		<!-- Botón para cargar datos eliminado -->
 	</div>
 </header>
+<c:set var="currentPath" value="${pageContext.request.requestURI}" />
+<c:set var="hideSearchBar"
+	value="${fn:contains(currentPath, '/login') or fn:contains(currentPath, '/signup')}" />
+<c:if test="${not hideSearchBar}">
+	<jsp:include page="/WEB-INF/views/componentes/searchBar.jsp" />
+</c:if>
 <script>
   const modal = document.getElementById('modal');
   const openBtn = document.getElementById('openModalBtn');

@@ -15,7 +15,11 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.xhtml</welcome-file>
 	</welcome-file-list>
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 9b1617fb9989b46bdeb4c648677511d0f85607d3
 	<error-page>
 		<error-code>500</error-code>
 		<location>/error/500.jsp</location>

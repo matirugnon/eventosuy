@@ -22,10 +22,12 @@ import excepciones.EventoNoExisteException;
 import excepciones.EventoRepetidoException;
 import excepciones.FechaInvalidaException;
 import excepciones.PatrocinioDuplicadoException;
+import excepciones.UsuarioNoPerteneceException;
 import excepciones.PatrocinioNoEncontradoException;
 import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import excepciones.CostoSuperaAporteException;
 import logica.controladores.IControladorEvento;
 import logica.controladores.IControladorRegistro;
 import logica.controladores.IControladorUsuario;
@@ -57,7 +59,7 @@ class prueba1 {
     private static IControladorRegistro contR = IControladorRegistro.getInstance();
 
     @BeforeAll
-    public static void cargarDatosInicio() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException, PatrocinioNoEncontradoException, excepciones.EventoYaFinalizadoException {
+    public static void cargarDatosInicio() throws UsuarioRepetidoException, CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException,CostoSuperaAporteException, excepciones.ExisteInstitucionException, excepciones.EdicionExistenteException, excepciones.FechasIncompatiblesException, excepciones.NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, excepciones.UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EventoNoExisteException, EdicionNoExisteException, EdicionSinPatrociniosException,UsuarioNoPerteneceException, PatrocinioNoEncontradoException, excepciones.EventoYaFinalizadoException {
         Utils.cargarDatos(contrU, contE, contR);
     }
 

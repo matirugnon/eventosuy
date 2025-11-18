@@ -338,6 +338,7 @@ public class ControladorUsuario implements IControladorUsuario {
 	        DTAsistente dtA = (DTAsistente) datosUsuario;
 
 	        asis.setApellido(dtA.getApellido());
+            asis.setInstitucion(dtA.getInstitucion());
 
 	        if (!esFechaValida(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio())) {
 	        	throw new FechaInvalidaException(dtA.getFechaNacimiento().getDia(), dtA.getFechaNacimiento().getMes(), dtA.getFechaNacimiento().getAnio());

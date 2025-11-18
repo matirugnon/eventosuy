@@ -151,13 +151,7 @@
                             <version>4.0.2</version>
                             <executions>
                                 <execution>
-                                    <goals>
-                                        <goal>wsimport</goal>
-                                    </goals>
                                     <configuration>
-                                        <wsdlUrls>
-                                            <wsdlUrl>http://localhost:9128/publicador?wsdl</wsdlUrl>
-                                        </wsdlUrls>
                                         <packageName>soap</packageName>
                                         <keep>true</keep>
                                         <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>

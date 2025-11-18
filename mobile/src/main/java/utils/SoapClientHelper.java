@@ -1,5 +1,10 @@
 package utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+
 import soap.PublicadorCargaDatos;
 import soap.PublicadorCargaDatosService;
 import soap.PublicadorControlador;
@@ -14,6 +19,25 @@ import soap.PublicadorUsuarioService;
  */
 public final class SoapClientHelper {
 
+    private static final Properties props = new Properties();
+
+    // Cargamos la config UNA vez
+    static {
+        String configPath = System.getProperty("user.home") + "/config/config.properties";
+        try (FileInputStream fis = new FileInputStream(configPath)) {
+            props.load(fis);
+            System.out.println("✓ SoapClientHelper (Mobile): config cargada desde " + configPath);
+        } catch (IOException e) {
+            System.err.println("⚠️ SoapClientHelper (Mobile): no se pudo leer " + configPath +
+                               " -> usando defaults localhost:9116");
+        }
+    }
+
+    private static String get(String key, String def) {
+        String v = props.getProperty(key);
+        return (v == null || v.isBlank()) ? def : v.trim();
+    }
+
     private static PublicadorControlador publicadorPort;
     private static PublicadorUsuario publicadorUsuarioPort;
     private static PublicadorRegistro publicadorRegistroPort;
@@ -23,32 +47,51 @@ public final class SoapClientHelper {
         // Helper de utilidades, no instanciable.
     }
 
-    /**
-     * Obtiene una instancia singleton del publicador controlador.
-     */
+    // =========================
+    //  PublicadorControlador
+    // =========================
     public static PublicadorControlador getPublicadorControlador() {
         if (publicadorPort == null) {
             try {
-                PublicadorControladorService service = new PublicadorControladorService();
+                String host = get("publicadorControlador.host", "localhost");
+                String port = get("publicadorControlador.port", "9116");
+                String path = get("publicadorControlador.url", "/publicador");
+
+                String base = "http://" + host + ":" + port + path;
+                URL wsdlUrl = new URL(base + "?wsdl");
+
+                System.out.println("SoapClientHelper (Mobile) -> WSDL Controlador: " + wsdlUrl);
+
+                // Usamos el constructor CON URL → ignora el hardcode
+                PublicadorControladorService service = new PublicadorControladorService(wsdlUrl);
                 publicadorPort = service.getPublicadorControladorPort();
-                System.out.println("Conexion SOAP establecida con el PublicadorControlador");
+                System.out.println("Conexión SOAP establecida con el PublicadorControlador");
             } catch (Exception e) {
                 System.err.println("Error al conectar con el PublicadorControlador: " + e.getMessage());
-                throw new RuntimeException("No se pudo conectar con el servidor SOAP", e);
+                throw new RuntimeException("No se pudo conectar con el servidor SOAP (controlador)", e);
             }
         }
         return publicadorPort;
     }
 
-    /**
-     * Obtiene una instancia singleton del publicador de usuarios.
-     */
+    // =========================
+    //  PublicadorUsuario
+    // =========================
     public static PublicadorUsuario getPublicadorUsuario() {
         if (publicadorUsuarioPort == null) {
             try {
-                PublicadorUsuarioService service = new PublicadorUsuarioService();
+                String host = get("publicadorUsuario.host", "localhost");
+                String port = get("publicadorUsuario.port", "9116");
+                String path = get("publicadorUsuario.url", "/publicadorUsuario");
+
+                String base = "http://" + host + ":" + port + path;
+                URL wsdlUrl = new URL(base + "?wsdl");
+
+                System.out.println("SoapClientHelper (Mobile) -> WSDL Usuario: " + wsdlUrl);
+
+                PublicadorUsuarioService service = new PublicadorUsuarioService(wsdlUrl);
                 publicadorUsuarioPort = service.getPublicadorUsuarioPort();
-                System.out.println("Conexion SOAP establecida con el PublicadorUsuario");
+                System.out.println("Conexión SOAP establecida con el PublicadorUsuario");
             } catch (Exception e) {
                 System.err.println("Error al conectar con el PublicadorUsuario: " + e.getMessage());
                 throw new RuntimeException("No se pudo conectar con el servidor SOAP (usuario)", e);
@@ -57,15 +100,24 @@ public final class SoapClientHelper {
         return publicadorUsuarioPort;
     }
 
-    /**
-     * Obtiene una instancia singleton del publicador de registros.
-     */
+    // =========================
+    //  PublicadorRegistro
+    // =========================
     public static PublicadorRegistro getPublicadorRegistro() {
         if (publicadorRegistroPort == null) {
             try {
-                PublicadorRegistroService service = new PublicadorRegistroService();
+                String host = get("publicadorRegistro.host", "localhost");
+                String port = get("publicadorRegistro.port", "9116");
+                String path = get("publicadorRegistro.url", "/publicadorRegistro");
+
+                String base = "http://" + host + ":" + port + path;
+                URL wsdlUrl = new URL(base + "?wsdl");
+
+                System.out.println("SoapClientHelper (Mobile) -> WSDL Registro: " + wsdlUrl);
+
+                PublicadorRegistroService service = new PublicadorRegistroService(wsdlUrl);
                 publicadorRegistroPort = service.getPublicadorRegistroPort();
-                System.out.println("Conexion SOAP establecida con el PublicadorRegistro");
+                System.out.println("Conexión SOAP establecida con el PublicadorRegistro");
             } catch (Exception e) {
                 System.err.println("Error al conectar con el PublicadorRegistro: " + e.getMessage());
                 throw new RuntimeException("No se pudo conectar con el servidor SOAP (registro)", e);
@@ -74,15 +126,24 @@ public final class SoapClientHelper {
         return publicadorRegistroPort;
     }
 
-    /**
-     * Obtiene una instancia singleton del publicador de carga de datos.
-     */
+    // =========================
+    //  PublicadorCargaDatos
+    // =========================
     public static PublicadorCargaDatos getPublicadorCargaDatos() {
         if (publicadorCargaDatosPort == null) {
             try {
-                PublicadorCargaDatosService service = new PublicadorCargaDatosService();
+                String host = get("publicadorCargaDatos.host", "localhost");
+                String port = get("publicadorCargaDatos.port", "9116");
+                String path = get("publicadorCargaDatos.url", "/publicadorCargaDatos");
+
+                String base = "http://" + host + ":" + port + path;
+                URL wsdlUrl = new URL(base + "?wsdl");
+
+                System.out.println("SoapClientHelper (Mobile) -> WSDL CargaDatos: " + wsdlUrl);
+
+                PublicadorCargaDatosService service = new PublicadorCargaDatosService(wsdlUrl);
                 publicadorCargaDatosPort = service.getPublicadorCargaDatosPort();
-                System.out.println("Conexion SOAP establecida con el PublicadorCargaDatos");
+                System.out.println("Conexión SOAP establecida con el PublicadorCargaDatos");
             } catch (Exception e) {
                 System.err.println("Error al conectar con el PublicadorCargaDatos: " + e.getMessage());
                 throw new RuntimeException("No se pudo conectar con el servidor SOAP (cargaDatos)", e);
