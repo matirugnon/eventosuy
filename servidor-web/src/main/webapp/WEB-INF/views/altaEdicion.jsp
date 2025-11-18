@@ -254,6 +254,8 @@
 									.getElementById('fechaInicio');
 							const fechaFin = document
 									.getElementById('fechaFin');
+							const nombreInput = document
+									.getElementById('nombre');
 
 							// Vista previa de imagen
 							imagenInput
@@ -294,6 +296,9 @@
 
 							// Validación del formulario
 							form.addEventListener('submit', function(e) {
+								if (nombreInput) {
+									nombreInput.value = nombreInput.value.trim();
+								}
 								validarFechas();
 
 								if (!form.checkValidity()) {

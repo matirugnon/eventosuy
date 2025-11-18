@@ -2,6 +2,7 @@ package publicadores;
 
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
+import excepciones.CostoSuperaAporteException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoNoExisteException;
@@ -12,6 +13,7 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
+import excepciones.CostoSuperaAporteException;
 import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
@@ -102,7 +104,7 @@ public class PublicadorCargaDatos {
                    CategoriaNoSeleccionadaException,
                    PatrocinioDuplicadoException,
                    EdicionNoExisteException,
-                   EventoYaFinalizadoException, UsuarioNoPerteneceException {
+                   EventoYaFinalizadoException, UsuarioNoPerteneceException, CostoSuperaAporteException {
 
         if (datosCargados) return false;
 

@@ -193,7 +193,7 @@ public class ControladorRegistro implements IControladorRegistro {
 		Usuario usuario = manUs.obtenerUsuario(nickAsistente);
 		Asistente asist = (Asistente) usuario;
 		
-		if (asist.getInstitucion() != patrocinio.getNombreInstitucion() ) {
+		if (!asist.getInstitucion().equals(patrocinio.getNombreInstitucion()) ) {
 			throw new UsuarioNoPerteneceException("El Usuario no pertenece a la institucion que patrocina este tipo de registro");
 			
 		}

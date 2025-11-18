@@ -49,6 +49,10 @@ public class Asistente extends Usuario {
         this.registros.add(reg);
     }
 
+    public void setInstitucion(String institucion) {
+        this.institucion = institucion;
+    }
+
     public String getInstitucion() {
         return institucion;
     }

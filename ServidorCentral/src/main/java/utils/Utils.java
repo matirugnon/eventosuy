@@ -4,6 +4,7 @@ import java.util.Set;
 
 import excepciones.CategoriaNoSeleccionadaException;
 import excepciones.CorreoInvalidoException;
+import excepciones.CostoSuperaAporteException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EventoRepetidoException;
@@ -14,6 +15,7 @@ import excepciones.FechaInvalidaException;
 import excepciones.FechasIncompatiblesException;
 import excepciones.NombreTipoRegistroDuplicadoException;
 import excepciones.PatrocinioDuplicadoException;
+import excepciones.CostoSuperaAporteException;
 import excepciones.SiglaRepetidaException;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
@@ -35,7 +37,7 @@ public static void cargarDatos(IControladorUsuario ctrlUsuario, IControladorEven
 				CorreoInvalidoException, EventoRepetidoException, SiglaRepetidaException, FechaInvalidaException, EventoNoExisteException,
 				ExisteInstitucionException, EdicionExistenteException, FechasIncompatiblesException,
 				NombreTipoRegistroDuplicadoException, UsuarioNoExisteException, UsuarioYaRegistradoEnEdicionException, CategoriaNoSeleccionadaException, PatrocinioDuplicadoException, EdicionNoExisteException,
-				EventoYaFinalizadoException, UsuarioNoPerteneceException
+				EventoYaFinalizadoException, UsuarioNoPerteneceException, CostoSuperaAporteException
 				
 
 {

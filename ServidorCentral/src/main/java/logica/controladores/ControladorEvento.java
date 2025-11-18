@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import excepciones.CategoriaNoSeleccionadaException;
+import excepciones.CostoSuperaAporteException;
 import excepciones.EdicionExistenteException;
 import excepciones.EdicionNoExisteException;
 import excepciones.EdicionNoFinalizadaException;
@@ -21,6 +22,7 @@ import excepciones.FechasIncompatiblesException;
 import excepciones.PatrocinioDuplicadoException;
 import excepciones.PatrocinioNoEncontradoException;
 import excepciones.SiglaRepetidaException;
+import excepciones.CostoSuperaAporteException;
 import logica.Categoria;
 import logica.Edicion;
 import logica.EdicionArchivada;
@@ -376,7 +378,7 @@ public class ControladorEvento implements IControladorEvento {
 
 
 	 public void altaPatrocinio(String nomEdicion, String nomInstitucion, NivelPatrocinio nivel, double aporte, String nomTipoRegistro, int cantRegistrosGratuitos, String codigo, DTFecha fechaAlta)
-			 throws PatrocinioDuplicadoException {
+			 throws PatrocinioDuplicadoException, CostoSuperaAporteException {
 
 
 		 Edicion edicion = manejadorE.obtenerEdicion(nomEdicion);
@@ -396,6 +398,10 @@ public class ControladorEvento implements IControladorEvento {
 		 if (tipo == null) {
 		        throw new IllegalArgumentException("No existe el tipo de registro: " + nomTipoRegistro);
 		    }
+
+		 if( costoSuperaAporte(nomEdicion, nomInstitucion, nomTipoRegistro, aporte, cantRegistrosGratuitos)) {
+			 throw new CostoSuperaAporteException();
+		 }
 
 
 		 ManejadorUsuario manejadorU = ManejadorUsuario.getinstance();

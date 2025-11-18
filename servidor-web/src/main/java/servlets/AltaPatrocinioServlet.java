@@ -25,7 +25,6 @@ import java.util.Set;
 
 
 
-import logica.controladores.IControladorEvento;
 // (Patrocinio exceptions are handled by the SOAP publicador; catch blocks removed)
 
 @WebServlet("/altaPatrocinio")
