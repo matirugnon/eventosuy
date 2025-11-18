@@ -223,6 +223,7 @@ public class inicioServlet extends HttpServlet {
                         .collect(Collectors.toList());
             }
 
+
             // 🔹 ORDENAMIENTO (por defecto: fecha descendente)
             if (orden == null || orden.isBlank()) {
                 orden = "fechaDesc";

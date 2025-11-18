@@ -43,18 +43,8 @@
 			<!-- Filtros -->
 			<form action="${pageContext.request.contextPath}/inicio" method="get"
 				style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-				<input type="text" name="busqueda"
-					placeholder="Buscar evento o edición..." value="${busqueda}"
-					style="padding: 0.5rem 1rem; flex: 1; min-width: 200px; border-radius: 6px; border: 1px solid #ccc;">
-
-				<select name="tipo"
-					style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
-					<option value="todos" ${tipo == 'todos' ? 'selected' : ''}>Todos</option>
-					<option value="eventos" ${tipo == 'eventos' ? 'selected' : ''}>Solo
-						eventos</option>
-					<option value="ediciones" ${tipo == 'ediciones' ? 'selected' : ''}>Solo
-						ediciones</option>
-				</select>
+				<input type="hidden" name="busqueda" value="${busqueda}">
+				<input type="hidden" name="tipo" value="${tipo}">
 				
 				<select name="orden"
 					style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
