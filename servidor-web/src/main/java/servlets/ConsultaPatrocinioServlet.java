@@ -13,10 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-import excepciones.EdicionNoExisteException;
-import excepciones.EdicionSinPatrociniosException;
-import excepciones.PatrocinioNoEncontradoException;
-import utils.Utils;
 
 import soap.DtEdicion;
 import soap.PublicadorControlador;

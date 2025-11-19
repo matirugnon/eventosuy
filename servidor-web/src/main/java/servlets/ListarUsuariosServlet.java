@@ -23,7 +23,6 @@ import soap.PublicadorControlador;
 import soap.PublicadorUsuario;
 import soap.StringArray;
 import utils.SoapClientHelper;
-import utils.Utils;
 
 @WebServlet("/listarUsuarios")
 public class ListarUsuariosServlet extends HttpServlet {

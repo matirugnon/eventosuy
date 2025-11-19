@@ -233,7 +233,7 @@ String edicionParam = request.getParameter("edicion") != null ? request.getParam
         });
 
 		// Submit AJAX
-		const form = document.querySelector('form');
+		const form = document.querySelector('form[action*="registroAedicion"]');
 		const submitBtn = document.getElementById('submitBtn');
 		function ensureMsgEl() {
 			let msgEl = document.getElementById('msg');
