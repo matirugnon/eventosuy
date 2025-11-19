@@ -26,6 +26,7 @@ public class ObjectFactory {
 
     private static final QName _CategoriaNoSeleccionadaFault_QNAME = new QName("http://publicadores/", "CategoriaNoSeleccionadaFault");
     private static final QName _CorreoInvalidoFault_QNAME = new QName("http://publicadores/", "CorreoInvalidoFault");
+    private static final QName _CostoSuperaAporteFault_QNAME = new QName("http://publicadores/", "CostoSuperaAporteFault");
     private static final QName _EdicionExistenteFault_QNAME = new QName("http://publicadores/", "EdicionExistenteFault");
     private static final QName _EdicionNoExisteFault_QNAME = new QName("http://publicadores/", "EdicionNoExisteFault");
     private static final QName _EventoNoExisteFault_QNAME = new QName("http://publicadores/", "EventoNoExisteFault");
@@ -38,6 +39,7 @@ public class ObjectFactory {
     private static final QName _PatrocinioDuplicadoFault_QNAME = new QName("http://publicadores/", "PatrocinioDuplicadoFault");
     private static final QName _SiglaRepetidaFault_QNAME = new QName("http://publicadores/", "SiglaRepetidaFault");
     private static final QName _UsuarioNoExisteFault_QNAME = new QName("http://publicadores/", "UsuarioNoExisteFault");
+    private static final QName _UsuarioNoPerteneceFault_QNAME = new QName("http://publicadores/", "UsuarioNoPerteneceFault");
     private static final QName _UsuarioRepetidoFault_QNAME = new QName("http://publicadores/", "UsuarioRepetidoFault");
     private static final QName _UsuarioYaRegistradoEnEdicionFault_QNAME = new QName("http://publicadores/", "UsuarioYaRegistradoEnEdicionFault");
 
@@ -66,6 +68,16 @@ public class ObjectFactory {
      */
     public CorreoInvalidoException createCorreoInvalidoException() {
         return new CorreoInvalidoException();
+    }
+
+    /**
+     * Create an instance of {@link CostoSuperaAporteException }
+     * 
+     * @return
+     *     the new instance of {@link CostoSuperaAporteException }
+     */
+    public CostoSuperaAporteException createCostoSuperaAporteException() {
+        return new CostoSuperaAporteException();
     }
 
     /**
@@ -189,6 +201,16 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UsuarioNoPerteneceException }
+     * 
+     * @return
+     *     the new instance of {@link UsuarioNoPerteneceException }
+     */
+    public UsuarioNoPerteneceException createUsuarioNoPerteneceException() {
+        return new UsuarioNoPerteneceException();
+    }
+
+    /**
      * Create an instance of {@link UsuarioRepetidoException }
      * 
      * @return
@@ -232,6 +254,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "CorreoInvalidoFault")
     public JAXBElement<CorreoInvalidoException> createCorreoInvalidoFault(CorreoInvalidoException value) {
         return new JAXBElement<>(_CorreoInvalidoFault_QNAME, CorreoInvalidoException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CostoSuperaAporteException }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link CostoSuperaAporteException }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "CostoSuperaAporteFault")
+    public JAXBElement<CostoSuperaAporteException> createCostoSuperaAporteFault(CostoSuperaAporteException value) {
+        return new JAXBElement<>(_CostoSuperaAporteFault_QNAME, CostoSuperaAporteException.class, null, value);
     }
 
     /**
@@ -388,6 +423,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://publicadores/", name = "UsuarioNoExisteFault")
     public JAXBElement<UsuarioNoExisteException> createUsuarioNoExisteFault(UsuarioNoExisteException value) {
         return new JAXBElement<>(_UsuarioNoExisteFault_QNAME, UsuarioNoExisteException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UsuarioNoPerteneceException }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link UsuarioNoPerteneceException }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://publicadores/", name = "UsuarioNoPerteneceFault")
+    public JAXBElement<UsuarioNoPerteneceException> createUsuarioNoPerteneceFault(UsuarioNoPerteneceException value) {
+        return new JAXBElement<>(_UsuarioNoPerteneceFault_QNAME, UsuarioNoPerteneceException.class, null, value);
     }
 
     /**

@@ -15,11 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
-import excepciones.EdicionNoExisteException;
-import excepciones.EdicionSinPatrociniosException;
-import excepciones.PatrocinioNoEncontradoException;
-import excepciones.UsuarioNoExisteException;
-import excepciones.UsuarioYaRegistradoEnEdicionException;
+
 import soap.DTFecha;
 import soap.DtEdicion;
 import soap.DtEvento;

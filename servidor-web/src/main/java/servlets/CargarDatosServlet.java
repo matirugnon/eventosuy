@@ -2,30 +2,14 @@ package servlets;
 
 import java.io.IOException;
 
-import excepciones.CategoriaNoSeleccionadaException;
-import excepciones.CorreoInvalidoException;
-import excepciones.EdicionExistenteException;
-import excepciones.EdicionNoExisteException;
-import excepciones.EventoRepetidoException;
-import excepciones.ExisteInstitucionException;
-import excepciones.FechaInvalidaException;
-import excepciones.FechasIncompatiblesException;
-import excepciones.NombreTipoRegistroDuplicadoException;
-import excepciones.PatrocinioDuplicadoException;
-import excepciones.UsuarioNoExisteException;
-import excepciones.UsuarioRepetidoException;
-import excepciones.UsuarioYaRegistradoEnEdicionException;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controladores.IControladorEvento;
-import logica.controladores.IControladorRegistro;
-import logica.controladores.IControladorUsuario;
-import utils.Utils;
+import soap.PublicadorCargaDatos;
+import utils.SoapClientHelper;
 
 @WebServlet("/cargarDatos")
 public class CargarDatosServlet extends HttpServlet {
@@ -41,43 +25,43 @@ public class CargarDatosServlet extends HttpServlet {
 	}
 
 	private void cargarDatos(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		ServletContext context = getServletContext();
 		HttpSession session = request.getSession();
-
-		if (Utils.datosPrecargados(context)) {
-			session.setAttribute("datosMensaje", "Los datos ya estaban cargados.");
-			session.setAttribute("datosMensajeTipo", "info");
-			response.sendRedirect(request.getContextPath() + "/inicio");
-			return;
-		}
+		
+		// Determinar si viene desde login o desde inicio
+		String referer = request.getHeader("referer");
+		String redirectUrl = (referer != null && referer.contains("/login")) 
+			? request.getContextPath() + "/login" 
+			: request.getContextPath() + "/inicio";
 
 		try {
-			Utils.cargarDatos(
-					IControladorUsuario.getInstance(),
-					IControladorEvento.getInstance(),
-					IControladorRegistro.getInstance()
-			);
-			Utils.marcarDatosCargados(context);
-			session.setAttribute("datosMensaje", "Los datos de ejemplo se cargaron correctamente.");
-			session.setAttribute("datosMensajeTipo", "success");
-		} catch (UsuarioRepetidoException |
-				CorreoInvalidoException |
-				EventoRepetidoException |
-				FechaInvalidaException |
-				ExisteInstitucionException |
-				EdicionExistenteException |
-				FechasIncompatiblesException |
-				NombreTipoRegistroDuplicadoException |
-				UsuarioNoExisteException |
-				UsuarioYaRegistradoEnEdicionException |
-				CategoriaNoSeleccionadaException |
-				PatrocinioDuplicadoException |
-				EdicionNoExisteException e) {
-			session.setAttribute("datosMensaje", "Ocurri\u00f3 un error al cargar los datos: " + e.getMessage());
+			PublicadorCargaDatos publicadorDatos = SoapClientHelper.getPublicadorCargaDatos();
+			
+			// Verificar si ya hay datos cargados
+			boolean hayDatos = publicadorDatos.hayDatosBasicos();
+			if (hayDatos) {
+				session.setAttribute("datosMensaje", "Los datos ya estaban cargados.");
+				session.setAttribute("datosMensajeTipo", "info");
+				response.sendRedirect(redirectUrl);
+				return;
+			}
+			
+			// Cargar datos
+			boolean resultado = publicadorDatos.cargarDatos();
+			
+			if (resultado) {
+				publicadorDatos.marcarDatosCargados();
+				session.setAttribute("datosMensaje", "Los datos de ejemplo se cargaron correctamente.");
+				session.setAttribute("datosMensajeTipo", "success");
+			} else {
+				session.setAttribute("datosMensaje", "Los datos ya estaban cargados o hubo un error.");
+				session.setAttribute("datosMensajeTipo", "info");
+			}
+		} catch (Exception e) {
+			session.setAttribute("datosMensaje", "Error al cargar los datos: " + e.getMessage());
 			session.setAttribute("datosMensajeTipo", "error");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/inicio");
+		response.sendRedirect(redirectUrl);
 	}
 }
 

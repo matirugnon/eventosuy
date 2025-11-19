@@ -12,10 +12,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.datatypesyenum.DTUsuario;
+
 
 //nuevos imports (copiar este bloque)
 import soap.DtEdicion;
+import soap.DtUsuario;
 import soap.PublicadorControlador;
 import soap.StringArray;
 import utils.SoapClientHelper;
@@ -70,7 +71,7 @@ public class ConsultaEdicionServlet extends HttpServlet {
             
             // Obtener información del organizador
             String nicknameOrganizador = edicionDt.getOrganizador();
-            DTUsuario organizador = null; 
+            DtUsuario organizador = null; 
             String avatarOrganizador = "/img/usSinFoto.webp"; // Avatar por defecto
             
             if (nicknameOrganizador != null && !nicknameOrganizador.trim().isEmpty()) {
